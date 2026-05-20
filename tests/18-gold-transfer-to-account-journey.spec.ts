@@ -68,11 +68,11 @@ test('Kullanıcı yolculuğu - Hesaba Altın Havale Baştan Sona', async ({ page
 
 await test.step('6. Banka, adres ve sözleşme onaylama', async () => {
   await page.waitForLoadState('networkidle').catch(() => {});
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(5000);
 
   // 1) Banka radio — ilk görünür .flex-shrink-0 (yuvarlak radio kutusu)
   await page.locator('.flex-shrink-0').first().click();
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(6000);
 
   // 2) Test adresi — gizli input yerine label içindeki görünür .flex-shrink-0 tıkla
   await page
@@ -81,7 +81,7 @@ await test.step('6. Banka, adres ve sözleşme onaylama', async () => {
     .locator('.flex-shrink-0')
     .first()
     .click();
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(6000);
 
   // 3) Ön bilgilendirme — aynı pattern
   await page
@@ -90,7 +90,7 @@ await test.step('6. Banka, adres ve sözleşme onaylama', async () => {
     .locator('.flex-shrink-0')
     .first()
     .click();
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(6000);
 
   console.log('✓ Banka + adres + sözleşme onaylandı');
 });
