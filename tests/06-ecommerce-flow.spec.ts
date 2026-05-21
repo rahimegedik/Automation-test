@@ -11,6 +11,7 @@ import { CartPage } from '../pages/CartPage';
 test('Kategori navigasyonu - GRAM KÜLÇE ALTIN', async ({ page }) => {
   const homePage = new HomePage(page);
   await homePage.goto();
+  await homePage.closePopupIfVisible();
 
   const link = homePage.categoryLink('GRAM KÜLÇE ALTIN');
   const isVisible = await link.isVisible().catch(() => false);
@@ -27,6 +28,7 @@ test('Kategori navigasyonu - GRAM KÜLÇE ALTIN', async ({ page }) => {
 test('Kategori navigasyonu - GRAM KÜLÇE GÜMÜŞ', async ({ page }) => {
   const homePage = new HomePage(page);
   await homePage.goto();
+  await homePage.closePopupIfVisible();
 
   const link = homePage.categoryLink('GRAM KÜLÇE GÜMÜŞ');
   const isVisible = await link.isVisible().catch(() => false);
@@ -43,6 +45,7 @@ test('Kategori navigasyonu - GRAM KÜLÇE GÜMÜŞ', async ({ page }) => {
 test('Kategori navigasyonu - ZİYNET ALTIN', async ({ page }) => {
   const homePage = new HomePage(page);
   await homePage.goto();
+  await homePage.closePopupIfVisible();
 
   const link = homePage.categoryLink('ZİYNET ALTIN');
   const isVisible = await link.isVisible().catch(() => false);
