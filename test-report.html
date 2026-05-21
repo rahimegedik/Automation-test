@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>NadirGold E2E Test Raporu — 21 Mayıs 2026</title>
+<style>
+  @page { size: A4; margin: 18mm; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: #1a202c;
+    margin: 0;
+    line-height: 1.55;
+  }
+  h1 { color: #0d3b66; border-bottom: 3px solid #0d3b66; padding-bottom: 8px; margin-bottom: 4px; }
+  h2 { color: #0d3b66; margin-top: 28px; border-bottom: 1px solid #d0d7de; padding-bottom: 4px; }
+  h3 { color: #2d3748; margin-top: 18px; }
+  .meta { color: #5b6b7c; font-size: 13px; margin-top: 0; margin-bottom: 18px; }
+  .summary {
+    display: flex;
+    gap: 14px;
+    margin: 18px 0;
+  }
+  .stat {
+    flex: 1;
+    padding: 16px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  .stat .num { font-size: 36px; font-weight: 700; line-height: 1; }
+  .stat .lbl { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 6px; opacity: 0.85; }
+  .total { background: #edf2f7; color: #2d3748; }
+  .pass  { background: #c6f6d5; color: #22543d; }
+  .fail  { background: #fed7d7; color: #742a2a; }
+  .dur   { background: #e6f0fb; color: #1e3a5f; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0 18px; font-size: 13px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+  th { background: #f7fafc; color: #2d3748; font-weight: 600; }
+  tr:nth-child(even) td { background: #fafbfc; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+  .badge-pass { background: #c6f6d5; color: #22543d; }
+  .badge-new  { background: #bee3f8; color: #1e3a5f; }
+  code { background: #f1f5f9; padding: 1px 6px; border-radius: 4px; font-size: 12px; font-family: "SF Mono", Menlo, Consolas, monospace; }
+  .footer { margin-top: 36px; font-size: 11px; color: #718096; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 10px; }
+  .note { font-size: 12px; color: #4a5568; }
+  ul { padding-left: 22px; }
+  li { margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<h1>NadirGold E2E Test Raporu</h1>
+<p class="meta">Tarih: 21 Mayıs 2026 · Branch: <code>feature/playwright-tests</code> · Tarayıcı: Chrome (channel) · Komut: <code>npx playwright test tests/09..20 --project=chromium --headed</code></p>
+
+<div class="summary">
+  <div class="stat total"><div class="num">12</div><div class="lbl">E2E Akış</div></div>
+  <div class="stat pass"><div class="num">12</div><div class="lbl">Passed</div></div>
+  <div class="stat fail"><div class="num">0</div><div class="lbl">Failed</div></div>
+  <div class="stat dur"><div class="num">12.5m</div><div class="lbl">Toplam Süre</div></div>
+</div>
+
+<h2>E2E Akış Sonuçları</h2>
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Test</th>
+      <th>Akış</th>
+      <th>Süre</th>
+      <th>Durum</th>
+      <th>Sipariş #</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>09</td>
+      <td><code>full-user-journey</code></td>
+      <td>Altın → Banka Transfer (Ziraat)</td>
+      <td>1.2m</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td><code>credit-card-journey</code></td>
+      <td>Altın → Kredi Kartı + 3D Secure</td>
+      <td>1.3m</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>1725897</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td><code>recurring-deposit-journey</code></td>
+      <td>Düzenli Birikim (default)</td>
+      <td>53.9s</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>birikim/684</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td><code>2-ayda-1-birikim</code></td>
+      <td>Düzenli birikim — 2 ayda 1 frekans</td>
+      <td>52.9s</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>birikim/687</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td><code>3-ayda-1-birikim</code></td>
+      <td>Düzenli birikim — 3 ayda 1 frekans</td>
+      <td>50.8s</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>birikim/690</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td><code>4-ayda-1-birikim</code></td>
+      <td>Düzenli birikim — 4 ayda 1 frekans</td>
+      <td>47.8s</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>birikim/693</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td><code>6-ayda-1-birikim</code></td>
+      <td>Düzenli birikim — 6 ayda 1 frekans</td>
+      <td>47.3s</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>birikim/696</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td><code>silver-ingot-journey</code></td>
+      <td>Gümüş Külçe → Banka Transfer (Ziraat)</td>
+      <td>1.1m</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td><code>silver-creditcard</code></td>
+      <td>Gümüş Külçe → Kredi Kartı + 3D Secure</td>
+      <td>1.3m</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>1725918</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td><code>gold-transfer-to-account</code></td>
+      <td>HESABA ALTIN HAVALE → Garanti BBVA + 3D Secure</td>
+      <td>1.1m</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>1725921</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td><code>ziynet-havale</code> <span class="badge badge-new">YENİ</span></td>
+      <td>Ziynet Altın → Banka Transfer (Ziraat)</td>
+      <td>59.4s</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td><code>ziynet-kredi-kart</code> <span class="badge badge-new">YENİ</span></td>
+      <td>Ziynet Altın (Reşat 5'lik) → Kredi Kartı + 3D Secure</td>
+      <td>1.3m</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>1725927</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Bu Oturumda Yapılan Değişiklikler</h2>
+<table>
+  <thead>
+    <tr><th>Tür</th><th>Açıklama</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>cherry-pick</code></td>
+      <td><strong>74bbc2e</strong> — <code>rahim/feature/playwright-tests</code>'den çekildi. Yeni dosyalar: <code>tests/19-ziynet-havale.spec.ts</code>, <code>tests/20-ziynet-kredi-kart.spec.ts</code> + <code>package.json</code> script'leri (<code>test:ziynetHavale</code>, <code>test:ziynetKredi</code>).</td>
+    </tr>
+    <tr>
+      <td><code>fix</code></td>
+      <td><code>tests/06-ecommerce-flow.spec.ts</code> — üç kategori navigasyon testine (GRAM KÜLÇE ALTIN, GRAM KÜLÇE GÜMÜŞ, ZİYNET ALTIN) <code>await homePage.closePopupIfVisible()</code> eklendi. Popup overlay <code>z-[105]</code> link tıklamalarını engelliyordu.</td>
+    </tr>
+    <tr>
+      <td><code>config</code></td>
+      <td><code>playwright.config.ts</code> — <code>screenshot: 'only-on-failure'</code> + <code>channel: 'chrome'</code> eklendi (uncommitted).</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Önemli Notlar</h2>
+<ul>
+  <li><strong>12/12 PASS, hiç flake yok.</strong> Önceki koşuda flaky işaretlenen 12/13/17 testleri bu koşuda da temiz geçti.</li>
+  <li><strong>Gerçek siparişler oluştu.</strong> Yukarıdaki sipariş numaraları prod'da kayıtlı — gerekirse adminden temizlenmeli.</li>
+  <li><strong>Tarayıcı:</strong> Headless Chromium değil, gerçek Chrome (channel='chrome') ile koşuldu. Daha kararlı sonuç veriyor.</li>
+  <li><strong>Worker sayısı:</strong> 1 (paralel değil, sıralı). Toplam 12.5 dk.</li>
+</ul>
+
+<h2>Henüz Koşulmamış Testler</h2>
+<p class="note">Bu raporun dışında, gerektiğinde <code>npm test</code> ile çalıştırılabilir:</p>
+<ul>
+  <li><code>01-homepage</code> · <code>02-login</code> · <code>03-cart</code> · <code>04-orders</code> · <code>05-profile</code> (smoke)</li>
+  <li><code>06-ecommerce-flow</code> (popup fix sonrası ZİYNET ALTIN testi tek başına PASS ✓) · <code>07-checkout-flow</code> · <code>08-product-purchase-flow</code></li>
+</ul>
+
+<div class="footer">NadirGold QA Automation · Playwright + Chrome · 21 Mayıs 2026</div>
+
+</body>
+</html>
