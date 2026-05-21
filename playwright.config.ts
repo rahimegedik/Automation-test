@@ -11,6 +11,7 @@ export default defineConfig({
     baseURL: 'https://www.nadirgold.work',
     storageState: 'playwright/.auth/user.json',
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
   },
   
 
@@ -19,6 +20,7 @@ export default defineConfig({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
+        channel: 'chrome',
       },
     },
   ],
