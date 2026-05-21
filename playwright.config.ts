@@ -1,4 +1,25 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const env = (process.env.NADIRGOLD_ENV ?? 'prod').toLowerCase();
+const validEnvs = ['prod', 'staging', 'dev', 'local'] as const;
+type Env = typeof validEnvs[number];
+
+if (!validEnvs.includes(env as Env)) {
+  throw new Error(`Geçersiz NADIRGOLD_ENV='${env}'. Geçerli değerler: ${validEnvs.join(', ')}`);
+}
+
+const baseURLKey = `BASE_URL_${env.toUpperCase()}`;
+const baseURL = process.env[baseURLKey];
+
+if (!baseURL) {
+  throw new Error(
+    `${baseURLKey} .env içinde tanımlı değil. ` +
+    `Şu anki env='${env}'. .env dosyana ${baseURLKey}=https://... ekle.`
+  );
+}
 
 export default defineConfig({
   testDir: './tests',
@@ -8,12 +29,11 @@ export default defineConfig({
   globalSetup: require.resolve('./global-setup'),
 
   use: {
-    baseURL: 'https://www.nadirgold.work',
-    storageState: 'playwright/.auth/user.json',
+    baseURL,
+    storageState: `playwright/.auth/${env}-user.json`,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
-  
 
   projects: [
     {
