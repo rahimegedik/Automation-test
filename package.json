@@ -18,6 +18,8 @@
     "test:altınHavale": "playwright test tests/18-gold-transfer-to-account-journey.spec.ts --project=chromium --headed",
     "test:ziynetHavale": "playwright test tests/19-ziynet-havale.spec.ts --project=chromium --headed",
     "test:ziynetKredi": "playwright test tests/20-ziynet-kredi-kart.spec.ts --project=chromium --headed",
+    "test:hesaptanFiziki": "playwright test tests/21-hesaptan-fiziki-altin.spec.ts --project=chromium --headed",
+
     "report": "playwright show-report"
   },
   "devDependencies": {

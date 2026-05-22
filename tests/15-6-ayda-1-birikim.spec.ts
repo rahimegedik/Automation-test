@@ -82,6 +82,8 @@ test('Düzenli Birikim Akışı - 6 Ayda 1', async ({ page }) => {
     await test.step('8. Düzenli Birikim seç ve sepete ekle', async () => {
         await page.locator('div').filter({ hasText: /^Düzenli Birikim$/ }).click();
         await page.locator('#add2CartButton').click();
+        await page.waitForTimeout(1500);
+
         console.log('✓ Düzenli Birikim seçildi ve sepete eklendi');
     });
 
