@@ -73,15 +73,18 @@ test('Düzenli Birikim Akışı - Baştan Sona', async ({ page }) => {
     }
   });
 
-  await test.step('7. NadirGold 10 Gr Kumbara Külçe ürün detayına git', async () => {
-    await page.getByRole('link', { name: 'NadirGold 10 Gr Kumbara Külçe' }).click();
-    await expect(page.locator('body')).toBeVisible();
+  await test.step('7. NadirGold 1 Gr Külçe Altın ürün detayına git', async () => {
+    await page.getByRole('link', { name: 'NadirGold 1 Gr Külçe Altın ürünü incele', exact: true }).click();
+    await expect(page.locator('#add2CartButton')).toBeVisible({ timeout: 15_000 });
     console.log('✓ Ürün detay sayfası açıldı:', page.url());
   });
 
   await test.step('8. Düzenli Birikim seç ve sepete ekle', async () => {
-    await page.locator('div').filter({ hasText: /^Düzenli Birikim$/ }).click();
+    const duzenliBirikim = page.locator('div').filter({ hasText: /^Düzenli Birikim$/ }).first();
+    await expect(duzenliBirikim).toBeVisible({ timeout: 10_000 });
+    await duzenliBirikim.click();
     await page.locator('#add2CartButton').click();
+    await expect(page.getByText(/Sepetim\s*\(\s*[1-9]/i).first()).toBeVisible({ timeout: 15_000 });
     console.log('✓ Düzenli Birikim seçildi ve sepete eklendi');
   });
 
@@ -114,7 +117,7 @@ test('Düzenli Birikim Akışı - Baştan Sona', async ({ page }) => {
   });
 
   await test.step('12. Talimat adını gir', async () => {
-    await page.getByPlaceholder('Talimat Adı Giriniz').fill('test');
+    await page.getByPlaceholder('Talimat Adı Giriniz').fill(`test-recurring-${Date.now()}`);
     console.log('✓ Talimat adı girildi');
   });
 

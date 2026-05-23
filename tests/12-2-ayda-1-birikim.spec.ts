@@ -73,8 +73,8 @@ test('Düzenli Birikim Akışı - 2 Ayda 1', async ({ page }) => {
         }
     });
 
-    await test.step('7. NadirGold 10 Gr Kumbara Külçe ürün detayına git', async () => {
-        await page.getByRole('link', { name: 'NadirGold 10 Gr Kumbara Külçe' }).click();
+    await test.step('7. NadirGold 1 Gr Külçe Altın ürün detayına git', async () => {
+        await page.getByRole('link', { name: 'NadirGold 1 Gr Külçe Altın ürünü incele', exact: true }).click();
         await expect(page.locator('body')).toBeVisible();
         console.log('✓ Ürün detay sayfası açıldı:', page.url());
     });
