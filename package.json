@@ -25,6 +25,7 @@
     "test:kartlar": "playwright test tests/24-kayitli-kartlar.spec.ts --project=chromium",
     "test:duyuru": "playwright test tests/25-duyuru-tercihleri.spec.ts --project=chromium",
     "test:hesabim": "playwright test tests/22-adres-yonetimi.spec.ts tests/23-iban-yonetimi.spec.ts tests/24-kayitli-kartlar.spec.ts tests/25-duyuru-tercihleri.spec.ts --project=chromium",
+    "test:loginNeg": "playwright test tests/26-login-negatif.spec.ts --project=chromium",
 
     "report": "playwright show-report"
   },

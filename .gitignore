@@ -4,4 +4,6 @@ playwright-report/
 playwright/.auth/
 .env
 test-report.pdf
+test-report-*.pdf
 debug-*.png
+.DS_Store
