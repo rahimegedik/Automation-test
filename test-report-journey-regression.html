@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>NadirGold Journey Regression Raporu — 25 Mayıs 2026</title>
+<style>
+  @page { size: A4; margin: 12mm; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: #1a202c;
+    margin: 0;
+    line-height: 1.45;
+  }
+  h1 { color: #0d3b66; border-bottom: 3px solid #0d3b66; padding-bottom: 8px; margin-bottom: 4px; font-size: 22px; }
+  h2 { color: #0d3b66; margin-top: 18px; border-bottom: 1px solid #d0d7de; padding-bottom: 4px; font-size: 14px; }
+  h3 { color: #2d3748; margin-top: 14px; font-size: 12.5px; }
+  .meta { color: #5b6b7c; font-size: 11.5px; margin-top: 0; margin-bottom: 12px; }
+  .summary {
+    display: flex;
+    gap: 8px;
+    margin: 10px 0;
+  }
+  .stat {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  .stat .num { font-size: 26px; font-weight: 700; line-height: 1; }
+  .stat .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 5px; opacity: 0.85; }
+  .total { background: #edf2f7; color: #2d3748; }
+  .pass  { background: #c6f6d5; color: #22543d; }
+  .fail  { background: #fed7d7; color: #742a2a; }
+  .dur   { background: #e6f0fb; color: #1e3a5f; }
+  .reg   { background: #fef5e7; color: #7b341e; }
+  table { width: 100%; border-collapse: collapse; margin: 6px 0 10px; font-size: 11px; }
+  th, td { text-align: left; padding: 4px 7px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+  th { background: #f7fafc; color: #2d3748; font-weight: 600; }
+  tr:nth-child(even) td { background: #fafbfc; }
+  .badge { display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 9.5px; font-weight: 600; }
+  .badge-pass  { background: #c6f6d5; color: #22543d; }
+  .badge-fail  { background: #fed7d7; color: #742a2a; }
+  .badge-flaky { background: #feebc8; color: #7b341e; }
+  .badge-new   { background: #bee3f8; color: #1e3a5f; }
+  .badge-fix   { background: #e9d8fd; color: #44337a; }
+  .badge-ok    { background: #c6f6d5; color: #22543d; }
+  .badge-risk  { background: #feebc8; color: #7b341e; }
+  code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 10.5px; font-family: "SF Mono", Menlo, Consolas, monospace; }
+  .footer { margin-top: 16px; font-size: 10px; color: #718096; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 6px; }
+  .note { font-size: 11px; color: #4a5568; }
+  ul { padding-left: 18px; margin: 4px 0; }
+  li { margin-bottom: 3px; font-size: 11.5px; }
+  .callout {
+    background: #f0fff4;
+    border-left: 4px solid #38a169;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin: 10px 0;
+    font-size: 11.5px;
+  }
+  .callout strong { color: #22543d; }
+</style>
+</head>
+<body>
+
+<h1>NadirGold Journey Regression Raporu</h1>
+<p class="meta">Tarih: 25 Mayıs 2026 · Branch: <code>feature/playwright-tests</code> · HEAD: <code>f60f6ba</code> · Ortam: <code>staging</code> (URL: <code>nadirgold.work</code>) · Auth: <code>playwright/.auth/staging-user.json</code> · Tarayıcı: Chrome (channel) · Worker: 1</p>
+
+<div class="callout">
+  <strong>Sonuç:</strong> 13/13 PASS — LoginPage POM genişletmesi (<code>f60f6ba</code>) ve Hesabım CRUD suite eklenmesi (<code>c5d127a</code>) journey akışlarını <strong>etkilemedi</strong>. Regression yok.
+</div>
+
+<div class="summary">
+  <div class="stat total"><div class="num">13</div><div class="lbl">Journey Spec</div></div>
+  <div class="stat pass"><div class="num">13</div><div class="lbl">Passed</div></div>
+  <div class="stat fail"><div class="num">0</div><div class="lbl">Failed</div></div>
+  <div class="stat dur"><div class="num">11.7m</div><div class="lbl">Toplam Süre</div></div>
+  <div class="stat reg"><div class="num">0</div><div class="lbl">Regression</div></div>
+</div>
+
+<h2>Önceki Koşum ile Karşılaştırma</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Koşum</th>
+      <th>Tarih</th>
+      <th>HEAD Commit</th>
+      <th>Sonuç</th>
+      <th>Süre</th>
+      <th>Bağlam</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Önceki</td>
+      <td>23 Mayıs 2026</td>
+      <td><code>6933fc0</code></td>
+      <td><span class="badge badge-pass">13/13 PASS</span></td>
+      <td>~13.0m</td>
+      <td>Test 11 flaky fix + birikim ürün locator düzeltmesi sonrası baseline</td>
+    </tr>
+    <tr>
+      <td><strong>Bu koşum</strong></td>
+      <td><strong>25 Mayıs 2026</strong></td>
+      <td><code>f60f6ba</code></td>
+      <td><span class="badge badge-pass">13/13 PASS</span></td>
+      <td><strong>11.7m</strong></td>
+      <td>LoginPage POM genişletme + Hesabım CRUD + Login negatif suite eklendikten sonra</td>
+    </tr>
+    <tr>
+      <td colspan="6"><strong>Delta:</strong> Aynı PASS oranı, <strong>~1.3 dk daha hızlı</strong>. Eklenen yeni testler (22-26) bu koşumun kapsamına dahil değildir; journey suite izole çalıştırıldı.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Journey Test Sonuçları (09–21)</h2>
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Test</th>
+      <th>Akış</th>
+      <th>Süre</th>
+      <th>Durum</th>
+      <th>Sipariş #</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>09</td>
+      <td><code>full-user-journey</code></td>
+      <td>Altın → Banka Transfer (Ziraat)</td>
+      <td>—</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td><code>credit-card-journey</code></td>
+      <td>Altın → Kredi Kartı + 3D Secure</td>
+      <td>—</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td><code>recurring-deposit-journey</code></td>
+      <td>Düzenli Birikim (default frekans)</td>
+      <td>—</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>birikim/—</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td><code>2-ayda-1-birikim</code></td>
+      <td>Düzenli birikim — 2 ayda 1 frekans</td>
+      <td>—</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>birikim/—</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td><code>3-ayda-1-birikim</code></td>
+      <td>Düzenli birikim — 3 ayda 1 frekans</td>
+      <td>—</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>birikim/—</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td><code>4-ayda-1-birikim</code></td>
+      <td>Düzenli birikim — 4 ayda 1 frekans</td>
+      <td>—</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>birikim/—</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td><code>6-ayda-1-birikim</code></td>
+      <td>Düzenli birikim — 6 ayda 1 frekans</td>
+      <td>—</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>birikim/—</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td><code>silver-ingot-journey</code></td>
+      <td>Gümüş Külçe → Banka Transfer (Ziraat)</td>
+      <td>—</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td><code>silver-creditcard</code></td>
+      <td>Gümüş Külçe → Kredi Kartı + 3D Secure</td>
+      <td>—</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>1726035</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td><code>gold-transfer-to-account</code></td>
+      <td>HESABA ALTIN HAVALE → Garanti BBVA + 3D Secure</td>
+      <td>—</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>1726038</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td><code>ziynet-havale</code></td>
+      <td>Ziynet Altın → Banka Transfer (Ziraat)</td>
+      <td>38.6s</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td><code>ziynet-kredi-kart</code></td>
+      <td>Ziynet Altın (Reşat 5'lik) → Kredi Kartı + 3D Secure</td>
+      <td>1.1m</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>1726044</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td><code>hesaptan-fiziki-altin</code></td>
+      <td>Hesaptan Fiziki Altın → 1gr Külçe → Sepet → Checkout → Profil</td>
+      <td>37.4s</td>
+      <td><span class="badge badge-pass">PASSED</span></td>
+      <td>—</td>
+    </tr>
+  </tbody>
+</table>
+<p class="note">Süre alanı "—" olan testlerde list reporter log'u tek tek süre yayınlamadı; toplam koşum 11.7 dk olarak ölçüldü.</p>
+
+<h2>Suite Büyümesi: 21 → 26 Spec</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Grup</th>
+      <th>Önceki</th>
+      <th>Şimdi</th>
+      <th>Eklenen</th>
+      <th>Detay</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Utility (01–08)</td>
+      <td>8</td>
+      <td>8</td>
+      <td>—</td>
+      <td>Smoke + e-commerce + checkout — değişmedi</td>
+    </tr>
+    <tr>
+      <td>Journey (09–21)</td>
+      <td>13</td>
+      <td>13</td>
+      <td>—</td>
+      <td><span class="badge badge-ok">Bu koşumda doğrulandı</span></td>
+    </tr>
+    <tr>
+      <td>Hesabım CRUD (22–25)</td>
+      <td>0</td>
+      <td>4 spec / 24 test</td>
+      <td><span class="badge badge-new">YENİ</span></td>
+      <td><code>c5d127a</code> — Adres + IBAN + Kayıtlı Kartlar + Duyuru</td>
+    </tr>
+    <tr>
+      <td>Login Negatif (26)</td>
+      <td>0</td>
+      <td>1 spec / 10 test</td>
+      <td><span class="badge badge-new">YENİ</span></td>
+      <td><code>f60f6ba</code> — LoginPage POM genişletme + negatif senaryolar</td>
+    </tr>
+    <tr>
+      <td><strong>Toplam</strong></td>
+      <td><strong>21 spec</strong></td>
+      <td><strong>26 spec / ~68 test</strong></td>
+      <td><strong>+5 spec / +34 test</strong></td>
+      <td>Pre-regression coverage genişledi</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Son Commit'ler (Bu Sürümde)</h2>
+<table>
+  <thead>
+    <tr><th>Commit</th><th>Tür</th><th>Açıklama</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>f60f6ba</code></td>
+      <td><span class="badge badge-new">FEAT</span></td>
+      <td>Login negatif suite + LoginPage POM genişletme (10 test)</td>
+    </tr>
+    <tr>
+      <td><code>c5d127a</code></td>
+      <td><span class="badge badge-new">FEAT</span></td>
+      <td>Hesabım CRUD suite (adres + IBAN + kayıtlı kartlar + duyuru) — 4 spec / 24 test</td>
+    </tr>
+    <tr>
+      <td><code>6933fc0</code></td>
+      <td><span class="badge badge-fix">FIX</span></td>
+      <td>Birikim testlerinde stoksuz ürün locator + test 11 flaky giderme (önceki baseline)</td>
+    </tr>
+    <tr>
+      <td><code>bef814e</code></td>
+      <td><span class="badge badge-new">ADD</span></td>
+      <td>tests/21 — Hesaptan Fiziki Altın akışı eklendi</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Riskler ve Gözlemler</h2>
+<ul>
+  <li><span class="badge badge-risk">MALİYET</span> <strong>Gerçek siparişler üretildi (prod URL):</strong> 17, 18, 20 testlerinden üç sipariş kaydı oluştu (<code>1726035</code>, <code>1726038</code>, <code>1726044</code>) + havale & birikim akışları kayıt bıraktı. Adminden temizlenmesi önerilir.</li>
+  <li><span class="badge badge-risk">ORTAM</span> "staging" etiketi kullanılmasına rağmen <code>BASE_URL_STAGING</code> halen prod domain'ine (<code>nadirgold.work</code>) yönlendiriliyor. Gerçek staging ortamı ayrı alınana kadar her journey koşumu prod'a yazıyor.</li>
+  <li><span class="badge badge-ok">STABİLİTE</span> Test 11 (recurring-deposit) — önceki flaky fix (<code>6933fc0</code>) bu koşumda da PASS verdi. Regression yok.</li>
+  <li><span class="badge badge-ok">PERF</span> Süre 13.0m → 11.7m (~%10 daha hızlı). Yeni 3DS akışları veya CDP gecikmesi yok.</li>
+  <li><span class="badge badge-risk">KAPSAM</span> Yeni eklenen 22–26 spec'leri bu regression koşumunda <strong>yer almıyor</strong> — sonraki tam suite koşumunda doğrulanmalı (<code>npm test</code>).</li>
+  <li><span class="badge badge-risk">DEV</span> Dev ortam (<code>nadirgold.dev</code>) Google OAuth bot detection nedeniyle hala otomasyona kapalı; env-aware altyapı hazır ama <code>dev-user.json</code> üretilemiyor.</li>
+</ul>
+
+<h2>Bu Raporda Yer Almayan</h2>
+<p class="note">Utility (01–08) ve yeni CRUD/Login negatif suite (22–26) bu regression koşumunun kapsamı dışındadır. Tam suite için: <code>npm test</code>.</p>
+
+<div class="footer">NadirGold QA Automation · Playwright + Chrome · Journey Regression · 25 Mayıs 2026</div>
+
+</body>
+</html>
