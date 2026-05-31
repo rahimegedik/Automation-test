@@ -175,6 +175,15 @@ test('Düzenli Birikim Akışı - 3 Ayda 1', async ({ page }) => {
         await otpFrame.getByRole('textbox').nth(4).fill('0');
         await otpFrame.getByRole('textbox').nth(5).fill('9');
 
+        // Son haneden sonra otomatik submit prod'da bazen tetiklenmiyor (flaky) → explicit submit.
+        const otpSubmit = otpFrame.locator('button, input[type="submit"], input[type="button"]').first();
+        if (await otpSubmit.isVisible({ timeout: 3000 }).catch(() => false)) {
+            await otpSubmit.click();
+        } else {
+            await page.keyboard.press('Enter');
+        }
+        await page.waitForURL(/tebrikler\/birikim/, { timeout: 30_000 }).catch(() => {});
+
         console.log('✓ OTP girildi');
     });
 

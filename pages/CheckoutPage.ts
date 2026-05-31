@@ -26,11 +26,25 @@ export class CheckoutPage {
   }
 
   async goto() {
-    await this.page.goto('/checkout');
-    await this.page.waitForLoadState('networkidle');
+    // networkidle prod'da hiç gelmiyor (analytics/canlı fiyat/chat açık tutuyor) → flaky timeout.
+    // domcontentloaded + anlamlı element beklemesine geçildi.
+    await this.page.goto('/checkout', { waitUntil: 'domcontentloaded' });
+    await this.bankTransferButton.or(this.creditCardButton)
+      .first()
+      .waitFor({ state: 'visible', timeout: 30_000 });
+  }
+
+  // Checkout açılışında öne gelen modal/overlay (fixed inset-0 z-[...]) tıklamayı engelleyebiliyor.
+  private async dismissOverlay() {
+    const overlay = this.page.locator('div.fixed.inset-0[class*="z-["]');
+    if (await overlay.first().isVisible().catch(() => false)) {
+      await this.page.keyboard.press('Escape');
+      await overlay.first().waitFor({ state: 'hidden', timeout: 5_000 }).catch(() => {});
+    }
   }
 
   async selectBankTransfer() {
+    await this.dismissOverlay();
     await this.bankTransferButton.waitFor({ state: 'visible', timeout: 10_000 });
     await this.bankTransferButton.click();
     await this.page.waitForTimeout(1000);

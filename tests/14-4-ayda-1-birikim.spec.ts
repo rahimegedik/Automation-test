@@ -105,7 +105,10 @@ test('Düzenli Birikim Akışı - 4 Ayda 1', async ({ page }) => {
     });
 
     await test.step('11. Checkout sayfasına geç', async () => {
-        await page.getByRole('link', { name: 'Devam et' }).click();
+        // Regex + explicit visible beklemesi: strict text + render race nedeniyle flaky'di.
+        const devamEt = page.getByRole('link', { name: /devam et/i });
+        await devamEt.waitFor({ state: 'visible', timeout: 15_000 });
+        await devamEt.click();
 
         await expect(page).not.toHaveURL(/hesap\/giris/);
         await expect(page.locator('body')).toBeVisible();
@@ -176,6 +179,15 @@ test('Düzenli Birikim Akışı - 4 Ayda 1', async ({ page }) => {
         await otpFrame.getByRole('textbox').nth(3).fill('4');
         await otpFrame.getByRole('textbox').nth(4).fill('0');
         await otpFrame.getByRole('textbox').nth(5).fill('9');
+
+        // Son haneden sonra otomatik submit prod'da bazen tetiklenmiyor (flaky) → explicit submit.
+        const otpSubmit = otpFrame.locator('button, input[type="submit"], input[type="button"]').first();
+        if (await otpSubmit.isVisible({ timeout: 3000 }).catch(() => false)) {
+            await otpSubmit.click();
+        } else {
+            await page.keyboard.press('Enter');
+        }
+        await page.waitForURL(/tebrikler\/birikim/, { timeout: 30_000 }).catch(() => {});
 
         console.log('✓ OTP girildi');
     });

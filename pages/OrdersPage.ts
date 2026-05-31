@@ -8,8 +8,9 @@ export class OrdersPage {
   }
 
   async goto() {
-    await this.page.goto('/hesabim/siparislerim');
-    await this.page.waitForLoadState('networkidle');
+    // networkidle prod'da flaky timeout'a yol açıyor → domcontentloaded + heading beklemesi.
+    await this.page.goto('/hesabim/siparislerim', { waitUntil: 'domcontentloaded' });
+    await this.page.getByRole('heading').first().waitFor({ state: 'visible', timeout: 30_000 });
   }
 
   isAuthenticated(): boolean {
