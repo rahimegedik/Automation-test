@@ -8,9 +8,10 @@ export class OrdersPage {
   }
 
   async goto() {
-    // networkidle prod'da flaky timeout'a yol açıyor → domcontentloaded + heading beklemesi.
+    // networkidle prod'da flaky timeout'a yol açıyor → domcontentloaded + load.
+    // Not: sayfada heading rolü yok ("Siparişlerim" link/text), bu yüzden element beklemesi yok.
     await this.page.goto('/hesabim/siparislerim', { waitUntil: 'domcontentloaded' });
-    await this.page.getByRole('heading').first().waitFor({ state: 'visible', timeout: 30_000 });
+    await this.page.waitForLoadState('load').catch(() => {});
   }
 
   isAuthenticated(): boolean {
