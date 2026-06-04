@@ -75,13 +75,18 @@ test('Düzenli Birikim Akışı - 2 Ayda 1', async ({ page }) => {
 
     await test.step('7. NadirGold 1 Gr Külçe Altın ürün detayına git', async () => {
         await page.getByRole('link', { name: 'NadirGold 1 Gr Külçe Altın ürünü incele', exact: true }).click();
-        await expect(page.locator('body')).toBeVisible();
+        // body kontrolü navigasyon tamamlanmadan geçiyordu → ürün sayfası elementini bekle (bkz. spec 11).
+        await expect(page.locator('#add2CartButton')).toBeVisible({ timeout: 15_000 });
         console.log('✓ Ürün detay sayfası açıldı:', page.url());
     });
 
     await test.step('8. Düzenli Birikim seç ve sepete ekle', async () => {
-        await page.locator('div').filter({ hasText: /^Düzenli Birikim$/ }).click();
+        const duzenliBirikim = page.locator('div').filter({ hasText: /^Düzenli Birikim$/ }).first();
+        await expect(duzenliBirikim).toBeVisible({ timeout: 10_000 });
+        await duzenliBirikim.click();
         await page.locator('#add2CartButton').click();
+        // Sepete eklendiğini rozetten doğrula — eklenmeden devam etmek 11. adımda "Devam et" timeout'una yol açıyordu.
+        await expect(page.getByText(/Sepetim\s*\(\s*[1-9]/i).first()).toBeVisible({ timeout: 15_000 });
         console.log('✓ Düzenli Birikim seçildi ve sepete eklendi');
     });
 
@@ -174,6 +179,15 @@ test('Düzenli Birikim Akışı - 2 Ayda 1', async ({ page }) => {
         await otpFrame.getByRole('textbox').nth(3).fill('4');
         await otpFrame.getByRole('textbox').nth(4).fill('0');
         await otpFrame.getByRole('textbox').nth(5).fill('9');
+
+        // Son haneden sonra otomatik submit prod'da bazen tetiklenmiyor (flaky) → explicit submit.
+        const otpSubmit = otpFrame.locator('button, input[type="submit"], input[type="button"]').first();
+        if (await otpSubmit.isVisible({ timeout: 3000 }).catch(() => false)) {
+            await otpSubmit.click();
+        } else {
+            await page.keyboard.press('Enter');
+        }
+        await page.waitForURL(/tebrikler\/birikim/, { timeout: 30_000 }).catch(() => {});
 
         console.log('✓ OTP girildi');
     });

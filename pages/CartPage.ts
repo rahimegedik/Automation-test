@@ -14,8 +14,9 @@ export class CartPage {
   }
 
   async goto() {
-    await this.page.goto('/sepet');
-    await this.page.waitForLoadState('networkidle');
+    // networkidle prod'da flaky timeout'a yol açıyor → domcontentloaded + load (bkz. OrdersPage.goto).
+    await this.page.goto('/sepet', { waitUntil: 'domcontentloaded' });
+    await this.page.waitForLoadState('load').catch(() => {});
   }
 
   async waitForSidebar(timeout = 5000): Promise<boolean> {
