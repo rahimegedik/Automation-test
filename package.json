@@ -19,21 +19,25 @@
     "test:ziynetHavale": "playwright test tests/19-ziynet-havale.spec.ts --project=chromium --headed",
     "test:ziynetKredi": "playwright test tests/20-ziynet-kredi-kart.spec.ts --project=chromium --headed",
     "test:hesaptanFiziki": "playwright test tests/21-hesaptan-fiziki-altin.spec.ts --project=chromium --headed",
-
-    "test:adres": "playwright test tests/22-adres-yonetimi.spec.ts --project=chromium",
-    "test:iban": "playwright test tests/23-iban-yonetimi.spec.ts --project=chromium",
-    "test:kartlar": "playwright test tests/24-kayitli-kartlar.spec.ts --project=chromium",
-    "test:duyuru": "playwright test tests/25-duyuru-tercihleri.spec.ts --project=chromium",
-    "test:hesabim": "playwright test tests/22-adres-yonetimi.spec.ts tests/23-iban-yonetimi.spec.ts tests/24-kayitli-kartlar.spec.ts tests/25-duyuru-tercihleri.spec.ts --project=chromium",
-    "test:loginNeg": "playwright test tests/26-login-negatif.spec.ts --project=chromium",
-    "test:sifre": "playwright test tests/27-sifre-degistir.spec.ts --project=chromium",
+    "test:adres": "playwright test tests/22-adres-yonetimi.spec.ts --project=chromium --headed",
+    "test:iban": "playwright test tests/23-iban-yonetimi.spec.ts --project=chromium --headed",
+    "test:kartlar": "playwright test tests/24-kayitli-kartlar.spec.ts --project=chromium --headed",
+    "test:duyuru": "playwright test tests/25-duyuru-tercihleri.spec.ts --project=chromium --headed",
+    "test:hesabim": "playwright test tests/22-adres-yonetimi.spec.ts tests/23-iban-yonetimi.spec.ts tests/24-kayitli-kartlar.spec.ts tests/25-duyuru-tercihleri.spec.ts --project=chromium --headed",
+    "test:loginNeg": "playwright test tests/26-login-negatif.spec.ts --project=chromium --headed",
+    "test:sifre": "playwright test tests/27-sifre-degistir.spec.ts --project=chromium --headed",
     "test:havaleMulti": "playwright test tests/28-hesaba-havale-multi-banka.spec.ts --project=chromium --headed",
-
-    "report": "playwright show-report"
+    "report": "playwright show-report",
+    "format": "prettier --write .",
+    "lint": "eslint . --ext .ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0",
     "@types/node": "^20.0.0",
-    "dotenv": "^16.0.0"
+    "@typescript-eslint/eslint-plugin": "^8.61.0",
+    "@typescript-eslint/parser": "^8.61.0",
+    "dotenv": "^16.0.0",
+    "eslint": "^10.4.1",
+    "prettier": "^3.8.3"
   }
 }

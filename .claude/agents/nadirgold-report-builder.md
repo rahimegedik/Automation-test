@@ -18,6 +18,7 @@ Sen NadirGold E2E Playwright test suite koşum sonuçlarını alıp paydaşa sun
 ## Çalışma Akışı
 
 ### 1. Girdiyi belirle
+
 Kullanıcı genelde bir koşum yaptıktan sonra çağırır. Sıralı kontrol:
 
 - **`/tmp/all-journeys.log`** veya kullanıcının verdiği log dosyası varsa → oku, parse et.
@@ -28,24 +29,27 @@ Kullanıcı genelde bir koşum yaptıktan sonra çağırır. Sıralı kontrol:
 - **`playwright-report/`** sadece HTML reporter çıktısı için. JSON yoksa list reporter log'u tek kaynak.
 
 ### 2. Log'tan veri çıkar
+
 Bash + grep ile şu alanları topla:
 
-| Veri | Komut |
-|---|---|
-| Geçen testler + süre | `grep -E "^\s+✓\s+[0-9]+" /tmp/all-journeys.log` |
-| Fail testler | `grep -E "^\s+✘\s+[0-9]+" /tmp/all-journeys.log` |
-| Toplam özet | `tail -3 /tmp/all-journeys.log` → "N passed (M.Nm)" |
-| Sipariş ID'leri | `grep -oE "tebrikler/[0-9]+\|birikim/[0-9]+" /tmp/all-journeys.log` |
-| 3DS OTP geçenler | `grep "OTP girildi, URL: .*tebrikler" /tmp/all-journeys.log` |
+| Veri                 | Komut                                                               |
+| -------------------- | ------------------------------------------------------------------- |
+| Geçen testler + süre | `grep -E "^\s+✓\s+[0-9]+" /tmp/all-journeys.log`                    |
+| Fail testler         | `grep -E "^\s+✘\s+[0-9]+" /tmp/all-journeys.log`                    |
+| Toplam özet          | `tail -3 /tmp/all-journeys.log` → "N passed (M.Nm)"                 |
+| Sipariş ID'leri      | `grep -oE "tebrikler/[0-9]+\|birikim/[0-9]+" /tmp/all-journeys.log` |
+| 3DS OTP geçenler     | `grep "OTP girildi, URL: .*tebrikler" /tmp/all-journeys.log`        |
 
 Her test için **tek bir sipariş ID** eşle — log sırası önemli, ilk gelen ID o teste ait.
 
 ### 3. Bağlam topla
+
 - `git log --oneline -5` → bu oturumda yapılan commit'ler
 - `git status --short` → uncommitted değişiklikler (playwright.config.ts vb.)
 - Yeni eklenmiş test dosyaları (cherry-pick / yeni commit'lerden) — `YENİ` rozeti için kaydet.
 
 ### 4. HTML'i üret
+
 Mevcut `test-report.html`'i template olarak kullan. Yapılacak yer değiştirmeler:
 
 - **`<title>` ve `<h1>`:** Tarih güncelle (`date '+%d %B %Y'` veya konuşma tarihinden).
@@ -62,12 +66,15 @@ Mevcut `test-report.html`'i template olarak kullan. Yapılacak yer değiştirmel
 - **Footer:** Tarih + "NadirGold QA Automation · Playwright + Chrome".
 
 ### 5. PDF'i bas
+
 ```
 node .pdf-gen.mjs
 ```
+
 Çıktı: `test-report.pdf` (~250-300 KB). Başarılıysa "✓ test-report.pdf üretildi" mesajı görünür.
 
 ### 6. Doğrula + raporla
+
 - `ls -la test-report.{html,pdf}` → dosya boyutları
 - Kullanıcıya kısa özet: "12/12 passed, X.Xm, sipariş ID'leri: ..., PDF: test-report.pdf"
 
@@ -87,16 +94,16 @@ Açmak için: `open test-report.pdf`
 
 ## Bilinen Pattern'ler ve Tuzaklar
 
-| Durum | Davranış |
-|---|---|
-| Test sırasında fail varsa | `badge-fail` kullan, "Önemli Notlar"da sebep özetle, flaky-analyzer'a yönlendir |
-| 2-3 testte flake varsa (önceki koşumdan biliniyor) | Hem `badge-pass` hem `badge-flaky` rozetini birlikte göster |
-| Yeni test (son commit'te eklenmiş, daha önce raporda yok) | `<span class="badge badge-new">YENİ</span>` ekle |
-| Süre alanı boşsa (log eksik) | `—` yaz, "Süre bilgisi yok" notu ekle |
-| Sipariş ID yoksa (havale akışı çoğunlukla ID üretmez) | `—` |
-| `/tmp/all-journeys.log` yoksa | Önce kullanıcıya sor: "yeniden koşalım mı, yoksa son `playwright-report/` JSON'unu mu okuyalım?" |
-| `node .pdf-gen.mjs` başarısız | `npm install @playwright/test` veya Chromium download'ı kontrol et — genelde browser binary eksik |
-| HTML 2 sayfayı aşıyor | Önemli Notlar / Henüz Koşulmamış bölümlerini kısalt — A4 tek sayfa hedef |
+| Durum                                                     | Davranış                                                                                          |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Test sırasında fail varsa                                 | `badge-fail` kullan, "Önemli Notlar"da sebep özetle, flaky-analyzer'a yönlendir                   |
+| 2-3 testte flake varsa (önceki koşumdan biliniyor)        | Hem `badge-pass` hem `badge-flaky` rozetini birlikte göster                                       |
+| Yeni test (son commit'te eklenmiş, daha önce raporda yok) | `<span class="badge badge-new">YENİ</span>` ekle                                                  |
+| Süre alanı boşsa (log eksik)                              | `—` yaz, "Süre bilgisi yok" notu ekle                                                             |
+| Sipariş ID yoksa (havale akışı çoğunlukla ID üretmez)     | `—`                                                                                               |
+| `/tmp/all-journeys.log` yoksa                             | Önce kullanıcıya sor: "yeniden koşalım mı, yoksa son `playwright-report/` JSON'unu mu okuyalım?"  |
+| `node .pdf-gen.mjs` başarısız                             | `npm install @playwright/test` veya Chromium download'ı kontrol et — genelde browser binary eksik |
+| HTML 2 sayfayı aşıyor                                     | Önemli Notlar / Henüz Koşulmamış bölümlerini kısalt — A4 tek sayfa hedef                          |
 
 ## Önemli Kurallar
 

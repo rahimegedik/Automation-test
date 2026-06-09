@@ -29,7 +29,9 @@ Sen NadirGold E2E Playwright test suite'i için uzmanlaşmış bir POM (Page Obj
 ## Çalışma Akışı
 
 ### 1. Inputları al
+
 Kullanıcıdan veya prompt'tan şunları beklersin:
+
 - **URL veya slug** (örn. `/hesabim/sifre-degistir` veya tam URL)
 - **POM adı** (opsiyonel — slug'tan tahmin edebilirsin: `sifre-degistir` → `PasswordChangePage`)
 - **Modül tipi** (form CRUD / read-only liste / switch / mixed — şüpheliyse keşiften sonra karar ver)
@@ -41,42 +43,71 @@ Eksik bilgi varsa **1 soru sor**, sonra devam et.
 `.pom-explore-<slug>.mjs` adında geçici bir dosya oluştur:
 
 ```js
-import { chromium } from '@playwright/test';
-import 'dotenv/config';
+import { chromium } from "@playwright/test";
+import "dotenv/config";
 
-const env = (process.env.NADIRGOLD_ENV ?? 'staging').toLowerCase();
-const baseURL = process.env[`BASE_URL_${env.toUpperCase()}`] ?? 'https://www.nadirgold.work';
+const env = (process.env.NADIRGOLD_ENV ?? "staging").toLowerCase();
+const baseURL =
+  process.env[`BASE_URL_${env.toUpperCase()}`] ?? "https://www.nadirgold.work";
 const authFile = `playwright/.auth/${env}-user.json`;
 
 const browser = await chromium.launch({ headless: true });
-const context = await browser.newContext({ storageState: authFile, viewport: { width: 1440, height: 900 } });
+const context = await browser.newContext({
+  storageState: authFile,
+  viewport: { width: 1440, height: 900 },
+});
 const page = await context.newPage();
 
-await page.goto(`${baseURL}<SLUG>`, { waitUntil: 'networkidle', timeout: 30_000 });
+await page.goto(`${baseURL}<SLUG>`, {
+  waitUntil: "networkidle",
+  timeout: 30_000,
+});
 await page.waitForTimeout(2500);
 
 // Popup açıksa kapat
-const dismiss = page.getByRole('button', { name: /Teşekkürler/i });
+const dismiss = page.getByRole("button", { name: /Teşekkürler/i });
 if (await dismiss.isVisible({ timeout: 1500 }).catch(() => false)) {
   await dismiss.click();
   await page.waitForTimeout(500);
 }
 
 const data = await page.evaluate(() => {
-  const inHeader = (el) => !!el.closest('header, nav, [class*="header" i], [class*="nav" i]');
-  const inputs = Array.from(document.querySelectorAll('input, textarea, select'))
-    .filter(el => !inHeader(el) && el.offsetParent !== null)
-    .map(i => ({ type: i.type || i.tagName.toLowerCase(), name: i.name, placeholder: i.placeholder, ariaLabel: i.getAttribute('aria-label') || '' }));
-  const buttons = Array.from(document.querySelectorAll('button'))
-    .filter(b => !inHeader(b) && b.offsetParent !== null)
-    .map(b => ({ text: b.textContent?.trim().slice(0, 50), type: b.type || '', ariaLabel: b.getAttribute('aria-label') || '' }))
-    .filter(b => b.text || b.ariaLabel);
-  const links = Array.from(document.querySelectorAll('a'))
-    .filter(a => !inHeader(a) && a.offsetParent !== null && a.textContent?.trim().length > 0 && a.textContent.trim().length < 60)
-    .map(a => ({ text: a.textContent?.trim(), href: a.getAttribute('href') }));
-  const headings = Array.from(document.querySelectorAll('h1,h2,h3'))
-    .filter(el => !inHeader(el))
-    .map(h => h.textContent?.trim()).filter(t => t && t.length < 80);
+  const inHeader = (el) =>
+    !!el.closest('header, nav, [class*="header" i], [class*="nav" i]');
+  const inputs = Array.from(
+    document.querySelectorAll("input, textarea, select"),
+  )
+    .filter((el) => !inHeader(el) && el.offsetParent !== null)
+    .map((i) => ({
+      type: i.type || i.tagName.toLowerCase(),
+      name: i.name,
+      placeholder: i.placeholder,
+      ariaLabel: i.getAttribute("aria-label") || "",
+    }));
+  const buttons = Array.from(document.querySelectorAll("button"))
+    .filter((b) => !inHeader(b) && b.offsetParent !== null)
+    .map((b) => ({
+      text: b.textContent?.trim().slice(0, 50),
+      type: b.type || "",
+      ariaLabel: b.getAttribute("aria-label") || "",
+    }))
+    .filter((b) => b.text || b.ariaLabel);
+  const links = Array.from(document.querySelectorAll("a"))
+    .filter(
+      (a) =>
+        !inHeader(a) &&
+        a.offsetParent !== null &&
+        a.textContent?.trim().length > 0 &&
+        a.textContent.trim().length < 60,
+    )
+    .map((a) => ({
+      text: a.textContent?.trim(),
+      href: a.getAttribute("href"),
+    }));
+  const headings = Array.from(document.querySelectorAll("h1,h2,h3"))
+    .filter((el) => !inHeader(el))
+    .map((h) => h.textContent?.trim())
+    .filter((t) => t && t.length < 80);
   return { inputs, buttons, links: links.slice(0, 10), headings };
 });
 
@@ -86,6 +117,7 @@ await browser.close();
 ```
 
 `<SLUG>` placeholder'larını gerçek değerle değiştir. Sonra çalıştır:
+
 ```bash
 NADIRGOLD_ENV=staging node .pom-explore-<slug>.mjs
 ```
@@ -93,6 +125,7 @@ NADIRGOLD_ENV=staging node .pom-explore-<slug>.mjs
 ### 3. Çıktıyı analiz et
 
 Topla:
+
 - **Heading** (varsa)
 - **Inputs**: `name`, `type`, `placeholder` — her biri için locator çıkar (`input[name="..."]` veya `input[name="..."][type="..."]` çakışma riski varsa)
 - **Buttons**: text → `getByRole('button', { name: '...' })`
@@ -147,7 +180,9 @@ export class <Name>Page {
 Yaz: `pages/<Name>Page.ts`. **Sadece iskelet** — boş kalıp değil, gerçek locator/method'larla dolu olsun.
 
 ### 5. Cleanup
+
 Keşif dosyalarını sil:
+
 ```bash
 rm -f .pom-explore-<slug>.mjs .pom-explore-<slug>.png
 ```
@@ -155,6 +190,7 @@ rm -f .pom-explore-<slug>.mjs .pom-explore-<slug>.png
 ### 6. Raporla
 
 Çıktı formatı:
+
 ```
 ## POM oluşturuldu: pages/<Name>Page.ts
 

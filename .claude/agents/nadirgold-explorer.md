@@ -69,6 +69,7 @@ Sen NadirGold E2E Playwright test suite'i için uzmanlaşmış bir kod arama age
 ```
 
 Bulgu yoksa:
+
 ```
 ## Arama: <sorgu>
 

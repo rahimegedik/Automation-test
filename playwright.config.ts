@@ -1,14 +1,16 @@
-import { defineConfig, devices } from '@playwright/test';
-import dotenv from 'dotenv';
+import { defineConfig, devices } from "@playwright/test";
+import dotenv from "dotenv";
 
 dotenv.config();
 
-const env = (process.env.NADIRGOLD_ENV ?? 'prod').toLowerCase();
-const validEnvs = ['prod', 'staging', 'dev', 'local'] as const;
-type Env = typeof validEnvs[number];
+const env = (process.env.NADIRGOLD_ENV ?? "prod").toLowerCase();
+const validEnvs = ["prod", "staging", "dev", "local"] as const;
+type Env = (typeof validEnvs)[number];
 
 if (!validEnvs.includes(env as Env)) {
-  throw new Error(`Geçersiz NADIRGOLD_ENV='${env}'. Geçerli değerler: ${validEnvs.join(', ')}`);
+  throw new Error(
+    `Geçersiz NADIRGOLD_ENV='${env}'. Geçerli değerler: ${validEnvs.join(", ")}`,
+  );
 }
 
 const baseURLKey = `BASE_URL_${env.toUpperCase()}`;
@@ -17,30 +19,30 @@ const baseURL = process.env[baseURLKey];
 if (!baseURL) {
   throw new Error(
     `${baseURLKey} .env içinde tanımlı değil. ` +
-    `Şu anki env='${env}'. .env dosyana ${baseURLKey}=https://... ekle.`
+      `Şu anki env='${env}'. .env dosyana ${baseURLKey}=https://... ekle.`,
   );
 }
 
 export default defineConfig({
-  testDir: './tests',
-  reporter: [['html', { open: 'never' }]],
+  testDir: "./tests",
+  reporter: [["html", { open: "never" }]],
   workers: 1,
 
-  globalSetup: require.resolve('./global-setup'),
+  globalSetup: require.resolve("./global-setup"),
 
   use: {
     baseURL,
     storageState: `playwright/.auth/${env}-user.json`,
-    trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
+    trace: "on-first-retry",
+    screenshot: "only-on-failure",
   },
 
   projects: [
     {
-      name: 'chromium',
+      name: "chromium",
       use: {
-        ...devices['Desktop Chrome'],
-        channel: 'chrome',
+        ...devices["Desktop Chrome"],
+        channel: "chrome",
       },
     },
   ],
