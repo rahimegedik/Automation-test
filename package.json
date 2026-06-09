@@ -27,6 +27,7 @@
     "test:loginNeg": "playwright test tests/26-login-negatif.spec.ts --project=chromium --headed",
     "test:sifre": "playwright test tests/27-sifre-degistir.spec.ts --project=chromium --headed",
     "test:havaleMulti": "playwright test tests/28-hesaba-havale-multi-banka.spec.ts --project=chromium --headed",
+    "test:takiKredi": "npx playwright test tests/29-taki-kredi-kart.spec.ts --headed",
     "report": "playwright show-report",
     "format": "prettier --write .",
     "lint": "eslint . --ext .ts"
