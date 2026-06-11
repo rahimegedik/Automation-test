@@ -25,7 +25,6 @@ if (!baseURL) {
 
 export default defineConfig({
   testDir: "./tests",
-  reporter: [["html", { open: "never" }]],
   workers: 1,
 
   globalSetup: require.resolve("./global-setup"),
@@ -45,5 +44,11 @@ export default defineConfig({
         channel: "chrome",
       },
     },
+  ],
+
+  reporter: [
+    ["list"],
+    ["html", { outputFolder: "playwright-report", open: "never" }],
+    ["json", { outputFile: "test-results/results.json" }],
   ],
 });

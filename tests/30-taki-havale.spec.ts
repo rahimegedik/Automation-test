@@ -5,9 +5,7 @@ import { OrdersPage } from "../pages/OrdersPage";
 import { ProfilePage } from "../pages/ProfilePage";
 import { CheckoutPage } from "../pages/CheckoutPage";
 
-test("Kullanıcı yolculuğu - Takı Yeni Havale Baştan Sona", async ({
-  page,
-}) => {
+test("Kullanıcı yolculuğu - Takı Yeni Havale Baştan Sona", async ({ page }) => {
   test.setTimeout(300_000);
 
   const homePage = new HomePage(page);
@@ -78,7 +76,7 @@ test("Kullanıcı yolculuğu - Takı Yeni Havale Baştan Sona", async ({
   });
 
   await test.step("6. Ürün seçeneği 6.8 seç", async () => {
-    const optionButton = page.getByRole("button", { name: "6.8" });
+    const optionButton = page.getByRole("button", { name: "6.6" });
 
     await expect(optionButton).toBeVisible({ timeout: 15_000 });
     await expect(optionButton).toBeEnabled();

@@ -27,14 +27,22 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
 
   await test.step("2. Popup varsa kapat", async () => {
     const closed = await homePage.closePopupIfVisible();
+
     console.log(
       closed ? "✓ Popup kapatıldı" : "ℹ Popup görünmüyor, devam ediliyor",
     );
   });
 
   await test.step("3. TAKI YENİ sayfasına git", async () => {
-    await page.getByRole("link", { name: "TAKI YENİ", exact: true }).click();
+    const takiYeniLink = page.getByRole("link", {
+      name: "TAKI YENİ",
+      exact: true,
+    });
 
+    await expect(takiYeniLink).toBeVisible({ timeout: 15_000 });
+    await takiYeniLink.click();
+
+    // Dengage push notification overlay'i tıklamaları engelliyorsa DOM'dan kaldır
     await page.evaluate(() => {
       document.querySelector("#dengage-push-prompt-container")?.remove();
     });
@@ -54,31 +62,39 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
     console.log("✓ TAKI YENİ sayfası açıldı:", page.url());
   });
 
-  await test.step("4. Sepete Ekle butonuna tıkla", async () => {
-    const addBasketButton = page.getByRole("button", {
+  await test.step("4. Popup varsa kapat", async () => {
+    const closed = await homePage.closePopupIfVisible();
+
+    console.log(
+      closed ? "✓ Popup kapatıldı" : "ℹ Popup görünmüyor, devam ediliyor",
+    );
+  });
+
+  await test.step("5. Sepete Ekle butonuna tıkla", async () => {
+    const sepeteEkleButton = page.getByRole("button", {
       name: "Sepete Ekle",
     });
 
-    await expect(addBasketButton).toBeVisible({ timeout: 15_000 });
-    await expect(addBasketButton).toBeEnabled();
+    await expect(sepeteEkleButton).toBeVisible({ timeout: 15_000 });
+    await expect(sepeteEkleButton).toBeEnabled();
 
-    await addBasketButton.click();
+    await sepeteEkleButton.click();
 
     console.log("✓ Sepete Ekle butonuna tıklandı");
   });
 
-  await test.step("5. Ürün seçeneği 6.8 seç", async () => {
-    const productOptionButton = page.getByRole("button", { name: "6.6" });
+  await test.step("6. Ürün seçeneği 6.8 seç", async () => {
+    const optionButton = page.getByRole("button", { name: "6.8" });
 
-    await expect(productOptionButton).toBeVisible({ timeout: 15_000 });
-    await expect(productOptionButton).toBeEnabled();
+    await expect(optionButton).toBeVisible({ timeout: 15_000 });
+    await expect(optionButton).toBeEnabled();
 
-    await productOptionButton.click();
+    await optionButton.click();
 
     console.log("✓ 6.8 ürün seçeneği seçildi");
   });
 
-  await test.step("6. Ürünü sepete ekle", async () => {
+  await test.step("7. Ürünü sepete ekle", async () => {
     const addToCartButton = page.locator("#add2CartButton");
 
     await expect(addToCartButton).toBeVisible({ timeout: 15_000 });
@@ -93,7 +109,7 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
     console.log("✓ Ürün sepete eklendi");
   });
 
-  await test.step("7. Sepete git", async () => {
+  await test.step("8. Sepete git", async () => {
     const goToCartButton = page.getByRole("link", { name: "Sepete Git" });
 
     await expect(goToCartButton).toBeVisible({ timeout: 15_000 });
@@ -104,7 +120,7 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
     console.log("✓ Sepete gidildi:", page.url());
   });
 
-  await test.step("8. Sepetten devam et", async () => {
+  await test.step("9. Sepetten devam et", async () => {
     const continueButton = page.getByRole("link", { name: "Devam et" });
 
     await expect(continueButton).toBeVisible({ timeout: 15_000 });
@@ -116,7 +132,6 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
 
     console.log("✓ Devam et tıklandı");
   });
-
   await test.step("10. Banka / Kredi Kartı ile ödeme seç", async () => {
     const creditCardPaymentButton = page.getByRole("button", {
       name: "Banka / Kredi Kartı İle Ödeme",
@@ -130,38 +145,42 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
     console.log("✓ Banka / Kredi Kartı ile ödeme seçildi");
   });
 
-  await test.step("11. Kayıtlı kartı seç", async () => {
-    await page.waitForLoadState("networkidle").catch(() => { });
-    await page.waitForTimeout(1500);
-
-    const savedCardOption = page
+  await test.step("11. Kredi kartı ödeme seçeneği / kart alanını seç", async () => {
+    const firstPaymentOption = page
       .locator(".cursor-pointer.flex.items-center.gap-3 > .flex-shrink-0")
       .first();
 
-    await expect(savedCardOption).toBeVisible({ timeout: 15_000 });
-    await savedCardOption.scrollIntoViewIfNeeded();
+    await expect(firstPaymentOption).toBeVisible({ timeout: 15_000 });
+    await firstPaymentOption.click();
 
-    await savedCardOption.click();
-
-    console.log("✓ Kayıtlı kart seçildi");
+    console.log("✓ İlk kredi kartı ödeme seçeneği seçildi");
   });
 
+  await test.step("12. Adres veya teslimat seçeneğini seç", async () => {
+    const addressOrDeliveryOption = page.locator(
+      "div:nth-child(5) > .cursor-pointer > .flex-shrink-0",
+    );
 
-  await test.step("11. Ön bilgilendirme formunu onayla", async () => {
-    const agreementCheckbox = page.getByRole("checkbox", {
-      name: "Ön bilgilendirme formu ,",
-    });
+    await expect(addressOrDeliveryOption).toBeVisible({ timeout: 15_000 });
+    await addressOrDeliveryOption.click();
 
-    await expect(agreementCheckbox).toBeVisible({ timeout: 15_000 });
+    console.log("✓ Adres / teslimat seçeneği seçildi");
+  });
 
-    if (!(await agreementCheckbox.isChecked())) {
-      await agreementCheckbox.check();
-    }
+  await test.step("13. Ön bilgilendirme formunu onayla", async () => {
+    await page
+      .locator("label")
+      .filter({ hasText: "Ön bilgilendirme formu" })
+      .locator(".flex-shrink-0")
+      .first()
+      .click();
+
+    await page.waitForTimeout(6000);
 
     console.log("✓ Ön bilgilendirme formu onaylandı");
   });
 
-  await test.step("12. Ödeme yap", async () => {
+  await test.step("14. Ödeme yap", async () => {
     const paymentButton = page.getByRole("button", { name: "ÖDEME YAP" });
 
     await expect(paymentButton).toBeVisible({ timeout: 15_000 });
@@ -176,7 +195,7 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
     console.log("✓ ÖDEME YAP tıklandı");
   });
 
-  await test.step("13. 3D Secure OTP gir", async () => {
+  await test.step("15. 3D Secure OTP gir", async () => {
     const otpFrame = page.locator("iframe").nth(1).contentFrame();
 
     await otpFrame
@@ -197,14 +216,14 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
     console.log("✓ OTP girildi");
   });
 
-  await test.step("14. Tebrikler sayfasını doğrula", async () => {
+  await test.step("16. Tebrikler sayfasını doğrula", async () => {
     await expect(page).toHaveURL(/tebrikler/, { timeout: 60_000 });
     await expect(page.locator("body")).toBeVisible();
 
     console.log("✓ Tebrikler sayfası açıldı:", page.url());
   });
 
-  await test.step("15. Siparişlerim sayfasına bak", async () => {
+  await test.step("17. Siparişlerim sayfasına bak", async () => {
     await ordersPage.goto();
 
     await expect(page).not.toHaveURL(/hesap\/giris/);
@@ -213,7 +232,7 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
     console.log("✓ Siparişlerim sayfası açıldı");
   });
 
-  await test.step("16. Profil sayfasına bak", async () => {
+  await test.step("18. Profil sayfasına bak", async () => {
     await profilePage.gotoSafe();
 
     await expect(page).not.toHaveURL(/hesap\/giris/);
