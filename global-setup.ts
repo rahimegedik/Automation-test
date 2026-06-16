@@ -213,110 +213,124 @@ async function globalSetup(_config: FullConfig) {
 }
 
 // Google OAuth akışını state machine ile yönet
-async function handleGoogleAuth(
-  page: Page,
-  googleEmail: string,
-  googlePassword: string,
-) {
-  for (let step = 0; step < 15; step++) {
+async function handleGoogleAuth(page: Page) {
+  const googleEmail = process.env.GOOGLE_EMAIL ?? "";
+  const googlePassword = process.env.GOOGLE_PASSWORD ?? "";
+
+  if (!googleEmail) {
+    throw new Error("GOOGLE_EMAIL .env içinde tanımlı değil.");
+  }
+
+  if (!googlePassword) {
+    throw new Error("GOOGLE_PASSWORD .env içinde tanımlı değil.");
+  }
+
+  console.log("[2/4] Google OAuth akışı işleniyor...");
+
+  for (let step = 0; step < 20; step++) {
+    if (page.isClosed()) {
+      throw new Error("Google OAuth sırasında sayfa kapandı.");
+    }
+
     await page
       .waitForLoadState("domcontentloaded", { timeout: 10_000 })
       .catch(() => {});
-    await page.waitForTimeout(500);
 
-    const url = page.url();
+    const currentUrl = page.url();
+    console.log(`  [adım ${step}] ${currentUrl}`);
 
-    // Başarı: Google'dan çıktık
-    if (
-      !url.includes("accounts.google.com") &&
-      !url.includes("auth.nadirgold.work")
-    ) {
+    // Google'dan çıkıldıysa OAuth tamamdır
+    if (!currentUrl.includes("accounts.google.com")) {
+      console.log("✓ Google OAuth tamamlandı");
       return;
     }
 
-    // Debug ekran görüntüsü
+    // Google email ekranı
+    const emailInput = page
+      .locator('input[type="email"], #identifierId, input[name="identifier"]')
+      .first();
+
+    if (await emailInput.isVisible({ timeout: 3000 }).catch(() => false)) {
+      console.log("  Google email ekranı bulundu");
+
+      await emailInput.fill(googleEmail);
+
+      const nextButton = page
+        .getByRole("button")
+        .filter({ hasText: /Next|Sonraki|İleri/i })
+        .first();
+
+      if (await nextButton.isVisible({ timeout: 3000 }).catch(() => false)) {
+        await nextButton.click();
+      } else {
+        await emailInput.press("Enter");
+      }
+
+      await page.waitForTimeout(3000);
+      continue;
+    }
+
+    // Google şifre ekranı
+    const passwordInput = page.locator('input[type="password"]').first();
+
+    if (await passwordInput.isVisible({ timeout: 3000 }).catch(() => false)) {
+      console.log("  Google şifre ekranı bulundu");
+
+      await passwordInput.fill(googlePassword);
+
+      const nextButton = page
+        .getByRole("button")
+        .filter({ hasText: /Next|Sonraki|İleri/i })
+        .first();
+
+      if (await nextButton.isVisible({ timeout: 3000 }).catch(() => false)) {
+        await nextButton.click();
+      } else {
+        await passwordInput.press("Enter");
+      }
+
+      await page.waitForTimeout(5000);
+      continue;
+    }
+
+    // Hesap seçme ekranı
+    const accountButton = page
+      .locator('[data-identifier], div[role="link"], div[role="button"]')
+      .filter({ hasText: googleEmail })
+      .first();
+
+    if (await accountButton.isVisible({ timeout: 3000 }).catch(() => false)) {
+      console.log("  Google hesap seçme ekranı bulundu");
+
+      await accountButton.click();
+      await page.waitForTimeout(3000);
+      continue;
+    }
+
+    // Devam / izin / onay ekranları
+    const continueButton = page
+      .getByRole("button")
+      .filter({ hasText: /Continue|Devam|Allow|İzin ver|Onayla|I agree|Kabul/i })
+      .first();
+
+    if (await continueButton.isVisible({ timeout: 3000 }).catch(() => false)) {
+      console.log("  Google devam/izin ekranı bulundu");
+
+      await continueButton.click();
+      await page.waitForTimeout(3000);
+      continue;
+    }
+
+    console.log("  Bilinmeyen Google ekranı, bekleniyor...");
     await page.screenshot({
       path: `playwright/.auth/debug-google-${step}.png`,
       fullPage: true,
     });
-    console.log(`  [adım ${step}] ${url.split("?")[0]}`);
 
-    // ① Görünür şifre alanı varsa direkt gir
-    const pwdField = page.locator('input[type="password"]').first();
-    const pwdVisible = await pwdField
-      .evaluate(
-        (el) => el instanceof HTMLInputElement && el.offsetParent !== null,
-      )
-      .catch(() => false);
-
-    if (pwdVisible) {
-      console.log("  Şifre giriliyor...");
-      await pwdField.fill(googlePassword);
-      await pwdField.press("Enter");
-      await page.waitForTimeout(2000);
-      continue;
-    }
-
-    // ② "Şifrenizi girin" seçeneği varsa JS ile tıkla
-    const pwdOptionHandle = await page.evaluateHandle(() => {
-      const els = Array.from(document.querySelectorAll("*"));
-      return (
-        els.find(
-          (el) =>
-            el.textContent
-              ?.trim()
-              .match(/şifrenizi girin|enter your password/i) &&
-            (el.tagName === "LI" ||
-              el.tagName === "DIV" ||
-              el.tagName === "BUTTON" ||
-              el.getAttribute("role") === "option" ||
-              el.getAttribute("role") === "listitem"),
-        ) ?? null
-      );
-    });
-
-    const pwdOptionEl = pwdOptionHandle.asElement();
-    if (pwdOptionEl) {
-      console.log('  "Şifrenizi girin" JS click...');
-      await pwdOptionEl.evaluate((el) => (el as HTMLElement).click());
-      await page.waitForTimeout(1500);
-      continue;
-    }
-
-    // ③ "Başka bir yöntem" varsa JS ile tıkla (passkey bypass)
-    const altBtnHandle = await page.evaluateHandle(() => {
-      const btns = Array.from(document.querySelectorAll("button"));
-      return (
-        btns.find((b) =>
-          b.textContent?.trim().match(/başka bir yöntem|try another/i),
-        ) ?? null
-      );
-    });
-
-    const altBtnEl = altBtnHandle.asElement();
-    if (altBtnEl) {
-      console.log('  "Başka bir yöntem" JS click...');
-      await altBtnEl.evaluate((el) => (el as HTMLElement).click());
-      await page.waitForTimeout(1500);
-      continue;
-    }
-
-    // ④ Email alanı varsa doldur
-    const emailField = page.locator('input[type="email"]').first();
-    if (await emailField.isVisible({ timeout: 1000 }).catch(() => false)) {
-      console.log("  Email giriliyor...");
-      await emailField.fill(googleEmail);
-      await emailField.press("Enter");
-      await page.waitForTimeout(2000);
-      continue;
-    }
-
-    // Bilinmeyen durum
-    console.log("  Bilinmeyen ekran, bekleniyor...");
     await page.waitForTimeout(3000);
   }
 
-  throw new Error("Google OAuth akışı tamamlanamadı (max adım aşıldı).");
+  throw new Error("Google OAuth akışı tamamlanamadı. Maksimum adım aşıldı.");
 }
 
 // Mevcut user.json ile korunan sayfaya erişilebiliyor mu kontrol et

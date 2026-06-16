@@ -131,7 +131,7 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
   });
 
   await test.step("11. Kayıtlı kartı seç", async () => {
-    await page.waitForLoadState("networkidle").catch(() => { });
+    await page.waitForLoadState("networkidle").catch(() => {});
     await page.waitForTimeout(1500);
 
     const savedCardOption = page
@@ -145,7 +145,6 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
 
     console.log("✓ Kayıtlı kart seçildi");
   });
-
 
   await test.step("11. Ön bilgilendirme formunu onayla", async () => {
     const agreementCheckbox = page.getByRole("checkbox", {

@@ -30,6 +30,7 @@
     "test:takiHavale": "npx playwright test tests/30-taki-havale.spec.ts --headed",
     "test:takiTaksit": "npx playwright test tests/31-taki-kredi-kart.spec.ts --headed",
     "test:takiKredi": "npx playwright test tests/29-taki-kredi-kart.spec.ts --headed",
+    "test:cartActions": "npx playwright test tests/32-cart-page-actions.spec.ts --headed",
     "test:takiAll": "npx playwright test tests/29-taki-kredi-kart.spec.ts tests/30-taki-havale.spec.ts tests/31-taki-kredi-kart.spec.ts",
     "report:create": "node scripts/create-test-report.cjs",
     "test:takiAll:report": "powershell -Command \"npx playwright test tests/29-taki-kredi-kart.spec.ts tests/30-taki-havale.spec.ts tests/31-taki-kredi-kart.spec.ts; node scripts/create-test-report.cjs\"",
