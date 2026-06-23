@@ -1,256 +1,486 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
-<head>
-<meta charset="UTF-8">
-<title>NadirGold E2E Test Raporu — Şifre Değiştir + Multi-Banka Havale — 27 Mayıs 2026</title>
-<style>
-  @page { size: A4; margin: 14mm; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    color: #1a202c;
-    margin: 0;
-    line-height: 1.45;
-  }
-  h1 { color: #0d3b66; border-bottom: 3px solid #0d3b66; padding-bottom: 6px; margin-bottom: 4px; font-size: 21px; }
-  h2 { color: #0d3b66; margin-top: 18px; border-bottom: 1px solid #d0d7de; padding-bottom: 3px; font-size: 14px; }
-  h3 { color: #2d3748; margin-top: 12px; font-size: 12px; }
-  .meta { color: #5b6b7c; font-size: 11px; margin-top: 0; margin-bottom: 12px; }
-  .summary {
-    display: flex;
-    gap: 8px;
-    margin: 12px 0;
-  }
-  .stat {
-    flex: 1;
-    padding: 10px;
-    border-radius: 10px;
-    text-align: center;
-  }
-  .stat .num { font-size: 26px; font-weight: 700; line-height: 1; }
-  .stat .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; opacity: 0.85; }
-  .total { background: #edf2f7; color: #2d3748; }
-  .pass  { background: #c6f6d5; color: #22543d; }
-  .fail  { background: #fed7d7; color: #742a2a; }
-  .dur   { background: #e6f0fb; color: #1e3a5f; }
-  .new   { background: #bee3f8; color: #1e3a5f; }
-  table { width: 100%; border-collapse: collapse; margin: 6px 0 12px; font-size: 10.5px; }
-  th, td { text-align: left; padding: 4px 7px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
-  th { background: #f7fafc; color: #2d3748; font-weight: 600; }
-  tr:nth-child(even) td { background: #fafbfc; }
-  .badge { display: inline-block; padding: 1px 6px; border-radius: 999px; font-size: 9.5px; font-weight: 600; }
-  .badge-pass  { background: #c6f6d5; color: #22543d; }
-  .badge-fail  { background: #fed7d7; color: #742a2a; }
-  .badge-flaky { background: #feebc8; color: #7b341e; }
-  .badge-new   { background: #bee3f8; color: #1e3a5f; }
-  .badge-fix   { background: #e9d8fd; color: #44337a; }
-  .badge-skip  { background: #fefcbf; color: #744210; }
-  .badge-warn  { background: #feebc8; color: #7b341e; }
-  code { background: #f1f5f9; padding: 1px 4px; border-radius: 4px; font-size: 10px; font-family: "SF Mono", Menlo, Consolas, monospace; }
-  .footer { margin-top: 18px; font-size: 9.5px; color: #718096; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 6px; }
-  .note { font-size: 10.5px; color: #4a5568; }
-  ul { padding-left: 18px; margin: 4px 0; }
-  li { margin-bottom: 3px; font-size: 11px; }
-  .growth {
-    display: flex;
-    gap: 10px;
-    margin: 8px 0 12px;
-  }
-  .growth .box {
-    flex: 1;
-    padding: 8px 12px;
-    border-radius: 8px;
-    background: #f7fafc;
-    border-left: 3px solid #0d3b66;
-    font-size: 11px;
-  }
-  .growth .box .lbl { font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.05em; color: #5b6b7c; }
-  .growth .box .val { font-size: 14px; font-weight: 600; color: #1a202c; margin-top: 2px; }
-  .growth .box .delta { color: #22543d; font-weight: 600; }
-</style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      NadirGold E2E Test Raporu — Şifre Değiştir + Multi-Banka Havale — 27 Mayıs
+      2026
+    </title>
+    <style>
+      @page {
+        size: A4;
+        margin: 14mm;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+          sans-serif;
+        color: #1a202c;
+        margin: 0;
+        line-height: 1.45;
+      }
+      h1 {
+        color: #0d3b66;
+        border-bottom: 3px solid #0d3b66;
+        padding-bottom: 6px;
+        margin-bottom: 4px;
+        font-size: 21px;
+      }
+      h2 {
+        color: #0d3b66;
+        margin-top: 18px;
+        border-bottom: 1px solid #d0d7de;
+        padding-bottom: 3px;
+        font-size: 14px;
+      }
+      h3 {
+        color: #2d3748;
+        margin-top: 12px;
+        font-size: 12px;
+      }
+      .meta {
+        color: #5b6b7c;
+        font-size: 11px;
+        margin-top: 0;
+        margin-bottom: 12px;
+      }
+      .summary {
+        display: flex;
+        gap: 8px;
+        margin: 12px 0;
+      }
+      .stat {
+        flex: 1;
+        padding: 10px;
+        border-radius: 10px;
+        text-align: center;
+      }
+      .stat .num {
+        font-size: 26px;
+        font-weight: 700;
+        line-height: 1;
+      }
+      .stat .lbl {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-top: 4px;
+        opacity: 0.85;
+      }
+      .total {
+        background: #edf2f7;
+        color: #2d3748;
+      }
+      .pass {
+        background: #c6f6d5;
+        color: #22543d;
+      }
+      .fail {
+        background: #fed7d7;
+        color: #742a2a;
+      }
+      .dur {
+        background: #e6f0fb;
+        color: #1e3a5f;
+      }
+      .new {
+        background: #bee3f8;
+        color: #1e3a5f;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 6px 0 12px;
+        font-size: 10.5px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 4px 7px;
+        border-bottom: 1px solid #e2e8f0;
+        vertical-align: top;
+      }
+      th {
+        background: #f7fafc;
+        color: #2d3748;
+        font-weight: 600;
+      }
+      tr:nth-child(even) td {
+        background: #fafbfc;
+      }
+      .badge {
+        display: inline-block;
+        padding: 1px 6px;
+        border-radius: 999px;
+        font-size: 9.5px;
+        font-weight: 600;
+      }
+      .badge-pass {
+        background: #c6f6d5;
+        color: #22543d;
+      }
+      .badge-fail {
+        background: #fed7d7;
+        color: #742a2a;
+      }
+      .badge-flaky {
+        background: #feebc8;
+        color: #7b341e;
+      }
+      .badge-new {
+        background: #bee3f8;
+        color: #1e3a5f;
+      }
+      .badge-fix {
+        background: #e9d8fd;
+        color: #44337a;
+      }
+      .badge-skip {
+        background: #fefcbf;
+        color: #744210;
+      }
+      .badge-warn {
+        background: #feebc8;
+        color: #7b341e;
+      }
+      code {
+        background: #f1f5f9;
+        padding: 1px 4px;
+        border-radius: 4px;
+        font-size: 10px;
+        font-family: "SF Mono", Menlo, Consolas, monospace;
+      }
+      .footer {
+        margin-top: 18px;
+        font-size: 9.5px;
+        color: #718096;
+        text-align: center;
+        border-top: 1px solid #e2e8f0;
+        padding-top: 6px;
+      }
+      .note {
+        font-size: 10.5px;
+        color: #4a5568;
+      }
+      ul {
+        padding-left: 18px;
+        margin: 4px 0;
+      }
+      li {
+        margin-bottom: 3px;
+        font-size: 11px;
+      }
+      .growth {
+        display: flex;
+        gap: 10px;
+        margin: 8px 0 12px;
+      }
+      .growth .box {
+        flex: 1;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: #f7fafc;
+        border-left: 3px solid #0d3b66;
+        font-size: 11px;
+      }
+      .growth .box .lbl {
+        font-size: 9.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #5b6b7c;
+      }
+      .growth .box .val {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a202c;
+        margin-top: 2px;
+      }
+      .growth .box .delta {
+        color: #22543d;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>NadirGold E2E Test Raporu — Şifre Değiştir + Multi-Banka Havale</h1>
+    <p class="meta">
+      Tarih: 27 Mayıs 2026 · Branch: <code>feature/playwright-tests</code> ·
+      Commit: <code>e2e5e83</code> · Ortam: <code>staging</code> (URL:
+      <code>nadirgold.work</code>) · Auth:
+      <code>playwright/.auth/staging-user.json</code> · Tarayıcı: Chrome
+      (channel) · Komutlar: <code>npm run test:sifre</code> +
+      <code>npm run test:havaleMulti</code>
+    </p>
 
-<h1>NadirGold E2E Test Raporu — Şifre Değiştir + Multi-Banka Havale</h1>
-<p class="meta">Tarih: 27 Mayıs 2026 · Branch: <code>feature/playwright-tests</code> · Commit: <code>e2e5e83</code> · Ortam: <code>staging</code> (URL: <code>nadirgold.work</code>) · Auth: <code>playwright/.auth/staging-user.json</code> · Tarayıcı: Chrome (channel) · Komutlar: <code>npm run test:sifre</code> + <code>npm run test:havaleMulti</code></p>
+    <div class="summary">
+      <div class="stat total">
+        <div class="num">9</div>
+        <div class="lbl">Toplam Test</div>
+      </div>
+      <div class="stat pass">
+        <div class="num">9</div>
+        <div class="lbl">Passed</div>
+      </div>
+      <div class="stat fail">
+        <div class="num">0</div>
+        <div class="lbl">Failed</div>
+      </div>
+      <div class="stat dur">
+        <div class="num">~4.5m</div>
+        <div class="lbl">Toplam Süre</div>
+      </div>
+    </div>
 
-<div class="summary">
-  <div class="stat total"><div class="num">9</div><div class="lbl">Toplam Test</div></div>
-  <div class="stat pass"><div class="num">9</div><div class="lbl">Passed</div></div>
-  <div class="stat fail"><div class="num">0</div><div class="lbl">Failed</div></div>
-  <div class="stat dur"><div class="num">~4.5m</div><div class="lbl">Toplam Süre</div></div>
-</div>
+    <h2>Suite Büyümesi</h2>
+    <div class="growth">
+      <div class="box">
+        <div class="lbl">Spec sayısı</div>
+        <div class="val">27 → <span class="delta">28</span> spec</div>
+      </div>
+      <div class="box">
+        <div class="lbl">Test sayısı</div>
+        <div class="val">~71 → <span class="delta">~80</span> test</div>
+      </div>
+      <div class="box">
+        <div class="lbl">Agent sayısı</div>
+        <div class="val">5 → <span class="delta">6</span> agent</div>
+      </div>
+      <div class="box">
+        <div class="lbl">Bu commit</div>
+        <div class="val">+519 satır / 5 dosya</div>
+      </div>
+    </div>
 
-<h2>Suite Büyümesi</h2>
-<div class="growth">
-  <div class="box">
-    <div class="lbl">Spec sayısı</div>
-    <div class="val">27 → <span class="delta">28</span> spec</div>
-  </div>
-  <div class="box">
-    <div class="lbl">Test sayısı</div>
-    <div class="val">~71 → <span class="delta">~80</span> test</div>
-  </div>
-  <div class="box">
-    <div class="lbl">Agent sayısı</div>
-    <div class="val">5 → <span class="delta">6</span> agent</div>
-  </div>
-  <div class="box">
-    <div class="lbl">Bu commit</div>
-    <div class="val">+519 satır / 5 dosya</div>
-  </div>
-</div>
+    <h2>
+      Modül 1 — Şifre Değiştirme Suite (yıkıcı değil)
+      <span class="badge badge-new">YENİ</span>
+    </h2>
+    <p class="note">
+      Dosyalar: <code>pages/PasswordChangePage.ts</code> (POM) ·
+      <code>tests/27-sifre-degistir.spec.ts</code> ·
+      <code>package.json → test:sifre</code> · Toplam:
+      <strong>6/6 PASS · ~1.0 dk</strong>
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>TC</th>
+          <th>Açıklama</th>
+          <th>Tip</th>
+          <th>Durum</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>TC-PWD-001</code></td>
+          <td>Sayfa açılır (<code>/hesabim/sifre-degistir</code>)</td>
+          <td>UI smoke</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+        </tr>
+        <tr>
+          <td><code>TC-PWD-002</code></td>
+          <td>3 password input + Güncelle butonu görünür</td>
+          <td>UI smoke</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+        </tr>
+        <tr>
+          <td><code>TC-PWD-003</code></td>
+          <td>
+            <strong>Hatalı mevcut şifre → 422 backend reddi</strong> doğrulandı
+          </td>
+          <td>API negatif</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+        </tr>
+        <tr>
+          <td><code>TC-PWD-004</code></td>
+          <td>Yeni şifre + Tekrar eşleşmezse engellenir</td>
+          <td>Client-side</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+        </tr>
+        <tr>
+          <td><code>TC-PWD-005</code></td>
+          <td>Tüm input <code>type="password"</code> (gizli)</td>
+          <td>Güvenlik</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+        </tr>
+        <tr>
+          <td><code>TC-PWD-006</code></td>
+          <td>Boş form submit → engellenir (API çağrısı yok)</td>
+          <td>Client-side</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+        </tr>
+        <tr>
+          <td><code>TC-PWD-007</code></td>
+          <td>Başarılı şifre değişimi (uçtan uca)</td>
+          <td>—</td>
+          <td><span class="badge badge-skip">SKIP (bilinçli)</span></td>
+        </tr>
+      </tbody>
+    </table>
 
-<h2>Modül 1 — Şifre Değiştirme Suite (yıkıcı değil) <span class="badge badge-new">YENİ</span></h2>
-<p class="note">Dosyalar: <code>pages/PasswordChangePage.ts</code> (POM) · <code>tests/27-sifre-degistir.spec.ts</code> · <code>package.json → test:sifre</code> · Toplam: <strong>6/6 PASS · ~1.0 dk</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>TC</th>
-      <th>Açıklama</th>
-      <th>Tip</th>
-      <th>Durum</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>TC-PWD-001</code></td>
-      <td>Sayfa açılır (<code>/hesabim/sifre-degistir</code>)</td>
-      <td>UI smoke</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-    </tr>
-    <tr>
-      <td><code>TC-PWD-002</code></td>
-      <td>3 password input + Güncelle butonu görünür</td>
-      <td>UI smoke</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-    </tr>
-    <tr>
-      <td><code>TC-PWD-003</code></td>
-      <td><strong>Hatalı mevcut şifre → 422 backend reddi</strong> doğrulandı</td>
-      <td>API negatif</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-    </tr>
-    <tr>
-      <td><code>TC-PWD-004</code></td>
-      <td>Yeni şifre + Tekrar eşleşmezse engellenir</td>
-      <td>Client-side</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-    </tr>
-    <tr>
-      <td><code>TC-PWD-005</code></td>
-      <td>Tüm input <code>type="password"</code> (gizli)</td>
-      <td>Güvenlik</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-    </tr>
-    <tr>
-      <td><code>TC-PWD-006</code></td>
-      <td>Boş form submit → engellenir (API çağrısı yok)</td>
-      <td>Client-side</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-    </tr>
-    <tr>
-      <td><code>TC-PWD-007</code></td>
-      <td>Başarılı şifre değişimi (uçtan uca)</td>
-      <td>—</td>
-      <td><span class="badge badge-skip">SKIP (bilinçli)</span></td>
-    </tr>
-  </tbody>
-</table>
+    <h2>
+      Modül 2 — Multi-Banka Hesaba Havale (yıkıcı, 3 gerçek havale)
+      <span class="badge badge-new">YENİ</span>
+    </h2>
+    <p class="note">
+      Dosya:
+      <code>tests/28-hesaba-havale-multi-banka.spec.ts</code> (data-driven
+      for-loop) · <code>package.json → test:havaleMulti</code> · Toplam:
+      <strong>3/3 PASS · ~3.5 dk</strong> · Strateji: smoke (Yapı Kredi) → diğer
+      2 banka
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Banka</th>
+          <th>IBAN</th>
+          <th>Sipariş #</th>
+          <th>Süre</th>
+          <th>Durum</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>YAPI VE KREDİ BANKASI A.Ş.</td>
+          <td><code>TR51 0006 7010 0000 0051 8547 98</code></td>
+          <td><code>tebrikler/1726050</code></td>
+          <td>1.2 dk</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>T.GARANTİ BANKASI A.Ş.</td>
+          <td><code>TR88 0006 2001 6360 0006 6441 87</code></td>
+          <td><code>tebrikler/1726053</code></td>
+          <td>1.2 dk</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>KUVEYT TÜRK KATILIM BANKASI A.Ş.</td>
+          <td><code>TR27 0020 5000 0954 3929 3001 03</code></td>
+          <td><code>tebrikler/1726056</code></td>
+          <td>1.1 dk</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+        </tr>
+      </tbody>
+    </table>
 
-<h2>Modül 2 — Multi-Banka Hesaba Havale (yıkıcı, 3 gerçek havale) <span class="badge badge-new">YENİ</span></h2>
-<p class="note">Dosya: <code>tests/28-hesaba-havale-multi-banka.spec.ts</code> (data-driven for-loop) · <code>package.json → test:havaleMulti</code> · Toplam: <strong>3/3 PASS · ~3.5 dk</strong> · Strateji: smoke (Yapı Kredi) → diğer 2 banka</p>
-<table>
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Banka</th>
-      <th>IBAN</th>
-      <th>Sipariş #</th>
-      <th>Süre</th>
-      <th>Durum</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>YAPI VE KREDİ BANKASI A.Ş.</td>
-      <td><code>TR51 0006 7010 0000 0051 8547 98</code></td>
-      <td><code>tebrikler/1726050</code></td>
-      <td>1.2 dk</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>T.GARANTİ BANKASI A.Ş.</td>
-      <td><code>TR88 0006 2001 6360 0006 6441 87</code></td>
-      <td><code>tebrikler/1726053</code></td>
-      <td>1.2 dk</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>KUVEYT TÜRK KATILIM BANKASI A.Ş.</td>
-      <td><code>TR27 0020 5000 0954 3929 3001 03</code></td>
-      <td><code>tebrikler/1726056</code></td>
-      <td>1.1 dk</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-    </tr>
-  </tbody>
-</table>
+    <h2>
+      Modül 3 — Yeni Agent: <code>nadirgold-pom-generator</code>
+      <span class="badge badge-new">YENİ</span>
+    </h2>
+    <p class="note">
+      Dosya: <code>.claude/agents/nadirgold-pom-generator.md</code> · İşi:
+      URL/slug → <code>staging-user.json</code> ile sayfa keşfi → POM
+      <code>.ts</code> + spec başlıkları + npm script + risk bayrakları üretir.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Bilinen Tuzak</th>
+          <th>Agent'ın Otomatik Davranışı</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Site-özel notification popup (Teşekkürler / İzin ver)</td>
+          <td>Helper ile dismiss et</td>
+        </tr>
+        <tr>
+          <td>Heading strict-mode (4+ yerde geçen başlıklar)</td>
+          <td><code>.first()</code> veya <code>.or()</code> chain</td>
+        </tr>
+        <tr>
+          <td>Tailwind <code>sr-only</code> switch input</td>
+          <td>Toggle çalışmıyorsa read-only spec öner</td>
+        </tr>
+        <tr>
+          <td>
+            Footer newsletter çakışması (<code>input[name="email"]</code>)
+          </td>
+          <td>Form scope ile locator daralt</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note">
+      Doğrulama: Bu session'da <code>PasswordChangePage</code> agent
+      talimatlarıyla manuel üretildi — yapı çalışıyor. Agent kendisi henüz aktif
+      çağrılmadı, sonraki session'da kullanıma hazır.
+    </p>
 
-<h2>Modül 3 — Yeni Agent: <code>nadirgold-pom-generator</code> <span class="badge badge-new">YENİ</span></h2>
-<p class="note">Dosya: <code>.claude/agents/nadirgold-pom-generator.md</code> · İşi: URL/slug → <code>staging-user.json</code> ile sayfa keşfi → POM <code>.ts</code> + spec başlıkları + npm script + risk bayrakları üretir.</p>
-<table>
-  <thead>
-    <tr><th>Bilinen Tuzak</th><th>Agent'ın Otomatik Davranışı</th></tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Site-özel notification popup (Teşekkürler / İzin ver)</td>
-      <td>Helper ile dismiss et</td>
-    </tr>
-    <tr>
-      <td>Heading strict-mode (4+ yerde geçen başlıklar)</td>
-      <td><code>.first()</code> veya <code>.or()</code> chain</td>
-    </tr>
-    <tr>
-      <td>Tailwind <code>sr-only</code> switch input</td>
-      <td>Toggle çalışmıyorsa read-only spec öner</td>
-    </tr>
-    <tr>
-      <td>Footer newsletter çakışması (<code>input[name="email"]</code>)</td>
-      <td>Form scope ile locator daralt</td>
-    </tr>
-  </tbody>
-</table>
-<p class="note">Doğrulama: Bu session'da <code>PasswordChangePage</code> agent talimatlarıyla manuel üretildi — yapı çalışıyor. Agent kendisi henüz aktif çağrılmadı, sonraki session'da kullanıma hazır.</p>
+    <h2>Bilinçli Atlanma Kararları</h2>
+    <ul>
+      <li>
+        <span class="badge badge-skip">SKIP</span>
+        <strong>TC-PWD-007</strong> (başarılı şifre değişimi) — gerçek değişim
+        <code>staging-user.json</code>'u bozar, sonraki tüm testler auth fail
+        olur.
+      </li>
+      <li>
+        <span class="badge badge-warn">KORUNDU</span>
+        <strong>Test 18</strong> (Garanti BBVA tek havale) — Test 28 multi-banka
+        ile duplikasyon olmasın diye journey suite'inde tutuldu; suite
+        kararlılığı için bağımsız kaldı.
+      </li>
+    </ul>
 
-<h2>Bilinçli Atlanma Kararları</h2>
-<ul>
-  <li><span class="badge badge-skip">SKIP</span> <strong>TC-PWD-007</strong> (başarılı şifre değişimi) — gerçek değişim <code>staging-user.json</code>'u bozar, sonraki tüm testler auth fail olur.</li>
-  <li><span class="badge badge-warn">KORUNDU</span> <strong>Test 18</strong> (Garanti BBVA tek havale) — Test 28 multi-banka ile duplikasyon olmasın diye journey suite'inde tutuldu; suite kararlılığı için bağımsız kaldı.</li>
-</ul>
+    <h2>Risk Bayrakları</h2>
+    <ul>
+      <li>
+        <strong>Gerçek siparişler oluştu:</strong> 1726050 / 1726053 / 1726056
+        (3 ayrı banka havalesi). Prod URL (<code>nadirgold.work</code>)
+        üzerinden — admin tarafından temizlenmesi gerekebilir.
+      </li>
+      <li>
+        <strong>Auth refresh:</strong> Multi-banka koşumu sırasında
+        <code>staging-user.json</code> expire oldu, otomatik refresh ile
+        tazelendi. Session bu raporun koşumunda aktif.
+      </li>
+      <li>
+        <strong>Yıkıcı/yıkıcı değil ayrımı:</strong> Şifre suite tamamen güvenli
+        (gerçek değişim yok); multi-banka yıkıcı (gerçek havale).
+      </li>
+    </ul>
 
-<h2>Risk Bayrakları</h2>
-<ul>
-  <li><strong>Gerçek siparişler oluştu:</strong> 1726050 / 1726053 / 1726056 (3 ayrı banka havalesi). Prod URL (<code>nadirgold.work</code>) üzerinden — admin tarafından temizlenmesi gerekebilir.</li>
-  <li><strong>Auth refresh:</strong> Multi-banka koşumu sırasında <code>staging-user.json</code> expire oldu, otomatik refresh ile tazelendi. Session bu raporun koşumunda aktif.</li>
-  <li><strong>Yıkıcı/yıkıcı değil ayrımı:</strong> Şifre suite tamamen güvenli (gerçek değişim yok); multi-banka yıkıcı (gerçek havale).</li>
-</ul>
+    <h2>Bu Oturumda Yapılan Adımlar</h2>
+    <ol style="padding-left: 18px; margin: 4px 0">
+      <li style="font-size: 11px; margin-bottom: 2px">
+        <code>nadirgold-pom-generator</code> agent yazıldı
+        (<code>.claude/agents/</code>)
+      </li>
+      <li style="font-size: 11px; margin-bottom: 2px">
+        <code>/hesabim/sifre-degistir</code> keşfedildi,
+        <code>PasswordChangePage.ts</code> POM yazıldı
+      </li>
+      <li style="font-size: 11px; margin-bottom: 2px">
+        <code>tests/27-sifre-degistir.spec.ts</code> yazıldı, koşturuldu → 6/6
+        PASS
+      </li>
+      <li style="font-size: 11px; margin-bottom: 2px">
+        Multi-banka istek geldi →
+        <code>tests/28-hesaba-havale-multi-banka.spec.ts</code> data-driven
+        yazıldı
+      </li>
+      <li style="font-size: 11px; margin-bottom: 2px">
+        Auth expire → otomatik refresh
+      </li>
+      <li style="font-size: 11px; margin-bottom: 2px">
+        Yapı Kredi smoke (tek banka) → PASS · 1726050
+      </li>
+      <li style="font-size: 11px; margin-bottom: 2px">
+        Garanti + Kuveyt Türk → PASS · 1726053 / 1726056
+      </li>
+      <li style="font-size: 11px; margin-bottom: 2px">
+        Tek commit (<code>e2e5e83</code>) — 5 dosya, +519 satır
+      </li>
+    </ol>
 
-<h2>Bu Oturumda Yapılan Adımlar</h2>
-<ol style="padding-left: 18px; margin: 4px 0;">
-  <li style="font-size: 11px; margin-bottom: 2px;"><code>nadirgold-pom-generator</code> agent yazıldı (<code>.claude/agents/</code>)</li>
-  <li style="font-size: 11px; margin-bottom: 2px;"><code>/hesabim/sifre-degistir</code> keşfedildi, <code>PasswordChangePage.ts</code> POM yazıldı</li>
-  <li style="font-size: 11px; margin-bottom: 2px;"><code>tests/27-sifre-degistir.spec.ts</code> yazıldı, koşturuldu → 6/6 PASS</li>
-  <li style="font-size: 11px; margin-bottom: 2px;">Multi-banka istek geldi → <code>tests/28-hesaba-havale-multi-banka.spec.ts</code> data-driven yazıldı</li>
-  <li style="font-size: 11px; margin-bottom: 2px;">Auth expire → otomatik refresh</li>
-  <li style="font-size: 11px; margin-bottom: 2px;">Yapı Kredi smoke (tek banka) → PASS · 1726050</li>
-  <li style="font-size: 11px; margin-bottom: 2px;">Garanti + Kuveyt Türk → PASS · 1726053 / 1726056</li>
-  <li style="font-size: 11px; margin-bottom: 2px;">Tek commit (<code>e2e5e83</code>) — 5 dosya, +519 satır</li>
-</ol>
-
-<div class="footer">NadirGold QA Automation · Playwright + Chrome · Commit e2e5e83 · 27 Mayıs 2026</div>
-
-</body>
+    <div class="footer">
+      NadirGold QA Automation · Playwright + Chrome · Commit e2e5e83 · 27 Mayıs
+      2026
+    </div>
+  </body>
 </html>

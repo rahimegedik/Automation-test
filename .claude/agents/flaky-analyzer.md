@@ -20,16 +20,16 @@ Sen NadirGold E2E Playwright test suite'i için uzmanlaşmış bir flaky test an
 
 4. **Pattern eşleştir.** Bu projeye özel bilinen flaky pattern'leri:
 
-   | Belirti | Olası neden | Fix |
-   |---|---|---|
-   | `.check()` "did not change its state" | React custom checkbox — opacity-0 hidden input | `.flex-shrink-0` görünür kutuya `.click()` |
-   | `intercepts pointer events` (z-index high overlay) | Önceki testten kalan modal/sidebar | Step 1'e `keyboard.press('Escape')` + dengage container kaldırma |
-   | `Timeout exceeded` while waiting for navigation | OTP/3DS sayfası geç yükleniyor | OTP sonrası 5s+ bekleme |
-   | `page.goto('/checkout')` sonrası selection reset | Sayfa yenileme banka/adres seçimini sıfırlar | `goto` kaldır, mevcut sayfada devam et |
-   | Slider başlangıç state'i tutarsız (rc-slider) | DOM her render'da farklı thumb konumu | Klavye/feedback-driven seçim (ArrowKey + ARIA value oku) |
-   | Sepete eklenen ürün sayısı 0 | Önceki testten kalan sepet veya popup overlay | `CartPage.clearAll()` çağrısı + popup kapat |
-   | Talimat adı çakışması (OTP fail) | Aynı adla ikinci talimat oluşturuluyor | İsme `Date.now()` suffix ekle |
-   | Locator "Cannot find element" tek koşuda | Race: element animasyon sonrası yükleniyor | `waitFor({ state: 'visible' })` + small timeout |
+   | Belirti                                            | Olası neden                                    | Fix                                                              |
+   | -------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------------------------- |
+   | `.check()` "did not change its state"              | React custom checkbox — opacity-0 hidden input | `.flex-shrink-0` görünür kutuya `.click()`                       |
+   | `intercepts pointer events` (z-index high overlay) | Önceki testten kalan modal/sidebar             | Step 1'e `keyboard.press('Escape')` + dengage container kaldırma |
+   | `Timeout exceeded` while waiting for navigation    | OTP/3DS sayfası geç yükleniyor                 | OTP sonrası 5s+ bekleme                                          |
+   | `page.goto('/checkout')` sonrası selection reset   | Sayfa yenileme banka/adres seçimini sıfırlar   | `goto` kaldır, mevcut sayfada devam et                           |
+   | Slider başlangıç state'i tutarsız (rc-slider)      | DOM her render'da farklı thumb konumu          | Klavye/feedback-driven seçim (ArrowKey + ARIA value oku)         |
+   | Sepete eklenen ürün sayısı 0                       | Önceki testten kalan sepet veya popup overlay  | `CartPage.clearAll()` çağrısı + popup kapat                      |
+   | Talimat adı çakışması (OTP fail)                   | Aynı adla ikinci talimat oluşturuluyor         | İsme `Date.now()` suffix ekle                                    |
+   | Locator "Cannot find element" tek koşuda           | Race: element animasyon sonrası yükleniyor     | `waitFor({ state: 'visible' })` + small timeout                  |
 
 5. **Çıktı formatı.** Şu yapıda raporla:
 

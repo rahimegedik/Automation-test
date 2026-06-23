@@ -1,248 +1,499 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
-<head>
-<meta charset="UTF-8">
-<title>NadirGold Journey Regression Raporu — 31 Mayıs 2026</title>
-<style>
-  @page { size: A4; margin: 12mm; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    color: #1a202c;
-    margin: 0;
-    line-height: 1.4;
-  }
-  h1 { color: #0d3b66; border-bottom: 3px solid #0d3b66; padding-bottom: 7px; margin-bottom: 4px; font-size: 21px; }
-  h2 { color: #0d3b66; margin-top: 14px; border-bottom: 1px solid #d0d7de; padding-bottom: 4px; font-size: 13.5px; }
-  .meta { color: #5b6b7c; font-size: 11px; margin-top: 0; margin-bottom: 10px; }
-  .summary { display: flex; gap: 8px; margin: 9px 0; }
-  .stat { flex: 1; padding: 9px 8px; border-radius: 10px; text-align: center; }
-  .stat .num { font-size: 25px; font-weight: 700; line-height: 1; }
-  .stat .lbl { font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 5px; opacity: 0.85; }
-  .total { background: #edf2f7; color: #2d3748; }
-  .pass  { background: #c6f6d5; color: #22543d; }
-  .fail  { background: #fed7d7; color: #742a2a; }
-  .dur   { background: #e6f0fb; color: #1e3a5f; }
-  .reg   { background: #fef5e7; color: #7b341e; }
-  table { width: 100%; border-collapse: collapse; margin: 5px 0 8px; font-size: 10.5px; }
-  th, td { text-align: left; padding: 3.5px 7px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
-  th { background: #f7fafc; color: #2d3748; font-weight: 600; }
-  tr:nth-child(even) td { background: #fafbfc; }
-  .badge { display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 9px; font-weight: 600; }
-  .badge-pass  { background: #c6f6d5; color: #22543d; }
-  .badge-fail  { background: #fed7d7; color: #742a2a; }
-  .badge-flaky { background: #feebc8; color: #7b341e; }
-  .badge-new   { background: #bee3f8; color: #1e3a5f; }
-  .badge-fix   { background: #e9d8fd; color: #44337a; }
-  .badge-ok    { background: #c6f6d5; color: #22543d; }
-  .badge-risk  { background: #feebc8; color: #7b341e; }
-  code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 10px; font-family: "SF Mono", Menlo, Consolas, monospace; }
-  .footer { margin-top: 12px; font-size: 9.5px; color: #718096; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 6px; }
-  .note { font-size: 10.5px; color: #4a5568; }
-  ul { padding-left: 18px; margin: 4px 0; }
-  li { margin-bottom: 2.5px; font-size: 10.8px; }
-  .callout {
-    background: #fffaf0;
-    border-left: 4px solid #dd6b20;
-    padding: 8px 12px;
-    border-radius: 4px;
-    margin: 9px 0;
-    font-size: 11px;
-  }
-  .callout strong { color: #7b341e; }
-</style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>NadirGold Journey Regression Raporu — 31 Mayıs 2026</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 12mm;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+          sans-serif;
+        color: #1a202c;
+        margin: 0;
+        line-height: 1.4;
+      }
+      h1 {
+        color: #0d3b66;
+        border-bottom: 3px solid #0d3b66;
+        padding-bottom: 7px;
+        margin-bottom: 4px;
+        font-size: 21px;
+      }
+      h2 {
+        color: #0d3b66;
+        margin-top: 14px;
+        border-bottom: 1px solid #d0d7de;
+        padding-bottom: 4px;
+        font-size: 13.5px;
+      }
+      .meta {
+        color: #5b6b7c;
+        font-size: 11px;
+        margin-top: 0;
+        margin-bottom: 10px;
+      }
+      .summary {
+        display: flex;
+        gap: 8px;
+        margin: 9px 0;
+      }
+      .stat {
+        flex: 1;
+        padding: 9px 8px;
+        border-radius: 10px;
+        text-align: center;
+      }
+      .stat .num {
+        font-size: 25px;
+        font-weight: 700;
+        line-height: 1;
+      }
+      .stat .lbl {
+        font-size: 9.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 5px;
+        opacity: 0.85;
+      }
+      .total {
+        background: #edf2f7;
+        color: #2d3748;
+      }
+      .pass {
+        background: #c6f6d5;
+        color: #22543d;
+      }
+      .fail {
+        background: #fed7d7;
+        color: #742a2a;
+      }
+      .dur {
+        background: #e6f0fb;
+        color: #1e3a5f;
+      }
+      .reg {
+        background: #fef5e7;
+        color: #7b341e;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 5px 0 8px;
+        font-size: 10.5px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 3.5px 7px;
+        border-bottom: 1px solid #e2e8f0;
+        vertical-align: top;
+      }
+      th {
+        background: #f7fafc;
+        color: #2d3748;
+        font-weight: 600;
+      }
+      tr:nth-child(even) td {
+        background: #fafbfc;
+      }
+      .badge {
+        display: inline-block;
+        padding: 2px 7px;
+        border-radius: 999px;
+        font-size: 9px;
+        font-weight: 600;
+      }
+      .badge-pass {
+        background: #c6f6d5;
+        color: #22543d;
+      }
+      .badge-fail {
+        background: #fed7d7;
+        color: #742a2a;
+      }
+      .badge-flaky {
+        background: #feebc8;
+        color: #7b341e;
+      }
+      .badge-new {
+        background: #bee3f8;
+        color: #1e3a5f;
+      }
+      .badge-fix {
+        background: #e9d8fd;
+        color: #44337a;
+      }
+      .badge-ok {
+        background: #c6f6d5;
+        color: #22543d;
+      }
+      .badge-risk {
+        background: #feebc8;
+        color: #7b341e;
+      }
+      code {
+        background: #f1f5f9;
+        padding: 1px 5px;
+        border-radius: 4px;
+        font-size: 10px;
+        font-family: "SF Mono", Menlo, Consolas, monospace;
+      }
+      .footer {
+        margin-top: 12px;
+        font-size: 9.5px;
+        color: #718096;
+        text-align: center;
+        border-top: 1px solid #e2e8f0;
+        padding-top: 6px;
+      }
+      .note {
+        font-size: 10.5px;
+        color: #4a5568;
+      }
+      ul {
+        padding-left: 18px;
+        margin: 4px 0;
+      }
+      li {
+        margin-bottom: 2.5px;
+        font-size: 10.8px;
+      }
+      .callout {
+        background: #fffaf0;
+        border-left: 4px solid #dd6b20;
+        padding: 8px 12px;
+        border-radius: 4px;
+        margin: 9px 0;
+        font-size: 11px;
+      }
+      .callout strong {
+        color: #7b341e;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>NadirGold Journey Regression Raporu</h1>
+    <p class="meta">
+      Tarih: 31 Mayıs 2026 · Branch: <code>feature/playwright-tests</code> ·
+      HEAD: <code>e2e5e83</code> · Ortam: <code>staging</code> (URL:
+      <code>nadirgold.work</code>) · Auth:
+      <code>playwright/.auth/staging-user.json</code> ·
+      <code>ALLOW_PROD_ORDERS=1</code> · Tarayıcı: Chromium · Worker: 1
+    </p>
 
-<h1>NadirGold Journey Regression Raporu</h1>
-<p class="meta">Tarih: 31 Mayıs 2026 · Branch: <code>feature/playwright-tests</code> · HEAD: <code>e2e5e83</code> · Ortam: <code>staging</code> (URL: <code>nadirgold.work</code>) · Auth: <code>playwright/.auth/staging-user.json</code> · <code>ALLOW_PROD_ORDERS=1</code> · Tarayıcı: Chromium · Worker: 1</p>
+    <div class="callout">
+      <strong>Sonuç:</strong> 8/13 PASS — 5 test FAIL oldu, ancak
+      <strong>tümü TIMEOUT kaynaklı ve FLAKY</strong> (deterministik regresyon
+      değil). Kanıt: önceki koşumda 12 FAIL iken bu koşumda 12 PASS oldu;
+      sonuçlar koşumlar arası değişiyor. Kök neden staging ortamının yavaş
+      ödeme/checkout adımları + sıkı timeout'lar. Detay aşağıdaki Teşhis
+      bölümünde.
+    </div>
 
-<div class="callout">
-  <strong>Sonuç:</strong> 8/13 PASS — 5 test FAIL oldu, ancak <strong>tümü TIMEOUT kaynaklı ve FLAKY</strong> (deterministik regresyon değil). Kanıt: önceki koşumda 12 FAIL iken bu koşumda 12 PASS oldu; sonuçlar koşumlar arası değişiyor. Kök neden staging ortamının yavaş ödeme/checkout adımları + sıkı timeout'lar. Detay aşağıdaki Teşhis bölümünde.
-</div>
+    <div class="summary">
+      <div class="stat total">
+        <div class="num">13</div>
+        <div class="lbl">Journey Spec</div>
+      </div>
+      <div class="stat pass">
+        <div class="num">8</div>
+        <div class="lbl">Passed</div>
+      </div>
+      <div class="stat fail">
+        <div class="num">5</div>
+        <div class="lbl">Failed</div>
+      </div>
+      <div class="stat dur">
+        <div class="num">29.6m</div>
+        <div class="lbl">Toplam Süre</div>
+      </div>
+      <div class="stat reg">
+        <div class="num">0</div>
+        <div class="lbl">Regression</div>
+      </div>
+    </div>
 
-<div class="summary">
-  <div class="stat total"><div class="num">13</div><div class="lbl">Journey Spec</div></div>
-  <div class="stat pass"><div class="num">8</div><div class="lbl">Passed</div></div>
-  <div class="stat fail"><div class="num">5</div><div class="lbl">Failed</div></div>
-  <div class="stat dur"><div class="num">29.6m</div><div class="lbl">Toplam Süre</div></div>
-  <div class="stat reg"><div class="num">0</div><div class="lbl">Regression</div></div>
-</div>
+    <h2>Journey Test Sonuçları (09–21)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Test</th>
+          <th>Akış</th>
+          <th>Süre</th>
+          <th>Durum</th>
+          <th>Sipariş #</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>09</td>
+          <td><code>full-user-journey</code></td>
+          <td>Altın → Banka Transfer</td>
+          <td>3.0m</td>
+          <td>
+            <span class="badge badge-fail">FAIL</span>
+            <span class="badge badge-flaky">FLAKY</span>
+          </td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td><code>credit-card-journey</code></td>
+          <td>Altın → Kredi Kartı + 3D Secure</td>
+          <td>2.3m</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+          <td>1726071</td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td><code>recurring-deposit-journey</code></td>
+          <td>Düzenli Birikim (default frekans)</td>
+          <td>4.0m</td>
+          <td>
+            <span class="badge badge-fail">FAIL</span>
+            <span class="badge badge-flaky">FLAKY</span>
+          </td>
+          <td>birikim/744</td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td><code>2-ayda-1-birikim</code></td>
+          <td>Düzenli Birikim — 2 ayda 1 frekans</td>
+          <td>1.3m</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+          <td>birikim/747</td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td><code>3-ayda-1-birikim</code></td>
+          <td>Düzenli Birikim — 3 ayda 1 frekans</td>
+          <td>1.0m</td>
+          <td>
+            <span class="badge badge-fail">FAIL</span>
+            <span class="badge badge-flaky">FLAKY</span>
+          </td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td><code>4-ayda-1-birikim</code></td>
+          <td>Düzenli Birikim — 4 ayda 1 frekans</td>
+          <td>4.0m</td>
+          <td>
+            <span class="badge badge-fail">FAIL</span>
+            <span class="badge badge-flaky">FLAKY</span>
+          </td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td><code>6-ayda-1-birikim</code></td>
+          <td>Düzenli Birikim — 6 ayda 1 frekans</td>
+          <td>1.4m</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+          <td>birikim/753</td>
+        </tr>
+        <tr>
+          <td>16</td>
+          <td><code>silver-ingot-journey</code></td>
+          <td>GÜMÜŞ Külçe → Banka Transfer</td>
+          <td>3.0m</td>
+          <td>
+            <span class="badge badge-fail">FAIL</span>
+            <span class="badge badge-flaky">FLAKY</span>
+          </td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>17</td>
+          <td><code>silver-creditcard</code></td>
+          <td>GÜMÜŞ Külçe → Kredi Kartı + 3D Secure</td>
+          <td>2.1m</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+          <td>1726086</td>
+        </tr>
+        <tr>
+          <td>18</td>
+          <td><code>gold-transfer-to-account</code></td>
+          <td>Hesaba ALTIN Havale + 3D Secure</td>
+          <td>2.5m</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+          <td>1726089</td>
+        </tr>
+        <tr>
+          <td>19</td>
+          <td><code>ziynet-havale</code></td>
+          <td>ZİYNET Altın → Banka Transfer</td>
+          <td>51.9s</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td><code>ziynet-kredi-kart</code></td>
+          <td>ZİYNET Altın → Kredi Kartı + 3D Secure</td>
+          <td>2.6m</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+          <td>1726095</td>
+        </tr>
+        <tr>
+          <td>21</td>
+          <td><code>hesaptan-fiziki-altin</code></td>
+          <td>Hesaptan Fiziki Altına → 1gr Külçe</td>
+          <td>1.1m</td>
+          <td><span class="badge badge-pass">PASSED</span></td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
 
-<h2>Journey Test Sonuçları (09–21)</h2>
-<table>
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Test</th>
-      <th>Akış</th>
-      <th>Süre</th>
-      <th>Durum</th>
-      <th>Sipariş #</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>09</td>
-      <td><code>full-user-journey</code></td>
-      <td>Altın → Banka Transfer</td>
-      <td>3.0m</td>
-      <td><span class="badge badge-fail">FAIL</span> <span class="badge badge-flaky">FLAKY</span></td>
-      <td>—</td>
-    </tr>
-    <tr>
-      <td>10</td>
-      <td><code>credit-card-journey</code></td>
-      <td>Altın → Kredi Kartı + 3D Secure</td>
-      <td>2.3m</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-      <td>1726071</td>
-    </tr>
-    <tr>
-      <td>11</td>
-      <td><code>recurring-deposit-journey</code></td>
-      <td>Düzenli Birikim (default frekans)</td>
-      <td>4.0m</td>
-      <td><span class="badge badge-fail">FAIL</span> <span class="badge badge-flaky">FLAKY</span></td>
-      <td>birikim/744</td>
-    </tr>
-    <tr>
-      <td>12</td>
-      <td><code>2-ayda-1-birikim</code></td>
-      <td>Düzenli Birikim — 2 ayda 1 frekans</td>
-      <td>1.3m</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-      <td>birikim/747</td>
-    </tr>
-    <tr>
-      <td>13</td>
-      <td><code>3-ayda-1-birikim</code></td>
-      <td>Düzenli Birikim — 3 ayda 1 frekans</td>
-      <td>1.0m</td>
-      <td><span class="badge badge-fail">FAIL</span> <span class="badge badge-flaky">FLAKY</span></td>
-      <td>—</td>
-    </tr>
-    <tr>
-      <td>14</td>
-      <td><code>4-ayda-1-birikim</code></td>
-      <td>Düzenli Birikim — 4 ayda 1 frekans</td>
-      <td>4.0m</td>
-      <td><span class="badge badge-fail">FAIL</span> <span class="badge badge-flaky">FLAKY</span></td>
-      <td>—</td>
-    </tr>
-    <tr>
-      <td>15</td>
-      <td><code>6-ayda-1-birikim</code></td>
-      <td>Düzenli Birikim — 6 ayda 1 frekans</td>
-      <td>1.4m</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-      <td>birikim/753</td>
-    </tr>
-    <tr>
-      <td>16</td>
-      <td><code>silver-ingot-journey</code></td>
-      <td>GÜMÜŞ Külçe → Banka Transfer</td>
-      <td>3.0m</td>
-      <td><span class="badge badge-fail">FAIL</span> <span class="badge badge-flaky">FLAKY</span></td>
-      <td>—</td>
-    </tr>
-    <tr>
-      <td>17</td>
-      <td><code>silver-creditcard</code></td>
-      <td>GÜMÜŞ Külçe → Kredi Kartı + 3D Secure</td>
-      <td>2.1m</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-      <td>1726086</td>
-    </tr>
-    <tr>
-      <td>18</td>
-      <td><code>gold-transfer-to-account</code></td>
-      <td>Hesaba ALTIN Havale + 3D Secure</td>
-      <td>2.5m</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-      <td>1726089</td>
-    </tr>
-    <tr>
-      <td>19</td>
-      <td><code>ziynet-havale</code></td>
-      <td>ZİYNET Altın → Banka Transfer</td>
-      <td>51.9s</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-      <td>—</td>
-    </tr>
-    <tr>
-      <td>20</td>
-      <td><code>ziynet-kredi-kart</code></td>
-      <td>ZİYNET Altın → Kredi Kartı + 3D Secure</td>
-      <td>2.6m</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-      <td>1726095</td>
-    </tr>
-    <tr>
-      <td>21</td>
-      <td><code>hesaptan-fiziki-altin</code></td>
-      <td>Hesaptan Fiziki Altına → 1gr Külçe</td>
-      <td>1.1m</td>
-      <td><span class="badge badge-pass">PASSED</span></td>
-      <td>—</td>
-    </tr>
-  </tbody>
-</table>
+    <h2>Teşhis — FAIL Kök Neden Analizi</h2>
+    <p class="note" style="margin-top: 2px">
+      <strong>Verdict: FLAKY, regresyon DEĞİL.</strong> Beş fail'in tamamı
+      TIMEOUT kaynaklı. Önceki koşumda 09, 12, 13, 14 fail iken bu koşumda 12
+      PASS oldu — sonuçlar koşumlar arası kayıyor. Test 11, birikim başarı
+      sayfasına (<code>birikim/744</code>) ulaştıktan sonra ardıl bir adımda
+      timeout'a düştü; akışın kendisi tamamlanıyor.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Test</th>
+          <th>Timeout Adımı</th>
+          <th>Limit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>09 / 16</td>
+          <td>
+            "Banka Transfer / Anında Ödeme" butonu — locator resolve oluyor ama
+            <em>visible, enabled and stable</em> beklerken takılıyor (checkout
+            ödeme adımı yavaş)
+          </td>
+          <td>180s</td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td>
+            <code>page.waitForLoadState</code> — sayfa yükleme staging'de yavaş
+          </td>
+          <td>240s</td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td>
+            <code>expect(page).toHaveURL(/tebrikler\/birikim/)</code> — birikim
+            başarı sayfası geç açılıyor (spec satır 182)
+          </td>
+          <td>30s</td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>"Devam et" link click — ödeme sonrası adım yavaş yanıt verdi</td>
+          <td>240s</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note">
+      <strong>Kök neden:</strong> Staging ortamının ödeme/checkout adımlarındaki
+      yavaş yanıtları + sıkı locator timeout'ları.
+      <strong>Öneri:</strong> kritik checkout adımlarında click-stability
+      beklemesini gevşetmek / retry eklemek, veya birikim başarı sayfası için
+      <code>toHaveURL</code> timeout'unu (30s → 60–90s) artırmak. Detay:
+      <code>test-results/*/error-context.md</code>.
+    </p>
 
-<h2>Teşhis — FAIL Kök Neden Analizi</h2>
-<p class="note" style="margin-top:2px;"><strong>Verdict: FLAKY, regresyon DEĞİL.</strong> Beş fail'in tamamı TIMEOUT kaynaklı. Önceki koşumda 09, 12, 13, 14 fail iken bu koşumda 12 PASS oldu — sonuçlar koşumlar arası kayıyor. Test 11, birikim başarı sayfasına (<code>birikim/744</code>) ulaştıktan sonra ardıl bir adımda timeout'a düştü; akışın kendisi tamamlanıyor.</p>
-<table>
-  <thead>
-    <tr><th>Test</th><th>Timeout Adımı</th><th>Limit</th></tr>
-  </thead>
-  <tbody>
-    <tr><td>09 / 16</td><td>"Banka Transfer / Anında Ödeme" butonu — locator resolve oluyor ama <em>visible, enabled and stable</em> beklerken takılıyor (checkout ödeme adımı yavaş)</td><td>180s</td></tr>
-    <tr><td>14</td><td><code>page.waitForLoadState</code> — sayfa yükleme staging'de yavaş</td><td>240s</td></tr>
-    <tr><td>13</td><td><code>expect(page).toHaveURL(/tebrikler\/birikim/)</code> — birikim başarı sayfası geç açılıyor (spec satır 182)</td><td>30s</td></tr>
-    <tr><td>11</td><td>"Devam et" link click — ödeme sonrası adım yavaş yanıt verdi</td><td>240s</td></tr>
-  </tbody>
-</table>
-<p class="note"><strong>Kök neden:</strong> Staging ortamının ödeme/checkout adımlarındaki yavaş yanıtları + sıkı locator timeout'ları. <strong>Öneri:</strong> kritik checkout adımlarında click-stability beklemesini gevşetmek / retry eklemek, veya birikim başarı sayfası için <code>toHaveURL</code> timeout'unu (30s → 60–90s) artırmak. Detay: <code>test-results/*/error-context.md</code>.</p>
+    <h2>Önceki Koşum ile Karşılaştırma</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Koşum</th>
+          <th>Tarih</th>
+          <th>HEAD</th>
+          <th>Sonuç</th>
+          <th>Süre</th>
+          <th>Not</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Önceki</td>
+          <td>—</td>
+          <td><code>e2e5e83</code></td>
+          <td><span class="badge badge-flaky">09,12,13,14 FAIL</span></td>
+          <td>~</td>
+          <td>Test 12 fail vermişti</td>
+        </tr>
+        <tr>
+          <td><strong>Bu koşum</strong></td>
+          <td><strong>31 Mayıs 2026</strong></td>
+          <td><code>e2e5e83</code></td>
+          <td><span class="badge badge-fail">09,11,13,14,16 FAIL</span></td>
+          <td><strong>29.6m</strong></td>
+          <td>Test 12 bu kez PASS — fail seti kaydı</td>
+        </tr>
+        <tr>
+          <td colspan="6">
+            <strong>Delta:</strong> Aynı kodda fail kümesi değişti (12 PASS
+            oldu, 11 ve 16 fail'e döndü) → davranış deterministik değil. Bu,
+            regresyondan ziyade ortam/timing kaynaklı <strong>FLAKE</strong>'in
+            kesin göstergesidir.
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-<h2>Önceki Koşum ile Karşılaştırma</h2>
-<table>
-  <thead>
-    <tr><th>Koşum</th><th>Tarih</th><th>HEAD</th><th>Sonuç</th><th>Süre</th><th>Not</th></tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Önceki</td><td>—</td><td><code>e2e5e83</code></td>
-      <td><span class="badge badge-flaky">09,12,13,14 FAIL</span></td>
-      <td>~</td>
-      <td>Test 12 fail vermişti</td>
-    </tr>
-    <tr>
-      <td><strong>Bu koşum</strong></td><td><strong>31 Mayıs 2026</strong></td><td><code>e2e5e83</code></td>
-      <td><span class="badge badge-fail">09,11,13,14,16 FAIL</span></td>
-      <td><strong>29.6m</strong></td>
-      <td>Test 12 bu kez PASS — fail seti kaydı</td>
-    </tr>
-    <tr>
-      <td colspan="6"><strong>Delta:</strong> Aynı kodda fail kümesi değişti (12 PASS oldu, 11 ve 16 fail'e döndü) → davranış deterministik değil. Bu, regresyondan ziyade ortam/timing kaynaklı <strong>FLAKE</strong>'in kesin göstergesidir.</td>
-    </tr>
-  </tbody>
-</table>
+    <h2>Gerçek Siparişler (prod nadirgold.work — admin temizlemeli)</h2>
+    <p class="note">
+      <span class="badge badge-risk">MALİYET</span>
+      <code>ALLOW_PROD_ORDERS=1</code> ile koşum prod domain'ine yazdı. Oluşan
+      kayıtlar: <code>tebrikler/1726071</code> ·
+      <code>tebrikler/1726086</code> · <code>tebrikler/1726089</code> ·
+      <code>tebrikler/1726095</code> · <code>tebrikler/birikim/744</code> ·
+      <code>tebrikler/birikim/747</code> · <code>tebrikler/birikim/753</code>.
+      Adminden temizlenmesi önerilir.
+    </p>
 
-<h2>Gerçek Siparişler (prod nadirgold.work — admin temizlemeli)</h2>
-<p class="note"><span class="badge badge-risk">MALİYET</span> <code>ALLOW_PROD_ORDERS=1</code> ile koşum prod domain'ine yazdı. Oluşan kayıtlar:
-<code>tebrikler/1726071</code> · <code>tebrikler/1726086</code> · <code>tebrikler/1726089</code> · <code>tebrikler/1726095</code> · <code>tebrikler/birikim/744</code> · <code>tebrikler/birikim/747</code> · <code>tebrikler/birikim/753</code>. Adminden temizlenmesi önerilir.</p>
+    <h2>Önemli Notlar</h2>
+    <ul>
+      <li>
+        <span class="badge badge-ok">PASS ORANI</span> 8/13 (%62) bu koşumda;
+        fail'ler retry / timeout ayarıyla geri kazanılabilir — kod kaynaklı
+        kalıcı kırık yok.
+      </li>
+      <li>
+        <span class="badge badge-risk">FLAKE</span> Birikim akışı (11/13/14) ve
+        havale checkout (09/16) staging'de en kırılgan adımlar. Flaky-analyzer
+        ile retry profili çıkarılması önerilir.
+      </li>
+      <li>
+        <span class="badge badge-risk">ORTAM</span> "staging" etiketi prod
+        domain'e (<code>nadirgold.work</code>) yönleniyor; ayrı staging ortamı
+        alınana kadar her koşum prod'a sipariş yazar.
+      </li>
+      <li>
+        <span class="badge badge-ok">KONFİG</span> Chromium, tek worker
+        (<code>--workers=1</code>), izole journey suite — paralelizm kaynaklı
+        yan etki yok.
+      </li>
+    </ul>
 
-<h2>Önemli Notlar</h2>
-<ul>
-  <li><span class="badge badge-ok">PASS ORANI</span> 8/13 (%62) bu koşumda; fail'ler retry / timeout ayarıyla geri kazanılabilir — kod kaynaklı kalıcı kırık yok.</li>
-  <li><span class="badge badge-risk">FLAKE</span> Birikim akışı (11/13/14) ve havale checkout (09/16) staging'de en kırılgan adımlar. Flaky-analyzer ile retry profili çıkarılması önerilir.</li>
-  <li><span class="badge badge-risk">ORTAM</span> "staging" etiketi prod domain'e (<code>nadirgold.work</code>) yönleniyor; ayrı staging ortamı alınana kadar her koşum prod'a sipariş yazar.</li>
-  <li><span class="badge badge-ok">KONFİG</span> Chromium, tek worker (<code>--workers=1</code>), izole journey suite — paralelizm kaynaklı yan etki yok.</li>
-</ul>
+    <h2>Bu Raporda Yer Almayan</h2>
+    <p class="note">
+      Utility (01–08) ve diğer suite'ler (CRUD / Login negatif /
+      şifre-multibank) bu regression koşumunun kapsamı dışındadır. Tam suite
+      için: <code>npm test</code>.
+    </p>
 
-<h2>Bu Raporda Yer Almayan</h2>
-<p class="note">Utility (01–08) ve diğer suite'ler (CRUD / Login negatif / şifre-multibank) bu regression koşumunun kapsamı dışındadır. Tam suite için: <code>npm test</code>.</p>
-
-<div class="footer">NadirGold QA Automation · Playwright + Chrome · Journey Regression · 31 Mayıs 2026</div>
-
-</body>
+    <div class="footer">
+      NadirGold QA Automation · Playwright + Chrome · Journey Regression · 31
+      Mayıs 2026
+    </div>
+  </body>
 </html>

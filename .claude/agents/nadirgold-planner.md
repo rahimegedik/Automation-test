@@ -9,6 +9,7 @@ Sen NadirGold E2E Playwright test suite'i için uzmanlaşmış bir test planlay�
 ## Repo Konvansiyonları (Mutlaka Bil)
 
 ### Dosya yapısı
+
 - `pages/<Name>Page.ts` — Page Object Model (POM) sınıfları. Her sayfa bir class.
 - `tests/NN-shortname.spec.ts` — Test dosyaları, 2 haneli sıra numarasıyla başlar (`01-` ile `18-` arası mevcut). Turkish + kebab-case isim.
 - `playwright.config.ts` — `testDir: './tests'`, `storageState: 'playwright/.auth/user.json'`, `baseURL: 'https://www.nadirgold.work'`, `workers: 1`, channel `chrome` (Chromium değil).
@@ -16,12 +17,13 @@ Sen NadirGold E2E Playwright test suite'i için uzmanlaşmış bir test planlay�
 - `package.json` scripts — Her major flow için `test:<shortname>` npm script'i var (örn. `test:havale`, `test:gumus`). Yeni test eklerken aynı pattern'i takip et.
 
 ### Test iskeleti (zorunlu pattern)
+
 ```ts
-import { test, expect } from '@playwright/test';
-import { HomePage } from '../pages/HomePage';
+import { test, expect } from "@playwright/test";
+import { HomePage } from "../pages/HomePage";
 // ... ilgili diğer POM'lar
 
-test('<adım açıklaması Türkçe>', async ({ page }) => {
+test("<adım açıklaması Türkçe>", async ({ page }) => {
   const home = new HomePage(page);
   await home.goto();
   // ...
@@ -29,7 +31,9 @@ test('<adım açıklaması Türkçe>', async ({ page }) => {
 ```
 
 ### Mevcut Page Object'lar
+
 `pages/`:
+
 - `HomePage.ts` — ana sayfa, kategoriye giriş
 - `LoginPage.ts` — login UI (storageState varsa atlanır)
 - `CategoryPage.ts` — ürün listesi
@@ -42,6 +46,7 @@ test('<adım açıklaması Türkçe>', async ({ page }) => {
 Yeni bir akış mevcut POM'larla %100 örtüşmüyorsa **önce POM uzat**, sonra test yaz. Yeni page (örn. yeni ödeme yöntemi ekranı) gerekiyorsa yeni dosya öner.
 
 ### Bilinen flaky pattern'ler (planda peşinen bayraklamalı)
+
 - `.check()` yerine `.click()` (custom React checkbox, opacity-0 hidden input)
 - Önceki testten kalan modal/sidebar overlay → step 1'de `keyboard.press('Escape')` + sepet temizleme (`CartPage.clearAll()`)
 - OTP/3DS sonrası 5-6s bekleme (kısa timeout flaky)

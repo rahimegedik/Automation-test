@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator } from "@playwright/test";
 
 export class CardsPage {
   readonly page: Page;
@@ -9,20 +9,25 @@ export class CardsPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.heading = page.getByRole('heading', { name: 'Kayıtlı Kartlarım' }).or(
-      page.locator('h1, h2').filter({ hasText: 'Kayıtlı Kartlarım' })
-    ).first();
-    this.addCardButton = page.getByRole('button', { name: 'Yeni Kart Ekle' });
+    this.heading = page
+      .getByRole("heading", { name: "Kayıtlı Kartlarım" })
+      .or(page.locator("h1, h2").filter({ hasText: "Kayıtlı Kartlarım" }))
+      .first();
+    this.addCardButton = page.getByRole("button", { name: "Yeni Kart Ekle" });
     // Kart kartları — masked kart numarası (örn. "474480*******0003") içeren container'lar
-    this.cardContainers = page.locator('div').filter({
+    this.cardContainers = page.locator("div").filter({
       hasText: /\d{6}\*+\d{4}/,
     });
-    this.deleteIcons = page.locator('button:has(svg)').filter({ hasNotText: /\w/ });
+    this.deleteIcons = page
+      .locator("button:has(svg)")
+      .filter({ hasNotText: /\w/ });
   }
 
   async goto() {
-    await this.page.goto('/hesabim/kartlarim', { waitUntil: 'domcontentloaded' });
-    await this.addCardButton.waitFor({ state: 'visible', timeout: 15_000 });
+    await this.page.goto("/hesabim/kartlarim", {
+      waitUntil: "domcontentloaded",
+    });
+    await this.addCardButton.waitFor({ state: "visible", timeout: 15_000 });
   }
 
   async cardCount(): Promise<number> {
@@ -31,12 +36,12 @@ export class CardsPage {
 
   async getCardText(index = 0): Promise<string> {
     const card = this.cardContainers.nth(index);
-    return (await card.textContent()) ?? '';
+    return (await card.textContent()) ?? "";
   }
 
   async hasBankFallback(index = 0): Promise<boolean> {
     const text = await this.getCardText(index);
-    return text.includes('Bankanız');
+    return text.includes("Bankanız");
   }
 
   async hasMaskedNumber(index = 0): Promise<boolean> {

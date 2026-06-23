@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator } from "@playwright/test";
 
 export class CartPage {
   readonly page: Page;
@@ -8,27 +8,36 @@ export class CartPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.closeSidebarButton = page.getByRole('button', { name: 'Hızlı Sepeti Kapat' });
-    this.deleteButtons = page.getByRole('button', { name: /^Sil$/ });
-    this.emptyCartMessage = page.getByText(/sepetiniz boş|no items|empty|ürün bulunmuyor/i);
+    this.closeSidebarButton = page.getByRole("button", {
+      name: "Hızlı Sepeti Kapat",
+    });
+    this.deleteButtons = page.getByRole("button", { name: /^Sil$/ });
+    this.emptyCartMessage = page.getByText(
+      /sepetiniz boş|no items|empty|ürün bulunmuyor/i,
+    );
   }
 
   async goto() {
     // networkidle prod'da flaky timeout'a yol açıyor → domcontentloaded + load (bkz. OrdersPage.goto).
-    await this.page.goto('/sepet', { waitUntil: 'domcontentloaded' });
-    await this.page.waitForLoadState('load').catch(() => {});
+    await this.page.goto("/sepet", { waitUntil: "domcontentloaded" });
+    await this.page.waitForLoadState("load").catch(() => {});
   }
 
   async waitForSidebar(timeout = 5000): Promise<boolean> {
-    return this.closeSidebarButton.waitFor({ state: 'visible', timeout })
+    return this.closeSidebarButton
+      .waitFor({ state: "visible", timeout })
       .then(() => true)
       .catch(() => false);
   }
 
   async closeSidebarIfOpen(): Promise<boolean> {
-    const open = await this.closeSidebarButton.isVisible({ timeout: 2000 }).catch(() => false);
+    const open = await this.closeSidebarButton
+      .isVisible({ timeout: 2000 })
+      .catch(() => false);
     if (open) {
-      await this.closeSidebarButton.evaluate(el => (el as HTMLElement).click());
+      await this.closeSidebarButton.evaluate((el) =>
+        (el as HTMLElement).click(),
+      );
       await this.page.waitForTimeout(500);
     }
     return open;
@@ -39,7 +48,9 @@ export class CartPage {
   }
 
   async hasPriceText(): Promise<boolean> {
-    return this.page.evaluate(() => /\d[\d.,]+\s*TL/.test(document.body.textContent || ''));
+    return this.page.evaluate(() =>
+      /\d[\d.,]+\s*TL/.test(document.body.textContent || ""),
+    );
   }
 
   async isCartEmpty(): Promise<boolean> {
@@ -47,8 +58,8 @@ export class CartPage {
   }
 
   async clearAll() {
-    await this.page.goto('/sepet');
-    await this.page.waitForLoadState('domcontentloaded');
+    await this.page.goto("/sepet");
+    await this.page.waitForLoadState("domcontentloaded");
     await this.page.waitForTimeout(1500);
 
     let safety = 15;
@@ -56,7 +67,10 @@ export class CartPage {
       const count = await this.deleteButtons.count();
       if (count === 0) break;
       // JS click — sidebar/overlay görünürlük kontrolünü bypass et
-      await this.deleteButtons.first().evaluate(el => (el as HTMLElement).click()).catch(() => {});
+      await this.deleteButtons
+        .first()
+        .evaluate((el) => (el as HTMLElement).click())
+        .catch(() => {});
       await this.page.waitForTimeout(800);
     }
   }

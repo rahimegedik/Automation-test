@@ -1,4 +1,4 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, Locator, expect } from "@playwright/test";
 
 export class LoginPage {
   readonly page: Page;
@@ -15,23 +15,27 @@ export class LoginPage {
     this.emailInput = page.locator('input[name="username"]');
     this.passwordInput = page.locator('input[name="password"]');
     this.rememberCheckbox = page.locator('input[name="remember"]');
-    this.submitButton = page.getByRole('button', { name: /Giriş Yap/i });
-    this.forgotPasswordLink = page.getByRole('link', { name: /Parolanızı mı unuttunuz/i });
-    this.registerLink = page.getByRole('link', { name: /Üye Olun/i });
+    this.submitButton = page.getByRole("button", { name: /Giriş Yap/i });
+    this.forgotPasswordLink = page.getByRole("link", {
+      name: /Parolanızı mı unuttunuz/i,
+    });
+    this.registerLink = page.getByRole("link", { name: /Üye Olun/i });
     this.passwordEyeIcon = page
       .locator('input[name="password"]')
-      .locator('xpath=following-sibling::*//*[name()="svg"] | ../*//*[name()="svg"]')
+      .locator(
+        'xpath=following-sibling::*//*[name()="svg"] | ../*//*[name()="svg"]',
+      )
       .first();
   }
 
   async goto() {
-    await this.page.goto('/hesap/giris', { waitUntil: 'domcontentloaded' });
-    await this.emailInput.waitFor({ state: 'visible', timeout: 15_000 });
+    await this.page.goto("/hesap/giris", { waitUntil: "domcontentloaded" });
+    await this.emailInput.waitFor({ state: "visible", timeout: 15_000 });
     await this.acceptCookiesIfVisible();
   }
 
   async acceptCookiesIfVisible() {
-    const cookieBtn = this.page.getByRole('button', { name: /Kabul Et/i });
+    const cookieBtn = this.page.getByRole("button", { name: /Kabul Et/i });
     if (await cookieBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
       await cookieBtn.click();
       await this.page.waitForTimeout(500);
@@ -57,6 +61,6 @@ export class LoginPage {
   }
 
   async passwordInputType(): Promise<string> {
-    return (await this.passwordInput.getAttribute('type')) ?? '';
+    return (await this.passwordInput.getAttribute("type")) ?? "";
   }
 }
