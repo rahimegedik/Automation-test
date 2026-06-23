@@ -34,26 +34,7 @@ test("Kullanıcı yolculuğu - Hesaptan Fiziki Altına Baştan Sona", async ({
     );
   });
 
-  await test.step("3. HESAPTAN FİZİKİ ALTINA sayfasına git", async () => {
-    await page.getByRole("link", { name: "HESAPTAN FİZİKİ ALTINA" }).click();
-
-    await page.evaluate(() => {
-      document.querySelector("#dengage-push-prompt-container")?.remove();
-    });
-
-    const popupCloseButton = page.getByRole("button", {
-      name: "Popup kapat butonu",
-    });
-    if (
-      await popupCloseButton.isVisible({ timeout: 5000 }).catch(() => false)
-    ) {
-      await popupCloseButton.click();
-    }
-
-    await expect(page.locator("body")).toBeVisible();
-    console.log("✓ Hesaptan Fiziki Altına sayfası açıldı:", page.url());
-  });
-
+await test.step("3. HESAPTAN FİZİKİ ALTINA sayfasına git", async () => { const hesaptanFizikiLink = page .locator("a") .filter({ hasText: /HESAPTAN\s*FİZİKİ\s*ALTINA/i }) .first(); await expect(hesaptanFizikiLink).toBeVisible({ timeout: 15_000 }); const href = await hesaptanFizikiLink.getAttribute("href"); if (!href) { throw new Error( "HESAPTAN FİZİKİ ALTINA linkinin href değeri bulunamadı.", ); } const targetUrl = new URL(href, page.url()).toString(); console.log("HESAPTAN FİZİKİ ALTINA target URL:", targetUrl); await page.goto(targetUrl, { waitUntil: "domcontentloaded", timeout: 60_000, }); await expect(page.locator("body")).toBeVisible({ timeout: 15_000 }); await page.waitForTimeout(1500); expect(page.url()).not.toBe("https://www.nadirgold.work/"); console.log("✓ Hesaptan Fiziki Altına sayfası açıldı:", page.url()); });
   await test.step("4. NadirGold 1 Gr Külçe Altın ürününü seç", async () => {
     const productLink = page
       .getByRole("link", {
@@ -64,7 +45,7 @@ test("Kullanıcı yolculuğu - Hesaptan Fiziki Altına Baştan Sona", async ({
     await expect(productLink).toBeVisible({ timeout: 10_000 });
     await productLink.click();
 
-    await page.waitForLoadState("domcontentloaded").catch(() => {});
+    await page.waitForLoadState("domcontentloaded").catch(() => { });
     await page.waitForTimeout(1500);
 
     await expect(page.locator("body")).toBeVisible();
@@ -98,7 +79,7 @@ test("Kullanıcı yolculuğu - Hesaptan Fiziki Altına Baştan Sona", async ({
   await test.step("6. Sepete git", async () => {
     await page.getByRole("link", { name: "Sepete Git" }).click();
 
-    await page.waitForLoadState("networkidle").catch(() => {});
+    await page.waitForLoadState("networkidle").catch(() => { });
     await expect(page.locator("body")).toBeVisible();
 
     console.log("✓ Sepete gidildi:", page.url());
@@ -107,7 +88,7 @@ test("Kullanıcı yolculuğu - Hesaptan Fiziki Altına Baştan Sona", async ({
   await test.step("7. Checkout sayfasına geç", async () => {
     await page.getByRole("link", { name: "Devam et" }).click();
 
-    await page.waitForLoadState("networkidle").catch(() => {});
+    await page.waitForLoadState("networkidle").catch(() => { });
     await expect(page).not.toHaveURL(/hesap\/giris/);
     await expect(page.locator("body")).toBeVisible();
 

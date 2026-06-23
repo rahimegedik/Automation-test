@@ -42,10 +42,8 @@ test("Düzenli Birikim Akışı - 3 Ayda 1", async ({ page }) => {
   });
 
   await test.step("4. GRAM KÜLÇE ALTIN kategorisine git", async () => {
-    await page
-      .getByRole("link", { name: "GRAM KÜLÇE ALTIN", exact: true })
-      .click();
-    await expect(page.locator("body")).toBeVisible();
+    await categoryPage.goto("kulce-altin");
+    expect(page.url()).toContain("kulce-altin");
     console.log("✓ Kategori sayfasına gidildi:", page.url());
   });
 
@@ -93,11 +91,16 @@ test("Düzenli Birikim Akışı - 3 Ayda 1", async ({ page }) => {
   });
 
   await test.step("8. Düzenli Birikim seç ve sepete ekle", async () => {
-    await page
+    const duzenliBirikim = page
       .locator("div")
       .filter({ hasText: /^Düzenli Birikim$/ })
-      .click();
+      .first();
+    await expect(duzenliBirikim).toBeVisible({ timeout: 10_000 });
+    await duzenliBirikim.click();
     await page.locator("#add2CartButton").click();
+    await expect(page.getByText(/Sepetim\s*\(\s*[1-9]/i).first()).toBeVisible({
+      timeout: 15_000,
+    });
     console.log("✓ Düzenli Birikim seçildi ve sepete eklendi");
   });
 
@@ -167,6 +170,43 @@ test("Düzenli Birikim Akışı - 3 Ayda 1", async ({ page }) => {
 
     console.log("✓ 3 Ayda 1 düzenli birikim seçildi");
   });
+
+    await test.step("11. Kayıtlı kredi kartını seç", async () => {
+    await page.waitForLoadState("domcontentloaded").catch(() => { });
+    await page.waitForTimeout(1500);
+
+    // Sadece kredi kartı alanındaki kart satırlarını yakala.
+    // Motokurye / teslimat seçeneklerini yakalamamak için kart metni filtreleniyor.
+    const savedCardRows = page
+      .locator(".cursor-pointer.flex.items-center.gap-3")
+      .filter({
+        hasText: /\*{2,}|SKT|Son Kullanma|Kart|Bankanız|\/\d{2}/i,
+      });
+
+    const cardCount = await savedCardRows.count();
+
+    console.log(`ℹ Kayıtlı kredi kartı satırı sayısı: ${cardCount}`);
+
+    if (cardCount === 0) {
+      throw new Error("Kayıtlı kredi kartı satırı bulunamadı. Locator kart alanını yakalayamadı.");
+    }
+
+    // İki kart varsa ilk kartı seçer.
+    // İkinci kartı seçmek istersen .first() yerine .nth(1) yap.
+    const savedCardRow = savedCardRows.nth(1);
+
+    await expect(savedCardRow).toBeVisible({ timeout: 15_000 });
+
+    await savedCardRow.scrollIntoViewIfNeeded();
+    await savedCardRow.click({ force: true });
+
+    await page.waitForTimeout(1500);
+
+    console.log("✓ Kayıtlı kredi kartı seçildi");
+  });
+
+
+
 
   await test.step("13. Ön bilgilendirme formunu onayla", async () => {
     await page

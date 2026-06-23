@@ -203,7 +203,7 @@
       <h1>NadirGold E2E — Test Koşum Raporu</h1>
 
       <div class="meta">
-        Tarih: 16 Haziran 2026
+        Tarih: 23 Haziran 2026
         · Branch: <code>feature/playwright-tests</code>
         · Ortam: <code>prod</code>
         · URL: <code>nadirgold.work</code>
@@ -215,12 +215,12 @@
 
     <section class="cards">
       <div class="card">
-        <span class="number">1</span>
+        <span class="number">80</span>
         <span class="label">TOPLAM TEST</span>
       </div>
 
       <div class="card pass">
-        <span class="number">1</span>
+        <span class="number">80</span>
         <span class="label">PASSED</span>
       </div>
 
@@ -235,7 +235,7 @@
       </div>
 
       <div class="card duration">
-        <span class="number">29s</span>
+        <span class="number">17.2m</span>
         <span class="label">TOPLAM SÜRE</span>
       </div>
     </section>
@@ -258,10 +258,642 @@
           
         <tr>
           <td>01</td>
-          <td><code>32-cart-page-actions.spec.ts</code></td>
-          <td>TC-CARTP-005/006/007/009 - Takı ürün seçenekleri, adet artırma azaltma ve ürün silme</td>
+          <td><code>01-homepage.spec.ts</code></td>
+          <td>Homepage - sayfa basarili aciliyor</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>3s</td>
+        </tr>
+      
+        <tr>
+          <td>02</td>
+          <td><code>01-homepage.spec.ts</code></td>
+          <td>Homepage - sayfa basligi var</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>3s</td>
+        </tr>
+      
+        <tr>
+          <td>03</td>
+          <td><code>01-homepage.spec.ts</code></td>
+          <td>Homepage - login sayfasina yonlendirme yok (oturum gecerli)</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>2s</td>
+        </tr>
+      
+        <tr>
+          <td>04</td>
+          <td><code>02-login.spec.ts</code></td>
+          <td>Login sayfasi yonlendirmesi calisiyor</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>3s</td>
+        </tr>
+      
+        <tr>
+          <td>05</td>
+          <td><code>02-login.spec.ts</code></td>
+          <td>Login formu elemanlari görünüyor (oturumsuz)</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>2s</td>
+        </tr>
+      
+        <tr>
+          <td>06</td>
+          <td><code>03-cart.spec.ts</code></td>
+          <td>Sepet sayfasi aciliyor</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>2s</td>
+        </tr>
+      
+        <tr>
+          <td>07</td>
+          <td><code>03-cart.spec.ts</code></td>
+          <td>Sepete direkt URL ile erisilebiliyor</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>2s</td>
+        </tr>
+      
+        <tr>
+          <td>08</td>
+          <td><code>03-cart.spec.ts</code></td>
+          <td>Sepet başlığı görünüyor</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>2s</td>
+        </tr>
+      
+        <tr>
+          <td>09</td>
+          <td><code>03-cart.spec.ts</code></td>
+          <td>Sepet boş ise mesaj gösterir</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>2s</td>
+        </tr>
+      
+        <tr>
+          <td>10</td>
+          <td><code>03-cart.spec.ts</code></td>
+          <td>Sepet sayfasında fiyat bilgisi var</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>2s</td>
+        </tr>
+      
+        <tr>
+          <td>11</td>
+          <td><code>04-orders.spec.ts</code></td>
+          <td>Siparisler sayfasi aciliyor</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>2s</td>
+        </tr>
+      
+        <tr>
+          <td>12</td>
+          <td><code>04-orders.spec.ts</code></td>
+          <td>Siparisler sayfasinda buyuk JS hatalari yok</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>2s</td>
+        </tr>
+      
+        <tr>
+          <td>13</td>
+          <td><code>05-profile.spec.ts</code></td>
+          <td>Profil sayfasi aciliyor</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>5s</td>
+        </tr>
+      
+        <tr>
+          <td>14</td>
+          <td><code>05-profile.spec.ts</code></td>
+          <td>Profil sayfasinda form elemanlari var</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>5s</td>
+        </tr>
+      
+        <tr>
+          <td>15</td>
+          <td><code>08-product-purchase-flow.spec.ts</code></td>
+          <td>Popup kapanıyor ve kategori menüsü erişilebiliyor</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>3s</td>
+        </tr>
+      
+        <tr>
+          <td>16</td>
+          <td><code>08-product-purchase-flow.spec.ts</code></td>
+          <td>GRAM KÜLÇE ALTIN kategorisine git</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>7s</td>
+        </tr>
+      
+        <tr>
+          <td>17</td>
+          <td><code>08-product-purchase-flow.spec.ts</code></td>
+          <td>Ürün listesinde ürünler görünüyor</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>7s</td>
+        </tr>
+      
+        <tr>
+          <td>18</td>
+          <td><code>08-product-purchase-flow.spec.ts</code></td>
+          <td>Ürünü sepete ekle - Basit Flow</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>11s</td>
+        </tr>
+      
+        <tr>
+          <td>19</td>
+          <td><code>08-product-purchase-flow.spec.ts</code></td>
+          <td>Sepete git ve kontrol et</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>2s</td>
+        </tr>
+      
+        <tr>
+          <td>20</td>
+          <td><code>08-product-purchase-flow.spec.ts</code></td>
+          <td>Sepet özeti görünüyor</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>2s</td>
+        </tr>
+      
+        <tr>
+          <td>21</td>
+          <td><code>09-full-user-journey.spec.ts</code></td>
+          <td>Kullanıcı yolculuğu - Baştan Sona</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>25s</td>
+        </tr>
+      
+        <tr>
+          <td>22</td>
+          <td><code>10-credit-card-journey.spec.ts</code></td>
+          <td>Kullanıcı yolculuğu - Kredi Kartı ile Ödeme</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>35s</td>
+        </tr>
+      
+        <tr>
+          <td>23</td>
+          <td><code>11-recurring-deposit-journey.spec.ts</code></td>
+          <td>Düzenli Birikim Akışı - Baştan Sona</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>28s</td>
+        </tr>
+      
+        <tr>
+          <td>24</td>
+          <td><code>12-2-ayda-1-birikim.spec.ts</code></td>
+          <td>Düzenli Birikim Akışı - 2 Ayda 1</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>31s</td>
+        </tr>
+      
+        <tr>
+          <td>25</td>
+          <td><code>13-3-ayda-1-birikim.spec.ts</code></td>
+          <td>Düzenli Birikim Akışı - 3 Ayda 1</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>1.2m</td>
+        </tr>
+      
+        <tr>
+          <td>26</td>
+          <td><code>14-4-ayda-1-birikim.spec.ts</code></td>
+          <td>Düzenli Birikim Akışı - 4 Ayda 1</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>30s</td>
+        </tr>
+      
+        <tr>
+          <td>27</td>
+          <td><code>15-6-ayda-1-birikim.spec.ts</code></td>
+          <td>Düzenli Birikim Akışı - 6 Ayda 1</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>29s</td>
+        </tr>
+      
+        <tr>
+          <td>28</td>
+          <td><code>16-silver-ingot-journey.spec.ts</code></td>
+          <td>Kullanıcı yolculuğu - Gümüş Baştan Sona</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>25s</td>
+        </tr>
+      
+        <tr>
+          <td>29</td>
+          <td><code>17-silver-creditcard.spec.ts</code></td>
+          <td>Kullanıcı yolculuğu - Kredi Kartı ile Ödeme</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>35s</td>
+        </tr>
+      
+        <tr>
+          <td>30</td>
+          <td><code>18-gold-transfer-to-account-journey.spec.ts</code></td>
+          <td>Kullanıcı yolculuğu - Hesaba Altın Havale Baştan Sona</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>54s</td>
+        </tr>
+      
+        <tr>
+          <td>31</td>
+          <td><code>19-ziynet-havale.spec.ts</code></td>
+          <td>Kullanıcı yolculuğu - Ziynet Altın Havale Baştan Sona</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>44s</td>
+        </tr>
+      
+        <tr>
+          <td>32</td>
+          <td><code>20-ziynet-kredi-kart.spec.ts</code></td>
+          <td>Kullanıcı yolculuğu - Ziynet Kredi Kartı Baştan Sona</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>33s</td>
+        </tr>
+      
+        <tr>
+          <td>33</td>
+          <td><code>21-hesaptan-fiziki-altin.spec.ts</code></td>
+          <td>Kullanıcı yolculuğu - Hesaptan Fiziki Altına Baştan Sona</td>
           <td><span class="badge pass">PASS</span></td>
           <td>22s</td>
+        </tr>
+      
+        <tr>
+          <td>34</td>
+          <td><code>22-adres-yonetimi.spec.ts</code></td>
+          <td>TC-ADDR-001: Sayfa açılır</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>5s</td>
+        </tr>
+      
+        <tr>
+          <td>35</td>
+          <td><code>22-adres-yonetimi.spec.ts</code></td>
+          <td>TC-ADDR-002: Adres kartları listelenir</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>5s</td>
+        </tr>
+      
+        <tr>
+          <td>36</td>
+          <td><code>22-adres-yonetimi.spec.ts</code></td>
+          <td>TC-ADDR-003: Adres kartında Sil butonu görünür</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>5s</td>
+        </tr>
+      
+        <tr>
+          <td>37</td>
+          <td><code>22-adres-yonetimi.spec.ts</code></td>
+          <td>TC-ADDR-004: Adres kartında &quot;Adresi Düzenle&quot; butonu görünür</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>5s</td>
+        </tr>
+      
+        <tr>
+          <td>38</td>
+          <td><code>22-adres-yonetimi.spec.ts</code></td>
+          <td>TC-ADDR-006: Yeni Adres Ekle formu açılır</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>5s</td>
+        </tr>
+      
+        <tr>
+          <td>39</td>
+          <td><code>22-adres-yonetimi.spec.ts</code></td>
+          <td>TC-ADDR-007: Boş form ile Kaydet → form açık kalır</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>6s</td>
+        </tr>
+      
+        <tr>
+          <td>40</td>
+          <td><code>22-adres-yonetimi.spec.ts</code></td>
+          <td>TC-ADDR-008: &quot;Alıcı Ekle (İsteğe Bağlı)&quot; butonu form içinde mevcut</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>5s</td>
+        </tr>
+      
+        <tr>
+          <td>41</td>
+          <td><code>22-adres-yonetimi.spec.ts</code></td>
+          <td>TC-ADDR-009: Fatura tipi radio butonları mevcut</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>5s</td>
+        </tr>
+      
+        <tr>
+          <td>42</td>
+          <td><code>23-iban-yonetimi.spec.ts</code></td>
+          <td>TC-IBAN-001: Sayfa açılır</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>5s</td>
+        </tr>
+      
+        <tr>
+          <td>43</td>
+          <td><code>23-iban-yonetimi.spec.ts</code></td>
+          <td>TC-IBAN-002: IBAN kartları listelenir</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>5s</td>
+        </tr>
+      
+        <tr>
+          <td>44</td>
+          <td><code>23-iban-yonetimi.spec.ts</code></td>
+          <td>TC-IBAN-003: IBAN format TR ile başlar</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>5s</td>
+        </tr>
+      
+        <tr>
+          <td>45</td>
+          <td><code>23-iban-yonetimi.spec.ts</code></td>
+          <td>TC-IBAN-005: &quot;Yeni IBAN Ekle&quot; formu açılır</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>5s</td>
+        </tr>
+      
+        <tr>
+          <td>46</td>
+          <td><code>23-iban-yonetimi.spec.ts</code></td>
+          <td>TC-IBAN-007: Hatalı IBAN validasyon hatası verir</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>6s</td>
+        </tr>
+      
+        <tr>
+          <td>47</td>
+          <td><code>23-iban-yonetimi.spec.ts</code></td>
+          <td>TC-IBAN-006/008: Sil butonu görünür (gerçek silme yok)</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>4s</td>
+        </tr>
+      
+        <tr>
+          <td>48</td>
+          <td><code>24-kayitli-kartlar.spec.ts</code></td>
+          <td>TC-CARD-001: Sayfa açılır</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>3s</td>
+        </tr>
+      
+        <tr>
+          <td>49</td>
+          <td><code>24-kayitli-kartlar.spec.ts</code></td>
+          <td>TC-CARD-002: Başlık görünür</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>3s</td>
+        </tr>
+      
+        <tr>
+          <td>50</td>
+          <td><code>24-kayitli-kartlar.spec.ts</code></td>
+          <td>TC-CARD-003: Yeni Kart Ekle butonu görünür</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>3s</td>
+        </tr>
+      
+        <tr>
+          <td>51</td>
+          <td><code>24-kayitli-kartlar.spec.ts</code></td>
+          <td>TC-CARD-004: Kart bilgileri (masked numara + SKT)</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>3s</td>
+        </tr>
+      
+        <tr>
+          <td>52</td>
+          <td><code>24-kayitli-kartlar.spec.ts</code></td>
+          <td>TC-CARD-005: Banka fallback (&quot;Bankanız&quot;)</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>3s</td>
+        </tr>
+      
+        <tr>
+          <td>53</td>
+          <td><code>24-kayitli-kartlar.spec.ts</code></td>
+          <td>TC-CARD-006: Sil butonu görünür (gerçek silme yok)</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>3s</td>
+        </tr>
+      
+        <tr>
+          <td>54</td>
+          <td><code>25-duyuru-tercihleri.spec.ts</code></td>
+          <td>TC-NOTIF-001: Sayfa açılır</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>3s</td>
+        </tr>
+      
+        <tr>
+          <td>55</td>
+          <td><code>25-duyuru-tercihleri.spec.ts</code></td>
+          <td>TC-NOTIF-002: SMS ve Email switch DOM&#039;da</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>3s</td>
+        </tr>
+      
+        <tr>
+          <td>56</td>
+          <td><code>25-duyuru-tercihleri.spec.ts</code></td>
+          <td>TC-NOTIF-003: SMS switch başlangıç durumu okunabilir</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>3s</td>
+        </tr>
+      
+        <tr>
+          <td>57</td>
+          <td><code>25-duyuru-tercihleri.spec.ts</code></td>
+          <td>TC-NOTIF-004: Email switch başlangıç durumu okunabilir</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>3s</td>
+        </tr>
+      
+        <tr>
+          <td>58</td>
+          <td><code>26-login-negatif.spec.ts</code></td>
+          <td>TC-LOG-005: Kayıtsız email → giriş reddedildi</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>6s</td>
+        </tr>
+      
+        <tr>
+          <td>59</td>
+          <td><code>26-login-negatif.spec.ts</code></td>
+          <td>TC-LOG-006: Geçerli email + hatalı şifre → giriş reddedildi</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>6s</td>
+        </tr>
+      
+        <tr>
+          <td>60</td>
+          <td><code>26-login-negatif.spec.ts</code></td>
+          <td>TC-LOG-007: Hatalı email formatı → giriş yapılmaz</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>4s</td>
+        </tr>
+      
+        <tr>
+          <td>61</td>
+          <td><code>26-login-negatif.spec.ts</code></td>
+          <td>TC-LOG-008: Hatalı email + hatalı şifre → giriş reddedildi</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>6s</td>
+        </tr>
+      
+        <tr>
+          <td>62</td>
+          <td><code>26-login-negatif.spec.ts</code></td>
+          <td>TC-LOG-018: Boş form → API call yapılmaz / 4xx</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>5s</td>
+        </tr>
+      
+        <tr>
+          <td>63</td>
+          <td><code>26-login-negatif.spec.ts</code></td>
+          <td>TC-LOG-012: Şifre input default olarak password tipinde</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>2s</td>
+        </tr>
+      
+        <tr>
+          <td>64</td>
+          <td><code>26-login-negatif.spec.ts</code></td>
+          <td>TC-LOG-014: &quot;Üye Olun&quot; linki register sayfasına yönlendirir</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>4s</td>
+        </tr>
+      
+        <tr>
+          <td>65</td>
+          <td><code>26-login-negatif.spec.ts</code></td>
+          <td>TC-LOG-015: &quot;Parolanızı mı unuttunuz?&quot; linki yönlendirir</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>4s</td>
+        </tr>
+      
+        <tr>
+          <td>66</td>
+          <td><code>26-login-negatif.spec.ts</code></td>
+          <td>TC-LOG-013: &quot;Beni Hatırla&quot; checkbox DOM&#039;da mevcut</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>2s</td>
+        </tr>
+      
+        <tr>
+          <td>67</td>
+          <td><code>26-login-negatif.spec.ts</code></td>
+          <td>TC-LOG-019: Şifre sonu boşluk → giriş reddedildi</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>6s</td>
+        </tr>
+      
+        <tr>
+          <td>68</td>
+          <td><code>27-sifre-degistir.spec.ts</code></td>
+          <td>TC-PWD-001: Sayfa açılır</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>4s</td>
+        </tr>
+      
+        <tr>
+          <td>69</td>
+          <td><code>27-sifre-degistir.spec.ts</code></td>
+          <td>TC-PWD-002: 3 password input + Güncelle butonu görünür</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>4s</td>
+        </tr>
+      
+        <tr>
+          <td>70</td>
+          <td><code>27-sifre-degistir.spec.ts</code></td>
+          <td>TC-PWD-005: Tüm password input&#039;ları type=&quot;password&quot;</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>5s</td>
+        </tr>
+      
+        <tr>
+          <td>71</td>
+          <td><code>27-sifre-degistir.spec.ts</code></td>
+          <td>TC-PWD-006: Boş form + Güncelle → engellenir</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>7s</td>
+        </tr>
+      
+        <tr>
+          <td>72</td>
+          <td><code>27-sifre-degistir.spec.ts</code></td>
+          <td>TC-PWD-003: Hatalı mevcut şifre → değişiklik reddedildi</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>8s</td>
+        </tr>
+      
+        <tr>
+          <td>73</td>
+          <td><code>27-sifre-degistir.spec.ts</code></td>
+          <td>TC-PWD-004: Yeni şifre + Tekrar eşleşmezse → form açık kalır</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>7s</td>
+        </tr>
+      
+        <tr>
+          <td>74</td>
+          <td><code>28-hesaba-havale-multi-banka.spec.ts</code></td>
+          <td>Hesaba Altın Havale - Yapı ve Kredi Bankası (yapikredi)</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>1.1m</td>
+        </tr>
+      
+        <tr>
+          <td>75</td>
+          <td><code>28-hesaba-havale-multi-banka.spec.ts</code></td>
+          <td>Hesaba Altın Havale - Garanti BBVA (garanti)</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>1.1m</td>
+        </tr>
+      
+        <tr>
+          <td>76</td>
+          <td><code>28-hesaba-havale-multi-banka.spec.ts</code></td>
+          <td>Hesaba Altın Havale - Kuveyt Türk Katılım (kuveyt)</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>1.1m</td>
+        </tr>
+      
+        <tr>
+          <td>77</td>
+          <td><code>29-taki-kredi-kart.spec.ts</code></td>
+          <td>Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>29s</td>
+        </tr>
+      
+        <tr>
+          <td>78</td>
+          <td><code>30-taki-havale.spec.ts</code></td>
+          <td>Kullanıcı yolculuğu - Takı Yeni Havale Baştan Sona</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>25s</td>
+        </tr>
+      
+        <tr>
+          <td>79</td>
+          <td><code>31-taki-kredi-kart.spec.ts</code></td>
+          <td>Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>39s</td>
+        </tr>
+      
+        <tr>
+          <td>80</td>
+          <td><code>32-cart-page-actions.spec.ts</code></td>
+          <td>TC-CARTP-005/006/007/009 - Külçe altın hızlı sepette adet artırma, azaltma ve ürün silme</td>
+          <td><span class="badge pass">PASS</span></td>
+          <td>13s</td>
         </tr>
       
         </tbody>
@@ -295,8 +927,8 @@
           <section>
             <h2>Önemli Notlar</h2>
             <ul>
-              <li>1 test koşuldu.</li>
-              <li>1 test başarılı tamamlandı.</li>
+              <li>80 test koşuldu.</li>
+              <li>80 test başarılı tamamlandı.</li>
               <li>0 test başarısız oldu.</li>
               <li>Rapor HTML ve PDF formatında oluşturuldu.</li>
             </ul>
@@ -304,7 +936,7 @@
         
 
     <section class="footer">
-      NadirGold QA Automation · Playwright + Chromium · 16 Haziran 2026
+      NadirGold QA Automation · Playwright + Chromium · 23 Haziran 2026
     </section>
   </main>
 </body>

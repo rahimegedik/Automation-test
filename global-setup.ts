@@ -310,7 +310,9 @@ async function handleGoogleAuth(page: Page) {
     // Devam / izin / onay ekranları
     const continueButton = page
       .getByRole("button")
-      .filter({ hasText: /Continue|Devam|Allow|İzin ver|Onayla|I agree|Kabul/i })
+      .filter({
+        hasText: /Continue|Devam|Allow|İzin ver|Onayla|I agree|Kabul/i,
+      })
       .first();
 
     if (await continueButton.isVisible({ timeout: 3000 }).catch(() => false)) {

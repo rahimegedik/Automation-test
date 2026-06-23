@@ -28,14 +28,26 @@ export class LoginPage {
       .first();
   }
 
-  async goto() {
+  async goto(options?: { requireForm?: boolean }) {
     await this.page.goto("/hesap/giris", { waitUntil: "domcontentloaded" });
-    await this.emailInput.waitFor({ state: "visible", timeout: 15_000 });
+
     await this.acceptCookiesIfVisible();
+
+    const requireForm = options?.requireForm ?? false;
+
+    if (this.page.url().includes("/hesap/giris")) {
+      await this.emailInput.waitFor({ state: "visible", timeout: 15_000 });
+      return;
+    }
+
+    if (requireForm) {
+      await expect(this.emailInput).toBeVisible({ timeout: 15_000 });
+    }
   }
 
   async acceptCookiesIfVisible() {
     const cookieBtn = this.page.getByRole("button", { name: /Kabul Et/i });
+
     if (await cookieBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
       await cookieBtn.click();
       await this.page.waitForTimeout(500);

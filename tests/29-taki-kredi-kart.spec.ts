@@ -33,7 +33,27 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
   });
 
   await test.step("3. TAKI YENİ sayfasına git", async () => {
-    await page.getByRole("link", { name: "TAKI YENİ", exact: true }).click();
+    const takiYeniLink = page
+      .locator("a")
+      .filter({ hasText: /TAKI\s*YENİ/i })
+      .first();
+
+    await expect(takiYeniLink).toBeVisible({ timeout: 15_000 });
+
+    const href = await takiYeniLink.getAttribute("href");
+
+    if (!href) {
+      throw new Error("TAKI YENİ linkinin href değeri bulunamadı.");
+    }
+
+    console.log("TAKI YENİ href:", href);
+
+    await page.goto(href, {
+      waitUntil: "domcontentloaded",
+      timeout: 60_000,
+    });
+
+    await expect(page.locator("body")).toBeVisible({ timeout: 15_000 });
 
     await page.evaluate(() => {
       document.querySelector("#dengage-push-prompt-container")?.remove();
@@ -43,32 +63,32 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
       name: "Popup kapat butonu",
     });
 
-    if (
-      await popupCloseButton.isVisible({ timeout: 5000 }).catch(() => false)
-    ) {
+    if (await popupCloseButton.isVisible({ timeout: 5000 }).catch(() => false)) {
       await popupCloseButton.click();
     }
 
-    await expect(page.locator("body")).toBeVisible();
-
-    console.log("✓ TAKI YENİ sayfası açıldı:", page.url());
-  });
-
-  await test.step("4. Sepete Ekle butonuna tıkla", async () => {
-    const addBasketButton = page.getByRole("button", {
-      name: "Sepete Ekle",
+    await expect(page).not.toHaveURL("https://www.nadirgold.work/", {
+      timeout: 15_000,
     });
+
+    console.log("✓ TAKI YENİ gerçek sayfası açıldı:", page.url());
+  });
+  await test.step("4. Sepete Ekle butonuna tıkla", async () => {
+    const addBasketButton = page
+      .getByRole("button", { name: "Sepete Ekle" })
+      .first();
 
     await expect(addBasketButton).toBeVisible({ timeout: 15_000 });
     await expect(addBasketButton).toBeEnabled();
 
+    await addBasketButton.scrollIntoViewIfNeeded();
     await addBasketButton.click();
 
-    console.log("✓ Sepete Ekle butonuna tıklandı");
+    console.log("✓ İlk Sepete Ekle butonuna tıklandı");
   });
 
   await test.step("5. Ürün seçeneği 6.8 seç", async () => {
-    const productOptionButton = page.getByRole("button", { name: "6.6" });
+    const productOptionButton = page.getByRole("button", { name: "6.0" });
 
     await expect(productOptionButton).toBeVisible({ timeout: 15_000 });
     await expect(productOptionButton).toBeEnabled();
@@ -131,7 +151,7 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
   });
 
   await test.step("11. Kayıtlı kartı seç", async () => {
-    await page.waitForLoadState("networkidle").catch(() => {});
+    await page.waitForLoadState("networkidle").catch(() => { });
     await page.waitForTimeout(1500);
 
     const savedCardOption = page
