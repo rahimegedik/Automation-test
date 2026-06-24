@@ -29,6 +29,12 @@ export default defineConfig({
 
   globalSetup: require.resolve("./global-setup"),
 
+  reporter: [
+    ["list"],
+    ["html", { outputFolder: "playwright-report", open: "never" }],
+    ["json", { outputFile: "test-results/results.json" }],
+  ],
+
   use: {
     baseURL,
     storageState: `playwright/.auth/${env}-user.json`,
@@ -44,11 +50,5 @@ export default defineConfig({
         channel: "chrome",
       },
     },
-  ],
-
-  reporter: [
-    ["list"],
-    ["html", { outputFolder: "playwright-report", open: "never" }],
-    ["json", { outputFile: "test-results/results.json" }],
   ],
 });

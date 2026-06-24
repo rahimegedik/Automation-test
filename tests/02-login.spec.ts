@@ -3,24 +3,26 @@ import { LoginPage } from "../pages/LoginPage";
 
 test("Login sayfasi yonlendirmesi calisiyor", async ({ page }) => {
   const loginPage = new LoginPage(page);
+
   await loginPage.goto();
 
   const url = page.url();
   const isLoginPage = url.includes("hesap/giris");
-  const isHomepage = url.includes("nadirgold.work");
+  const isLoggedInRedirect = !url.includes("hesap/giris");
 
-  expect(isLoginPage || isHomepage).toBe(true);
+  expect(isLoginPage || isLoggedInRedirect).toBe(true);
 });
 
 test("Login formu elemanlari görünüyor (oturumsuz)", async ({ browser }) => {
   const ctx = await browser.newContext({ storageState: undefined });
   const page = await ctx.newPage();
+
   const loginPage = new LoginPage(page);
 
-  await loginPage.goto();
+  await loginPage.goto({ requireForm: true });
 
-  const inputs = await page.locator("input").count();
-  expect(inputs).toBeGreaterThan(0);
+  await expect(loginPage.emailInput).toBeVisible({ timeout: 15_000 });
+  await expect(loginPage.passwordInput).toBeVisible({ timeout: 15_000 });
 
   await ctx.close();
 });

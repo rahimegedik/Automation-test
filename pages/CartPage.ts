@@ -13,14 +13,15 @@ export class CartPage {
     });
     this.deleteButtons = page.getByRole("button", { name: /^Sil$/ });
     this.emptyCartMessage = page.getByText(
-      /sepetiniz boş|no items|empty|ürün bulunmuyor/i,
+      /sepetiniz boş|sepet boş|no items|empty|ürün bulunmuyor|ürün bulunmamaktadır/i,
     );
   }
 
   async goto() {
-    // networkidle prod'da flaky timeout'a yol açıyor → domcontentloaded + load (bkz. OrdersPage.goto).
     await this.page.goto("/sepet", { waitUntil: "domcontentloaded" });
-    await this.page.waitForLoadState("load").catch(() => {});
+    await this.page
+      .locator("body")
+      .waitFor({ state: "visible", timeout: 15_000 });
   }
 
   async waitForSidebar(timeout = 5000): Promise<boolean> {
@@ -34,12 +35,14 @@ export class CartPage {
     const open = await this.closeSidebarButton
       .isVisible({ timeout: 2000 })
       .catch(() => false);
+
     if (open) {
       await this.closeSidebarButton.evaluate((el) =>
         (el as HTMLElement).click(),
       );
       await this.page.waitForTimeout(500);
     }
+
     return open;
   }
 
@@ -54,23 +57,36 @@ export class CartPage {
   }
 
   async isCartEmpty(): Promise<boolean> {
-    return this.emptyCartMessage.isVisible().catch(() => false);
+    return this.emptyCartMessage
+      .isVisible({ timeout: 3000 })
+      .catch(() => false);
   }
 
   async clearAll() {
-    await this.page.goto("/sepet");
-    await this.page.waitForLoadState("domcontentloaded");
-    await this.page.waitForTimeout(1500);
+    await this.goto();
 
     let safety = 15;
+
     while (safety-- > 0) {
       const count = await this.deleteButtons.count();
-      if (count === 0) break;
-      // JS click — sidebar/overlay görünürlük kontrolünü bypass et
+
+      if (count === 0) {
+        break;
+      }
+
       await this.deleteButtons
         .first()
         .evaluate((el) => (el as HTMLElement).click())
         .catch(() => {});
+
+      const confirmButton = this.page.getByRole("button", {
+        name: /Evet|Onayla|Tamam|Sil/i,
+      });
+
+      if (await confirmButton.isVisible({ timeout: 1500 }).catch(() => false)) {
+        await confirmButton.click().catch(() => {});
+      }
+
       await this.page.waitForTimeout(800);
     }
   }

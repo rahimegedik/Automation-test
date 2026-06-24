@@ -122,11 +122,39 @@ test("Kullanıcı yolculuğu - Ziynet Kredi Kartı Baştan Sona", async ({
   });
 
   // ─── ADIM 11: Kayıtlı Kartı Seç ──────────────────────────────────────────────
-  await test.step("11. Kayıtlı kartı seç", async () => {
-    await checkoutPage.selectSavedCard();
-    console.log("✓ Kayıtlı kart seçildi");
-  });
+  await test.step("11. Kayıtlı kredi kartını seç", async () => {
+    await page.waitForLoadState("domcontentloaded").catch(() => { });
+    await page.waitForTimeout(1500);
 
+    // Sadece kredi kartı alanındaki kart satırlarını yakala.
+    // Motokurye / teslimat seçeneklerini yakalamamak için kart metni filtreleniyor.
+    const savedCardRows = page
+      .locator(".cursor-pointer.flex.items-center.gap-3")
+      .filter({
+        hasText: /\*{2,}|SKT|Son Kullanma|Kart|Bankanız|\/\d{2}/i,
+      });
+
+    const cardCount = await savedCardRows.count();
+
+    console.log(`ℹ Kayıtlı kredi kartı satırı sayısı: ${cardCount}`);
+
+    if (cardCount === 0) {
+      throw new Error("Kayıtlı kredi kartı satırı bulunamadı. Locator kart alanını yakalayamadı.");
+    }
+
+    // İki kart varsa ilk kartı seçer.
+    // İkinci kartı seçmek istersen .first() yerine .nth(1) yap.
+    const savedCardRow = savedCardRows.nth(1);
+
+    await expect(savedCardRow).toBeVisible({ timeout: 15_000 });
+
+    await savedCardRow.scrollIntoViewIfNeeded();
+    await savedCardRow.click({ force: true });
+
+    await page.waitForTimeout(1500);
+
+    console.log("✓ Kayıtlı kredi kartı seçildi");
+  });
   // ─── ADIM 12: Sözleşmeyi Onayla ──────────────────────────────────────────────
   await test.step("12. Sözleşmeyi onayla", async () => {
     await checkoutPage.acceptAgreement();

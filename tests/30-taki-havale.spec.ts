@@ -32,28 +32,47 @@ test("Kullanıcı yolculuğu - Takı Yeni Havale Baştan Sona", async ({ page })
     );
   });
 
-  await test.step("3. TAKI YENİ sayfasına git", async () => {
-    await page.getByRole("link", { name: "TAKI YENİ", exact: true }).click();
+ await test.step("3. TAKI YENİ sayfasına git", async () => {
+  const takiYeniLink = page
+    .locator("a")
+    .filter({ hasText: /TAKI\s*YENİ/i })
+    .first();
 
-    // Dengage push notification overlay'i tıklamaları engelliyor — DOM'dan kaldır
-    await page.evaluate(() => {
-      document.querySelector("#dengage-push-prompt-container")?.remove();
-    });
+  await expect(takiYeniLink).toBeVisible({ timeout: 15_000 });
 
-    const popupCloseButton = page.getByRole("button", {
-      name: "Popup kapat butonu",
-    });
+  const href = await takiYeniLink.getAttribute("href");
 
-    if (
-      await popupCloseButton.isVisible({ timeout: 5000 }).catch(() => false)
-    ) {
-      await popupCloseButton.click();
-    }
+  if (!href) {
+    throw new Error("TAKI YENİ linkinin href değeri bulunamadı.");
+  }
 
-    await expect(page.locator("body")).toBeVisible();
+  console.log("TAKI YENİ href:", href);
 
-    console.log("✓ TAKI YENİ sayfası açıldı:", page.url());
+  await page.goto(href, {
+    waitUntil: "domcontentloaded",
+    timeout: 60_000,
   });
+
+  await expect(page.locator("body")).toBeVisible({ timeout: 15_000 });
+
+  await page.evaluate(() => {
+    document.querySelector("#dengage-push-prompt-container")?.remove();
+  });
+
+  const popupCloseButton = page.getByRole("button", {
+    name: "Popup kapat butonu",
+  });
+
+  if (await popupCloseButton.isVisible({ timeout: 5000 }).catch(() => false)) {
+    await popupCloseButton.click();
+  }
+
+  await expect(page).not.toHaveURL("https://www.nadirgold.work/", {
+    timeout: 15_000,
+  });
+
+  console.log("✓ TAKI YENİ gerçek sayfası açıldı:", page.url());
+});
 
   await test.step("4. Popup varsa kapat", async () => {
     const closed = await homePage.closePopupIfVisible();
@@ -76,7 +95,7 @@ test("Kullanıcı yolculuğu - Takı Yeni Havale Baştan Sona", async ({ page })
   });
 
   await test.step("6. Ürün seçeneği 6.8 seç", async () => {
-    const optionButton = page.getByRole("button", { name: "6.6" });
+    const optionButton = page.getByRole("button", { name: "6.2" });
 
     await expect(optionButton).toBeVisible({ timeout: 15_000 });
     await expect(optionButton).toBeEnabled();

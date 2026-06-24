@@ -12,8 +12,10 @@ export class HomePage {
   }
 
   async goto() {
-    await this.page.goto("/");
-    await this.page.waitForLoadState("networkidle");
+    await this.page.goto("/", { waitUntil: "domcontentloaded" });
+    await this.page
+      .locator("body")
+      .waitFor({ state: "visible", timeout: 15_000 });
   }
 
   categoryLink(name: string): Locator {
@@ -21,13 +23,19 @@ export class HomePage {
   }
 
   async closePopupIfVisible(): Promise<boolean> {
+    await this.page.evaluate(() => {
+      document.querySelector("#dengage-push-prompt-container")?.remove();
+    });
+
     const visible = await this.popupCloseButton
       .isVisible({ timeout: 3000 })
       .catch(() => false);
+
     if (visible) {
       await this.popupCloseButton.click();
       await this.page.waitForTimeout(600);
     }
+
     return visible;
   }
 }

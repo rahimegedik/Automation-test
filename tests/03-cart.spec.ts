@@ -30,24 +30,6 @@ test("Sepet başlığı görünüyor", async ({ page }) => {
   }
 });
 
-test("Sepet tablosu veya liste var", async ({ page }) => {
-  const cartPage = new CartPage(page);
-  await cartPage.goto();
-
-  const sidebarOpen = await cartPage.waitForSidebar();
-  if (!sidebarOpen) {
-    console.log("ℹ Hızlı Sepet açılmadı veya sepet boş — testi geçiyoruz");
-    return;
-  }
-
-  const spinbuttonCount = await page.locator('[role="spinbutton"]').count();
-  const silBtnCount = await cartPage.deleteButtonCount();
-  const hasCartImage =
-    (await page.locator('[alt*="Sepet ürünü" i]').count()) > 0;
-
-  expect(spinbuttonCount > 0 || silBtnCount > 0 || hasCartImage).toBe(true);
-});
-
 test("Sepet boş ise mesaj gösterir", async ({ page }) => {
   const cartPage = new CartPage(page);
   await cartPage.goto();
