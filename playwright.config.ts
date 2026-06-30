@@ -27,6 +27,9 @@ export default defineConfig({
   testDir: "./tests",
   workers: 1,
 
+  // Test timeout env ile artırılabilir (yavaş/detaylı izleme için). Vars yoksa 30s.
+  timeout: Number(process.env.TEST_TIMEOUT ?? 30_000),
+
   globalSetup: require.resolve("./global-setup"),
 
   reporter: [
@@ -48,6 +51,8 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"],
         channel: "chrome",
+        // SLOWMO env'i (ms) ile her aksiyon arası yavaşlatma — detaylı izleme için.
+        launchOptions: { slowMo: Number(process.env.SLOWMO ?? 0) },
       },
     },
   ],
