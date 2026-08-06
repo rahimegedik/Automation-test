@@ -318,7 +318,11 @@ async function handleGoogleAuth(page: Page) {
     if (await continueButton.isVisible({ timeout: 3000 }).catch(() => false)) {
       console.log("  Google devam/izin ekranı bulundu");
 
-      await continueButton.click();
+      // Overlay tıklamayı engelleyebiliyor — normal click olmazsa JS click
+      await continueButton.click({ timeout: 10_000 }).catch(async () => {
+        console.log("  Normal click engellendi, JS click deneniyor...");
+        await continueButton.evaluate((el) => (el as HTMLElement).click());
+      });
       await page.waitForTimeout(3000);
       continue;
     }

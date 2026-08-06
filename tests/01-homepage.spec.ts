@@ -1,11 +1,12 @@
 import { test, expect } from "@playwright/test";
 import { HomePage } from "../pages/HomePage";
 
-test("Homepage - sayfa basarili aciliyor", async ({ page }) => {
+test("Homepage - sayfa basarili aciliyor", async ({ page, baseURL }) => {
   const homePage = new HomePage(page);
   await homePage.goto();
 
-  await expect(page).toHaveURL(/nadirgold\.work/);
+  const host = new URL(baseURL!).hostname.replace(/^www\./, "");
+  await expect(page).toHaveURL(new RegExp(host.replace(/\./g, "\\.")));
   await expect(page.locator("body")).toBeVisible();
 });
 
