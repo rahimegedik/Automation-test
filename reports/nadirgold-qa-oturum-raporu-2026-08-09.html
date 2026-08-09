@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<title>NadirGold QA Oturum Raporu — 07-09 Ağustos 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { font: 13px/1.55 -apple-system, "Segoe UI", sans-serif; color: #1c2333; }
+  h1 { font-size: 22px; color: #0e1b3d; }
+  h2 { font-size: 16px; color: #0e1b3d; border-bottom: 2px solid #d4a94b; padding-bottom: 4px; margin: 26px 0 10px; }
+  h3 { font-size: 13.5px; color: #3a4664; margin: 14px 0 6px; }
+  p, li { margin-bottom: 5px; }
+  ul { padding-left: 20px; }
+  .head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 3px solid #0e1b3d; padding-bottom: 10px; margin-bottom: 18px; }
+  .head .meta { text-align: right; color: #5b6478; font-size: 11.5px; }
+  .brand { color: #b8923d; font-weight: 800; letter-spacing: .04em; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 12px; }
+  th, td { border: 1px solid #d7dbe6; padding: 6px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef1f7; color: #26304a; }
+  .pass { color: #0e8a5f; font-weight: 700; }
+  .fail { color: #c62f4a; font-weight: 700; }
+  .warn { color: #b06a12; font-weight: 700; }
+  .badge { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+  .b-pass { background: #dff3ea; color: #0e8a5f; }
+  .b-fail { background: #fbe3e8; color: #c62f4a; }
+  .b-info { background: #e7ecf8; color: #2b4a9d; }
+  .note { background: #f6f2e7; border-left: 3px solid #d4a94b; padding: 8px 12px; margin: 8px 0; font-size: 12px; }
+  code { background: #eef1f7; padding: 1px 5px; border-radius: 4px; font: 11.5px ui-monospace, monospace; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; }
+  @media print { h2 { break-after: avoid; } table, .note { break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<div class="head">
+  <div>
+    <div class="brand">NADIRGOLD QA</div>
+    <h1>QA Oturum Raporu</h1>
+  </div>
+  <div class="meta">
+    Dönem: 07–09 Ağustos 2026<br />
+    Ortam: dev (www.nadirgold.dev)<br />
+    Hazırlayan: Miraç Kasapoğlu / QA Otomasyon<br />
+    Rapor tarihi: 10.08.2026
+  </div>
+</div>
+
+<h2>Özet</h2>
+<p>Bu oturumda iki V2 entegrasyon kartı retest edilip <b>PASS</b> verildi ve Jira'ya kanıtlarıyla raporlandı; arama servisinde yeni bir normalizasyon bug'ı tespit edilip kart açıldı; V2 test konvansiyonu netleştirilip kalıcı hafızaya işlendi ve tüm QA akışını tek ekranda toplayan <b>lokal QA Paneli</b> sıfırdan geliştirildi.</p>
+
+<h2>1. Retest Sonuçları</h2>
+<table>
+  <tr><th>Kart</th><th>Konu</th><th>Sonuç</th><th>Doğrulama</th></tr>
+  <tr>
+    <td><b>NSB-6071</b></td>
+    <td>FE arama V2 — POST /product/search</td>
+    <td><span class="badge b-pass">QA PASS</span></td>
+    <td>Blocker NSB-6146 fix'i doğrulandı: products[] hidrasyonu 4 → <b>26 alan</b>, id number. UI modal akışı tam: görsel + fiyat + stok render. Jira yorum <b>65208</b> + ekran görüntüsü.</td>
+  </tr>
+  <tr>
+    <td><b>NSB-5982</b></td>
+    <td>FE ilgili ürünler — GET /product/other/{id}</td>
+    <td><span class="badge b-pass">QA PASS</span></td>
+    <td>item.image null → <b>full CDN objesi</b> (NSB-6124 konusu çözülmüş), id number, olmayan ürün 200 {items:null}. "Benzer Ürünler" sidebar V1 ↔ V2 birebir (SSR). Jira yorum <b>65209</b> + tam sayfa V1/V2 görüntüleri.</td>
+  </tr>
+</table>
+<div class="note">Her iki kart da konvansiyon path'leriyle çift doğrulandı: sayfa <code>?apiV2=1</code> → <code>x-api-version: v2</code> teyidi; API <code>www.nadirgold.dev/api/v2/&lt;endpoint&gt;</code> proxy'si. Oturum sonunda NSB-6071'in <b>Ready For Stage</b>'e ilerlediği gözlendi.</div>
+
+<h3>Yan bulgular</h3>
+<ul>
+  <li><span class="warn">TR karakter normalizasyonu:</span> aramada "altın" 5 sonuç, "altin" ve "ALTIN" 0 sonuç; "gumus"/"kulce" çalışıyor → eksik olan ı↔i eşlemesi. V1'de de aynı (regresyon değil).</li>
+  <li>20 Gr FIFA fiyatı 5 Gr ile birebir aynı (52.253,69) — V1'de de aynı → dev seed datası, bug değil.</li>
+  <li><code>/basket/get</code> V1'de 200, V2'de 400 dönüyor → basket seti (NSB-5766–5770) testinde ilk bakılacak nokta.</li>
+</ul>
+
+<h2>2. Jira İşlemleri</h2>
+<ul>
+  <li><b>Yorum 65208</b> (NSB-6071) ve <b>yorum 65209</b> (NSB-5982): QA PASS raporları + 3 kanıt görüntüsü.</li>
+  <li><b>NSB-6229 açıldı</b> (Hata, New-Backend): "product/search — TR normalizasyonunda ı/i eşlemesi eksik: 'altin' ve 'ALTIN' 0 sonuç dönüyor". Repro, kök neden hipotezi (ICU folding / tr collation önerisi) ve etki analiziyle; NSB-6071'e Relates linkli.</li>
+  <li>Statü tutarsızlığı raporlandı: NSB-6124 ve NSB-5404 davranışta çözülmüş görünürken Jira'da "Yapılacaklar"da.</li>
+</ul>
+
+<h2>3. V2 Migration Skor Tablosu (09.08 itibarıyla)</h2>
+<table>
+  <tr><th>Kart</th><th>Konu</th><th>Durum</th><th>Not</th></tr>
+  <tr><td>NSB-5933</td><td>Pre-register</td><td class="pass">PASS (06.08)</td><td>Ready For Stage'de</td></tr>
+  <tr><td>NSB-6071</td><td>Arama V2</td><td class="pass">PASS (07.08)</td><td>Ready For Stage'e ilerledi</td></tr>
+  <tr><td>NSB-5982</td><td>İlgili ürünler</td><td class="pass">PASS (07.08)</td><td>Blocker kartlarının statüsü güncellenmeli</td></tr>
+  <tr><td>NSB-5892</td><td>Blog detay</td><td class="fail">FAIL</td><td>Benzer Makaleler SSR payload'ına girmiyor; video posterleri kayıp</td></tr>
+  <tr><td>NSB-6002</td><td>Blog liste</td><td class="fail">FAIL</td><td>10/23 yazı, sayfalama yok</td></tr>
+  <tr><td>NSB-5881</td><td>Sitemap slugs</td><td class="fail">FAIL</td><td>FE hâlâ eski endpoint'te; +3sa timezone, kapsam boşluğu</td></tr>
+  <tr><td>NSB-6184</td><td>Dönüşüm servisleri feature flag</td><td class="warn">TEST EDİLMEDİ</td><td>Web kuyruğundaki sıradaki aday</td></tr>
+</table>
+
+<h2>4. QA Paneli (yeni geliştirme)</h2>
+<p>Lokal, bağımlılıksız Node sunucusu + tek sayfa arayüz. <code>npm run panel</code> → <code>http://localhost:4646</code>. Jira'ya karşı <b>salt-okunur</b>; tek yazma yolu onay diyaloğlu "Jira'ya Gönder" butonu.</p>
+
+<h3>Görünüm ve takip</h3>
+<ul>
+  <li>3 sekme: Test Kolonu / V2 Takip (New-Backend) / Tümü — kişiye göre gruplu, aranabilir, 60 sn'de bir tazelenen kart listesi.</li>
+  <li>Jira statüsü ile yerel QA verdict'i (PASS / FAIL / ERROR / TEST EDİLMEDİ / BUG) yan yana; ERROR = script/ortam hatası, ürün FAIL'i ile karışmaz.</li>
+  <li>Kart detayı: açıklama, yorumlar, bağlı kartlar, koşum geçmişi, AI değerlendirmesi, kanıt görüntüleri.</li>
+  <li><b>⚠️ Statü tutarsızlığı dedektörü:</b> kart Test/RFS'teyken bağlı blocker'ı hâlâ açıksa uyarır — ilk taramada 21 kart işaretlendi.</li>
+  <li><b>🔔 Retest tetikleyicisi:</b> 148 bağlı blocker izleniyor; biri Done/RFS olunca kartta "RETEST'E HAZIR" rozeti + macOS bildirimi.</li>
+</ul>
+
+<h3>V1 ↔ V2 karşılaştırma araçları</h3>
+<ul>
+  <li><b>Canlı iframe:</b> solda V1, sağda V2 — iki ayrı auth-enjekteli proxy (4647/4648) ile modlar izole; access_token otomatik tazelenir.</li>
+  <li><b>Adres takibi + senkron gezinme:</b> iframe içi navigasyon üst bara yansır; bir tarafta tıklanan link diğer tarafı da götürür.</li>
+  <li><b>Snapshot + 🎯 Piksel Diff:</b> tam sayfa görüntüler ve fark yüzdesi + kırmızı fark maskesi.</li>
+  <li><b>🧬 API Diff:</b> endpoint'i iki uçtan çekip alan-alan tablo: V2'de eksik / sadece V2 / tip farkı / değer farkı.</li>
+  <li><b>📊 Sayfa analizi:</b> başlıklar, link/görsel sayıları, kırık görseller, CDN host'ları, metin uzunluğu diff tablosu.</li>
+  <li><b>🐞 Console yakalayıcı:</b> iki moddaki JS hataları canlı sayaçla (NSB-2042 için hazır araç).</li>
+</ul>
+
+<h3>Jira entegrasyonu ve otomasyon</h3>
+<ul>
+  <li><b>🎯 Hedef çıkarma:</b> kart metinlerinden endpoint/URL parse edilir; çipe tıklayınca GET/sayfa yan yana açılır, POST yanıtları pane'lere basılır.</li>
+  <li><b>💬 Yorum taslağı:</b> verdict'ten otomatik QA raporu taslağı → düzenle → kanıt seç → onayla → Jira'ya gönder.</li>
+  <li><b>▶ Test Koştur:</b> whitelist'li koşumlar panelden tetiklenir, log canlı akar, verdict düşünce rozet anında güncellenir (SSE).</li>
+</ul>
+
+<h2>5. Kalıcı Hafıza ve Konvansiyon</h2>
+<div class="note"><b>V2 test konvansiyonu (varsayılan):</b> Sayfa testi = URL sonuna <code>?apiV2=1</code> + <code>x-api-version: v2</code> header teyidi. API testi = <code>www.nadirgold.dev/api/v2/&lt;endpoint&gt;</code> (FE proxy). Ham backend host'u (<code>api-v2.nadirgold.dev</code>) yalnızca backend izolasyonu gerektiğinde. V1 karşılığı: <code>api.nadirgold.dev/&lt;endpoint&gt;</code>.</div>
+
+<h2>6. Açık İşler</h2>
+<table>
+  <tr><th>#</th><th>İş</th><th>Durum</th></tr>
+  <tr><td>1</td><td>Panel + retest script + verdict altyapısının commit'i</td><td class="warn">Onay bekliyor (push izni sorunu ayrıca sürüyor)</td></tr>
+  <tr><td>2</td><td>NSB-6184 feature flag testi</td><td class="warn">Sıradaki test adayı</td></tr>
+  <tr><td>3</td><td>NSB-5892 / 6002 / 5881 retest</td><td>FE fix'leri bekleniyor (retest tetikleyicisi izliyor)</td></tr>
+  <tr><td>4</td><td>Basket seti (NSB-5766–5770 + 6151) API testleri</td><td>V2 /basket/get 400 bulgusuyla başlanacak</td></tr>
+  <tr><td>5</td><td>Faruk'un yeni customer V2 seti (NSB-6211–6216)</td><td>Teste düşmesi bekleniyor</td></tr>
+  <tr><td>6</td><td>NSB-6124 / NSB-5404 Jira statü güncellemesi</td><td>BE ekibinden istendi (yorum 65209)</td></tr>
+</table>
+
+</body>
+</html>

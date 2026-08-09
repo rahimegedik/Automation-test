@@ -1,0 +1,61 @@
+{
+  "card": "NSB-5982",
+  "latest": {
+    "date": "2026-08-07T17:32:00+03:00",
+    "verdict": "PASS",
+    "summary": "İlgili ürünler V2: item.image full CDN objesi, Benzer Ürünler sidebar V1↔V2 identik (Jira yorum 65209)",
+    "notes": [
+      "GET /api/v2/product/other/310 → 200, 3 item, image null 0",
+      "items[].id number (string toleransı gereksizleşti)",
+      "Olmayan ürün → 200 {items:null} dokümana uygun",
+      "Sidebar SSR'da render — client çağrısı görünmez"
+    ],
+    "evidence": [
+      "retest-2026-08-07-5982-v1-full.png",
+      "retest-2026-08-07-5982-v2-full.png"
+    ],
+    "aiEvaluation": "NSB-6124'ün konusu davranışta çözülmüş ama kart hâlâ Yapılacaklar'da (NSB-5404 de öyle) — statü güncellemesi istenmeli. V2 SSR'ın yeni endpoint kullandığı çıktı eşleşmesiyle doğrulandı; FE'den kesin teyit iyi olur."
+  },
+  "history": [
+    {
+      "date": "2026-08-07T17:32:00+03:00",
+      "verdict": "PASS",
+      "summary": "İlgili ürünler V2: item.image full CDN objesi, Benzer Ürünler sidebar V1↔V2 identik (Jira yorum 65209)",
+      "notes": [
+        "GET /api/v2/product/other/310 → 200, 3 item, image null 0",
+        "items[].id number (string toleransı gereksizleşti)",
+        "Olmayan ürün → 200 {items:null} dokümana uygun",
+        "Sidebar SSR'da render — client çağrısı görünmez"
+      ],
+      "evidence": [
+        "retest-2026-08-07-5982-v1-full.png",
+        "retest-2026-08-07-5982-v2-full.png"
+      ],
+      "aiEvaluation": "NSB-6124'ün konusu davranışta çözülmüş ama kart hâlâ Yapılacaklar'da (NSB-5404 de öyle) — statü güncellemesi istenmeli. V2 SSR'ın yeni endpoint kullandığı çıktı eşleşmesiyle doğrulandı; FE'den kesin teyit iyi olur."
+    },
+    {
+      "date": "2026-08-07T22:54:09.555Z",
+      "verdict": "ERROR",
+      "summary": "Koşum hatası (ürün durumu hakkında bilgi vermez): page.goto: Target page, context or browser has been closed",
+      "notes": [],
+      "evidence": [],
+      "aiEvaluation": "Script/ortam hatası — tarayıcı penceresi kapatılmış veya selector değişmiş olabilir. Ürün FAIL'i DEĞİLDİR; koşumu tekrarla."
+    },
+    {
+      "date": "2026-08-07T22:35:05.644Z",
+      "verdict": "ERROR",
+      "summary": "İlgili ürünler akışı hata verdi: page.waitForTimeout: Target page, context or browser has been closed",
+      "notes": [],
+      "evidence": [],
+      "aiEvaluation": "Script/ortam hatası (headed pencere koşum sırasında kapandı) — ürün FAIL'i değildir."
+    },
+    {
+      "date": "2026-08-07T18:51:12.960Z",
+      "verdict": "ERROR",
+      "summary": "İlgili ürünler akışı hata verdi: page.goto: Target page, context or browser has been closed",
+      "notes": [],
+      "evidence": [],
+      "aiEvaluation": "Script/ortam hatası (headed pencere koşum sırasında kapandı) — ürün FAIL'i değildir."
+    }
+  ]
+}

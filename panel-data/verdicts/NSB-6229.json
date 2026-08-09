@@ -1,0 +1,29 @@
+{
+  "card": "NSB-6229",
+  "latest": {
+    "date": "2026-08-07T17:45:00+03:00",
+    "verdict": "BUG",
+    "summary": "Bizim açtığımız bug — product/search TR normalizasyonunda ı/i eşlemesi eksik",
+    "notes": [
+      "\"altın\" 5 / \"altin\" 0 / \"ALTIN\" 0; \"gumus\" ve \"kulce\" çalışıyor (ü/ç/ş fold ediliyor)",
+      "V1'de de aynı — regresyon değil; fix V2 search'e önerildi",
+      "NSB-6071'e Relates linkli"
+    ],
+    "evidence": [],
+    "aiEvaluation": "BE ekibinin index+query tarafında ICU folding / tr collation eklemesi bekleniyor. Fix gelince retest: 3 sorgu varyantı aynı sonucu dönmeli."
+  },
+  "history": [
+    {
+      "date": "2026-08-07T17:45:00+03:00",
+      "verdict": "BUG",
+      "summary": "Bizim açtığımız bug — product/search TR normalizasyonunda ı/i eşlemesi eksik",
+      "notes": [
+        "\"altın\" 5 / \"altin\" 0 / \"ALTIN\" 0; \"gumus\" ve \"kulce\" çalışıyor (ü/ç/ş fold ediliyor)",
+        "V1'de de aynı — regresyon değil; fix V2 search'e önerildi",
+        "NSB-6071'e Relates linkli"
+      ],
+      "evidence": [],
+      "aiEvaluation": "BE ekibinin index+query tarafında ICU folding / tr collation eklemesi bekleniyor. Fix gelince retest: 3 sorgu varyantı aynı sonucu dönmeli."
+    }
+  ]
+}

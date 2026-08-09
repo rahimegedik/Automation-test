@@ -1,0 +1,27 @@
+{
+  "card": "NSB-6184",
+  "latest": {
+    "date": "2026-08-07T17:00:00+03:00",
+    "verdict": "UNTESTED",
+    "summary": "Henüz test edilmedi — web kapsamındaki sıradaki aday",
+    "notes": [
+      "05.08'den beri Test kolonunda",
+      "Frontend component'li: dönüşüm servisleri feature flag ile erişilebilir olmalı"
+    ],
+    "evidence": [],
+    "aiEvaluation": "Test planı: feature flag'in aç/kapa davranışını iki modda doğrula; flag kapalıyken dönüşüm servislerine istek gitmediğini network'ten kanıtla."
+  },
+  "history": [
+    {
+      "date": "2026-08-07T17:00:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "Henüz test edilmedi — web kapsamındaki sıradaki aday",
+      "notes": [
+        "05.08'den beri Test kolonunda",
+        "Frontend component'li: dönüşüm servisleri feature flag ile erişilebilir olmalı"
+      ],
+      "evidence": [],
+      "aiEvaluation": "Test planı: feature flag'in aç/kapa davranışını iki modda doğrula; flag kapalıyken dönüşüm servislerine istek gitmediğini network'ten kanıtla."
+    }
+  ]
+}

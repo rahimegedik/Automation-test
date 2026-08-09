@@ -7,3 +7,5 @@ test-report.pdf
 test-report-*.pdf
 debug-*.png
 .DS_Store
+panel-data/blocker-state.json
+panel-data/retest-alerts.json

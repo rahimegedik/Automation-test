@@ -43,6 +43,7 @@
     "test:takiAll": "playwright test tests/29-taki-kredi-kart.spec.ts tests/30-taki-havale.spec.ts tests/31-taki-kredi-kart.spec.ts tests/32-cart-page-actions.spec.ts --project=chromium",
     "test:takiAll:headed": "playwright test tests/29-taki-kredi-kart.spec.ts tests/30-taki-havale.spec.ts tests/31-taki-kredi-kart.spec.ts tests/32-cart-page-actions.spec.ts --project=chromium --headed",
     "test:takiAll:report": "powershell -ExecutionPolicy Bypass -Command \"playwright test tests/29-taki-kredi-kart.spec.ts tests/30-taki-havale.spec.ts tests/31-taki-kredi-kart.spec.ts tests/32-cart-page-actions.spec.ts --project=chromium; node scripts/create-test-report.cjs\"",
+    "panel": "node panel/server.mjs",
     "report:create": "node scripts/create-test-report.cjs",
     "show-report": "playwright show-report",
     "format": "prettier --write .",

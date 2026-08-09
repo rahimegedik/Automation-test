@@ -1,0 +1,28 @@
+{
+  "runs": {
+    "retest-v2-6071-5982": {
+      "label": "V2 retest: arama + ilgili ürünler (headed)",
+      "cmd": "node",
+      "args": ["scripts/retest-v2-6071-5982.mjs"],
+      "cards": ["NSB-6071", "NSB-5982"]
+    },
+    "test-sepet": {
+      "label": "Sepet testleri (headed)",
+      "cmd": "npm",
+      "args": ["run", "test:sepet"],
+      "cards": []
+    },
+    "test-adres": {
+      "label": "Adres yönetimi (headed)",
+      "cmd": "npm",
+      "args": ["run", "test:adres"],
+      "cards": []
+    },
+    "test-all": {
+      "label": "Tüm journey testleri (headless)",
+      "cmd": "npm",
+      "args": ["run", "test"],
+      "cards": []
+    }
+  }
+}

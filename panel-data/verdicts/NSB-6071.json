@@ -1,0 +1,59 @@
+{
+  "card": "NSB-6071",
+  "latest": {
+    "date": "2026-08-07T17:32:00+03:00",
+    "verdict": "PASS",
+    "summary": "Arama V2: 26 alan hidrasyon + UI modal render tam (Jira yorum 65208)",
+    "notes": [
+      "x-api-version: v2 teyitli (?apiV2=1)",
+      "POST /api/v2/product/search → 200, 5 ürün, products[0] 26 alan, id number",
+      "UI: görsel+fiyat+stok render, kategoriler + 8 öneri",
+      "NSB-6146 (hidrasyon) fix'i doğrulandı"
+    ],
+    "evidence": [
+      "retest-2026-08-07-6071-search.png"
+    ],
+    "aiEvaluation": "Blocker NSB-6146 çözülmüş; kart Ready for Stage'e ilerleyebilir. Bilinen minor: ı/i normalizasyonu yok (NSB-6229 açıldı, bu kartı bloklamaz). 20 Gr FIFA fiyat anomalisi seed-data kaynaklı, V1'de de aynı."
+  },
+  "history": [
+    {
+      "date": "2026-08-07T17:32:00+03:00",
+      "verdict": "PASS",
+      "summary": "Arama V2: 26 alan hidrasyon + UI modal render tam (Jira yorum 65208)",
+      "notes": [
+        "x-api-version: v2 teyitli (?apiV2=1)",
+        "POST /api/v2/product/search → 200, 5 ürün, products[0] 26 alan, id number",
+        "UI: görsel+fiyat+stok render, kategoriler + 8 öneri",
+        "NSB-6146 (hidrasyon) fix'i doğrulandı"
+      ],
+      "evidence": [
+        "retest-2026-08-07-6071-search.png"
+      ],
+      "aiEvaluation": "Blocker NSB-6146 çözülmüş; kart Ready for Stage'e ilerleyebilir. Bilinen minor: ı/i normalizasyonu yok (NSB-6229 açıldı, bu kartı bloklamaz). 20 Gr FIFA fiyat anomalisi seed-data kaynaklı, V1'de de aynı."
+    },
+    {
+      "date": "2026-08-07T22:54:09.552Z",
+      "verdict": "ERROR",
+      "summary": "Koşum hatası (ürün durumu hakkında bilgi vermez): locator.waitFor: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"text",
+      "notes": [],
+      "evidence": [],
+      "aiEvaluation": "Script/ortam hatası — tarayıcı penceresi kapatılmış veya selector değişmiş olabilir. Ürün FAIL'i DEĞİLDİR; koşumu tekrarla."
+    },
+    {
+      "date": "2026-08-07T22:35:02.369Z",
+      "verdict": "ERROR",
+      "summary": "Arama akışı hata verdi: locator.waitFor: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"text\"]:visible, input[type",
+      "notes": [],
+      "evidence": [],
+      "aiEvaluation": "Script/ortam hatası (headed pencere koşum sırasında kapandı) — ürün FAIL'i değildir."
+    },
+    {
+      "date": "2026-08-07T18:51:12.953Z",
+      "verdict": "ERROR",
+      "summary": "Arama akışı hata verdi: locator.waitFor: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"text",
+      "notes": [],
+      "evidence": [],
+      "aiEvaluation": "Script/ortam hatası (headed pencere koşum sırasında kapandı) — ürün FAIL'i değildir."
+    }
+  ]
+}

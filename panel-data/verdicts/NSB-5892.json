@@ -1,0 +1,29 @@
+{
+  "card": "NSB-5892",
+  "latest": {
+    "date": "2026-08-06T15:52:00+03:00",
+    "verdict": "FAIL",
+    "summary": "Benzer Makaleler v2'de yok — veri SSR payload'ına hiç girmiyor; video posterleri kayıp (yorum 64892)",
+    "notes": [
+      "FE veri katmanı similarPosts'u istemiyor/düşürüyor",
+      "videos[].thumbnail: null BE sorunu layout bozuyor",
+      "API tarafı sağlam (slug desteği + similarPosts dönüyor)"
+    ],
+    "evidence": [],
+    "aiEvaluation": "Fix FE veri katmanında olmalı; retest'te nadirgold-v1v2-compare agent'ıyla blog detay karşılaştırması yeterli. BE yan konuları: dev'de prod CDN URL'leri, thumbnail null."
+  },
+  "history": [
+    {
+      "date": "2026-08-06T15:52:00+03:00",
+      "verdict": "FAIL",
+      "summary": "Benzer Makaleler v2'de yok — veri SSR payload'ına hiç girmiyor; video posterleri kayıp (yorum 64892)",
+      "notes": [
+        "FE veri katmanı similarPosts'u istemiyor/düşürüyor",
+        "videos[].thumbnail: null BE sorunu layout bozuyor",
+        "API tarafı sağlam (slug desteği + similarPosts dönüyor)"
+      ],
+      "evidence": [],
+      "aiEvaluation": "Fix FE veri katmanında olmalı; retest'te nadirgold-v1v2-compare agent'ıyla blog detay karşılaştırması yeterli. BE yan konuları: dev'de prod CDN URL'leri, thumbnail null."
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "card": "NSB-5881",
+  "latest": {
+    "date": "2026-08-06T14:53:00+03:00",
+    "verdict": "FAIL",
+    "summary": "sitemap.xml hâlâ eski get-all-slugs'tan besleniyor; apiV2 flag'i sitemap route'unu etkilemiyor (yorum 64824)",
+    "notes": [
+      "Küme + lastmod parmak iziyle kanıtlandı",
+      "BE yan sorunları: updatedAt +3sa timezone, kapsam boşluğu, duplicate slug'lar"
+    ],
+    "evidence": [],
+    "aiEvaluation": "FE'den 'sitemap hangi koşulda yeni endpoint'e bağlanır' cevabı bekleniyor — flag mekanizması sitemap için tasarlanmamış olabilir; kalıcı config gerekebilir."
+  },
+  "history": [
+    {
+      "date": "2026-08-06T14:53:00+03:00",
+      "verdict": "FAIL",
+      "summary": "sitemap.xml hâlâ eski get-all-slugs'tan besleniyor; apiV2 flag'i sitemap route'unu etkilemiyor (yorum 64824)",
+      "notes": [
+        "Küme + lastmod parmak iziyle kanıtlandı",
+        "BE yan sorunları: updatedAt +3sa timezone, kapsam boşluğu, duplicate slug'lar"
+      ],
+      "evidence": [],
+      "aiEvaluation": "FE'den 'sitemap hangi koşulda yeni endpoint'e bağlanır' cevabı bekleniyor — flag mekanizması sitemap için tasarlanmamış olabilir; kalıcı config gerekebilir."
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "card": "NSB-5933",
+  "latest": {
+    "date": "2026-08-06T13:05:00+03:00",
+    "verdict": "PASS",
+    "summary": "Pre-register E2E tam geçti: API 5/5 + FE hash decode, countdown, 400 gösterimi (yorum 64823)",
+    "notes": [
+      "base64+JSON hash formatı doğrulandı",
+      "OTP countdown ve 'zaten kayıtlı' hata akışı çalışıyor"
+    ],
+    "evidence": [],
+    "aiEvaluation": "Kart Ready For Stage'e taşındı (06.08) — stage doğrulaması sonrası Done'a gidebilir."
+  },
+  "history": [
+    {
+      "date": "2026-08-06T13:05:00+03:00",
+      "verdict": "PASS",
+      "summary": "Pre-register E2E tam geçti: API 5/5 + FE hash decode, countdown, 400 gösterimi (yorum 64823)",
+      "notes": [
+        "base64+JSON hash formatı doğrulandı",
+        "OTP countdown ve 'zaten kayıtlı' hata akışı çalışıyor"
+      ],
+      "evidence": [],
+      "aiEvaluation": "Kart Ready For Stage'e taşındı (06.08) — stage doğrulaması sonrası Done'a gidebilir."
+    }
+  ]
+}

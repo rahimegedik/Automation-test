@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NadirGold QA Panel</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #171e2e; --panel2: #1d2637; --border: #2a3550;
+    --text: #e8ecf5; --dim: #8b96ad; --accent: #d4a94b;
+    --pass: #34c98e; --fail: #ef5f74; --untested: #8b96ad; --blocked: #e8a13c; --bug: #b07ce8;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--text); font: 14px/1.5 -apple-system, "Segoe UI", sans-serif; }
+  header { display: flex; align-items: center; gap: 16px; padding: 14px 20px; background: var(--panel); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 5; }
+  header h1 { font-size: 16px; color: var(--accent); }
+  .tabs { display: flex; gap: 6px; }
+  .tabs button { background: transparent; border: 1px solid var(--border); color: var(--dim); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; }
+  .tabs button.active { background: var(--panel2); color: var(--text); border-color: var(--accent); }
+  #search { margin-left: auto; background: var(--panel2); border: 1px solid var(--border); color: var(--text); padding: 7px 12px; border-radius: 8px; width: 220px; }
+  #meta { color: var(--dim); font-size: 12px; }
+  main { display: grid; grid-template-columns: 1fr 430px; gap: 0; height: calc(100vh - 61px); }
+  #list { overflow-y: auto; padding: 12px 14px 12px 8px; }
+  #runmenu { position: relative; }
+  #runmenu summary { list-style: none; cursor: pointer; background: var(--accent); color: #14161c; font-weight: 700; padding: 7px 14px; border-radius: 8px; font-size: 13px; white-space: nowrap; }
+  #runmenu[data-busy="1"] summary { opacity: .55; }
+  #runmenu .menu { position: absolute; top: 40px; left: 0; background: var(--panel2); border: 1px solid var(--border); border-radius: 10px; padding: 6px; z-index: 20; min-width: 320px; box-shadow: 0 8px 30px rgba(0,0,0,.5); }
+  #runmenu .menu button { display: block; width: 100%; text-align: left; background: transparent; border: 0; color: var(--text); padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; }
+  #runmenu .menu button:hover { background: var(--panel); }
+  #runmenu .menu button:disabled { color: var(--dim); cursor: not-allowed; }
+  #cmp { display: none; flex-direction: column; overflow: hidden; background: var(--bg); border-left: 1px solid var(--border); }
+  body.cmp-on #cmp { display: flex; }
+  body.cmp-on #detail { display: none; }
+  body.cmp-on main { grid-template-columns: minmax(280px, 360px) 1fr; }
+  body.cmp-on .sum { white-space: normal; font-size: 12px; }
+  body.cmp-on #runlog { right: 0; }
+  .b-ERROR { background: color-mix(in srgb, var(--blocked) 18%, transparent); color: var(--blocked); }
+  .b-RETEST { background: color-mix(in srgb, var(--accent) 22%, transparent); color: var(--accent); border: 1px solid var(--accent); animation: pulse 2s infinite; }
+  @keyframes pulse { 50% { opacity: .55; } }
+  #cmp .bar { display: flex; gap: 10px; align-items: center; padding: 10px 16px; background: var(--panel); border-bottom: 1px solid var(--border); }
+  #cmp .bar input[type=text] { flex: 1; background: var(--panel2); border: 1px solid var(--border); color: var(--text); padding: 7px 12px; border-radius: 8px; }
+  #cmp .panes { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); overflow: hidden; }
+  #cmp .pane { background: var(--bg); display: flex; flex-direction: column; overflow: hidden; }
+  #cmp .pane .ph { padding: 6px 12px; font-size: 12px; font-weight: 700; background: var(--panel2); }
+  #cmp .pane .body { flex: 1; overflow: auto; }
+  #cmp .pane img { width: 100%; display: block; }
+  #cmp .pane iframe { width: 100%; height: 100%; border: 0; background: #fff; }
+  #cmp .pane .loading { color: var(--dim); padding: 30px; text-align: center; }
+  .seg { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .seg button { background: transparent; border: 0; color: var(--dim); padding: 7px 12px; cursor: pointer; font-size: 12px; }
+  .seg button.on { background: var(--accent); color: #14161c; font-weight: 700; }
+  #cmp .panes.single { grid-template-columns: 1fr; }
+  #cmp .panes.single .pane:nth-child(2) { display: none; }
+  #cmp .panes.triple { grid-template-columns: 1fr 1fr 1fr; }
+  #cmp .pane canvas { width: 100%; display: block; }
+  #api-extra { display: none; gap: 8px; align-items: center; padding: 8px 16px; background: var(--panel); border-bottom: 1px solid var(--border); font-size: 12px; }
+  #api-extra.on { display: flex; }
+  #api-extra input, #api-extra select { background: var(--panel2); border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 8px; font-size: 12px; }
+  .difftable { width: 100%; border-collapse: collapse; font: 12px ui-monospace, monospace; }
+  .difftable th, .difftable td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--border); vertical-align: top; word-break: break-all; }
+  .difftable th { color: var(--dim); font-weight: 600; position: sticky; top: 0; background: var(--bg); }
+  .d-miss { color: var(--fail); } .d-new { color: #5fa8ef; } .d-type { color: var(--blocked); } .d-val { color: var(--dim); }
+  .hbtn { background: transparent; border: 1px solid var(--border); color: var(--dim); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; white-space: nowrap; }
+  .hbtn:hover { color: var(--text); border-color: var(--accent); }
+  .cmp-link { color: var(--accent); text-decoration: underline; cursor: pointer; }
+  .group-title { color: var(--dim); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; margin: 18px 0 8px; }
+  .card { display: flex; align-items: center; gap: 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-bottom: 8px; cursor: pointer; }
+  .card:hover { border-color: var(--accent); }
+  .card.sel { border-color: var(--accent); background: var(--panel2); }
+  .key { font-weight: 600; color: var(--accent); white-space: nowrap; font-size: 13px; }
+  .sum { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .badge { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+  .b-PASS { background: color-mix(in srgb, var(--pass) 18%, transparent); color: var(--pass); }
+  .b-FAIL { background: color-mix(in srgb, var(--fail) 18%, transparent); color: var(--fail); }
+  .b-UNTESTED { background: color-mix(in srgb, var(--untested) 18%, transparent); color: var(--untested); }
+  .b-BLOCKED { background: color-mix(in srgb, var(--blocked) 18%, transparent); color: var(--blocked); }
+  .b-BUG { background: color-mix(in srgb, var(--bug) 18%, transparent); color: var(--bug); }
+  .chip { font-size: 11px; color: var(--dim); border: 1px solid var(--border); padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+  #detail { border-left: 1px solid var(--border); background: var(--panel); overflow-y: auto; padding: 20px; }
+  #detail h2 { font-size: 15px; margin-bottom: 4px; }
+  #detail .sec { margin-top: 18px; }
+  #detail .sec h3 { font-size: 12px; color: var(--dim); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  .box { background: var(--panel2); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 8px; white-space: pre-wrap; word-break: break-word; }
+  .box .who { color: var(--accent); font-size: 12px; margin-bottom: 4px; }
+  .ai { border-left: 3px solid var(--accent); }
+  .evidence img { max-width: 100%; border-radius: 8px; border: 1px solid var(--border); margin-top: 8px; cursor: zoom-in; }
+  .runbtn { background: var(--accent); color: #14161c; border: 0; font-weight: 700; padding: 8px 16px; border-radius: 8px; cursor: pointer; margin-right: 8px; margin-bottom: 6px; }
+  .runbtn:disabled { opacity: .45; cursor: not-allowed; }
+  #runlog { position: fixed; bottom: 0; left: 0; right: 430px; max-height: 200px; overflow-y: auto; background: #0a0e16; border-top: 2px solid var(--accent); padding: 10px 20px; font: 12px/1.5 ui-monospace, monospace; display: none; }
+  #runlog.on { display: block; }
+  #runlog .rl-title { color: var(--accent); font-weight: 700; }
+  .stats { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .stat { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 8px 16px; font-size: 13px; }
+  .stat b { font-size: 18px; display: block; }
+  dialog { border: 1px solid var(--border); border-radius: 10px; background: var(--panel); max-width: 92vw; max-height: 92vh; padding: 8px; }
+  dialog img { max-width: 100%; max-height: 85vh; }
+  dialog::backdrop { background: rgba(0,0,0,.7); }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <h1>⚡ NadirGold QA Panel</h1>
+  <div class="tabs">
+    <button data-view="test" class="active">Test Kolonu</button>
+    <button data-view="v2">V2 Takip</button>
+    <button data-view="all">Tümü</button>
+  </div>
+  <details id="runmenu">
+    <summary>▶ Test Koştur</summary>
+    <div class="menu" id="runmenu-items"></div>
+  </details>
+  <button class="hbtn" onclick="openCompare()">🔍 Karşılaştır</button>
+  <button class="hbtn" onclick="openApiDiff()">🧬 API Diff</button>
+  <input id="search" placeholder="Ara: kart, başlık, kişi…" />
+  <span id="meta"></span>
+</header>
+<main>
+  <div id="list"></div>
+  <div id="detail"><p style="color:var(--dim)">Detay için soldan kart seç.</p></div>
+  <div id="cmp">
+  <div class="bar">
+    <b style="color:var(--accent)">🔍 V1 ↔ V2 Karşılaştırma</b>
+    <input type="text" id="cmp-path" placeholder="/fifa-world-cup-2026-1-gr-kulce-altin" />
+    <div class="seg">
+      <button id="cmp-m-live" class="on" onclick="setCmpMode('live')">Canlı (iframe)</button>
+      <button id="cmp-m-snap" onclick="setCmpMode('snap')">Snapshot</button>
+      <button id="cmp-m-api" onclick="setCmpMode('api')">API Diff</button>
+    </div>
+    <label style="font-size:12px;color:var(--dim)" id="cmp-full-label" hidden><input type="checkbox" id="cmp-full" checked /> tam sayfa</label>
+    <label style="font-size:12px;color:var(--dim)" id="cmp-sync-label"><input type="checkbox" id="cmp-sync" checked /> 🔗 senkron</label>
+    <button class="runbtn" id="cmp-analyze" hidden onclick="analyzePages()">📊 Analiz</button>
+    <button class="runbtn" id="cmp-px" hidden onclick="pixelDiff()">🎯 Piksel Diff</button>
+    <button class="runbtn" onclick="loadCompare()">Yenile</button>
+    <button class="runbtn" style="background:var(--panel2);color:var(--text)" onclick="closeCompare()">✕ Kapat</button>
+  </div>
+  <div id="api-extra">
+    <select id="api-method"><option>POST</option><option>GET</option></select>
+    <label>V1 path: <input id="api-v1path" style="width:220px" placeholder="/search" /></label>
+    <label style="flex:1">Body: <input id="api-body" style="width:calc(100% - 50px)" placeholder='{"query":"fifa","filters":{},"suggestion":true}' /></label>
+  </div>
+  <div class="panes" id="cmp-panes">
+    <div class="pane"><div class="ph" id="cmp-h-v1">V1 (eski API)</div><div class="body" id="cmp-b-v1"></div></div>
+    <div class="pane"><div class="ph" id="cmp-h-v2" style="color:var(--accent)">V2 (?apiV2=1)</div><div class="body" id="cmp-b-v2"></div></div>
+    <div class="pane px" style="display:none"><div class="ph" id="cmp-h-px" style="color:var(--fail)">🎯 Fark</div><div class="body" id="cmp-b-px"></div></div>
+  </div>
+  </div>
+</main>
+<div id="runlog"></div>
+<dialog id="zoom"><img id="zoomimg" /></dialog>
+<script>
+let view = "test", cards = [], verdicts = {}, selected = null, runsInfo = { runs: {}, active: null }, retestAlerts = [];
+
+const $ = (s) => document.querySelector(s);
+const esc = (s) => (s || "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+// nadirgold.dev URL'lerini panel içi karşılaştırmada aç
+const linkify = (s) => s.replace(/https?:\/\/(www\.)?nadirgold\.dev(\/[^\s<>"')]*)?/g, (m, _w, p) => {
+  const clean = (p || "/").replace(/[?&]apiV2=1/, "").replace(/\?$/, "");
+  return `<span class="cmp-link" onclick="openCompare('${clean.replace(/'/g, "")}')">${m}</span>`;
+});
+
+function renderRunMenu() {
+  const busy = !!runsInfo.active;
+  const rm = $("#runmenu");
+  rm.dataset.busy = busy ? "1" : "0";
+  rm.querySelector("summary").textContent = busy ? "⏳ " + runsInfo.active.label : "▶ Test Koştur";
+  $("#runmenu-items").innerHTML = Object.entries(runsInfo.runs).map(([id, def]) =>
+    `<button onclick="startRun('${id}');document.getElementById('runmenu').open=false" ${busy ? "disabled" : ""}>▶ ${esc(def.label)}${def.cards.length ? ` <span style="color:var(--dim)">(${def.cards.join(", ")})</span>` : ""}</button>`
+  ).join("");
+}
+
+let cmpMode = localStorage.getItem("cmp-mode") || "live";
+const snapBlobs = { v1: null, v2: null };
+function applyCmpModeUi() {
+  $("#cmp-m-live").classList.toggle("on", cmpMode === "live");
+  $("#cmp-m-snap").classList.toggle("on", cmpMode === "snap");
+  $("#cmp-m-api").classList.toggle("on", cmpMode === "api");
+  $("#cmp-full-label").hidden = cmpMode !== "snap";
+  $("#cmp-sync-label").hidden = cmpMode !== "live" || $("#cmp-path").value.startsWith("/__api");
+  $("#cmp-analyze").hidden = cmpMode !== "live" || $("#cmp-path").value.startsWith("/__api");
+  $("#api-extra").classList.toggle("on", cmpMode === "api" || (cmpMode === "live" && $("#cmp-path").value.startsWith("/__api")));
+  $("#cmp-px").hidden = true;
+  $("#cmp-panes").classList.toggle("single", cmpMode === "api");
+  $("#cmp-panes").classList.remove("triple");
+  document.querySelector(".pane.px").style.display = "none";
+  $("#cmp-path").placeholder = cmpMode === "api" ? "/product/search  (V2 endpoint)" : "/fifa-world-cup-2026-1-gr-kulce-altin";
+}
+function setCmpMode(m) {
+  cmpMode = m; localStorage.setItem("cmp-mode", m);
+  applyCmpModeUi();
+  loadCompare();
+}
+function openCompare(path) {
+  $("#cmp-path").value = path || localStorage.getItem("cmp-path") || "/";
+  document.body.classList.add("cmp-on");
+  applyCmpModeUi();
+  loadCompare();
+}
+function openApiDiff() {
+  cmpMode = "api"; localStorage.setItem("cmp-mode", "api");
+  $("#cmp-path").value = localStorage.getItem("api-v2path") || "/product/search";
+  $("#api-v1path").value = localStorage.getItem("api-v1path") || "/search";
+  $("#api-body").value = localStorage.getItem("api-body") ?? '{"query":"fifa","filters":{},"suggestion":true}';
+  document.body.classList.add("cmp-on");
+  applyCmpModeUi();
+  loadCompare();
+}
+function closeCompare() {
+  document.body.classList.remove("cmp-on");
+  $("#cmp-b-v1").innerHTML = ""; $("#cmp-b-v2").innerHTML = ""; $("#cmp-b-px").innerHTML = "";
+  snapBlobs.v1 = snapBlobs.v2 = null;
+}
+const PROXY = { v1: "http://localhost:4647", v2: "http://localhost:4648" };
+async function loadCompare() {
+  const path = $("#cmp-path").value.trim() || "/";
+  if (cmpMode === "api") return loadApiDiff(path);
+  localStorage.setItem("cmp-path", path);
+  if (cmpMode === "live") {
+    const isApi = path.startsWith("/__api");
+    const method = isApi ? $("#api-method").value : "GET";
+    $("#api-extra").classList.toggle("on", isApi);
+    if (isApi && method !== "GET") {
+      // iframe POST atamaz → yanıtları fetch'leyip pane'lere bas
+      const body = $("#api-body").value.trim() || "{}";
+      for (const mode of ["v1", "v2"]) {
+        const pane = $(`#cmp-b-${mode}`);
+        $(`#cmp-h-${mode}`).textContent = (mode === "v1" ? "V1 API" : "V2 API") + ` — ${method} ${path.slice(6)}`;
+        pane.innerHTML = '<div class="loading">⏳</div>';
+        fetch(PROXY[mode] + path, { method, headers: { "Content-Type": "application/json", "device-type": "web" }, body })
+          .then(async (r) => {
+            const text = await r.text();
+            let pretty = text;
+            try { pretty = JSON.stringify(JSON.parse(text), null, 1); } catch {}
+            $(`#cmp-h-${mode}`).textContent = (mode === "v1" ? "V1 API" : "V2 API") + ` — ${method} ${path.slice(6)} → ${r.status}`;
+            pane.innerHTML = `<pre style="margin:0;padding:12px;font:12px/1.5 ui-monospace,monospace;white-space:pre-wrap;word-break:break-all;color:var(--text)">${esc(pretty.slice(0, 60000))}</pre>`;
+          })
+          .catch((e) => { pane.innerHTML = `<div class="loading">hata: ${esc(String(e.message || e))}</div>`; });
+      }
+      return;
+    }
+    for (const mode of ["v1", "v2"]) {
+      const label = isApi ? (mode === "v1" ? "V1 API (api.nadirgold.dev)" : "V2 API (/api/v2)") : (mode === "v1" ? "V1 (eski API)" : "V2 (NG_API_V2=1)") + ` — ${path}`;
+      $(`#cmp-h-${mode}`).textContent = label;
+      lastPaths[mode] = path;
+      $(`#cmp-b-${mode}`).innerHTML =
+        `<iframe src="${PROXY[mode]}${path}" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>`;
+    }
+    return;
+  }
+  const full = $("#cmp-full").checked ? "1" : "0";
+  snapBlobs.v1 = snapBlobs.v2 = null;
+  $("#cmp-px").hidden = true;
+  for (const mode of ["v1", "v2"]) {
+    const body = $(`#cmp-b-${mode}`);
+    body.innerHTML = '<div class="loading">⏳ canlı snapshot alınıyor…</div>';
+    fetch(`/api/snapshot?path=${encodeURIComponent(path)}&mode=${mode}&full=${full}`)
+      .then(async (r) => {
+        if (!r.ok) throw new Error((await r.json()).error || r.status);
+        const ver = r.headers.get("X-Api-Version");
+        $(`#cmp-h-${mode}`).textContent = (mode === "v1" ? "V1 (eski API)" : "V2 (?apiV2=1)") + ` — x-api-version: ${ver}`;
+        const blob = await r.blob();
+        snapBlobs[mode] = blob;
+        body.innerHTML = "";
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(blob);
+        body.appendChild(img);
+        if (snapBlobs.v1 && snapBlobs.v2) $("#cmp-px").hidden = false;
+      })
+      .catch((e) => { body.innerHTML = `<div class="loading">hata: ${esc(String(e.message || e))}</div>`; });
+  }
+}
+
+// ---- API JSON diff ----
+const typeOf = (v) => v === null ? "null" : Array.isArray(v) ? "array" : typeof v;
+const prev = (v) => { const s = JSON.stringify(v); return s === undefined ? "undefined" : s.length > 70 ? s.slice(0, 70) + "…" : s; };
+function jsonDiff(a, b, path, out) {
+  const ta = typeOf(a), tb = typeOf(b);
+  if (ta !== tb) { out.push({ k: "type", path, v1: `${ta}: ${prev(a)}`, v2: `${tb}: ${prev(b)}` }); return; }
+  if (ta === "object") {
+    for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) {
+      const p = path ? `${path}.${k}` : k;
+      if (!(k in b)) out.push({ k: "miss", path: p, v1: prev(a[k]), v2: "—" });
+      else if (!(k in a)) out.push({ k: "new", path: p, v1: "—", v2: prev(b[k]) });
+      else jsonDiff(a[k], b[k], p, out);
+    }
+  } else if (ta === "array") {
+    if (a.length !== b.length) out.push({ k: "val", path: `${path}.length`, v1: a.length, v2: b.length });
+    if (a.length && b.length) jsonDiff(a[0], b[0], `${path}[0]`, out);
+    else if (a.length && !b.length) out.push({ k: "miss", path: `${path}[0]`, v1: prev(a[0]), v2: "(boş dizi)" });
+    else if (!a.length && b.length) out.push({ k: "new", path: `${path}[0]`, v1: "(boş dizi)", v2: prev(b[0]) });
+  } else if (JSON.stringify(a) !== JSON.stringify(b)) {
+    out.push({ k: "val", path, v1: prev(a), v2: prev(b) });
+  }
+}
+async function loadApiDiff(v2PathRaw) {
+  const v2Path = v2PathRaw.replace(/^\/__api/, "");
+  const v1Path = ($("#api-v1path").value.trim() || v2Path).replace(/^\/__api/, "");
+  const method = $("#api-method").value;
+  const bodyStr = $("#api-body").value.trim();
+  localStorage.setItem("api-v2path", v2Path); localStorage.setItem("api-v1path", v1Path); localStorage.setItem("api-body", bodyStr);
+  $("#cmp-h-v1").textContent = `🧬 API Diff — ${method} v1:${v1Path} ↔ v2:${v2Path}`;
+  const out = $("#cmp-b-v1");
+  out.innerHTML = '<div class="loading">⏳ iki uçtan yanıt alınıyor…</div>';
+  const r = await fetch("/api/apidiff", { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ v1Path, v2Path, method, body: method === "GET" ? "" : bodyStr }) }).then((r) => r.json());
+  if (r.error) { out.innerHTML = `<div class="loading">hata: ${esc(r.error)}</div>`; return; }
+  let html = `<div style="padding:10px 12px;font-size:12px;color:var(--dim)">
+    V1 ${r.v1.url} → <b style="color:${r.v1.status === 200 ? "var(--pass)" : "var(--fail)"}">${r.v1.status}</b> (${r.v1.ms}ms) &nbsp;|&nbsp;
+    V2 ${r.v2.url} → <b style="color:${r.v2.status === 200 ? "var(--pass)" : "var(--fail)"}">${r.v2.status}</b> (${r.v2.ms}ms)</div>`;
+  if (!r.v1.json || !r.v2.json) {
+    html += `<div style="padding:12px">JSON parse edilemedi. ${esc(r.v1.error || r.v1.raw || "")} ${esc(r.v2.error || r.v2.raw || "")}</div>`;
+    out.innerHTML = html; return;
+  }
+  const rows = [];
+  jsonDiff(r.v1.json, r.v2.json, "", rows);
+  const by = (k) => rows.filter((x) => x.k === k);
+  const [miss, nw, typ, val] = [by("miss"), by("new"), by("type"), by("val")];
+  html += `<div style="padding:0 12px 10px;display:flex;gap:8px;flex-wrap:wrap">
+    <span class="badge b-FAIL">${miss.length} V2'de eksik</span>
+    <span class="badge" style="background:rgba(95,168,239,.18);color:#5fa8ef">${nw.length} sadece V2</span>
+    <span class="badge b-BLOCKED">${typ.length} tip farkı</span>
+    <span class="badge b-UNTESTED">${val.length} değer farkı</span>
+    ${!rows.length ? '<span class="badge b-PASS">YAPI BİREBİR AYNI</span>' : ""}</div>`;
+  const table = (list, cls) => list.length ? `<table class="difftable"><tr><th>alan</th><th>V1</th><th>V2</th></tr>` +
+    list.map((x) => `<tr class="${cls}"><td>${esc(x.path)}</td><td>${esc(String(x.v1))}</td><td>${esc(String(x.v2))}</td></tr>`).join("") + `</table>` : "";
+  html += table(miss, "d-miss") + table(typ, "d-type") + table(nw, "d-new");
+  if (val.length) html += `<details style="padding:8px 12px"><summary style="cursor:pointer;color:var(--dim)">Değer farkları (${val.length}) — genelde doğal (fiyat/kur/timestamp)</summary>${table(val, "d-val")}</details>`;
+  html += `<details style="padding:8px 12px"><summary style="cursor:pointer;color:var(--dim)">Ham yanıtlar</summary>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font:11px ui-monospace,monospace">
+    <pre style="overflow:auto;max-height:400px;background:var(--panel2);padding:8px;border-radius:8px">${esc(JSON.stringify(r.v1.json, null, 1).slice(0, 30000))}</pre>
+    <pre style="overflow:auto;max-height:400px;background:var(--panel2);padding:8px;border-radius:8px">${esc(JSON.stringify(r.v2.json, null, 1).slice(0, 30000))}</pre></div></details>`;
+  out.innerHTML = html;
+}
+
+// ---- Piksel diff (canvas, istemci tarafı) ----
+async function pixelDiff() {
+  if (!snapBlobs.v1 || !snapBlobs.v2) return;
+  $("#cmp-panes").classList.add("triple");
+  document.querySelector(".pane.px").style.display = "flex";
+  const out = $("#cmp-b-px");
+  out.innerHTML = '<div class="loading">⏳ piksel karşılaştırma…</div>';
+  const [b1, b2] = await Promise.all([createImageBitmap(snapBlobs.v1), createImageBitmap(snapBlobs.v2)]);
+  const w = Math.min(b1.width, b2.width), h = Math.min(b1.height, b2.height);
+  const cv = (bmp) => { const c = new OffscreenCanvas(w, h); const x = c.getContext("2d"); x.drawImage(bmp, 0, 0); return x.getImageData(0, 0, w, h); };
+  const d1 = cv(b1), d2 = cv(b2);
+  const outImg = new ImageData(w, h);
+  let diff = 0;
+  for (let i = 0; i < w * h * 4; i += 4) {
+    const dr = Math.abs(d1.data[i] - d2.data[i]), dg = Math.abs(d1.data[i + 1] - d2.data[i + 1]), db = Math.abs(d1.data[i + 2] - d2.data[i + 2]);
+    if (dr + dg + db > 60) {
+      diff++;
+      outImg.data[i] = 239; outImg.data[i + 1] = 60; outImg.data[i + 2] = 80; outImg.data[i + 3] = 255;
+    } else {
+      const g = (d1.data[i] + d1.data[i + 1] + d1.data[i + 2]) / 3;
+      outImg.data[i] = outImg.data[i + 1] = outImg.data[i + 2] = g; outImg.data[i + 3] = 70;
+    }
+  }
+  const pct = ((diff / (w * h)) * 100).toFixed(2);
+  const hDiff = b1.height !== b2.height ? ` · yükseklik farkı: V1 ${b1.height}px / V2 ${b2.height}px` : "";
+  $("#cmp-h-px").textContent = `🎯 Fark: %${pct}${hDiff}`;
+  const canvas = document.createElement("canvas");
+  canvas.width = w; canvas.height = h;
+  canvas.getContext("2d").putImageData(outImg, 0, 0);
+  out.innerHTML = "";
+  out.appendChild(canvas);
+}
+
+async function loadCards() {
+  $("#meta").textContent = "yükleniyor…";
+  try {
+    const [c, v, r, ra] = await Promise.all([
+      fetch("/api/cards?view=" + view).then((r) => r.json()),
+      fetch("/api/verdicts").then((r) => r.json()),
+      fetch("/api/runs").then((r) => r.json()),
+      fetch("/api/retest-alerts").then((r) => r.json()),
+    ]);
+    cards = c.issues || []; verdicts = v; runsInfo = r; retestAlerts = ra || [];
+    $("#meta").textContent = "Jira: " + new Date(c.fetchedAt).toLocaleTimeString("tr");
+    render(); renderRunMenu();
+  } catch (e) { $("#meta").textContent = "hata: " + e.message; }
+}
+
+function verdictOf(key) { return verdicts[key]?.latest?.verdict || "UNTESTED"; }
+
+// Tutarsızlık: kart test/stage aşamasında ama bağlı kartlardan biri hâlâ açık (To Do)
+const DONE_ISH = ["Test", "Ready For Stage", "Ready for Prod", "Prod Check"];
+function inconsistency(c) {
+  if (!DONE_ISH.includes(c.status)) return null;
+  const open = (c.links || []).filter((l) => l.cat === "new");
+  return open.length ? open : null;
+}
+
+function render() {
+  const q = $("#search").value.toLowerCase();
+  const filtered = cards.filter((c) => !q || (c.key + c.summary + c.assignee).toLowerCase().includes(q));
+  const counts = { PASS: 0, FAIL: 0, UNTESTED: 0, BLOCKED: 0, BUG: 0 };
+  filtered.forEach((c) => counts[verdictOf(c.key)]++);
+  const groups = {};
+  filtered.forEach((c) => { (groups[c.assignee] ||= []).push(c); });
+  let html = `<div class="stats">
+    <div class="stat"><b>${filtered.length}</b>kart</div>
+    <div class="stat" style="color:var(--pass)"><b>${counts.PASS}</b>PASS</div>
+    <div class="stat" style="color:var(--fail)"><b>${counts.FAIL}</b>FAIL</div>
+    <div class="stat" style="color:var(--dim)"><b>${counts.UNTESTED}</b>test edilmedi</div>
+  </div>`;
+  for (const [who, list] of Object.entries(groups).sort((a, b) => b[1].length - a[1].length)) {
+    html += `<div class="group-title">${esc(who)} (${list.length})</div>`;
+    for (const c of list) {
+      const v = verdictOf(c.key);
+      const inc = inconsistency(c);
+      const ra = retestAlerts.find((x) => x.card === c.key);
+      html += `<div class="card ${selected === c.key ? "sel" : ""}" onclick="openCard('${c.key}')">
+        <span class="key">${c.key}</span>
+        <span class="sum" title="${esc(c.summary)}">${esc(c.summary)}</span>
+        ${ra ? `<span class="badge b-RETEST" title="Blocker ${ra.blocker}: ${esc(ra.from)} → ${esc(ra.to)}">🔄 RETEST'E HAZIR</span>` : ""}
+        ${inc ? `<span title="Kart '${esc(c.status)}' ama bağlı kart(lar) hâlâ açık: ${inc.map((l) => l.key + " (" + l.status + ")").join(", ")}" style="cursor:help">⚠️</span>` : ""}
+        <span class="chip">${esc(c.status)}</span>
+        <span class="badge b-${v}">${v === "UNTESTED" ? "TEST EDİLMEDİ" : v}</span>
+      </div>`;
+    }
+  }
+  $("#list").innerHTML = html;
+}
+
+// Kart metinlerinden (başlık+açıklama+yorumlar) test hedeflerini çıkar
+function extractTargets(d) {
+  const text = [d.summary, d.description, ...(d.comments || []).map((c) => c.text)].join("\n");
+  const api = new Map(); // path -> method
+  // "POST /product/search" gibi method+path kalıpları
+  for (const m of text.matchAll(/\b(GET|POST|PUT|DELETE|PATCH)\s+(\/[\w\-{}/.]+)/g)) {
+    const p = m[2].replace(/^\/api\/v[12]/, "").replace(/[.,)]+$/, "");
+    if (p.length > 3 && !api.has(p)) api.set(p, m[1]);
+  }
+  // method'suz çıplak endpoint path'leri
+  for (const m of text.matchAll(/(?:^|[\s("'`])(\/(?:api\/v[12]\/)?(?:product|customer|content|basket|campaign|search|internal)[\w\-{}/.]*)/g)) {
+    const p = m[1].replace(/^\/api\/v[12]/, "").replace(/[.,)]+$/, "");
+    if (p.length > 3 && !api.has(p)) api.set(p, "GET");
+  }
+  // sayfa URL'leri
+  const pages = new Set();
+  for (const m of text.matchAll(/https?:\/\/(?:www\.)?nadirgold\.dev(\/[^\s<>"')]*)?/g)) {
+    const p = (m[1] || "/").replace(/[?&]apiV2=1/, "").replace(/\?$/, "").replace(/[.,)]+$/, "");
+    if (!p.startsWith("/api")) pages.add(p || "/");
+  }
+  return { api: [...api.entries()], pages: [...pages] };
+}
+
+// Endpoint'i doğrudan yan yana aç: GET → iframe'ler, POST → iki pane'e fetch'lenen yanıtlar
+function openApiLive(path, method = "GET") {
+  const p = path.replace("{productId}", "310").replace("{id}", "310");
+  cmpMode = "live"; localStorage.setItem("cmp-mode", "live");
+  $("#cmp-path").value = "/__api" + p;
+  $("#api-method").value = method === "POST" ? "POST" : "GET";
+  $("#api-body").value = method === "POST" ? (p.includes("search") ? '{"query":"fifa","filters":{},"suggestion":true}' : "{}") : "";
+  document.body.classList.add("cmp-on");
+  applyCmpModeUi();
+  loadCompare();
+}
+
+function openApiDiffWith(method, path) {
+  cmpMode = "api"; localStorage.setItem("cmp-mode", "api");
+  $("#cmp-path").value = path;
+  // bilinen route farkı: v2 /product/search ↔ v1 /search
+  $("#api-v1path").value = path === "/product/search" ? "/search" : path;
+  $("#api-method").value = method === "POST" ? "POST" : "GET";
+  $("#api-body").value = method === "POST" ? (path.includes("search") ? '{"query":"fifa","filters":{},"suggestion":true}' : "{}") : "";
+  document.body.classList.add("cmp-on");
+  applyCmpModeUi();
+  loadCompare();
+}
+
+async function openCard(key) {
+  document.body.classList.remove("cmp-on");
+  selected = key; render();
+  $("#detail").innerHTML = '<p style="color:var(--dim)">yükleniyor…</p>';
+  const d = await fetch("/api/card/" + key).then((r) => r.json());
+  const v = d.verdict;
+  const runBtns = Object.entries(runsInfo.runs).filter(([, def]) => def.cards.includes(key));
+  let html = `<h2>${d.key} — ${esc(d.summary)}</h2>
+    <p style="color:var(--dim);font-size:12px">${esc(d.status)} · ${esc(d.assignee)} · ${esc(d.priority)} · ${esc((d.components || []).join(", "))} · ${new Date(d.updated).toLocaleString("tr")}</p>`;
+  const targets = extractTargets(d);
+  if (targets.api.length || targets.pages.length) {
+    html += `<div class="sec"><h3>🎯 Karttan Çıkarılan Hedefler</h3><div style="display:flex;flex-wrap:wrap;gap:6px">`;
+    for (const [p, m] of targets.api.slice(0, 8)) {
+      html += `<button class="hbtn" style="font-size:12px" title="V1/V2 yanıtlarını yan yana aç" onclick="openApiLive('${esc(p)}','${esc(m)}')">🔍 ${esc(m)} ${esc(p)}</button>`;
+    }
+    for (const p of targets.pages.slice(0, 6)) {
+      html += `<button class="hbtn" style="font-size:12px" title="V1↔V2 karşılaştırmada aç" onclick="openCompare('${esc(p)}')">🔍 ${esc(p)}</button>`;
+    }
+    html += `</div></div>`;
+  }
+  const ra = retestAlerts.find((x) => x.card === d.key);
+  if (ra) {
+    html += `<div class="sec"><div class="box" style="border-left:3px solid var(--accent)"><div class="who">🔄 Retest'e Hazır</div>Blocker <b>${ra.blocker}</b> "${esc(ra.from)}" → "<b>${esc(ra.to)}</b>" oldu (${new Date(ra.at).toLocaleString("tr")}). Fix dev'e inmiş olmalı — retest koşulabilir.\n<button class="runbtn" style="margin-top:8px" onclick="fetch('/api/retest-ack',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({card:'${d.key}'})}).then(()=>loadCards())">✓ Anladım, rozeti kaldır</button></div></div>`;
+  }
+  const inc = inconsistency({ status: d.status, links: d.links });
+  if (inc) {
+    html += `<div class="sec"><div class="box" style="border-left:3px solid var(--blocked)"><div class="who" style="color:var(--blocked)">⚠️ Statü Tutarsızlığı</div>Bu kart "${esc(d.status)}" durumunda ama bağlı kart(lar) hâlâ açık:\n${inc.map((l) => `• ${l.key} (${esc(l.status)}) — ${esc(l.summary || "")}`).join("\n")}\nBlocker gerçekten çözüldüyse statüleri güncellenmeli; çözülmediyse bu kartın testi erken olabilir.</div></div>`;
+  }
+  html += `<div class="sec"><h3>Koşumlar</h3>` + runBtns.map(([id, def]) =>
+    `<button class="runbtn" onclick="startRun('${id}')" ${runsInfo.active ? "disabled" : ""}>▶ ${esc(def.label)}</button>`).join("") +
+    `<button class="runbtn" style="background:var(--panel2);color:var(--accent);border:1px solid var(--accent)" onclick="openCompare(${targets.pages[0] ? `'${esc(targets.pages[0])}'` : ""})">🔍 V1 ↔ V2 Karşılaştır</button>` +
+    (v?.latest ? `<button class="runbtn" style="background:var(--panel2);color:var(--text);border:1px solid var(--border)" onclick="draftComment('${d.key}')">💬 Jira Yorum Taslağı</button>` : "") +
+    `</div><div id="draft-area"></div>`;
+  if (v?.latest) {
+    const L = v.latest;
+    html += `<div class="sec"><h3>Son QA Sonucu — <span class="badge b-${L.verdict}">${L.verdict}</span> ${new Date(L.date).toLocaleString("tr")}</h3>
+      <div class="box">${esc(L.summary)}\n${(L.notes || []).map((n) => "• " + esc(n)).join("\n")}</div>
+      <div class="box ai"><div class="who">🤖 AI Değerlendirme</div>${esc(L.aiEvaluation || "—")}</div>
+      <div class="evidence">${(L.evidence || []).map((e) => `<img src="/evidence/${encodeURIComponent(e)}" onclick="zoom(this.src)" loading="lazy" />`).join("")}</div></div>`;
+    if ((v.history || []).length > 1) {
+      html += `<div class="sec"><h3>Geçmiş</h3>` + v.history.slice(1).map((h) =>
+        `<div class="box"><span class="badge b-${h.verdict}">${h.verdict}</span> ${new Date(h.date).toLocaleDateString("tr")} — ${esc(h.summary)}</div>`).join("") + `</div>`;
+    }
+  } else {
+    html += `<div class="sec"><h3>QA Sonucu</h3><div class="box">Bu kart henüz test edilmedi.</div></div>`;
+  }
+  if (d.links?.length) {
+    html += `<div class="sec"><h3>Bağlı Kartlar</h3>` + d.links.map((l) =>
+      `<div class="box">${esc(l.rel)}: <a href="#" onclick="openCard('${l.key}');return false">${l.key}</a> — ${esc(l.summary)} <span class="chip">${esc(l.status)}</span></div>`).join("") + `</div>`;
+  }
+  if (d.description) html += `<div class="sec"><h3>Açıklama</h3><div class="box">${linkify(esc(d.description))}</div></div>`;
+  html += `<div class="sec"><h3>Yorumlar (${d.comments.length})</h3>` + d.comments.slice(-8).reverse().map((c) =>
+    `<div class="box"><div class="who">${esc(c.author)} · ${new Date(c.created).toLocaleString("tr")}</div>${linkify(esc(c.text))}</div>`).join("") + `</div>`;
+  $("#detail").innerHTML = html;
+}
+
+async function startRun(id) {
+  const r = await fetch("/api/run", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) }).then((r) => r.json());
+  if (r.error) alert(r.error);
+}
+
+function draftComment(key) {
+  const L = verdicts[key]?.latest;
+  if (!L) return;
+  const dt = new Date(L.date);
+  const tarih = `${String(dt.getDate()).padStart(2, "0")}.${String(dt.getMonth() + 1).padStart(2, "0")}.${dt.getFullYear()}`;
+  const emoji = { PASS: "✅", FAIL: "❌", ERROR: "⚠️" }[L.verdict] || "";
+  let text = `Retest ${tarih} (dev) — QA ${L.verdict} ${emoji}\n`;
+  text += (L.notes || []).map((n) => `• ${n}`).join("\n") + "\n";
+  if (L.summary) text += `\n${L.summary}\n`;
+  if (L.aiEvaluation) text += `\nNot: ${L.aiEvaluation}\n`;
+  const ev = L.evidence || [];
+  $("#draft-area").innerHTML = `<div class="sec"><h3>💬 Jira Yorum Taslağı — ${key}</h3>
+    <textarea id="draft-text" style="width:100%;min-height:180px;background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:12px;font:13px/1.5 inherit">${esc(text)}</textarea>
+    ${ev.length ? `<div style="margin:8px 0;font-size:12px;color:var(--dim)">Eklenecek kanıtlar: ${ev.map((e, i) => `<label style="margin-right:12px"><input type="checkbox" class="draft-ev" value="${esc(e)}" checked /> ${esc(e)}</label>`).join("")}</div>` : ""}
+    <button class="runbtn" onclick="sendComment('${key}')">📤 Jira'ya Gönder</button>
+    <button class="runbtn" style="background:var(--panel2);color:var(--text)" onclick="document.getElementById('draft-area').innerHTML=''">Vazgeç</button>
+    <div id="draft-result" style="margin-top:8px;font-size:12px"></div></div>`;
+  $("#draft-area").scrollIntoView({ behavior: "smooth" });
+}
+
+async function sendComment(key) {
+  const text = $("#draft-text").value.trim();
+  const attach = [...document.querySelectorAll(".draft-ev:checked")].map((c) => c.value);
+  if (!text) return;
+  if (!confirm(`${key} kartına Jira yorumu gönderilecek${attach.length ? ` (+${attach.length} ek)` : ""}. Emin misin?`)) return;
+  $("#draft-result").textContent = "gönderiliyor…";
+  const r = await fetch("/api/jira-comment", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ card: key, text, attach }) }).then((r) => r.json());
+  if (r.error) { $("#draft-result").innerHTML = `<span style="color:var(--fail)">hata: ${esc(r.error)}</span>`; return; }
+  $("#draft-result").innerHTML = `<span style="color:var(--pass)">✓ gönderildi — yorum id ${r.commentId}${r.attached?.length ? `, ${r.attached.length} ek yüklendi` : ""}</span>`;
+  setTimeout(() => openCard(key), 1500);
+}
+
+function zoom(src) { $("#zoomimg").src = src; $("#zoom").showModal(); }
+$("#zoom").onclick = () => $("#zoom").close();
+
+document.querySelectorAll(".tabs button").forEach((b) => b.onclick = () => {
+  document.querySelectorAll(".tabs button").forEach((x) => x.classList.remove("active"));
+  b.classList.add("active"); view = b.dataset.view; loadCards();
+});
+$("#search").oninput = render;
+
+// iframe mesajları: konum raporu, console hataları, analiz istatistikleri
+const lastPaths = { v1: null, v2: null };
+const consoleErrs = { v1: [], v2: [] };
+const statsPending = {};
+function headerText(mode) {
+  const bugs = consoleErrs[mode].length;
+  return (mode === "v1" ? "V1 (eski API)" : "V2 (NG_API_V2=1)") + ` — ${lastPaths[mode] || ""}` + (bugs ? ` · 🐞 ${bugs}` : "");
+}
+window.addEventListener("message", (e) => {
+  if (!e.origin.startsWith("http://localhost:464") || !e.data) return;
+  if (e.data.__qaErr) {
+    const { mode, msg } = e.data;
+    if (consoleErrs[mode].length < 100) consoleErrs[mode].push(msg);
+    if (document.body.classList.contains("cmp-on") && cmpMode === "live") $(`#cmp-h-${mode}`).textContent = headerText(mode);
+    return;
+  }
+  if (e.data.__qaStats) {
+    statsPending[e.data.mode]?.(e.data.stats);
+    return;
+  }
+  if (!e.data.__qa) return;
+  if (!document.body.classList.contains("cmp-on") || cmpMode !== "live") return;
+  const { mode, path } = e.data;
+  if (path.startsWith("/__api")) return;
+  if (lastPaths[mode] !== path) consoleErrs[mode] = [];
+  lastPaths[mode] = path;
+  $(`#cmp-h-${mode}`).textContent = headerText(mode);
+  $("#cmp-path").value = path;
+  localStorage.setItem("cmp-path", path);
+  const other = mode === "v1" ? "v2" : "v1";
+  if ($("#cmp-sync").checked && lastPaths[other] !== path) {
+    lastPaths[other] = path;
+    consoleErrs[other] = [];
+    const frame = $(`#cmp-b-${other} iframe`);
+    if (frame) frame.src = PROXY[other] + path;
+  }
+});
+
+// 📊 Analiz: iki iframe'den DOM istatistiklerini topla, diff tablosu çıkar
+async function analyzePages() {
+  const collect = (mode) => new Promise((ok) => {
+    statsPending[mode] = ok;
+    setTimeout(() => { statsPending[mode] = null; ok(null); }, 6000);
+    const frame = $(`#cmp-b-${mode} iframe`);
+    frame?.contentWindow?.postMessage({ __qaCollect: 1 }, PROXY[mode]);
+  });
+  $("#cmp-panes").classList.add("triple");
+  document.querySelector(".pane.px").style.display = "flex";
+  $("#cmp-h-px").textContent = "📊 Analiz";
+  const out = $("#cmp-b-px");
+  out.innerHTML = '<div class="loading">⏳ iki sayfadan veri toplanıyor…</div>';
+  const [s1, s2] = await Promise.all([collect("v1"), collect("v2")]);
+  if (!s1 || !s2) { out.innerHTML = '<div class="loading">veri alınamadı — sayfalar hâlâ yükleniyor olabilir, tekrar dene</div>'; return; }
+  const metric = (name, a, b) => {
+    const diff = String(a) !== String(b);
+    return `<tr class="${diff ? "d-type" : ""}"><td>${name}</td><td>${esc(String(a))}</td><td>${esc(String(b))}</td>${diff ? "<td>◀ FARK</td>" : "<td></td>"}</tr>`;
+  };
+  const h1 = new Set(s1.headings), h2 = new Set(s2.headings);
+  const onlyV1 = s1.headings.filter((h) => !h2.has(h));
+  const onlyV2 = s2.headings.filter((h) => !h1.has(h));
+  let html = `<table class="difftable"><tr><th>metrik</th><th>V1</th><th>V2</th><th></th></tr>
+    ${metric("title", s1.title, s2.title)}
+    ${metric("başlık sayısı (h1-h3)", s1.headings.length, s2.headings.length)}
+    ${metric("link sayısı", s1.links, s2.links)}
+    ${metric("görsel sayısı", s1.imgs, s2.imgs)}
+    ${metric("kırık görsel", s1.broken, s2.broken)}
+    ${metric("metin uzunluğu", s1.textLen, s2.textLen)}
+    ${metric("görsel CDN host'ları", (s1.hosts || []).join(", "), (s2.hosts || []).join(", "))}
+  </table>`;
+  if (onlyV1.length) html += `<div style="padding:8px 12px"><b class="d-miss">Sadece V1'de olan başlıklar (${onlyV1.length}):</b><br>${onlyV1.map(esc).join("<br>")}</div>`;
+  if (onlyV2.length) html += `<div style="padding:8px 12px"><b class="d-new">Sadece V2'de olan başlıklar (${onlyV2.length}):</b><br>${onlyV2.map(esc).join("<br>")}</div>`;
+  if (!onlyV1.length && !onlyV2.length) html += `<div style="padding:8px 12px"><span class="badge b-PASS">BAŞLIKLAR BİREBİR AYNI</span></div>`;
+  for (const mode of ["v1", "v2"]) {
+    if (consoleErrs[mode].length) {
+      html += `<details style="padding:8px 12px"><summary style="cursor:pointer;color:var(--blocked)">🐞 ${mode.toUpperCase()} console hataları (${consoleErrs[mode].length})</summary><pre style="font:11px ui-monospace,monospace;white-space:pre-wrap">${esc(consoleErrs[mode].join("\n"))}</pre></details>`;
+    }
+  }
+  html += `<div style="padding:8px 12px;color:var(--dim);font-size:11px">Hata yoksa 🐞 bölümü görünmez. Konsol hataları sayfa gezindikçe birikir, path değişince sıfırlanır.</div>`;
+  out.innerHTML = html;
+}
+
+// SSE canlı akış
+const es = new EventSource("/api/events");
+es.addEventListener("verdicts", async () => {
+  verdicts = await fetch("/api/verdicts").then((r) => r.json());
+  render();
+  if (selected) openCard(selected);
+});
+es.addEventListener("retest", (e) => {
+  const d = JSON.parse(e.data);
+  loadCards();
+  $("#meta").textContent = `🔄 ${d.card} retest'e hazır! (blocker ${d.blocker} → ${d.to})`;
+});
+es.addEventListener("run-start", (e) => {
+  const d = JSON.parse(e.data);
+  runsInfo.active = d;
+  renderRunMenu();
+  const rl = $("#runlog"); rl.classList.add("on");
+  rl.innerHTML = `<div class="rl-title">▶ ${esc(d.label)}</div>`;
+});
+es.addEventListener("run-log", (e) => {
+  const d = JSON.parse(e.data);
+  const rl = $("#runlog");
+  rl.insertAdjacentHTML("beforeend", `<div>${esc(d.line)}</div>`);
+  rl.scrollTop = rl.scrollHeight;
+});
+es.addEventListener("run-end", (e) => {
+  const d = JSON.parse(e.data);
+  runsInfo.active = null;
+  renderRunMenu();
+  $("#runlog").insertAdjacentHTML("beforeend", `<div class="rl-title">■ bitti (exit ${d.code})</div>`);
+  setTimeout(() => { $("#runlog").classList.remove("on"); loadCards(); }, 5000);
+});
+
+setInterval(loadCards, 60000);
+loadCards();
+</script>
+</body>
+</html>

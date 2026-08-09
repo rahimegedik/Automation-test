@@ -1,0 +1,27 @@
+{
+  "card": "NSB-6002",
+  "latest": {
+    "date": "2026-08-05T21:18:00+03:00",
+    "verdict": "FAIL",
+    "summary": "Blog listesi v2'de 10/23 yazı gösteriyor, sayfalama yok (yorum 64756)",
+    "notes": [
+      "Liste meta/pagination alanları FE'de kullanılmıyor",
+      "5892'nin benzer makale sorunu bu karta da yansıyor"
+    ],
+    "evidence": [],
+    "aiEvaluation": "Sayfalama entegrasyonu gelmeden PASS mümkün değil; 5892 fix'iyle birlikte retest edilmeli."
+  },
+  "history": [
+    {
+      "date": "2026-08-05T21:18:00+03:00",
+      "verdict": "FAIL",
+      "summary": "Blog listesi v2'de 10/23 yazı gösteriyor, sayfalama yok (yorum 64756)",
+      "notes": [
+        "Liste meta/pagination alanları FE'de kullanılmıyor",
+        "5892'nin benzer makale sorunu bu karta da yansıyor"
+      ],
+      "evidence": [],
+      "aiEvaluation": "Sayfalama entegrasyonu gelmeden PASS mümkün değil; 5892 fix'iyle birlikte retest edilmeli."
+    }
+  ]
+}
