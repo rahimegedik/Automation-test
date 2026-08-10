@@ -1,0 +1,43 @@
+{
+  "card": "NSB-5959",
+  "latest": {
+    "date": "2026-08-10T12:55:00+03:00",
+    "verdict": "UNTESTED",
+    "summary": "API tarafı kriterlere birebir uygun (V2 doğrulandı) — ama app'in converter'ı kullandığı ekran tespit edilemedi, entegrasyon kanıtı yok",
+    "notes": [
+      "V2 GET /product/bankListConverter → 200; şema birebir: {id:number, bankCode, logo, cardLogo, bankName}, camelCase; 3 kayıt (0062/0205/0067)",
+      "Cache-Control: public, max-age=600 + ETag mevcut (kart kriteri) ✅",
+      "V1 ↔ V2 küme ve şema aynı",
+      "Checkout 'Banka Seç' sheet'i converter'ı KULLANMIYOR görünüyor: 7 banka listeliyor (Ziraat, YapıKredi, KuveytTürk, Akbank, Halkbank, İş, Garanti) — converter 3 dönüyor; farklı kaynak (muhtemelen havale hesap listesi)",
+      "FE'ye soru: Android'de converter hangi ekranda tüketiliyor? (cardLogo alanı kart ödeme logolarını düşündürüyor)",
+      "Yan bulgu (perf): Banka Seç sheet'i ~10-15 sn skeleton'da kalıyor, logolar geç yükleniyor",
+      "Yan bulgu (a11y): sheet'teki banka satırları UI ağacında yok (logo-only, semantics'siz)"
+    ],
+    "evidence": [
+      "nsb5959-banka-sec-skeleton.jpg",
+      "nsb5959-banka-sec-7banka.jpg"
+    ],
+    "aiEvaluation": "PASS verilemez: kartın konusu Android entegrasyonu ve tüketen ekran doğrulanamadı. Ersin'den converter'ın kullanıldığı ekran bilgisi istenip o ekranda retest yapılmalı. API hazır olduğundan FE doğrulaması hızlı olur."
+  },
+  "history": [
+    {
+      "date": "2026-08-10T12:55:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "API tarafı kriterlere birebir uygun (V2 doğrulandı) — ama app'in converter'ı kullandığı ekran tespit edilemedi, entegrasyon kanıtı yok",
+      "notes": [
+        "V2 GET /product/bankListConverter → 200; şema birebir: {id:number, bankCode, logo, cardLogo, bankName}, camelCase; 3 kayıt (0062/0205/0067)",
+        "Cache-Control: public, max-age=600 + ETag mevcut (kart kriteri) ✅",
+        "V1 ↔ V2 küme ve şema aynı",
+        "Checkout 'Banka Seç' sheet'i converter'ı KULLANMIYOR görünüyor: 7 banka listeliyor (Ziraat, YapıKredi, KuveytTürk, Akbank, Halkbank, İş, Garanti) — converter 3 dönüyor; farklı kaynak (muhtemelen havale hesap listesi)",
+        "FE'ye soru: Android'de converter hangi ekranda tüketiliyor? (cardLogo alanı kart ödeme logolarını düşündürüyor)",
+        "Yan bulgu (perf): Banka Seç sheet'i ~10-15 sn skeleton'da kalıyor, logolar geç yükleniyor",
+        "Yan bulgu (a11y): sheet'teki banka satırları UI ağacında yok (logo-only, semantics'siz)"
+      ],
+      "evidence": [
+        "nsb5959-banka-sec-skeleton.jpg",
+        "nsb5959-banka-sec-7banka.jpg"
+      ],
+      "aiEvaluation": "PASS verilemez: kartın konusu Android entegrasyonu ve tüketen ekran doğrulanamadı. Ersin'den converter'ın kullanıldığı ekran bilgisi istenip o ekranda retest yapılmalı. API hazır olduğundan FE doğrulaması hızlı olur."
+    }
+  ]
+}

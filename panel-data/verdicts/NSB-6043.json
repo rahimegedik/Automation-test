@@ -1,0 +1,43 @@
+{
+  "card": "NSB-6043",
+  "latest": {
+    "date": "2026-08-10T12:50:00+03:00",
+    "verdict": "PASS",
+    "summary": "Android banka hesabı silme V2 E2E geçti (build 2.0.7/46, Oppo A5) — idempotency dahil",
+    "notes": [
+      "UI akışı: IBAN listesinde çöp ikonu → 'Emin misiniz?' onay diyaloğu → Sil → kayıt listeden düştü (NSB-6175 testinin temizlik adımında, id 17926)",
+      "API doğrulaması: V2 GET /customer/bank kayıt sayısı 3→2",
+      "İdempotency (kart kriteri): silinmiş id'ye DELETE {\"bankAccountId\":17926} → 200 {success:true} + güncel liste — dokümana uygun",
+      "DTO camelCase (bankAccountId) doğrulandı, yanıt güncel listeyi döndürüyor",
+      "Bulgu (kozmetik, NSB-6175 ile ortak): onay diyaloğunda yazım hatası 'IBAN'ınınızı'",
+      "Bulgu (a11y, ortak): silme ikonları semantics'te yok",
+      "Sınırlama: cihazdan network yakalanmadı; V2 kullanımı build etiketi + API anlık doğrulamasıyla teyit edildi"
+    ],
+    "evidence": [
+      "nsb6175-android-delete-dialog.jpg",
+      "nsb6175-android-iban-list-3.jpg"
+    ],
+    "aiEvaluation": "DELETE entegrasyonu tarife birebir uyuyor (200 + güncel liste + idempotent). NSB-6175 ile birlikte raporlanabilir; ikisinin ortak minor bulguları tek FE-app kartında toplanabilir."
+  },
+  "history": [
+    {
+      "date": "2026-08-10T12:50:00+03:00",
+      "verdict": "PASS",
+      "summary": "Android banka hesabı silme V2 E2E geçti (build 2.0.7/46, Oppo A5) — idempotency dahil",
+      "notes": [
+        "UI akışı: IBAN listesinde çöp ikonu → 'Emin misiniz?' onay diyaloğu → Sil → kayıt listeden düştü (NSB-6175 testinin temizlik adımında, id 17926)",
+        "API doğrulaması: V2 GET /customer/bank kayıt sayısı 3→2",
+        "İdempotency (kart kriteri): silinmiş id'ye DELETE {\"bankAccountId\":17926} → 200 {success:true} + güncel liste — dokümana uygun",
+        "DTO camelCase (bankAccountId) doğrulandı, yanıt güncel listeyi döndürüyor",
+        "Bulgu (kozmetik, NSB-6175 ile ortak): onay diyaloğunda yazım hatası 'IBAN'ınınızı'",
+        "Bulgu (a11y, ortak): silme ikonları semantics'te yok",
+        "Sınırlama: cihazdan network yakalanmadı; V2 kullanımı build etiketi + API anlık doğrulamasıyla teyit edildi"
+      ],
+      "evidence": [
+        "nsb6175-android-delete-dialog.jpg",
+        "nsb6175-android-iban-list-3.jpg"
+      ],
+      "aiEvaluation": "DELETE entegrasyonu tarife birebir uyuyor (200 + güncel liste + idempotent). NSB-6175 ile birlikte raporlanabilir; ikisinin ortak minor bulguları tek FE-app kartında toplanabilir."
+    }
+  ]
+}

@@ -123,11 +123,32 @@ function notifyMac(title, msg) {
   spawn("osascript", ["-e", `display notification ${JSON.stringify(msg)} with title ${JSON.stringify(title)} sound name "Glass"`]).on("error", () => {});
 }
 
+const KNOWN_CARDS = path.join(DATA, "known-cards.json");
+const NEWCARD_ALERTS = path.join(DATA, "newcard-alerts.json");
+
 async function checkBlockers() {
   try {
     const [a, b] = await Promise.all([getCards("v2"), getCards("test")]);
     const cards = new Map();
     for (const i of [...a.issues, ...b.issues]) cards.set(i.key, i);
+
+    // yeni kart tespiti (ilk taramada sadece baseline alınır, alarm üretilmez)
+    const known = readJson(KNOWN_CARDS, null);
+    if (known) {
+      const ncAlerts = readJson(NEWCARD_ALERTS, []);
+      let ncChanged = false;
+      for (const [key, c] of cards) {
+        if (!known.includes(key) && !ncAlerts.some((x) => x.card === key)) {
+          ncAlerts.push({ card: key, summary: c.summary, assignee: c.assignee, status: c.status, at: new Date().toISOString(), seen: false });
+          ncChanged = true;
+          broadcast("newcard", { card: key, summary: c.summary, status: c.status });
+          notifyMac("QA Panel — Yeni kart", `${key} (${c.status}): ${c.summary.slice(0, 80)}`);
+          console.log(`YENİ kart: ${key} (${c.status}) — ${c.summary.slice(0, 60)}`);
+        }
+      }
+      if (ncChanged) fs.writeFileSync(NEWCARD_ALERTS, JSON.stringify(ncAlerts, null, 1));
+    }
+    fs.writeFileSync(KNOWN_CARDS, JSON.stringify([...cards.keys()], null, 1));
     const prev = readJson(BLOCKER_STATE, {});
     const now = {};
     const alerts = readJson(RETEST_ALERTS, []);
@@ -203,6 +224,7 @@ async function jiraPostComment(card, text, attach) {
 async function fetchApi(base, pathAndQuery, method, body, extraCookie) {
   const headers = { accept: "application/json", "device-type": "web" };
   if (extraCookie) headers.cookie = extraCookie;
+  if (customerBearer) headers.authorization = `Bearer ${customerBearer}`;
   if (body) headers["content-type"] = "application/json";
   const started = Date.now();
   try {
@@ -303,7 +325,17 @@ async function snapshot(pagePath, mode, fullPage) {
 // access_token kısa ömürlü — Playwright ile tazelenir (AUTHP_SESSION_ID ile sessiz yenileme),
 // proxy 302→auth görünce bir kez tazeleyip yeniden dener.
 let authCookieHeader = null;
+let authCookiesArr = [];
+let customerBearer = null; // NG_AUTH cookie'sindeki müşteri JWT'si (customer/* uçları için)
 let authRefreshing = null;
+function extractBearer() {
+  try {
+    const ng = authCookiesArr.find((c) => c.name === "NG_AUTH");
+    if (!ng) return;
+    const obj = JSON.parse(Buffer.from(decodeURIComponent(ng.value), "base64").toString("utf8"));
+    customerBearer = obj.token || null;
+  } catch { customerBearer = null; }
+}
 async function refreshAuth() {
   if (authRefreshing) return authRefreshing;
   authRefreshing = (async () => {
@@ -312,18 +344,25 @@ async function refreshAuth() {
     try {
       await page.goto("https://www.nadirgold.dev/", { waitUntil: "domcontentloaded", timeout: 45000 });
       const cookies = await ctx.cookies("https://www.nadirgold.dev");
-      authCookieHeader = cookies.filter((c) => c.name !== "NG_API_V2").map((c) => `${c.name}=${c.value}`).join("; ");
+      authCookiesArr = cookies.filter((c) => c.name !== "NG_API_V2");
+      authCookieHeader = authCookiesArr.map((c) => `${c.name}=${c.value}`).join("; ");
+      extractBearer();
       await ctx.storageState({ path: path.join(REPO, "playwright/.auth/dev-user.json") });
       console.log("auth tazelendi:", new Date().toISOString());
     } finally { await page.close(); authRefreshing = null; }
   })();
   return authRefreshing;
 }
+const parseCookieHeader = (s) =>
+  Object.fromEntries((s || "").split(";").map((x) => x.trim()).filter(Boolean).map((x) => {
+    const i = x.indexOf("=");
+    return [x.slice(0, i), x.slice(i + 1)];
+  }));
 
 const CORS = {
   "Access-Control-Allow-Origin": `http://localhost:${PORT}`,
   "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,PATCH,OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, device-type",
+  "Access-Control-Allow-Headers": "Content-Type, device-type, Authorization",
 };
 
 function startProxy(port, mode) {
@@ -344,14 +383,19 @@ function startProxy(port, mode) {
         body = await new Promise((ok) => { const chunks = []; req.on("data", (c) => chunks.push(c)); req.on("end", () => ok(Buffer.concat(chunks))); });
       }
       const doFetch = () => {
+        // auth cookie'leri + tarayıcıdan gelenler (tarayıcınınki öncelikli); NG_API_V2 modu her zaman sunucu belirler
+        const jar = { ...Object.fromEntries(authCookiesArr.map((c) => [c.name, c.value])), ...parseCookieHeader(req.headers.cookie) };
+        delete jar.NG_API_V2;
+        if (mode === "v2") jar.NG_API_V2 = "1";
         const headers = {
-          cookie: authCookieHeader + (mode === "v2" ? "; NG_API_V2=1" : ""),
+          cookie: Object.entries(jar).map(([k, v]) => `${k}=${v}`).join("; "),
           "user-agent": req.headers["user-agent"] || "Mozilla/5.0",
           accept: req.headers["accept"] || "*/*",
           "accept-language": req.headers["accept-language"] || "tr",
           "device-type": req.headers["device-type"] || "web",
         };
-        for (const h of ["content-type", "device-type", "x-requested-with"]) if (req.headers[h]) headers[h] = req.headers[h];
+        for (const h of ["content-type", "device-type", "x-requested-with", "authorization"]) if (req.headers[h]) headers[h] = req.headers[h];
+        if (!headers.authorization && customerBearer) headers.authorization = `Bearer ${customerBearer}`;
         return fetch(upstream, { method: req.method, headers, body, redirect: "manual" });
       };
       let r = await doFetch();
@@ -366,6 +410,11 @@ function startProxy(port, mode) {
         out[k] = v;
       });
       let buf = Buffer.from(await r.arrayBuffer());
+      // HTML yanıtlarında auth cookie'lerini localhost'a da yaz — sayfa içi JS oturumu görsün
+      // (NG_API_V2 asla client'a yazılmaz: localhost portları cookie kavanozunu paylaşır, modlar karışırdı)
+      if ((out["content-type"] || "").includes("text/html") && authCookiesArr.length) {
+        out["set-cookie"] = authCookiesArr.map((c) => `${c.name}=${c.value}; Path=/; SameSite=Lax`);
+      }
       // HTML'e konum raporlayıcı enjekte et: iframe içi gezinmeyi panele postMessage'la bildirir
       if ((out["content-type"] || "").includes("text/html")) {
         const reporter = `<script>(function(){var M="${mode}",O="http://localhost:${PORT}";
@@ -428,6 +477,44 @@ const server = http.createServer(async (req, res) => {
       return res.end(snap.buf);
     }
     if (url.pathname === "/api/retest-alerts") return send(200, readJson(RETEST_ALERTS, []).filter((a) => !a.seen));
+    if (url.pathname === "/api/newcard-alerts") return send(200, readJson(NEWCARD_ALERTS, []).filter((a) => !a.seen));
+    if (url.pathname === "/api/newcard-ack" && req.method === "POST") {
+      let body = "";
+      req.on("data", (c) => (body += c));
+      req.on("end", () => {
+        const { card } = JSON.parse(body || "{}");
+        const alerts = readJson(NEWCARD_ALERTS, []);
+        alerts.forEach((a) => { if (a.card === card) a.seen = true; });
+        fs.writeFileSync(NEWCARD_ALERTS, JSON.stringify(alerts, null, 1));
+        send(200, { ok: true });
+      });
+      return;
+    }
+    if (url.pathname === "/api/verdict" && req.method === "POST") {
+      let body = "";
+      req.on("data", (c) => (body += c));
+      req.on("end", () => {
+        try {
+          const { card, verdict, summary, notes, aiEvaluation } = JSON.parse(body || "{}");
+          if (!/^NSB-\d+$/.test(card || "")) return send(400, { error: "geçersiz kart" });
+          if (!["PASS", "FAIL", "BLOCKED", "UNTESTED", "BUG", "ERROR"].includes(verdict)) return send(400, { error: "geçersiz verdict" });
+          if (!summary?.trim()) return send(400, { error: "özet zorunlu" });
+          const p = path.join(VERDICTS, `${card}.json`);
+          const prev = readJson(p, { card, history: [] });
+          const entry = {
+            date: new Date().toISOString(), verdict, summary: summary.trim(),
+            notes: (notes || []).filter((n) => n.trim()),
+            evidence: prev.latest?.evidence || [],
+            aiEvaluation: (aiEvaluation || "").trim(), manual: true,
+          };
+          prev.latest = entry;
+          prev.history = [entry, ...(prev.history || [])].slice(0, 30);
+          fs.writeFileSync(p, JSON.stringify(prev, null, 2));
+          send(200, { ok: true });
+        } catch (e) { send(500, { error: String(e.message || e) }); }
+      });
+      return;
+    }
     if (url.pathname === "/api/retest-ack" && req.method === "POST") {
       let body = "";
       req.on("data", (c) => (body += c));

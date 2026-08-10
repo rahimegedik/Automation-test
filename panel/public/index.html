@@ -36,7 +36,11 @@
   body.cmp-on #runlog { right: 0; }
   .b-ERROR { background: color-mix(in srgb, var(--blocked) 18%, transparent); color: var(--blocked); }
   .b-RETEST { background: color-mix(in srgb, var(--accent) 22%, transparent); color: var(--accent); border: 1px solid var(--accent); animation: pulse 2s infinite; }
+  .b-NEW { background: rgba(95, 168, 239, .2); color: #5fa8ef; border: 1px solid #5fa8ef; animation: pulse 2s infinite; }
   @keyframes pulse { 50% { opacity: .55; } }
+  .vform label { display: block; font-size: 12px; color: var(--dim); margin: 8px 0 3px; }
+  .vform input, .vform select, .vform textarea { width: 100%; background: var(--panel2); border: 1px solid var(--border); color: var(--text); border-radius: 8px; padding: 8px 10px; font: 13px/1.4 inherit; }
+  .vform textarea { min-height: 70px; }
   #cmp .bar { display: flex; gap: 10px; align-items: center; padding: 10px 16px; background: var(--panel); border-bottom: 1px solid var(--border); }
   #cmp .bar input[type=text] { flex: 1; background: var(--panel2); border: 1px solid var(--border); color: var(--text); padding: 7px 12px; border-radius: 8px; }
   #cmp .panes { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); overflow: hidden; }
@@ -149,7 +153,7 @@
 <div id="runlog"></div>
 <dialog id="zoom"><img id="zoomimg" /></dialog>
 <script>
-let view = "test", cards = [], verdicts = {}, selected = null, runsInfo = { runs: {}, active: null }, retestAlerts = [];
+let view = "test", cards = [], verdicts = {}, selected = null, runsInfo = { runs: {}, active: null }, retestAlerts = [], newcardAlerts = [];
 
 const $ = (s) => document.querySelector(s);
 const esc = (s) => (s || "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -368,13 +372,14 @@ async function pixelDiff() {
 async function loadCards() {
   $("#meta").textContent = "yükleniyor…";
   try {
-    const [c, v, r, ra] = await Promise.all([
+    const [c, v, r, ra, nc] = await Promise.all([
       fetch("/api/cards?view=" + view).then((r) => r.json()),
       fetch("/api/verdicts").then((r) => r.json()),
       fetch("/api/runs").then((r) => r.json()),
       fetch("/api/retest-alerts").then((r) => r.json()),
+      fetch("/api/newcard-alerts").then((r) => r.json()),
     ]);
-    cards = c.issues || []; verdicts = v; runsInfo = r; retestAlerts = ra || [];
+    cards = c.issues || []; verdicts = v; runsInfo = r; retestAlerts = ra || []; newcardAlerts = nc || [];
     $("#meta").textContent = "Jira: " + new Date(c.fetchedAt).toLocaleTimeString("tr");
     render(); renderRunMenu();
   } catch (e) { $("#meta").textContent = "hata: " + e.message; }
@@ -409,9 +414,11 @@ function render() {
       const v = verdictOf(c.key);
       const inc = inconsistency(c);
       const ra = retestAlerts.find((x) => x.card === c.key);
+      const nc = newcardAlerts.find((x) => x.card === c.key);
       html += `<div class="card ${selected === c.key ? "sel" : ""}" onclick="openCard('${c.key}')">
         <span class="key">${c.key}</span>
         <span class="sum" title="${esc(c.summary)}">${esc(c.summary)}</span>
+        ${nc ? `<span class="badge b-NEW" title="${new Date(nc.at).toLocaleString("tr")} itibarıyla kuyruğa girdi">YENİ</span>` : ""}
         ${ra ? `<span class="badge b-RETEST" title="Blocker ${ra.blocker}: ${esc(ra.from)} → ${esc(ra.to)}">🔄 RETEST'E HAZIR</span>` : ""}
         ${inc ? `<span title="Kart '${esc(c.status)}' ama bağlı kart(lar) hâlâ açık: ${inc.map((l) => l.key + " (" + l.status + ")").join(", ")}" style="cursor:help">⚠️</span>` : ""}
         <span class="chip">${esc(c.status)}</span>
@@ -471,6 +478,11 @@ function openApiDiffWith(method, path) {
 
 async function openCard(key) {
   document.body.classList.remove("cmp-on");
+  const nc = newcardAlerts.find((x) => x.card === key);
+  if (nc) {
+    newcardAlerts = newcardAlerts.filter((x) => x.card !== key);
+    fetch("/api/newcard-ack", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ card: key }) });
+  }
   selected = key; render();
   $("#detail").innerHTML = '<p style="color:var(--dim)">yükleniyor…</p>';
   const d = await fetch("/api/card/" + key).then((r) => r.json());
@@ -501,6 +513,7 @@ async function openCard(key) {
     `<button class="runbtn" onclick="startRun('${id}')" ${runsInfo.active ? "disabled" : ""}>▶ ${esc(def.label)}</button>`).join("") +
     `<button class="runbtn" style="background:var(--panel2);color:var(--accent);border:1px solid var(--accent)" onclick="openCompare(${targets.pages[0] ? `'${esc(targets.pages[0])}'` : ""})">🔍 V1 ↔ V2 Karşılaştır</button>` +
     (v?.latest ? `<button class="runbtn" style="background:var(--panel2);color:var(--text);border:1px solid var(--border)" onclick="draftComment('${d.key}')">💬 Jira Yorum Taslağı</button>` : "") +
+    `<button class="runbtn" style="background:var(--panel2);color:var(--text);border:1px solid var(--border)" onclick="editVerdict('${d.key}')">✏️ Verdict Gir</button>` +
     `</div><div id="draft-area"></div>`;
   if (v?.latest) {
     const L = v.latest;
@@ -528,6 +541,36 @@ async function openCard(key) {
 async function startRun(id) {
   const r = await fetch("/api/run", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) }).then((r) => r.json());
   if (r.error) alert(r.error);
+}
+
+// ✏️ Manuel verdict editörü
+function editVerdict(key) {
+  const L = verdicts[key]?.latest || {};
+  const opts = ["PASS", "FAIL", "BLOCKED", "UNTESTED", "BUG", "ERROR"].map((o) =>
+    `<option ${o === L.verdict ? "selected" : ""}>${o}</option>`).join("");
+  $("#draft-area").innerHTML = `<div class="sec vform"><h3>✏️ Verdict — ${key}</h3>
+    <label>Sonuç</label><select id="vf-verdict">${opts}</select>
+    <label>Özet (zorunlu)</label><input id="vf-summary" value="${esc(L.summary || "")}" placeholder="Tek cümlelik QA sonucu" />
+    <label>Notlar (her satır bir madde)</label><textarea id="vf-notes">${esc((L.notes || []).join("\n"))}</textarea>
+    <label>AI / QA Değerlendirmesi</label><textarea id="vf-ai">${esc(L.aiEvaluation || "")}</textarea>
+    <div style="margin-top:10px">
+      <button class="runbtn" onclick="saveVerdict('${key}')">💾 Kaydet</button>
+      <button class="runbtn" style="background:var(--panel2);color:var(--text)" onclick="document.getElementById('draft-area').innerHTML=''">Vazgeç</button>
+    </div><div id="vf-result" style="margin-top:8px;font-size:12px"></div></div>`;
+  $("#draft-area").scrollIntoView({ behavior: "smooth" });
+}
+async function saveVerdict(key) {
+  const payload = {
+    card: key,
+    verdict: $("#vf-verdict").value,
+    summary: $("#vf-summary").value,
+    notes: $("#vf-notes").value.split("\n"),
+    aiEvaluation: $("#vf-ai").value,
+  };
+  const r = await fetch("/api/verdict", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }).then((r) => r.json());
+  if (r.error) { $("#vf-result").innerHTML = `<span style="color:var(--fail)">hata: ${esc(r.error)}</span>`; return; }
+  $("#vf-result").innerHTML = `<span style="color:var(--pass)">✓ kaydedildi</span>`;
+  setTimeout(() => openCard(key), 800);
 }
 
 function draftComment(key) {
@@ -658,6 +701,11 @@ es.addEventListener("verdicts", async () => {
   verdicts = await fetch("/api/verdicts").then((r) => r.json());
   render();
   if (selected) openCard(selected);
+});
+es.addEventListener("newcard", (e) => {
+  const d = JSON.parse(e.data);
+  loadCards();
+  $("#meta").textContent = `🆕 Yeni kart: ${d.card} (${d.status})`;
 });
 es.addEventListener("retest", (e) => {
   const d = JSON.parse(e.data);

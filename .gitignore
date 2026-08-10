@@ -9,3 +9,5 @@ debug-*.png
 .DS_Store
 panel-data/blocker-state.json
 panel-data/retest-alerts.json
+panel-data/known-cards.json
+panel-data/newcard-alerts.json

@@ -1,0 +1,49 @@
+{
+  "card": "NSB-6175",
+  "latest": {
+    "date": "2026-08-10T12:35:00+03:00",
+    "verdict": "PASS",
+    "summary": "Android banka hesabı ekleme E2E geçti (build 2.0.7/46, 80c118a4, Oppo A5 Android 10) — 3 minor UX bulgusu ile",
+    "notes": [
+      "Pozitif akış: Yapı Kredi + geçerli IBAN (TR50...2773) → kayıt UI listesinde ve V2 GET /customer/bank'ta (id 17926) doğrulandı",
+      "Negatif: bozuk check-digit'li IBAN reddedildi ('Lütfen seçtiğiniz bankaya ait bir IBAN numarası giriniz'), API'ye kayıt düşmedi",
+      "Silme akışı: onay diyaloğu + silme çalışıyor; API'de kayıt sayısı 3→2 doğrulandı (temizlik yapıldı)",
+      "bankList dropdown'u = V2 GET /customer/bankList birebir (3 aktif banka, validIban kodlarıyla)",
+      "Bulgu 1 (minor): Hesap Adı boşken Kaydet SESSİZ — hiçbir validasyon mesajı çıkmıyor, önceki hata mesajını da temizliyor",
+      "Bulgu 2 (minor): Hesap Adı prefill tutarsız — form ilk açılışta müşteri adıyla dolu, sonraki açılışlarda boş",
+      "Bulgu 3 (kozmetik): silme onayında yazım hatası: 'IBAN'ınınızı' (doğrusu 'IBAN'ınızı')",
+      "Bulgu 4 (a11y): satırlardaki silme ikonları UI ağacında/semantics'te yok (koordinatla erişildi)",
+      "Sınırlama: cihazdan network yakalanmadı; app'in V2 ucunu kullandığı build etiketi (NSB-6175) + V2 API'de anlık doğrulama ile teyit edildi"
+    ],
+    "evidence": [
+      "nsb6175-android-iban-list-3.jpg",
+      "nsb6175-android-invalid-iban-error.jpg",
+      "nsb6175-android-delete-dialog.jpg"
+    ],
+    "aiEvaluation": "Entegrasyon kartı olarak PASS — ekleme/validasyon/silme uçtan uca çalışıyor ve API ile tutarlı. 4 bulgu FE-app tarafında ayrı minor kart(lar) olarak açılabilir; blocker değiller. Boş-ad sessiz hatası kullanıcıyı en çok şaşırtacak olan."
+  },
+  "history": [
+    {
+      "date": "2026-08-10T12:35:00+03:00",
+      "verdict": "PASS",
+      "summary": "Android banka hesabı ekleme E2E geçti (build 2.0.7/46, 80c118a4, Oppo A5 Android 10) — 3 minor UX bulgusu ile",
+      "notes": [
+        "Pozitif akış: Yapı Kredi + geçerli IBAN (TR50...2773) → kayıt UI listesinde ve V2 GET /customer/bank'ta (id 17926) doğrulandı",
+        "Negatif: bozuk check-digit'li IBAN reddedildi ('Lütfen seçtiğiniz bankaya ait bir IBAN numarası giriniz'), API'ye kayıt düşmedi",
+        "Silme akışı: onay diyaloğu + silme çalışıyor; API'de kayıt sayısı 3→2 doğrulandı (temizlik yapıldı)",
+        "bankList dropdown'u = V2 GET /customer/bankList birebir (3 aktif banka, validIban kodlarıyla)",
+        "Bulgu 1 (minor): Hesap Adı boşken Kaydet SESSİZ — hiçbir validasyon mesajı çıkmıyor, önceki hata mesajını da temizliyor",
+        "Bulgu 2 (minor): Hesap Adı prefill tutarsız — form ilk açılışta müşteri adıyla dolu, sonraki açılışlarda boş",
+        "Bulgu 3 (kozmetik): silme onayında yazım hatası: 'IBAN'ınınızı' (doğrusu 'IBAN'ınızı')",
+        "Bulgu 4 (a11y): satırlardaki silme ikonları UI ağacında/semantics'te yok (koordinatla erişildi)",
+        "Sınırlama: cihazdan network yakalanmadı; app'in V2 ucunu kullandığı build etiketi (NSB-6175) + V2 API'de anlık doğrulama ile teyit edildi"
+      ],
+      "evidence": [
+        "nsb6175-android-iban-list-3.jpg",
+        "nsb6175-android-invalid-iban-error.jpg",
+        "nsb6175-android-delete-dialog.jpg"
+      ],
+      "aiEvaluation": "Entegrasyon kartı olarak PASS — ekleme/validasyon/silme uçtan uca çalışıyor ve API ile tutarlı. 4 bulgu FE-app tarafında ayrı minor kart(lar) olarak açılabilir; blocker değiller. Boş-ad sessiz hatası kullanıcıyı en çok şaşırtacak olan."
+    }
+  ]
+}
