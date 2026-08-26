@@ -1,22 +1,32 @@
 {
   "card": "NSB-5982",
   "latest": {
-    "date": "2026-08-07T17:32:00+03:00",
+    "date": "2026-08-19T13:18:48.441Z",
     "verdict": "PASS",
-    "summary": "İlgili ürünler V2: item.image full CDN objesi, Benzer Ürünler sidebar V1↔V2 identik (Jira yorum 65209)",
+    "summary": "Benzer Ürünler render OK, API'de 3 item, image tam",
     "notes": [
-      "GET /api/v2/product/other/310 → 200, 3 item, image null 0",
-      "items[].id number (string toleransı gereksizleşti)",
-      "Olmayan ürün → 200 {items:null} dokümana uygun",
-      "Sidebar SSR'da render — client çağrısı görünmez"
+      "Sidebar: var, 3 görsel, 0 kırık",
+      "Proxy /api/v2/product/other/310: 200, items: 3, image null: 0"
     ],
     "evidence": [
-      "retest-2026-08-07-5982-v1-full.png",
-      "retest-2026-08-07-5982-v2-full.png"
+      "retest-2026-08-19-5982-detail.png"
     ],
-    "aiEvaluation": "NSB-6124'ün konusu davranışta çözülmüş ama kart hâlâ Yapılacaklar'da (NSB-5404 de öyle) — statü güncellemesi istenmeli. V2 SSR'ın yeni endpoint kullandığı çıktı eşleşmesiyle doğrulandı; FE'den kesin teyit iyi olur."
+    "aiEvaluation": "item.image full CDN objesi (NSB-6124 konusu çözük), sidebar SSR'da render oluyor. Kartın statü tutarsızlığı: NSB-6124/NSB-5404 hâlâ Yapılacaklar'da."
   },
   "history": [
+    {
+      "date": "2026-08-19T13:18:48.441Z",
+      "verdict": "PASS",
+      "summary": "Benzer Ürünler render OK, API'de 3 item, image tam",
+      "notes": [
+        "Sidebar: var, 3 görsel, 0 kırık",
+        "Proxy /api/v2/product/other/310: 200, items: 3, image null: 0"
+      ],
+      "evidence": [
+        "retest-2026-08-19-5982-detail.png"
+      ],
+      "aiEvaluation": "item.image full CDN objesi (NSB-6124 konusu çözük), sidebar SSR'da render oluyor. Kartın statü tutarsızlığı: NSB-6124/NSB-5404 hâlâ Yapılacaklar'da."
+    },
     {
       "date": "2026-08-07T17:32:00+03:00",
       "verdict": "PASS",
