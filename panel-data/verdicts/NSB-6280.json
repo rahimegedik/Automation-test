@@ -1,0 +1,31 @@
+{
+  "card": "NSB-6280",
+  "history": [
+    {
+      "date": "2026-08-27T08:34:02.321146+00:00",
+      "verdict": "blocked",
+      "summary": "Olculemedi: badge alani hem V1 hem V2'de null (kayitli badge yok) ve V2 product servisinde 3 uctan 2'si (product/detail/{id}, analyseUrl) swagger'da YOK.",
+      "notes": [
+        "Olcum 2026-08-27, dev. Yontem: V2 login JWT'si ile HEM legacy (api.nadirgold.dev) HEM V2 (api-v2.nadirgold.dev/api/v1) dogrudan cagrildi.",
+        "category/list/1 → V1 data.badge=null, data.list[0].badge=null; V2 ayni: iki tarafta da null. Yapisal parity var ama DEGER yok, yani badge dogrulanamaz.",
+        "V2 product swagger'inda 'detail' ve 'analyse' iceren yol YOK (mevcut: product/products, product/products/{id}, getPrices, getPriceHistory...). Kartin bahsettigi /product/detail/{id} ve /analyseUrl V2'de bu isimle bulunmuyor.",
+        "Gereken: admin panelden badge'i AKTIF edilmis bir urun (badge secimi + konum) ve V2'deki dogru uc adlari. Ikisi olmadan parity olcumu yapilamaz."
+      ],
+      "evidence": [],
+      "aiEvaluation": null
+    }
+  ],
+  "latest": {
+    "date": "2026-08-27T08:34:02.321146+00:00",
+    "verdict": "blocked",
+    "summary": "Olculemedi: badge alani hem V1 hem V2'de null (kayitli badge yok) ve V2 product servisinde 3 uctan 2'si (product/detail/{id}, analyseUrl) swagger'da YOK.",
+    "notes": [
+      "Olcum 2026-08-27, dev. Yontem: V2 login JWT'si ile HEM legacy (api.nadirgold.dev) HEM V2 (api-v2.nadirgold.dev/api/v1) dogrudan cagrildi.",
+      "category/list/1 → V1 data.badge=null, data.list[0].badge=null; V2 ayni: iki tarafta da null. Yapisal parity var ama DEGER yok, yani badge dogrulanamaz.",
+      "V2 product swagger'inda 'detail' ve 'analyse' iceren yol YOK (mevcut: product/products, product/products/{id}, getPrices, getPriceHistory...). Kartin bahsettigi /product/detail/{id} ve /analyseUrl V2'de bu isimle bulunmuyor.",
+      "Gereken: admin panelden badge'i AKTIF edilmis bir urun (badge secimi + konum) ve V2'deki dogru uc adlari. Ikisi olmadan parity olcumu yapilamaz."
+    ],
+    "evidence": [],
+    "aiEvaluation": null
+  }
+}

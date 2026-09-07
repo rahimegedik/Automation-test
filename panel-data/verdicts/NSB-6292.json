@@ -1,0 +1,33 @@
+{
+  "card": "NSB-6292",
+  "history": [
+    {
+      "date": "2026-08-27T08:34:02.321146+00:00",
+      "verdict": "pass",
+      "summary": "CDN domain kaymasi DUZELMIS: content/blog/posts'ta V2 artik cdn.nadirgold.dev donuyor, cdn.nadirgold.com hic gorulmedi (16 URL).",
+      "notes": [
+        "Olcum 2026-08-27, dev. Yontem: V2 login JWT'si ile HEM legacy (api.nadirgold.dev) HEM V2 (api-v2.nadirgold.dev/api/v1) dogrudan cagrildi.",
+        "blog/posts URL host dagilimi — V1: cdn.nadirgold.dev 16, stream.mux.com 8 · V2: cdn.nadirgold.dev 16, stream.mux.com 4.",
+        "Kartin sikayeti (V2 → cdn.nadirgold.com) bu uçta artik uretilmiyor.",
+        "EK BULGU: video URL SAYISI farkli (V1 8 stream.mux.com, V2 4). Domain sorunu degil, alan/kayit eksigi — NSB-6342 ile ayni eksende olabilir, ayrica bakilmali.",
+        "KAPSAM NOTU: kart 4 uctan (blog/posts, layout/{alias}, best-seller, commerce) bahsediyor; bu turda yalnizca blog/posts olculdu. Diger uc uc icin ayrica olcum gerekiyor — kart kapatilmadan once."
+      ],
+      "evidence": [],
+      "aiEvaluation": null
+    }
+  ],
+  "latest": {
+    "date": "2026-08-27T08:34:02.321146+00:00",
+    "verdict": "pass",
+    "summary": "CDN domain kaymasi DUZELMIS: content/blog/posts'ta V2 artik cdn.nadirgold.dev donuyor, cdn.nadirgold.com hic gorulmedi (16 URL).",
+    "notes": [
+      "Olcum 2026-08-27, dev. Yontem: V2 login JWT'si ile HEM legacy (api.nadirgold.dev) HEM V2 (api-v2.nadirgold.dev/api/v1) dogrudan cagrildi.",
+      "blog/posts URL host dagilimi — V1: cdn.nadirgold.dev 16, stream.mux.com 8 · V2: cdn.nadirgold.dev 16, stream.mux.com 4.",
+      "Kartin sikayeti (V2 → cdn.nadirgold.com) bu uçta artik uretilmiyor.",
+      "EK BULGU: video URL SAYISI farkli (V1 8 stream.mux.com, V2 4). Domain sorunu degil, alan/kayit eksigi — NSB-6342 ile ayni eksende olabilir, ayrica bakilmali.",
+      "KAPSAM NOTU: kart 4 uctan (blog/posts, layout/{alias}, best-seller, commerce) bahsediyor; bu turda yalnizca blog/posts olculdu. Diger uc uc icin ayrica olcum gerekiyor — kart kapatilmadan once."
+    ],
+    "evidence": [],
+    "aiEvaluation": null
+  }
+}

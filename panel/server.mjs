@@ -126,6 +126,9 @@ function notifyMac(title, msg) {
 const KNOWN_CARDS = path.join(DATA, "known-cards.json");
 const NEWCARD_ALERTS = path.join(DATA, "newcard-alerts.json");
 
+// ---- Cihaz test kuyruğu: panelden istenen [Android]/[iOS] koşumlarını Claude Code alır ----
+const DEVICE_QUEUE = path.join(DATA, "device-queue.json");
+
 async function checkBlockers() {
   try {
     const [a, b] = await Promise.all([getCards("v2"), getCards("test")]);
@@ -467,6 +470,56 @@ const server = http.createServer(async (req, res) => {
     if (url.pathname === "/api/verdicts") return send(200, allVerdicts());
     if (url.pathname === "/api/runs") return send(200, { runs: runsConfig.runs, active: activeRun ? { id: activeRun.id, label: activeRun.def.label } : null });
     if (url.pathname === "/api/refresh") { cache.clear(); return send(200, { ok: true }); }
+    // Cihaz test kuyruğu — panelden istek, Claude Code tarafından işlenir
+    if (url.pathname === "/api/device-queue" && req.method === "DELETE") { fs.writeFileSync(DEVICE_QUEUE, "[]"); return send(200, { ok: true }); }
+    if (url.pathname === "/api/device-queue") return send(200, readJson(DEVICE_QUEUE, []));
+    if (url.pathname === "/api/device-request" && req.method === "POST") {
+      let body = "";
+      req.on("data", (c) => (body += c));
+      req.on("end", () => {
+        try {
+          const { card, summary, deviceId, deviceName, platform, targets, note } = JSON.parse(body || "{}");
+          if (!/^NSB-\d+$/.test(card || "")) return send(400, { error: "geçersiz kart" });
+          const q = readJson(DEVICE_QUEUE, []).filter((x) => !(x.card === card && x.status === "pending"));
+          q.unshift({
+            id: `${card}-${Date.now()}`, card, summary: summary || "", deviceId: deviceId || "", deviceName: deviceName || "",
+            platform: platform || "", targets: targets || [], note: (note || "").trim(),
+            status: "pending", requestedAt: new Date().toISOString(),
+          });
+          fs.writeFileSync(DEVICE_QUEUE, JSON.stringify(q.slice(0, 50), null, 1));
+          notifyMac("📱 Cihaz testi istendi", `${card} → ${deviceName || deviceId}`);
+          send(200, { ok: true, pending: q.filter((x) => x.status === "pending").length });
+        } catch (e) { send(500, { error: String(e.message || e) }); }
+      });
+      return;
+    }
+    if (url.pathname === "/api/device-request-status" && req.method === "POST") {
+      let body = "";
+      req.on("data", (c) => (body += c));
+      req.on("end", () => {
+        try {
+          const { id, card, status, result } = JSON.parse(body || "{}");
+          const q = readJson(DEVICE_QUEUE, []);
+          const hit = q.find((x) => x.id === id) || q.find((x) => x.card === card && x.status === "pending");
+          if (!hit) return send(404, { error: "istek bulunamadı" });
+          hit.status = status || "done";
+          if (result) hit.result = result;
+          hit.finishedAt = new Date().toISOString();
+          fs.writeFileSync(DEVICE_QUEUE, JSON.stringify(q, null, 1));
+          send(200, { ok: true });
+        } catch (e) { send(500, { error: String(e.message || e) }); }
+      });
+      return;
+    }
+    // MobAI cihaz listesi (desktop app 8686'da dinler) — panelde canlı cihaz yansıtma için
+    if (url.pathname === "/api/devices") {
+      try {
+        const r = await fetch("http://127.0.0.1:8686/api/v1/devices", { signal: AbortSignal.timeout(4000) });
+        return send(200, { ok: true, devices: await r.json() });
+      } catch (e) {
+        return send(200, { ok: false, devices: [], error: "MobAI erişilemedi (desktop app kapalı?): " + String(e.message || e) });
+      }
+    }
     if (url.pathname === "/api/snapshot") {
       const p = url.searchParams.get("path") || "/";
       if (!p.startsWith("/")) return send(400, { error: "path / ile başlamalı" });

@@ -11,3 +11,16 @@ panel-data/blocker-state.json
 panel-data/retest-alerts.json
 panel-data/known-cards.json
 panel-data/newcard-alerts.json
+
+# Cihaz kuyrugu: calisma zamani durumu, yukaridaki alarm/blocker dosyalari gibi.
+panel-data/device-queue.json
+
+# ⚠️ GECICI KESIF ARTIKLARI — ASLA COMMIT EDILMEZ.
+# `.recon-state*.json` Playwright storageState'i: canli oturum cookie'leri
+# (JSESSIONID, sid_658, temporary_auth_verified) ve localStorage tasiyor.
+# `.homee-recon.mjs` icinde DUZ METIN UYE SIFRESI vardi.
+# Konvansiyon geregi is bitince silinmeleri gerekir (CLAUDE.md: "Gecici
+# script'i repo kokunde yaz, is bitince sil"); silinmediginde en azindan
+# depoya girmesinler.
+.recon-*
+.homee-recon.mjs

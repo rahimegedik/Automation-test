@@ -1,0 +1,31 @@
+{
+  "card": "NSB-6352",
+  "history": [
+    {
+      "date": "2026-08-27T07:30:50.710479+00:00",
+      "verdict": "blocked",
+      "summary": "Olculemedi: dev test hesabinda hic belge yok (customer/documents → data: []). Kartin 17/17 alan olcumu customer 203311 ile yapilmis; ayni hesap ya da belgesi olan bir hesap gerekiyor.",
+      "notes": [
+        "Olcum 2026-08-27, dev. V1 ve V2 (V2 JWT ile) ayni an cagrildi: iki tarafta da data: [] (0 kayit).",
+        "Bu yuzden tarih alani karsilastirmasi yapilamadi — 'duzelmis' ya da 'duzelmemis' denemez.",
+        "Gereken: belgesi olan bir test hesabi ya da customer/documents/{token} icin gecerli bir token. Alternatif: musteri 203311 kimligi.",
+        "Not: ayni sistemik kokun operations ayagi bugun HALA +3 saat (bkz. NSB-6354 verdict'i), yani customer ayaginin duzeldigi varsayilmamali."
+      ],
+      "evidence": [],
+      "aiEvaluation": "Veri yoklugu nedeniyle blocked; kart Test statusunde bekliyor ama QA bu hesapla dogrulayamaz."
+    }
+  ],
+  "latest": {
+    "date": "2026-08-27T07:30:50.710479+00:00",
+    "verdict": "blocked",
+    "summary": "Olculemedi: dev test hesabinda hic belge yok (customer/documents → data: []). Kartin 17/17 alan olcumu customer 203311 ile yapilmis; ayni hesap ya da belgesi olan bir hesap gerekiyor.",
+    "notes": [
+      "Olcum 2026-08-27, dev. V1 ve V2 (V2 JWT ile) ayni an cagrildi: iki tarafta da data: [] (0 kayit).",
+      "Bu yuzden tarih alani karsilastirmasi yapilamadi — 'duzelmis' ya da 'duzelmemis' denemez.",
+      "Gereken: belgesi olan bir test hesabi ya da customer/documents/{token} icin gecerli bir token. Alternatif: musteri 203311 kimligi.",
+      "Not: ayni sistemik kokun operations ayagi bugun HALA +3 saat (bkz. NSB-6354 verdict'i), yani customer ayaginin duzeldigi varsayilmamali."
+    ],
+    "evidence": [],
+    "aiEvaluation": "Veri yoklugu nedeniyle blocked; kart Test statusunde bekliyor ama QA bu hesapla dogrulayamaz."
+  }
+}

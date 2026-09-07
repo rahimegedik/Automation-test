@@ -1,0 +1,31 @@
+{
+  "card": "NSB-6342",
+  "history": [
+    {
+      "date": "2026-08-27T08:34:02.321146+00:00",
+      "verdict": "pass",
+      "summary": "videos[].thumbnail DUZELMIS: blog/posts/5 detayinda V2'nin 3 videosunun 3'unde de thumbnail dolu (kartta 3/3 null'di).",
+      "notes": [
+        "Olcum 2026-08-27, dev. Yontem: V2 login JWT'si ile HEM legacy (api.nadirgold.dev) HEM V2 (api-v2.nadirgold.dev/api/v1) dogrudan cagrildi.",
+        "GET content/blog/posts/5 → data.videos: 3 kayit, thumbnail dolu 3/3.",
+        "V1 KARSILIGI OLCULEMEDI: legacy detay ucu bu id ile HTTP 404 verdi (V1 detay yolu farkli, muhtemelen slug ile). Yani 'V2 dolu' kanitli, 'V1 ile birebir ayni' kanitli DEGIL.",
+        "EK BULGU: ayni yanitta data.similarPosts[0].videos icindeki 1 videonun thumbnail'i BOS — ana videolar duzelmis, similarPosts ayagi duzelmemis olabilir."
+      ],
+      "evidence": [],
+      "aiEvaluation": null
+    }
+  ],
+  "latest": {
+    "date": "2026-08-27T08:34:02.321146+00:00",
+    "verdict": "pass",
+    "summary": "videos[].thumbnail DUZELMIS: blog/posts/5 detayinda V2'nin 3 videosunun 3'unde de thumbnail dolu (kartta 3/3 null'di).",
+    "notes": [
+      "Olcum 2026-08-27, dev. Yontem: V2 login JWT'si ile HEM legacy (api.nadirgold.dev) HEM V2 (api-v2.nadirgold.dev/api/v1) dogrudan cagrildi.",
+      "GET content/blog/posts/5 → data.videos: 3 kayit, thumbnail dolu 3/3.",
+      "V1 KARSILIGI OLCULEMEDI: legacy detay ucu bu id ile HTTP 404 verdi (V1 detay yolu farkli, muhtemelen slug ile). Yani 'V2 dolu' kanitli, 'V1 ile birebir ayni' kanitli DEGIL.",
+      "EK BULGU: ayni yanitta data.similarPosts[0].videos icindeki 1 videonun thumbnail'i BOS — ana videolar duzelmis, similarPosts ayagi duzelmemis olabilir."
+    ],
+    "evidence": [],
+    "aiEvaluation": null
+  }
+}

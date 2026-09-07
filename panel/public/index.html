@@ -57,6 +57,16 @@
   #cmp .panes.single .pane:nth-child(2) { display: none; }
   #cmp .panes.triple { grid-template-columns: 1fr 1fr 1fr; }
   #cmp .pane canvas { width: 100%; display: block; }
+  /* Cihaz yansıtma (MobAI) */
+  #dev { display: none; flex-direction: column; overflow: hidden; background: var(--bg); border-left: 1px solid var(--border); }
+  body.dev-on #dev { display: flex; }
+  body.dev-on #detail { display: none; }
+  body.dev-on main { grid-template-columns: minmax(280px, 360px) 1fr; }
+  #dev .bar { display: flex; gap: 10px; align-items: center; padding: 10px 16px; background: var(--panel); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  #dev select { background: var(--panel2); border: 1px solid var(--border); color: var(--text); padding: 7px 10px; border-radius: 8px; }
+  #dev .body { flex: 1; display: flex; overflow: hidden; background: #0b0d12; }
+  #dev iframe { flex: 1; width: 100%; height: 100%; border: 0; }
+  #dev .msg { color: var(--dim); padding: 30px; margin: auto; text-align: center; line-height: 1.6; }
   #api-extra { display: none; gap: 8px; align-items: center; padding: 8px 16px; background: var(--panel); border-bottom: 1px solid var(--border); font-size: 12px; }
   #api-extra.on { display: flex; }
   #api-extra input, #api-extra select { background: var(--panel2); border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 8px; font-size: 12px; }
@@ -116,6 +126,7 @@
   </details>
   <button class="hbtn" onclick="openCompare()">🔍 Karşılaştır</button>
   <button class="hbtn" onclick="openApiDiff()">🧬 API Diff</button>
+  <button class="hbtn" onclick="openDevice()">📱 Cihaz</button>
   <input id="search" placeholder="Ara: kart, başlık, kişi…" />
   <span id="meta"></span>
 </header>
@@ -148,6 +159,18 @@
     <div class="pane"><div class="ph" id="cmp-h-v2" style="color:var(--accent)">V2 (?apiV2=1)</div><div class="body" id="cmp-b-v2"></div></div>
     <div class="pane px" style="display:none"><div class="ph" id="cmp-h-px" style="color:var(--fail)">🎯 Fark</div><div class="body" id="cmp-b-px"></div></div>
   </div>
+  </div>
+  <div id="dev">
+    <div class="bar">
+      <b style="color:var(--accent)">📱 Cihaz Yansıtma</b>
+      <select id="dev-sel" onchange="loadDevice()"></select>
+      <span id="dev-info" style="font-size:12px;color:var(--dim)"></span>
+      <button class="runbtn" onclick="loadDevice()">↻ Yenile</button>
+      <button class="runbtn" style="background:var(--panel2);color:var(--text)" onclick="reloadDevices()">🔎 Cihazları tara</button>
+      <a id="dev-ext" class="hbtn" target="_blank" rel="noopener" style="text-decoration:none">↗ Yeni sekme</a>
+      <button class="runbtn" style="background:var(--panel2);color:var(--text)" onclick="closeDevice()">✕ Kapat</button>
+    </div>
+    <div class="body" id="dev-body"><div class="msg">Cihaz seçin.</div></div>
   </div>
 </main>
 <div id="runlog"></div>
@@ -196,6 +219,7 @@ function setCmpMode(m) {
 }
 function openCompare(path) {
   $("#cmp-path").value = path || localStorage.getItem("cmp-path") || "/";
+  document.body.classList.remove("dev-on");
   document.body.classList.add("cmp-on");
   applyCmpModeUi();
   loadCompare();
@@ -205,9 +229,100 @@ function openApiDiff() {
   $("#cmp-path").value = localStorage.getItem("api-v2path") || "/product/search";
   $("#api-v1path").value = localStorage.getItem("api-v1path") || "/search";
   $("#api-body").value = localStorage.getItem("api-body") ?? '{"query":"fifa","filters":{},"suggestion":true}';
+  document.body.classList.remove("dev-on");
   document.body.classList.add("cmp-on");
   applyCmpModeUi();
   loadCompare();
+}
+// ---- MobAI cihaz yansıtma ----
+let devices = [], curCard = null;
+
+// Kart başlığından platform çıkar: "[Android] …", "AND- …", "[iOS] …", "IOS- …"
+function cardPlatform(d) {
+  const t = (d.summary || "") + " " + ((d.components || []).join(" "));
+  if (/\[android\]|(^|\s)and-\s/i.test(t)) return "android";
+  if (/\[ios\]|(^|\s)ios-\s/i.test(t)) return "ios";
+  return null;
+}
+
+// Karta uygun cihazı seç: platform eşleşen + bridge'i açık olan öncelikli
+function pickDevice(platform) {
+  const cand = devices.filter((d) => !platform || d.platform === platform);
+  return cand.find((d) => d.bridgeRunning) || cand[0] || null;
+}
+
+async function requestDeviceRun(key) {
+  const d = curCard && curCard.key === key ? curCard : await fetch("/api/card/" + key).then((r) => r.json());
+  const platform = cardPlatform(d);
+  const area = $("#devreq-area");
+  if (!devices.length) await reloadDevices();
+  const dev = pickDevice(platform);
+  if (!dev) { area.innerHTML = `<div class="box" style="border-left:3px solid var(--fail)">Uygun ${platform || ""} cihaz bulunamadı. MobAI desktop app açık mı?</div>`; return; }
+  const targets = extractTargets(d).api.map(([p, m]) => `${m} ${p}`);
+  area.innerHTML = `<div class="box" style="border-left:3px solid var(--accent)">
+    <div class="who">📱 Cihazda Test — ${esc(dev.name)} (${esc(dev.platform)} ${esc(dev.osVersion)})${dev.bridgeRunning ? "" : " · ⚠️ bridge kapalı"}</div>
+    ${targets.length ? "Hedefler: " + targets.map(esc).join(", ") + "\n" : ""}
+    <textarea id="devreq-note" rows="3" style="width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px;margin:6px 0" placeholder="Ek not / özel senaryo (opsiyonel): örn. 'kayıtlı IBAN listesini aç, 3. hesabı kontrol et'"></textarea>
+    <button class="runbtn" onclick="sendDeviceRequest('${d.key}','${esc(dev.id)}','${esc(dev.name)}','${platform || ""}')">📤 Kuyruğa Ekle</button>
+    <button class="runbtn" style="background:var(--panel2);color:var(--text)" onclick="openDevice()">📺 Cihazı Yansıt</button>
+  </div>`;
+}
+
+async function sendDeviceRequest(card, deviceId, deviceName, platform) {
+  const note = ($("#devreq-note") || {}).value || "";
+  const d = curCard && curCard.key === card ? curCard : null;
+  const r = await fetch("/api/device-request", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      card, deviceId, deviceName, platform, note,
+      summary: d ? d.summary : "",
+      targets: d ? extractTargets(d).api.map(([p, m]) => `${m} ${p}`) : [],
+    }),
+  }).then((x) => x.json());
+  $("#devreq-area").innerHTML = r.ok
+    ? `<div class="box" style="border-left:3px solid var(--pass)">✓ ${card} cihaz test kuyruğuna eklendi (${deviceName}). Claude Code'a "cihaz kuyruğunu işle" de — kartı analiz edip cihazda koşar, sonucu verdict olarak yazar. Kuyrukta ${r.pending} istek var.</div>`
+    : `<div class="box" style="border-left:3px solid var(--fail)">Hata: ${esc(r.error || "?")}</div>`;
+}
+async function reloadDevices() {
+  const sel = $("#dev-sel");
+  sel.innerHTML = `<option>yükleniyor…</option>`;
+  try {
+    const r = await (await fetch("/api/devices")).json();
+    devices = r.devices || [];
+    if (!r.ok || !devices.length) {
+      sel.innerHTML = `<option>cihaz yok</option>`;
+      $("#dev-body").innerHTML = `<div class="msg">${esc(r.error || "Cihaz bulunamadı.")}<br>MobAI desktop app açık mı? (127.0.0.1:8686)</div>`;
+      return;
+    }
+    // lokal + bridge açık cihaz öne
+    devices.sort((a, b) => (b.bridgeRunning ? 1 : 0) - (a.bridgeRunning ? 1 : 0));
+    const prev = localStorage.getItem("dev-id");
+    sel.innerHTML = devices.map((d) =>
+      `<option value="${esc(d.id)}">${d.bridgeRunning ? "🟢" : "⚪"} ${esc(d.name)} · ${esc(d.platform)} ${esc(d.osVersion)}${d.cloud ? " · cloud" : ""}</option>`
+    ).join("");
+    if (prev && devices.some((d) => d.id === prev)) sel.value = prev;
+    loadDevice();
+  } catch (e) {
+    sel.innerHTML = `<option>hata</option>`;
+    $("#dev-body").innerHTML = `<div class="msg">${esc(String(e))}</div>`;
+  }
+}
+function loadDevice() {
+  const d = devices.find((x) => x.id === $("#dev-sel").value);
+  if (!d) return;
+  localStorage.setItem("dev-id", d.id);
+  $("#dev-info").textContent = d.bridgeRunning ? "bridge açık" : "bridge kapalı — MobAI'dan başlatın";
+  $("#dev-ext").href = d.controlUrl;
+  $("#dev-body").innerHTML = `<iframe src="${esc(d.controlUrl)}" allow="clipboard-read; clipboard-write"></iframe>`;
+}
+function openDevice() {
+  document.body.classList.remove("cmp-on");
+  document.body.classList.add("dev-on");
+  if (!devices.length) reloadDevices(); else loadDevice();
+}
+function closeDevice() {
+  document.body.classList.remove("dev-on");
+  $("#dev-body").innerHTML = `<div class="msg">Cihaz seçin.</div>`;
 }
 function closeCompare() {
   document.body.classList.remove("cmp-on");
@@ -486,6 +601,7 @@ async function openCard(key) {
   selected = key; render();
   $("#detail").innerHTML = '<p style="color:var(--dim)">yükleniyor…</p>';
   const d = await fetch("/api/card/" + key).then((r) => r.json());
+  curCard = d;
   const v = d.verdict;
   const runBtns = Object.entries(runsInfo.runs).filter(([, def]) => def.cards.includes(key));
   let html = `<h2>${d.key} — ${esc(d.summary)}</h2>
@@ -514,7 +630,8 @@ async function openCard(key) {
     `<button class="runbtn" style="background:var(--panel2);color:var(--accent);border:1px solid var(--accent)" onclick="openCompare(${targets.pages[0] ? `'${esc(targets.pages[0])}'` : ""})">🔍 V1 ↔ V2 Karşılaştır</button>` +
     (v?.latest ? `<button class="runbtn" style="background:var(--panel2);color:var(--text);border:1px solid var(--border)" onclick="draftComment('${d.key}')">💬 Jira Yorum Taslağı</button>` : "") +
     `<button class="runbtn" style="background:var(--panel2);color:var(--text);border:1px solid var(--border)" onclick="editVerdict('${d.key}')">✏️ Verdict Gir</button>` +
-    `</div><div id="draft-area"></div>`;
+    (cardPlatform(d) ? `<button class="runbtn" style="background:var(--panel2);color:var(--accent);border:1px solid var(--accent)" onclick="requestDeviceRun('${d.key}')">📱 Cihazda Test Et</button>` : "") +
+    `</div><div id="draft-area"></div><div id="devreq-area"></div>`;
   if (v?.latest) {
     const L = v.latest;
     html += `<div class="sec"><h3>Son QA Sonucu — <span class="badge b-${L.verdict}">${L.verdict}</span> ${new Date(L.date).toLocaleString("tr")}</h3>

@@ -1,0 +1,35 @@
+{
+  "card": "NSB-6354",
+  "history": [
+    {
+      "date": "2026-08-27T07:30:50.710479+00:00",
+      "verdict": "fail",
+      "summary": "Sistemik +3 saat kaymasi operations ayaginda DEVAM EDIYOR: savingsSubscriptions/list 96 ortak tarih alaninin 93'u tam +3 saat. Content ayagi DUZELMIS (blog/posts 14/14 ayni).",
+      "notes": [
+        "Olcum 2026-08-27, dev. Yontem: V2 login ile alinan JWT ile HEM legacy (api.nadirgold.dev) HEM V2 (api-v2.nadirgold.dev/api/v1) cagrildi — kartin kendi yontemi.",
+        "operations savingsSubscriptions/list?page=1&limit=5 → ortak 96 tarih alani: ayni 3, tam +3 saat 93, baska fark 0.",
+        "Ornek: data.list[0].address.shipping.createdAt V1 2026-03-06T13:25:55.000000Z → V2 2026-03-06T16:25:55.000000Z (tam +3 saat).",
+        "content blog/posts (id ile eslesen 8 kayit, 14 tarih alani): ayni 14, +3 saat 0 → content ayagi artik V1 ile birebir. Murat'in 26.08 yorumundaki 'content fix'i calismiyor' tespiti bugun GECERSIZ, content tarafi duzelmis.",
+        "EK BULGU (kart kapsaminda degil): ayni yanitta V1 180 tarih alani doneriyor, V2 96 — V2'de 84 tarih alani EKSIK. Alan kaybi ayri bir kart konusu olabilir.",
+        "UYARI (yontem tuzagi): tarayici uzerinden ?apiV2=1 ile olcum YANLIS sonuc veriyor. FE bu uclarda NG_API_V2=1 cookie'sine ragmen hala legacy host'a gidiyor; boyle olculdugunde 180/180 'ayni' cikiyor cunku V1 V1 ile karsilastirilmis oluyor. Parity olcumu MUTLAKA iki host'a dogrudan yapilmali."
+      ],
+      "evidence": [],
+      "aiEvaluation": "Kart 'Waiting For Review' statusunde ve fix'in dev'de oldugu belirtilmis; operations ayaginda dev'de dogrulanmadi."
+    }
+  ],
+  "latest": {
+    "date": "2026-08-27T07:30:50.710479+00:00",
+    "verdict": "fail",
+    "summary": "Sistemik +3 saat kaymasi operations ayaginda DEVAM EDIYOR: savingsSubscriptions/list 96 ortak tarih alaninin 93'u tam +3 saat. Content ayagi DUZELMIS (blog/posts 14/14 ayni).",
+    "notes": [
+      "Olcum 2026-08-27, dev. Yontem: V2 login ile alinan JWT ile HEM legacy (api.nadirgold.dev) HEM V2 (api-v2.nadirgold.dev/api/v1) cagrildi — kartin kendi yontemi.",
+      "operations savingsSubscriptions/list?page=1&limit=5 → ortak 96 tarih alani: ayni 3, tam +3 saat 93, baska fark 0.",
+      "Ornek: data.list[0].address.shipping.createdAt V1 2026-03-06T13:25:55.000000Z → V2 2026-03-06T16:25:55.000000Z (tam +3 saat).",
+      "content blog/posts (id ile eslesen 8 kayit, 14 tarih alani): ayni 14, +3 saat 0 → content ayagi artik V1 ile birebir. Murat'in 26.08 yorumundaki 'content fix'i calismiyor' tespiti bugun GECERSIZ, content tarafi duzelmis.",
+      "EK BULGU (kart kapsaminda degil): ayni yanitta V1 180 tarih alani doneriyor, V2 96 — V2'de 84 tarih alani EKSIK. Alan kaybi ayri bir kart konusu olabilir.",
+      "UYARI (yontem tuzagi): tarayici uzerinden ?apiV2=1 ile olcum YANLIS sonuc veriyor. FE bu uclarda NG_API_V2=1 cookie'sine ragmen hala legacy host'a gidiyor; boyle olculdugunde 180/180 'ayni' cikiyor cunku V1 V1 ile karsilastirilmis oluyor. Parity olcumu MUTLAKA iki host'a dogrudan yapilmali."
+    ],
+    "evidence": [],
+    "aiEvaluation": "Kart 'Waiting For Review' statusunde ve fix'in dev'de oldugu belirtilmis; operations ayaginda dev'de dogrulanmadi."
+  }
+}
