@@ -2,6 +2,13 @@
 
 Bu repo iki şeyi barındırır: **NadirGold e-ticaret sitesinin Playwright E2E suite'i** ve **yerel QA Paneli** (Jira kartlarını V1↔V2 karşılaştırmalı test etmek için). Ana iş V2 API dönüşümünün (renewal) QA'sı.
 
+## ⚠️ Repo kuralı: "main çek" / "locali çalıştır"
+
+Bu dizinde çalışılıyor olsa bile **"son maini çek", "main'i çek", "locali çalıştır", "paneli kaldır"**
+istekleri **`~/Desktop/homee-tests`** reposunu kasteder (remote `ideal` = testing-ideal, branch `main`;
+panel `npm run up` → 4646/4647/4321). Bu repoda (NadirGold) fetch/merge/reset yapma, NadirGold
+panelini başka portta açma. NadirGold işi istendiğinde kullanıcı açıkça "NadirGold" ya da "GitLab" der.
+
 ## Hızlı komutlar
 
 ```bash
