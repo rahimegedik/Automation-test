@@ -1,0 +1,45 @@
+{
+  "card": "NSB-6063",
+  "history": [
+    {
+      "date": "2026-09-17T11:40:00+03:00",
+      "verdict": "PASS",
+      "summary": "best-seller-lite V2: /sepet 'Çok Satanlar' FE V2 modunda /api/v2/content/best-seller-lite çağırıyor; 9/9 ürün, alan seti birebir. Sıralama V1'den farklı",
+      "notes": [
+        "FE V1: GET api.nadirgold.work/contents/bestSeller/lite | V2: GET www.nadirgold.work/api/v2/content/best-seller-lite (ikisi de 200).",
+        "Zarf: V1 data={page,limit,total,list} | V2 data=[...] + meta={page,limit,total,totalPages,hasNextPage,hasPreviousPage}; FE transformResponse ile eşliyor. page/limit/total aynı (1/50/9).",
+        "9/9 ürün productId bazında eşleşti; ürün alanları (basketLimit,canBeSubscription,images,name,options,prices,productId,quantity,sku,slug) birebir, değer farkı yok.",
+        "SIRALAMA FARKI: V1 [13,135,2,45,46,48,122,171,178] (Çeyrek, Yarım, 50gr Gümüş, 250gr Gümüş...) | V2 [2,178,171,48,122,46,13,135,45] (50gr Gümüş, 50gr Altın, 1gr Altın, 1000gr Gümüş...). Ekranda da aynen yansıyor — 'çok satan' sıralaması iş kuralıysa V2 tarafı doğrulanmalı.",
+        "Tip farkı: V2 prices.* sayısal alanları string ('6262.57'), V1 number. optionTotal V1 744.288 → V2 '744.29' (yuvarlama). createdAt/updatedAt V1 lokal 'YYYY-MM-DD HH:mm:ss', V2 ISO UTC. Ekran fiyatları eşit (6.248,03 TL).",
+        "Gözlem: V1 modunda 4 kartın da görseli logo placeholder, V2'de 2/4 gerçek görsel — images kümeleri farklı id'ler taşıyor (V1: 600,836.. V2: 938,582..).",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+        "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/5927-v1-sepet-cok-satanlar.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/5927-v2-sepet-cok-satanlar.png"
+      ],
+      "aiEvaluation": "Entegrasyon PASS. Sıralama ve fiyat tip/yuvarlama farkları BE/ürün kararı gerektirir — nota düşüldü."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T11:40:00+03:00",
+    "verdict": "PASS",
+    "summary": "best-seller-lite V2: /sepet 'Çok Satanlar' FE V2 modunda /api/v2/content/best-seller-lite çağırıyor; 9/9 ürün, alan seti birebir. Sıralama V1'den farklı",
+    "notes": [
+      "FE V1: GET api.nadirgold.work/contents/bestSeller/lite | V2: GET www.nadirgold.work/api/v2/content/best-seller-lite (ikisi de 200).",
+      "Zarf: V1 data={page,limit,total,list} | V2 data=[...] + meta={page,limit,total,totalPages,hasNextPage,hasPreviousPage}; FE transformResponse ile eşliyor. page/limit/total aynı (1/50/9).",
+      "9/9 ürün productId bazında eşleşti; ürün alanları (basketLimit,canBeSubscription,images,name,options,prices,productId,quantity,sku,slug) birebir, değer farkı yok.",
+      "SIRALAMA FARKI: V1 [13,135,2,45,46,48,122,171,178] (Çeyrek, Yarım, 50gr Gümüş, 250gr Gümüş...) | V2 [2,178,171,48,122,46,13,135,45] (50gr Gümüş, 50gr Altın, 1gr Altın, 1000gr Gümüş...). Ekranda da aynen yansıyor — 'çok satan' sıralaması iş kuralıysa V2 tarafı doğrulanmalı.",
+      "Tip farkı: V2 prices.* sayısal alanları string ('6262.57'), V1 number. optionTotal V1 744.288 → V2 '744.29' (yuvarlama). createdAt/updatedAt V1 lokal 'YYYY-MM-DD HH:mm:ss', V2 ISO UTC. Ekran fiyatları eşit (6.248,03 TL).",
+      "Gözlem: V1 modunda 4 kartın da görseli logo placeholder, V2'de 2/4 gerçek görsel — images kümeleri farklı id'ler taşıyor (V1: 600,836.. V2: 938,582..).",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+      "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/5927-v1-sepet-cok-satanlar.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/5927-v2-sepet-cok-satanlar.png"
+    ],
+    "aiEvaluation": "Entegrasyon PASS. Sıralama ve fiyat tip/yuvarlama farkları BE/ürün kararı gerektirir — nota düşüldü."
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "card": "NSB-6041",
+  "history": [
+    {
+      "date": "2026-09-17T11:40:00+03:00",
+      "verdict": "PASS",
+      "summary": "DELETE /customer/bank V2: UI'dan eklenen QA IBAN'ı (id 59617) çöp ikonuyla silindi → DELETE /api/v2/customer/bank?bankAccountId=59617 200; V1/V2 listeleri başlangıca döndü",
+      "notes": [
+        "Ön koşul: POST /api/v2/customer/bank ile Garanti TR47 0006 2077 7778 9633 8597 30 eklendi (200, 'Yeni IBAN başarıyla eklendi'); V1 GET'te de aynı kayıt, alan diff YOK.",
+        "Silme: kart içi tek buton (çöp ikonu, metin yok) → onay modalı yok → DELETE body {bankAccountId:59617} → 200, dönen liste [59580,59605,59610]; ekranda kart kalktı; V1 listesi başlangıçla aynı.",
+        "Not: adres silmede parametre adı 'id', IBAN silmede 'bankAccountId' — FE/BE tutarlı, sözleşme farkı olarak dokümante.",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+        "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/6041-v2-form-dolu.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/6041-v2-liste-yeni.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/6041-v2-liste-silindi.png"
+      ],
+      "aiEvaluation": "PASS."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T11:40:00+03:00",
+    "verdict": "PASS",
+    "summary": "DELETE /customer/bank V2: UI'dan eklenen QA IBAN'ı (id 59617) çöp ikonuyla silindi → DELETE /api/v2/customer/bank?bankAccountId=59617 200; V1/V2 listeleri başlangıca döndü",
+    "notes": [
+      "Ön koşul: POST /api/v2/customer/bank ile Garanti TR47 0006 2077 7778 9633 8597 30 eklendi (200, 'Yeni IBAN başarıyla eklendi'); V1 GET'te de aynı kayıt, alan diff YOK.",
+      "Silme: kart içi tek buton (çöp ikonu, metin yok) → onay modalı yok → DELETE body {bankAccountId:59617} → 200, dönen liste [59580,59605,59610]; ekranda kart kalktı; V1 listesi başlangıçla aynı.",
+      "Not: adres silmede parametre adı 'id', IBAN silmede 'bankAccountId' — FE/BE tutarlı, sözleşme farkı olarak dokümante.",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+      "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/6041-v2-form-dolu.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/6041-v2-liste-yeni.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/6041-v2-liste-silindi.png"
+    ],
+    "aiEvaluation": "PASS."
+  }
+}

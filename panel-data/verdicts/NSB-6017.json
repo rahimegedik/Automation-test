@@ -1,0 +1,37 @@
+{
+  "card": "NSB-6017",
+  "history": [
+    {
+      "date": "2026-09-17T11:40:00+03:00",
+      "verdict": "PASS",
+      "summary": "getDistricts V2: adres formunda ilçe seçimi /api/v2/getDistricts/{countyId} çağırıyor; 3 il / 78 ilçe / 3205 mahalle V1 ile birebir",
+      "notes": [
+        "FE: Yeni Adres → il ADANA → ilçe CEYHAN → GET www.nadirgold.work/api/v2/getDistricts/113 200, 111 mahalle; select 112 seçenek (placeholder+111).",
+        "Toplu diff (proxy vs api.nadirgold.work): İstanbul 39, Ankara 24, Adana 15 ilçe → 78 sorgu, 3205 mahalle; id+name fark YOK, hata YOK.",
+        "getCities/1 de 80 il / ilçe ağacı birebir (V2'de ek countryId alanı var).",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+        "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/6034-v2-form-dolu.png"
+      ],
+      "aiEvaluation": "Tam parite. PASS."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T11:40:00+03:00",
+    "verdict": "PASS",
+    "summary": "getDistricts V2: adres formunda ilçe seçimi /api/v2/getDistricts/{countyId} çağırıyor; 3 il / 78 ilçe / 3205 mahalle V1 ile birebir",
+    "notes": [
+      "FE: Yeni Adres → il ADANA → ilçe CEYHAN → GET www.nadirgold.work/api/v2/getDistricts/113 200, 111 mahalle; select 112 seçenek (placeholder+111).",
+      "Toplu diff (proxy vs api.nadirgold.work): İstanbul 39, Ankara 24, Adana 15 ilçe → 78 sorgu, 3205 mahalle; id+name fark YOK, hata YOK.",
+      "getCities/1 de 80 il / ilçe ağacı birebir (V2'de ek countryId alanı var).",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+      "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/6034-v2-form-dolu.png"
+    ],
+    "aiEvaluation": "Tam parite. PASS."
+  }
+}

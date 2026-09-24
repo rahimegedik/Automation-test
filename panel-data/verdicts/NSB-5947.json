@@ -1,0 +1,47 @@
+{
+  "card": "NSB-5947",
+  "history": [
+    {
+      "date": "2026-09-17T11:40:00+03:00",
+      "verdict": "PASS",
+      "summary": "Logout V2: 'Çıkış Yap' → onay → POST /api/v2/customer/logout 200, NG_AUTH silindi, /hesabim login'e yönlendi. Dikkat: eski token V1 API'de hâlâ geçerli",
+      "notes": [
+        "Header 'Hesabım' menüsü → 'Çıkış Yap' → inline onay paneli ('Çıkış yapmak istediğine emin misin?' Vazgeç/Çık) → 'Çık' → POST www.nadirgold.work/api/v2/customer/logout (Bearer var, body {}) → 200 {success:true,data:{}}.",
+        "Sonrası: NG_AUTH cookie silindi, /hesabim/adreslerim → /hesap/giris?redirect=... yönlendi, header 'Giriş Yap'.",
+        "Token iptali: aynı Bearer ile api-v2.nadirgold.work customer/detail → 401 (iptal edildi) ✔; api.nadirgold.work/customer/detail → 200 (V1 tarafında hâlâ geçerli) ✘.",
+        "Karma mod riski: V2 modunda bile FE bazı uçları V1 host'undan çağırıyor (card-storage, savingsSubscriptions/list, layout/*). Aynı cookie seti ile sayfa V1 modunda açılınca kullanıcı hâlâ 'girişli' görünüyor (ekran görüntüsü 5927-v1-sepet: header 'Hesabım'). V1 logout ise token'ı sunucuda iptal ediyordu.",
+        "Öneri: V2 logout V1 token blacklist'ini de tetiklesin (ya da ortak token store). BE tarafı için ayrı kart açılmalı.",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+        "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/5947-v2-menu-acik.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/5947-v2-onay-paneli.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/5947-v2-sonrasi.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/5947-v2-hesabim-sonrasi.png"
+      ],
+      "aiEvaluation": "FE entegrasyonu PASS. V1 tarafında token'ın canlı kalması BE bulgusu — geçiş süresince güvenlik riski, ayrı kart önerilir."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T11:40:00+03:00",
+    "verdict": "PASS",
+    "summary": "Logout V2: 'Çıkış Yap' → onay → POST /api/v2/customer/logout 200, NG_AUTH silindi, /hesabim login'e yönlendi. Dikkat: eski token V1 API'de hâlâ geçerli",
+    "notes": [
+      "Header 'Hesabım' menüsü → 'Çıkış Yap' → inline onay paneli ('Çıkış yapmak istediğine emin misin?' Vazgeç/Çık) → 'Çık' → POST www.nadirgold.work/api/v2/customer/logout (Bearer var, body {}) → 200 {success:true,data:{}}.",
+      "Sonrası: NG_AUTH cookie silindi, /hesabim/adreslerim → /hesap/giris?redirect=... yönlendi, header 'Giriş Yap'.",
+      "Token iptali: aynı Bearer ile api-v2.nadirgold.work customer/detail → 401 (iptal edildi) ✔; api.nadirgold.work/customer/detail → 200 (V1 tarafında hâlâ geçerli) ✘.",
+      "Karma mod riski: V2 modunda bile FE bazı uçları V1 host'undan çağırıyor (card-storage, savingsSubscriptions/list, layout/*). Aynı cookie seti ile sayfa V1 modunda açılınca kullanıcı hâlâ 'girişli' görünüyor (ekran görüntüsü 5927-v1-sepet: header 'Hesabım'). V1 logout ise token'ı sunucuda iptal ediyordu.",
+      "Öneri: V2 logout V1 token blacklist'ini de tetiklesin (ya da ortak token store). BE tarafı için ayrı kart açılmalı.",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+      "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/5947-v2-menu-acik.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/5947-v2-onay-paneli.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/5947-v2-sonrasi.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/5947-v2-hesabim-sonrasi.png"
+    ],
+    "aiEvaluation": "FE entegrasyonu PASS. V1 tarafında token'ın canlı kalması BE bulgusu — geçiş süresince güvenlik riski, ayrı kart önerilir."
+  }
+}

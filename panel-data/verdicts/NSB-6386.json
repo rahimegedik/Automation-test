@@ -1,0 +1,59 @@
+{
+  "card": "NSB-6386",
+  "history": [
+    {
+      "date": "2026-09-09T13:30:00+03:00",
+      "verdict": "KISMI",
+      "summary": "4 alt bulgunun 4'u de duzelmis (iptaller artik loglanmiyor, error_code standart, screen akis adi, bos message yok); ancak gercek API hatalari (HTTP 4xx) artik hic event uretmiyor — error_code kumesinde API kategorisi yok",
+      "notes": [
+        "Build: com.nadirgold.app.test v2.1.2 (versionCode 56), 09.09.2026 13:05'te kurulu. Bulgunun alindigi v2.1.1'den yeni, retest gecerli. Cihaz: Oppo A5 2020 (CPH1931, Android 10) — kartla ayni cihaz",
+        "Olcum yontemi: AppMetrica SDK logcat'e event basiyor ('logs':true) — 'Event received: <ad>. With value: {...}' satirlari kartin AppMetrica panel export'uyla ayni veriyi veriyor. Ek olarak FA-SVC verbose (Firebase) ve OkHttp full-body logu. Toplam 39 client-side event olculdu, 5'i error",
+        "ALT BULGU 1 (coroutine iptalleri hata olarak loglaniyor) = DUZELMIS. Kanit: hassas zamanlamali koşumda Sepetim'e basip 250ms sonra HOME ile ekrani terk ettim; OkHttp'de 7 istek / 5 yanit gorunuyor, yani 2 adet /basket/get UCUSTA IPTAL EDILDI (13:21:38.719 ve 13:21:48.288 — istek var, yanit yok). Bu pencerede HIC error event'i gonderilmedi. Ayrica 5 tur yukleme-ortasinda-arka-plana-atma + agresif sekme degistirme kosuldu, tek bir iptal event'i cikmadi. Eski build ayni surede 10 iptal event'i uretiyordu ('StandaloneCoroutine was cancelled' 6 + 'Job was cancelled' 4)",
+        "ALT BULGU 2 (error_code standart degil) = DUZELMIS. Tum error event'lerinde error_code=NETWORK (5/5). Eski buildteki unknown (7) / API_ERROR (7) / 404 (1) karisimi yok; 'unknown' hic gorulmedi",
+        "ALT BULGU 3 (ic sinif adlari analitige gidiyor) = DUZELMIS. screen degerleri artik kullanici akisi: splash (1), home (1), cart (3). Tum 39 event'in hicbirinde Repository/ViewModel ic sinif adi gecmiyor (grep sayisi 0). Eski build: BasketRepository, SearchViewModel, CustomSplashViewModel, HomeScreenViewModel, ProductListRepository, SearchRepository, HomeRepository",
+        "ALT BULGU 4 (message bos gelebiliyor) = DUZELMIS. Bos message'li event yok (grep sayisi 0). Kartin ornek vakasi birebir tekrarlandi: 'Hesaba Altin Havale' akisinda GET /product/category-products/summary?category_id=12 -> HTTP 404, govde \"status\":{\"code\":404,\"success\":false,\"msg\":\"\"} yani msg BOS. Bu durumda event hic gonderilmiyor — kartin 'bos kalacaksa event hic gonderilmesin' beklentisiyle uyumlu",
+        "YENI GAP (rapor edilmeli): gercek API hatalari da hic event uretmiyor. POST /basket/get -> HTTP 422, govde msg='Cok fazla giris denemesi yaptiniz. Lutfen 2498 saniye sonra tekrar deneyiniz.' — ANLAMLI ve dolu bir hata mesaji, buna ragmen error event'i yok (13:21:59 ve 13:24:03'te iki kez tekrarlandi). Yani error_code kumesi pratikte sadece {NETWORK}; kartin bekledigi API kategorisi hic uretilmiyor ve backend kaynakli 4xx'ler hata panelinde gorunmuyor",
+        "IKINCIL GOZLEM: agsiz sepet acilisinda ayni hata 3 kez ust uste gonderiliyor (13:15:42.241 / .242 / .248 — ucu de screen=cart, ayni message). Tek kullanici eylemi icin 3x event; gurultuyu azaltmak icin dedupe onerilir",
+        "IKINCIL GOZLEM: message hala HAM exception metni ve ic API host'unu sizdiriyor: 'Unable to resolve host \"api.nadirgold.dev\": No address associated with hostname'. Kartin 'ham exception metni yerine ayiklanmis, PII icermeyen bir aciklama' beklentisi karsilanmamis (PII yok, ama ayiklanmis da degil)",
+        "IKINCIL GOZLEM: agsiz cold start'ta ana sayfa bos aciliyor ve kullaniciya hicbir hata mesaji gosterilmiyor (sessiz basarisizlik). Bu kartin kapsami disinda, ayri kart konusu",
+        "NOT (test ortami): koşum sirasinda 15 kez app force-stop/restart yapildigi icin test hesabi /basket/get uzerinde giris denemesi rate-limit'ine girdi (~40 dk, kendi kendine dusecek). Urun hatasi degil, olcum yan etkisi",
+        "TEST HIJYENI: yikici islem yapilmadi, siparis acilmadi. Wifi/data geri acildi, Firebase debug property'si (debug.firebase.analytics.app) kapatildi, gecici script'ler scratchpad'de birakildi"
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-09-nsb6386/appmetrica-events-2026-09-09.txt",
+        "panel-data/evidence/2026-09-09-nsb6386/error-events-raw.log",
+        "panel-data/evidence/2026-09-09-nsb6386/http-calls-summary.txt",
+        "panel-data/evidence/2026-09-09-nsb6386/logcat-retest-2026-09-09.log.gz",
+        "panel-data/evidence/2026-09-09-nsb6386/nsb6386-hesaba-altin-havale-404-ekran.png"
+      ],
+      "aiEvaluation": "Kartin yazili 4 alt bulgusu da cihaz uzerinde olculerek dogrulandi ve kapanmis durumda; iptal filtresi ucusta-iptal edilmis gercek isteklerle kanitlandi. Tek gerekce ile KISMI: fix API hatalarini da susturmus gorunuyor (422'de dolu mesaj var ama event yok), bu yuzden 'error_code sonlu ve tanimli bir kumeden gelsin' beklentisi sadece NETWORK ile karsilaniyor ve gercek backend hatalari hala panelde gorunmuyor. Oneri: bu gap'i karta yorum olarak dus, ya ayni kartta API kategorisi eklenmesini istet ya da yeni kart ac; iptal/screen/message kismi PASS."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-09T13:30:00+03:00",
+    "verdict": "KISMI",
+    "summary": "4 alt bulgunun 4'u de duzelmis (iptaller artik loglanmiyor, error_code standart, screen akis adi, bos message yok); ancak gercek API hatalari (HTTP 4xx) artik hic event uretmiyor — error_code kumesinde API kategorisi yok",
+    "notes": [
+      "Build: com.nadirgold.app.test v2.1.2 (versionCode 56), 09.09.2026 13:05'te kurulu. Bulgunun alindigi v2.1.1'den yeni, retest gecerli. Cihaz: Oppo A5 2020 (CPH1931, Android 10) — kartla ayni cihaz",
+      "Olcum yontemi: AppMetrica SDK logcat'e event basiyor ('logs':true) — 'Event received: <ad>. With value: {...}' satirlari kartin AppMetrica panel export'uyla ayni veriyi veriyor. Ek olarak FA-SVC verbose (Firebase) ve OkHttp full-body logu. Toplam 39 client-side event olculdu, 5'i error",
+      "ALT BULGU 1 (coroutine iptalleri hata olarak loglaniyor) = DUZELMIS. Kanit: hassas zamanlamali koşumda Sepetim'e basip 250ms sonra HOME ile ekrani terk ettim; OkHttp'de 7 istek / 5 yanit gorunuyor, yani 2 adet /basket/get UCUSTA IPTAL EDILDI (13:21:38.719 ve 13:21:48.288 — istek var, yanit yok). Bu pencerede HIC error event'i gonderilmedi. Ayrica 5 tur yukleme-ortasinda-arka-plana-atma + agresif sekme degistirme kosuldu, tek bir iptal event'i cikmadi. Eski build ayni surede 10 iptal event'i uretiyordu ('StandaloneCoroutine was cancelled' 6 + 'Job was cancelled' 4)",
+      "ALT BULGU 2 (error_code standart degil) = DUZELMIS. Tum error event'lerinde error_code=NETWORK (5/5). Eski buildteki unknown (7) / API_ERROR (7) / 404 (1) karisimi yok; 'unknown' hic gorulmedi",
+      "ALT BULGU 3 (ic sinif adlari analitige gidiyor) = DUZELMIS. screen degerleri artik kullanici akisi: splash (1), home (1), cart (3). Tum 39 event'in hicbirinde Repository/ViewModel ic sinif adi gecmiyor (grep sayisi 0). Eski build: BasketRepository, SearchViewModel, CustomSplashViewModel, HomeScreenViewModel, ProductListRepository, SearchRepository, HomeRepository",
+      "ALT BULGU 4 (message bos gelebiliyor) = DUZELMIS. Bos message'li event yok (grep sayisi 0). Kartin ornek vakasi birebir tekrarlandi: 'Hesaba Altin Havale' akisinda GET /product/category-products/summary?category_id=12 -> HTTP 404, govde \"status\":{\"code\":404,\"success\":false,\"msg\":\"\"} yani msg BOS. Bu durumda event hic gonderilmiyor — kartin 'bos kalacaksa event hic gonderilmesin' beklentisiyle uyumlu",
+      "YENI GAP (rapor edilmeli): gercek API hatalari da hic event uretmiyor. POST /basket/get -> HTTP 422, govde msg='Cok fazla giris denemesi yaptiniz. Lutfen 2498 saniye sonra tekrar deneyiniz.' — ANLAMLI ve dolu bir hata mesaji, buna ragmen error event'i yok (13:21:59 ve 13:24:03'te iki kez tekrarlandi). Yani error_code kumesi pratikte sadece {NETWORK}; kartin bekledigi API kategorisi hic uretilmiyor ve backend kaynakli 4xx'ler hata panelinde gorunmuyor",
+      "IKINCIL GOZLEM: agsiz sepet acilisinda ayni hata 3 kez ust uste gonderiliyor (13:15:42.241 / .242 / .248 — ucu de screen=cart, ayni message). Tek kullanici eylemi icin 3x event; gurultuyu azaltmak icin dedupe onerilir",
+      "IKINCIL GOZLEM: message hala HAM exception metni ve ic API host'unu sizdiriyor: 'Unable to resolve host \"api.nadirgold.dev\": No address associated with hostname'. Kartin 'ham exception metni yerine ayiklanmis, PII icermeyen bir aciklama' beklentisi karsilanmamis (PII yok, ama ayiklanmis da degil)",
+      "IKINCIL GOZLEM: agsiz cold start'ta ana sayfa bos aciliyor ve kullaniciya hicbir hata mesaji gosterilmiyor (sessiz basarisizlik). Bu kartin kapsami disinda, ayri kart konusu",
+      "NOT (test ortami): koşum sirasinda 15 kez app force-stop/restart yapildigi icin test hesabi /basket/get uzerinde giris denemesi rate-limit'ine girdi (~40 dk, kendi kendine dusecek). Urun hatasi degil, olcum yan etkisi",
+      "TEST HIJYENI: yikici islem yapilmadi, siparis acilmadi. Wifi/data geri acildi, Firebase debug property'si (debug.firebase.analytics.app) kapatildi, gecici script'ler scratchpad'de birakildi"
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-09-nsb6386/appmetrica-events-2026-09-09.txt",
+      "panel-data/evidence/2026-09-09-nsb6386/error-events-raw.log",
+      "panel-data/evidence/2026-09-09-nsb6386/http-calls-summary.txt",
+      "panel-data/evidence/2026-09-09-nsb6386/logcat-retest-2026-09-09.log.gz",
+      "panel-data/evidence/2026-09-09-nsb6386/nsb6386-hesaba-altin-havale-404-ekran.png"
+    ],
+    "aiEvaluation": "Kartin yazili 4 alt bulgusu da cihaz uzerinde olculerek dogrulandi ve kapanmis durumda; iptal filtresi ucusta-iptal edilmis gercek isteklerle kanitlandi. Tek gerekce ile KISMI: fix API hatalarini da susturmus gorunuyor (422'de dolu mesaj var ama event yok), bu yuzden 'error_code sonlu ve tanimli bir kumeden gelsin' beklentisi sadece NETWORK ile karsilaniyor ve gercek backend hatalari hala panelde gorunmuyor. Oneri: bu gap'i karta yorum olarak dus, ya ayni kartta API kategorisi eklenmesini istet ya da yeni kart ac; iptal/screen/message kismi PASS."
+  }
+}

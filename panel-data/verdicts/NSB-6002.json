@@ -1,17 +1,36 @@
 {
   "card": "NSB-6002",
   "latest": {
-    "date": "2026-08-05T21:18:00+03:00",
-    "verdict": "FAIL",
-    "summary": "Blog listesi v2'de 10/23 yazı gösteriyor, sayfalama yok (yorum 64756)",
+    "date": "2026-09-17T14:10:00+03:00",
+    "verdict": "PASS",
+    "summary": "Blog listesi V2 (stage): /blog V2 modunda /api/v2/content/blog/posts; 24 kart iki modda aynı, 'Daha Fazla' sayfalaması çalışıyor, id kümesi birebir",
     "notes": [
-      "Liste meta/pagination alanları FE'de kullanılmıyor",
-      "5892'nin benzer makale sorunu bu karta da yansıyor"
+      "FE V1: GET api.nadirgold.work/blog/posts | V2: GET www.nadirgold.work/api/v2/content/blog/posts (200/200), meta {page:2,limit:15,total:24,totalPages:2}.",
+      "Sayfa 2 çağrısında 9/9 id kesişti (3,4,6,7,8,9,10,11,75). Alan yapısı dev'deki gibi: coverImage/bannerImage→image, metaTitle/Description/Keywords→meta, featured/isHomepage→flags, videoUrl1..4→videos[] — veri kaybı yok; createdAt/updatedAt hassasiyet farkı.",
+      "Ekran: 24 blog linki iki modda da, 1 'Daha Fazla' tıkı sonra buton kayboluyor.",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
     ],
-    "evidence": [],
-    "aiEvaluation": "Sayfalama entegrasyonu gelmeden PASS mümkün değil; 5892 fix'iyle birlikte retest edilmeli."
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/6002-v1-blog-liste.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/6002-v2-blog-liste.png"
+    ],
+    "aiEvaluation": "Dev PASS'i stage'de teyit. PASS."
   },
   "history": [
+    {
+      "date": "2026-08-27T16:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "Blog listesi V2 paritesi saglandi — 16/16 kayit, meta pagination FE'de calisiyor; onceki FAIL (10/23, sayfalama yok) giderilmis",
+      "notes": [
+        "Tum kume sayfalanarak karsilastirildi: V1 total=16 / V2 total=16, id kesisimi 16/16, V1-only ve V2-only id YOK",
+        "V1 alanlari V2'de ic-ice objelere tasinmis, veri kaybi yok: coverImage/bannerImage->image, metaTitle/Description/Keywords->meta, featured->flags.isFeatured, isHomepage->flags.isHomePage, videoUrl1..4->videos[] (16/16 parite dogrulandi)",
+        "status int->bool donusumu 16/16 tutarli; createdAt/updatedAt mikrosaniye hassasiyeti farkli (.000000Z vs .000Z) — ISO uyumlu",
+        "FE 'Daha Fazla' sayfalamasi iki modda ayni: 14->15 kayit, 1 tik, sonrasinda buton kayboluyor",
+        "Not: flags anahtarlari isFeatured/isHomePage — V1'deki featured/isHomepage'den farkli adlandirma; isHomePage'de buyuk P camelCase tutarsizligi"
+      ],
+      "evidence": [],
+      "aiEvaluation": "Onceki FAIL nedeni ortadan kalkmis, API ve FE pariteli. PASS."
+    },
     {
       "date": "2026-08-05T21:18:00+03:00",
       "verdict": "FAIL",
@@ -22,6 +41,22 @@
       ],
       "evidence": [],
       "aiEvaluation": "Sayfalama entegrasyonu gelmeden PASS mümkün değil; 5892 fix'iyle birlikte retest edilmeli."
+    },
+    {
+      "date": "2026-09-17T14:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "Blog listesi V2 (stage): /blog V2 modunda /api/v2/content/blog/posts; 24 kart iki modda aynı, 'Daha Fazla' sayfalaması çalışıyor, id kümesi birebir",
+      "notes": [
+        "FE V1: GET api.nadirgold.work/blog/posts | V2: GET www.nadirgold.work/api/v2/content/blog/posts (200/200), meta {page:2,limit:15,total:24,totalPages:2}.",
+        "Sayfa 2 çağrısında 9/9 id kesişti (3,4,6,7,8,9,10,11,75). Alan yapısı dev'deki gibi: coverImage/bannerImage→image, metaTitle/Description/Keywords→meta, featured/isHomepage→flags, videoUrl1..4→videos[] — veri kaybı yok; createdAt/updatedAt hassasiyet farkı.",
+        "Ekran: 24 blog linki iki modda da, 1 'Daha Fazla' tıkı sonra buton kayboluyor.",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/6002-v1-blog-liste.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/6002-v2-blog-liste.png"
+      ],
+      "aiEvaluation": "Dev PASS'i stage'de teyit. PASS."
     }
   ]
 }

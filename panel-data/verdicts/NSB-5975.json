@@ -1,0 +1,33 @@
+{
+  "card": "NSB-5975",
+  "history": [
+    {
+      "date": "2026-08-27T16:45:00+03:00",
+      "verdict": "BLOCKED",
+      "summary": "Blocker duruyor: register 200 yolu MERNIS TC kimlik dogrulamasina takiliyor (V1'de de ayni)",
+      "notes": [
+        "pre-register 200 ve hash yanitta doniyor — Faruk'un 11.08 notundaki 'mail gelmedigi icin test edilemedi' engeli asilmis durumda",
+        "Ancak sahte-format TCKN ile V2 register -> 400 'TC kimlik numarasi dogrulanamadi'; V1 ayni govdede 422 'TC Kimlik Numarasi Dogrulama Hatasi'",
+        "Yani mutlu yol iki tarafta da MERNIS'e takiliyor; V2'ye ozgu bir regresyon degil",
+        "Cozum icin ya MERNIS-gecerli bir test kimligi (ad/soyad/dogum tarihi uyumlu) ya da dev'de MERNIS bypass gerekiyor",
+        "Not: V2 hata mesaji tek ve net; V1 ayni durumda ek olarak 'Kimlik no daha onceden kaydedilmis' ve 'Bekleme suresi' hatalarini birlikte doneruyor"
+      ],
+      "evidence": [],
+      "aiEvaluation": "Test Blocked statusu dogru. Blocker'in mahiyeti degisti: artik mail degil MERNIS. Kartta guncellenmeli."
+    }
+  ],
+  "latest": {
+    "date": "2026-08-27T16:45:00+03:00",
+    "verdict": "BLOCKED",
+    "summary": "Blocker duruyor: register 200 yolu MERNIS TC kimlik dogrulamasina takiliyor (V1'de de ayni)",
+    "notes": [
+      "pre-register 200 ve hash yanitta doniyor — Faruk'un 11.08 notundaki 'mail gelmedigi icin test edilemedi' engeli asilmis durumda",
+      "Ancak sahte-format TCKN ile V2 register -> 400 'TC kimlik numarasi dogrulanamadi'; V1 ayni govdede 422 'TC Kimlik Numarasi Dogrulama Hatasi'",
+      "Yani mutlu yol iki tarafta da MERNIS'e takiliyor; V2'ye ozgu bir regresyon degil",
+      "Cozum icin ya MERNIS-gecerli bir test kimligi (ad/soyad/dogum tarihi uyumlu) ya da dev'de MERNIS bypass gerekiyor",
+      "Not: V2 hata mesaji tek ve net; V1 ayni durumda ek olarak 'Kimlik no daha onceden kaydedilmis' ve 'Bekleme suresi' hatalarini birlikte doneruyor"
+    ],
+    "evidence": [],
+    "aiEvaluation": "Test Blocked statusu dogru. Blocker'in mahiyeti degisti: artik mail degil MERNIS. Kartta guncellenmeli."
+  }
+}

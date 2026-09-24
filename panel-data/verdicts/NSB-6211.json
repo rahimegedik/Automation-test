@@ -1,0 +1,59 @@
+{
+  "card": "NSB-6211",
+  "history": [
+    {
+      "date": "2026-08-27T16:45:00+03:00",
+      "verdict": "KISMI",
+      "summary": "Route rename'ler ve negatif yollar dogru; kartin kritik notu olan 'passwordChange basaride 401+success:false' onay olmadan kosulamadi",
+      "notes": [
+        "Route rename dogru: V2 POST /customer/forgot-password (kebab) 200; /customer/forgotPassword (camel) -> 404. V1 tam tersi: forgotPassword 422, forgot-password 404",
+        "FE teyidi: NG_API_V2=1 iken sifremi-unuttum ekrani POST /api/v2/customer/forgot-password'a gidiyor; V1 modunda api.nadirgold.dev/customer/forgotPassword",
+        "passwordChange camelCase korunmus ve auth zorunlu (401 Unauthorized token'siz)",
+        "passwordChange negatifleri V1 ile pariteli: yanlis oldPassword -> 422 'Mevcut sifre hatali' (V1 de 422 ayni mesaj), confirmation uyusmaz -> 422, DTO disi alan -> 400",
+        "forgot-password/reset validasyonu dogru: bos govde -> 400 hash/password/passwordConfirmation validation[]",
+        "DAVRANIS FARKI: kayitli olmayan e-posta ile V1 422 hata doner, V2 200 {success:true} doner (enumeration korumasi). FE bu farki ele almali — V2'de kullaniciya basari mesaji gosterilecek",
+        "KOSULAMADI: 'passwordChange basaride HTTP 401 + success:false doner, basari say ve login'e yonlendir' notu — dogrulamak icin dev hesabinin sifresini gercekten degistirmek gerekiyor, test hijyeni geregi onay bekliyor"
+      ],
+      "evidence": [],
+      "aiEvaluation": "Route ve negatif yollar PASS; tek eksik passwordChange mutlu yolu. Onay verilirse .env'deki dev sifresi ile degistir-geri-al senaryosu kosulur."
+    },
+    {
+      "date": "2026-09-17T14:10:00+03:00",
+      "verdict": "KISMI",
+      "summary": "Şifre akışları V2 (stage): passwordChange negatif paritesi tam (422 'Mevcut şifre hatalı'); forgot-password FE V2 modunda proxy 302'ye takılıyor; reset test edilemedi",
+      "notes": [
+        "/hesabim/sifre-degistir: yanlış eski şifre → V1 422 errors[oldPassword:'Mevcut şifre hatalı'] | V2 422 {message:'Mevcut şifre hatalı'} — pariteli. Happy-path (şifre değişimi) bilinçli koşulmadı.",
+        "/hesap/sifremi-unuttum V2: POST /api/v2/customer/forgot-password → 302 OAuth gate; V1: POST forgotPassword 422 (bilinmeyen e-posta). Kök neden: /api/v2 proxy'si oturumsuz POST'u auth.nadirgold.work OAuth gate'ine 302 ile yönlendiriyor (dev'deki tuzak #7 ile aynı; UA/Bearer/Referer fark etmiyor). Ortam engeli, ürün hatası değil — ama stage'de gerçek kullanıcı V2'ye alınırsa kimliksiz akışlar (login, üye ol, şifremi unuttum, OTP) çalışmaz; gate'e istisna gerekir.",
+        "BE izolasyonu: bilinmeyen e-posta V1 422 'Seçili olan email geçersiz' | V2 200 {success:true} — enumeration koruması, dev'deki davranış farkı stage'de de sürüyor; FE V2'de başarı mesajı gösterecek.",
+        "Reset (hash+password) SMS gerektirdiği için koşulmadı.",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/6211-v1-forgot-sonuc.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/6211-v2-forgot-sonuc.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/6211-v1-sifre-degistir.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/6211-v2-sifre-degistir.png"
+      ],
+      "aiEvaluation": "passwordChange PASS; forgot/reset FE ortam engeli. KISMI."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T14:10:00+03:00",
+    "verdict": "KISMI",
+    "summary": "Şifre akışları V2 (stage): passwordChange negatif paritesi tam (422 'Mevcut şifre hatalı'); forgot-password FE V2 modunda proxy 302'ye takılıyor; reset test edilemedi",
+    "notes": [
+      "/hesabim/sifre-degistir: yanlış eski şifre → V1 422 errors[oldPassword:'Mevcut şifre hatalı'] | V2 422 {message:'Mevcut şifre hatalı'} — pariteli. Happy-path (şifre değişimi) bilinçli koşulmadı.",
+      "/hesap/sifremi-unuttum V2: POST /api/v2/customer/forgot-password → 302 OAuth gate; V1: POST forgotPassword 422 (bilinmeyen e-posta). Kök neden: /api/v2 proxy'si oturumsuz POST'u auth.nadirgold.work OAuth gate'ine 302 ile yönlendiriyor (dev'deki tuzak #7 ile aynı; UA/Bearer/Referer fark etmiyor). Ortam engeli, ürün hatası değil — ama stage'de gerçek kullanıcı V2'ye alınırsa kimliksiz akışlar (login, üye ol, şifremi unuttum, OTP) çalışmaz; gate'e istisna gerekir.",
+      "BE izolasyonu: bilinmeyen e-posta V1 422 'Seçili olan email geçersiz' | V2 200 {success:true} — enumeration koruması, dev'deki davranış farkı stage'de de sürüyor; FE V2'de başarı mesajı gösterecek.",
+      "Reset (hash+password) SMS gerektirdiği için koşulmadı.",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/6211-v1-forgot-sonuc.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/6211-v2-forgot-sonuc.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/6211-v1-sifre-degistir.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/6211-v2-sifre-degistir.png"
+    ],
+    "aiEvaluation": "passwordChange PASS; forgot/reset FE ortam engeli. KISMI."
+  }
+}

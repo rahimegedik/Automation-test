@@ -1,15 +1,19 @@
 {
   "card": "NSB-5933",
   "latest": {
-    "date": "2026-08-06T13:05:00+03:00",
-    "verdict": "PASS",
-    "summary": "Pre-register E2E tam geçti: API 5/5 + FE hash decode, countdown, 400 gösterimi (yorum 64823)",
+    "date": "2026-09-17T14:10:00+03:00",
+    "verdict": "BLOCKED",
+    "summary": "Pre-register V2 (stage): /hesap/uye-ol V2 modunda POST /api/v2/customer/pre-register 302 OAuth gate → OTP adımına geçilemiyor; V1 modunda preRegister 200 + e-posta OTP ekranı",
     "notes": [
-      "base64+JSON hash formatı doğrulandı",
-      "OTP countdown ve 'zaten kayıtlı' hata akışı çalışıyor"
+      "Kök neden: /api/v2 proxy'si oturumsuz POST'u auth.nadirgold.work OAuth gate'ine 302 ile yönlendiriyor (dev'deki tuzak #7 ile aynı; UA/Bearer/Referer fark etmiyor). Ortam engeli, ürün hatası değil — ama stage'de gerçek kullanıcı V2'ye alınırsa kimliksiz akışlar (login, üye ol, şifremi unuttum, OTP) çalışmaz; gate'e istisna gerekir.",
+      "BE izolasyonu: geçersiz e-posta V1 /customer/preRegister 422 'Email doğru bir e-posta olmalıdır' | V2 /customer/pre-register 422 'Geçerli bir e-posta adresi giriniz'; boş gövde V1 422 / V2 422 (email gerekli) — validasyon pariteli.",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
     ],
-    "evidence": [],
-    "aiEvaluation": "Kart Ready For Stage'e taşındı (06.08) — stage doğrulaması sonrası Done'a gidebilir."
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/5933-v1-uye-ol.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/5933-v2-uye-ol.png"
+    ],
+    "aiEvaluation": "FE V2 akışı gate yüzünden test edilemedi; BE validasyon PASS."
   },
   "history": [
     {
@@ -22,6 +26,21 @@
       ],
       "evidence": [],
       "aiEvaluation": "Kart Ready For Stage'e taşındı (06.08) — stage doğrulaması sonrası Done'a gidebilir."
+    },
+    {
+      "date": "2026-09-17T14:10:00+03:00",
+      "verdict": "BLOCKED",
+      "summary": "Pre-register V2 (stage): /hesap/uye-ol V2 modunda POST /api/v2/customer/pre-register 302 OAuth gate → OTP adımına geçilemiyor; V1 modunda preRegister 200 + e-posta OTP ekranı",
+      "notes": [
+        "Kök neden: /api/v2 proxy'si oturumsuz POST'u auth.nadirgold.work OAuth gate'ine 302 ile yönlendiriyor (dev'deki tuzak #7 ile aynı; UA/Bearer/Referer fark etmiyor). Ortam engeli, ürün hatası değil — ama stage'de gerçek kullanıcı V2'ye alınırsa kimliksiz akışlar (login, üye ol, şifremi unuttum, OTP) çalışmaz; gate'e istisna gerekir.",
+        "BE izolasyonu: geçersiz e-posta V1 /customer/preRegister 422 'Email doğru bir e-posta olmalıdır' | V2 /customer/pre-register 422 'Geçerli bir e-posta adresi giriniz'; boş gövde V1 422 / V2 422 (email gerekli) — validasyon pariteli.",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/5933-v1-uye-ol.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/5933-v2-uye-ol.png"
+      ],
+      "aiEvaluation": "FE V2 akışı gate yüzünden test edilemedi; BE validasyon PASS."
     }
   ]
 }

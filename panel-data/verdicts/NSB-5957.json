@@ -1,0 +1,37 @@
+{
+  "card": "NSB-5957",
+  "history": [
+    {
+      "date": "2026-09-17T11:40:00+03:00",
+      "verdict": "PASS",
+      "summary": "bankListConverter V2: /hesaba-altin-havale FE V2 modunda /api/v2/product/bankListConverter çağırıyor; 3/3 banka alan ve değer bazında birebir",
+      "notes": [
+        "FE V1: GET api.nadirgold.work/product/bankListConverter | V2: GET www.nadirgold.work/api/v2/product/bankListConverter (200/200).",
+        "3 kayıt (Garanti, Kuveyt Türk, Yapı Kredi): id, bankCode, logo, cardLogo, bankName... fark YOK. Zarf farkı sadece {data,status,errors} vs {success,data}.",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+        "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/v1-hesaba-altin-havale-full.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/v2-hesaba-altin-havale-full.png"
+      ],
+      "aiEvaluation": "Tam parite. PASS."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T11:40:00+03:00",
+    "verdict": "PASS",
+    "summary": "bankListConverter V2: /hesaba-altin-havale FE V2 modunda /api/v2/product/bankListConverter çağırıyor; 3/3 banka alan ve değer bazında birebir",
+    "notes": [
+      "FE V1: GET api.nadirgold.work/product/bankListConverter | V2: GET www.nadirgold.work/api/v2/product/bankListConverter (200/200).",
+      "3 kayıt (Garanti, Kuveyt Türk, Yapı Kredi): id, bankCode, logo, cardLogo, bankName... fark YOK. Zarf farkı sadece {data,status,errors} vs {success,data}.",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+      "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/v1-hesaba-altin-havale-full.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/v2-hesaba-altin-havale-full.png"
+    ],
+    "aiEvaluation": "Tam parite. PASS."
+  }
+}

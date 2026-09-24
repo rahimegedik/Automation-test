@@ -1,0 +1,45 @@
+{
+  "card": "NSB-6166",
+  "history": [
+    {
+      "date": "2026-08-27T16:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "GET /content/redirect-urls sozlesmesi dogru ve FE yonlendirmesi iki modda ayni calisiyor",
+      "notes": [
+        "V1 muadili yok (/redirect-urls, /content/redirect-urls, /getRedirectUrls hepsi 404) — yeni uc, diff yerine sozlesme dogrulamasi yapildi",
+        "470 kaydin TAMAMI sayfalandi (10 sayfa): camelCase ihlali yok, id ve statusCode her kayitta number",
+        "Pagination validasyonu dogru: page=0, limit=0, limit=1000, page=abc -> 400 dogrulama hatasi; page=9999 -> 200 bos data + tutarli meta",
+        "FE: /nadirgold-10-gr-kulce-altin-fifa -> /fifa-world-cup-2026-20-gr-kulce-altin yonlendirmesi iki modda birebir ayni",
+        "Not: modelId ve targetPath nullable (kartta modelId number yaziyor) — istemci null guard'i gerekli"
+      ],
+      "evidence": [],
+      "aiEvaluation": "Sozlesme ve FE davranisi dogru. PASS."
+    },
+    {
+      "date": "2026-09-17T14:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "GET /content/redirect-urls V2 (stage): 476 kaydın tamamı sayfalandı, sözleşme doğru; FE yönlendirmeleri iki modda birebir",
+      "notes": [
+        "Proxy /api/v2/content/redirect-urls?page&limit=100 → 5 sayfa, 476 kayıt (301: 470, 302: 6). camelCase ihlali yok, id number, modelId null 388, targetPath null 12 (null guard notu sürüyor).",
+        "FE: /10-gram-kumbara-kulce-altin → /10-gram-altin-kumbara-kulce-altin (HTTP 308) ve /ata-lira-ceyrek-altin-eski-tarihli → 307 → zincirle /ata-lira-ceyrek-altin-101-yil-yeni-tarihli; iki modda aynı.",
+        "Not: listede 301/302 yazıyor, Next.js 308/307 uyguluyor (yöntem koruyan eşdeğerler). İkinci örnekte liste hedefi '100-yil' ama son varış '101-yil' — ikinci bir yönlendirme kaydı zinciri, veri tutarlılığı içerik ekibine not.",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+      ],
+      "evidence": [],
+      "aiEvaluation": "PASS."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T14:10:00+03:00",
+    "verdict": "PASS",
+    "summary": "GET /content/redirect-urls V2 (stage): 476 kaydın tamamı sayfalandı, sözleşme doğru; FE yönlendirmeleri iki modda birebir",
+    "notes": [
+      "Proxy /api/v2/content/redirect-urls?page&limit=100 → 5 sayfa, 476 kayıt (301: 470, 302: 6). camelCase ihlali yok, id number, modelId null 388, targetPath null 12 (null guard notu sürüyor).",
+      "FE: /10-gram-kumbara-kulce-altin → /10-gram-altin-kumbara-kulce-altin (HTTP 308) ve /ata-lira-ceyrek-altin-eski-tarihli → 307 → zincirle /ata-lira-ceyrek-altin-101-yil-yeni-tarihli; iki modda aynı.",
+      "Not: listede 301/302 yazıyor, Next.js 308/307 uyguluyor (yöntem koruyan eşdeğerler). İkinci örnekte liste hedefi '100-yil' ama son varış '101-yil' — ikinci bir yönlendirme kaydı zinciri, veri tutarlılığı içerik ekibine not.",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+    ],
+    "evidence": [],
+    "aiEvaluation": "PASS."
+  }
+}

@@ -1,12 +1,23 @@
 {
   "card": "NSB-6071",
   "latest": {
-    "date": "2026-08-19T13:18:38.668Z",
-    "verdict": "ERROR",
-    "summary": "Koşum hatası (ürün durumu hakkında bilgi vermez): locator.waitFor: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"text\"]:visible, input[type",
-    "notes": [],
-    "evidence": [],
-    "aiEvaluation": "Script/ortam hatası — tarayıcı penceresi kapatılmış veya selector değişmiş olabilir. Ürün FAIL'i DEĞİLDİR; koşumu tekrarla."
+    "date": "2026-09-17T14:10:00+03:00",
+    "verdict": "FAIL",
+    "summary": "Arama V2 (stage): sonuç kümesi, sıralama ve sayfalama V1 ile uyuşmuyor — V2 yanıtında pagination/didYouMean yok, ekranda '106 ürün' yerine '20 ürün', sayfa 2 sayfa 1 ile aynı; 'altın' aramasında Çeyrek/Yarım/Tam/Ata Lira V2'de dönmüyor",
+    "notes": [
+      "FE V1: POST api.nadirgold.work/search | V2: POST www.nadirgold.work/api/v2/product/search — aynı payload {query,suggestion,filters:{limit,page}}.",
+      "Zarf/veri: V1 data={products,categories,suggestions,pagination,didYouMean}; V2 data={products,categories,suggestions} — pagination ve didYouMean YOK, meta da yok. FE toplam sayıyı gösteremiyor: /ara?q=altın ekranı V1 '106 ürün', V2 '20 ürün'.",
+      "Sayfalama çalışmıyor: {limit:20,page:2} V2'de sayfa 1 ile aynı ürünleri döndürüyor (V1 farklı 20 ürün, total 106, lastPage 6).",
+      "Küme farkı: 'altın' limit 50 → 44 ortak, 6 sadece V1 (Çeyrek Altın, Yarım Altın, Tam Altın, Ata Lira Altın, 100 Gr Külçe, 12,5 Kg Large Bar), 6 sadece V2. 'gümüş' 12 vs 11. 'bilezik' 40/40 aynı.",
+      "Sıralama farkı: V1 ilk 4 = Çeyrek, Çeyrek Yeni Tarihli, 1 Gr Külçe, FIFA 1 Gr; V2 ilk 4 = Reşat 5'lik, 10 Gr Kumbara, FIFA 1 Gr, 1 Gr Külçe. V2'de aynı ürün listede iki kez görünüyor (1 Gr Külçe Altın, 2,5 Gr Külçe Altın) — tekrar kayıt.",
+      "Ortak ürünlerde alan farkı: V2 categories[] içinde ek alanlar (h1, htmlDescription, parentId, isSubCategory); options/videos id'leri farklı.",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/6071-v1-arama.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/6071-v2-arama.png"
+    ],
+    "aiEvaluation": "Arama sonuçları ve sayfalama V2'de kırık; BE (product/search) düzeltmesi gerekiyor. FAIL."
   },
   "history": [
     {
@@ -55,6 +66,25 @@
       "notes": [],
       "evidence": [],
       "aiEvaluation": "Script/ortam hatası (headed pencere koşum sırasında kapandı) — ürün FAIL'i değildir."
+    },
+    {
+      "date": "2026-09-17T14:10:00+03:00",
+      "verdict": "FAIL",
+      "summary": "Arama V2 (stage): sonuç kümesi, sıralama ve sayfalama V1 ile uyuşmuyor — V2 yanıtında pagination/didYouMean yok, ekranda '106 ürün' yerine '20 ürün', sayfa 2 sayfa 1 ile aynı; 'altın' aramasında Çeyrek/Yarım/Tam/Ata Lira V2'de dönmüyor",
+      "notes": [
+        "FE V1: POST api.nadirgold.work/search | V2: POST www.nadirgold.work/api/v2/product/search — aynı payload {query,suggestion,filters:{limit,page}}.",
+        "Zarf/veri: V1 data={products,categories,suggestions,pagination,didYouMean}; V2 data={products,categories,suggestions} — pagination ve didYouMean YOK, meta da yok. FE toplam sayıyı gösteremiyor: /ara?q=altın ekranı V1 '106 ürün', V2 '20 ürün'.",
+        "Sayfalama çalışmıyor: {limit:20,page:2} V2'de sayfa 1 ile aynı ürünleri döndürüyor (V1 farklı 20 ürün, total 106, lastPage 6).",
+        "Küme farkı: 'altın' limit 50 → 44 ortak, 6 sadece V1 (Çeyrek Altın, Yarım Altın, Tam Altın, Ata Lira Altın, 100 Gr Külçe, 12,5 Kg Large Bar), 6 sadece V2. 'gümüş' 12 vs 11. 'bilezik' 40/40 aynı.",
+        "Sıralama farkı: V1 ilk 4 = Çeyrek, Çeyrek Yeni Tarihli, 1 Gr Külçe, FIFA 1 Gr; V2 ilk 4 = Reşat 5'lik, 10 Gr Kumbara, FIFA 1 Gr, 1 Gr Külçe. V2'de aynı ürün listede iki kez görünüyor (1 Gr Külçe Altın, 2,5 Gr Külçe Altın) — tekrar kayıt.",
+        "Ortak ürünlerde alan farkı: V2 categories[] içinde ek alanlar (h1, htmlDescription, parentId, isSubCategory); options/videos id'leri farklı.",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/6071-v1-arama.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/6071-v2-arama.png"
+      ],
+      "aiEvaluation": "Arama sonuçları ve sayfalama V2'de kırık; BE (product/search) düzeltmesi gerekiyor. FAIL."
     }
   ]
 }

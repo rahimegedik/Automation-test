@@ -1,0 +1,41 @@
+{
+  "card": "NSB-6250",
+  "history": [
+    {
+      "date": "2026-08-28T16:20:00+03:00",
+      "verdict": "BLOCKED",
+      "summary": "iOS test edilemedi - AppMetrica iceren QA .ipa ve AppMetrica OAuth token yok; Android ikizinde (NSB-6251) 8 bulgu cikti, buyuk kisminin iOS'ta da gecerli olmasi bekleniyor",
+      "notes": [
+        "iOS koşulamadi: AppMetrica iceren QA .ipa yok. TestFlight build'i BrowserStack cloud cihazlarina kurulamiyor",
+        "Elimizdeki cihazlar: BrowserStack iPhone 14 / 14 Pro / 15 / 15 Pro (cloud) - host araclari (idevicesyslog, simctl) calismadigi icin SDK debug log kanali yok",
+        "Logs API icin OAuth token eksik; sayisal application_id BULUNDU: 6343435 (AppMetrica 'Nadir Gold Test')",
+        "Android ikizi NSB-6251 ayni gun uctan uca kosuldu, 8 bulgu cikti; map'leme ayni saglayici katmaninda oldugu icin buyuk kisminin iOS'ta da gecerli olmasi bekleniyor",
+        "iOS'ta ilk kontrol edilecekler: Google Ads semasi, purchase items (Firebase 586 karakter siniri), paymentFailed eksikligi, cift product_detail, add_to_cart fiyat formati, credit_cart yazim hatasi",
+        "iOS'a ozgu: custom scheme deeplink handler'inin Google Sign-In URL scheme'i ile cakismamasi; ATT/IDFA + PrivacyInfo.xcprivacy (kapsam disi, ayri kart onerilir); push event'lerinin Dengage handler'ini bozmadan akmasi",
+        "Ihtiyac: Sukru'den dev/stage semali + test key bagli + loglari acik QA .ipa; Sinem'den AppMetrica OAuth token ve panel erisimi; kabul kriterleri (sayim kurali, value kapsami, PII allowlist); test/prod trafik ayrimi icin qa_run_id onerisi"
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-08-28-appmetrica/appmetrica-firebase-events.csv"
+      ],
+      "aiEvaluation": "Blocker urun/build tarafinda, kod kalitesiyle ilgili degil. .ipa ve token geldiginde ayni 13 maddelik matris kosulacak. Android bulgulari (NSB-6383/6384/6385 dahil) iOS icin de dogrulanmali."
+    }
+  ],
+  "latest": {
+    "date": "2026-08-28T16:20:00+03:00",
+    "verdict": "BLOCKED",
+    "summary": "iOS test edilemedi - AppMetrica iceren QA .ipa ve AppMetrica OAuth token yok; Android ikizinde (NSB-6251) 8 bulgu cikti, buyuk kisminin iOS'ta da gecerli olmasi bekleniyor",
+    "notes": [
+      "iOS koşulamadi: AppMetrica iceren QA .ipa yok. TestFlight build'i BrowserStack cloud cihazlarina kurulamiyor",
+      "Elimizdeki cihazlar: BrowserStack iPhone 14 / 14 Pro / 15 / 15 Pro (cloud) - host araclari (idevicesyslog, simctl) calismadigi icin SDK debug log kanali yok",
+      "Logs API icin OAuth token eksik; sayisal application_id BULUNDU: 6343435 (AppMetrica 'Nadir Gold Test')",
+      "Android ikizi NSB-6251 ayni gun uctan uca kosuldu, 8 bulgu cikti; map'leme ayni saglayici katmaninda oldugu icin buyuk kisminin iOS'ta da gecerli olmasi bekleniyor",
+      "iOS'ta ilk kontrol edilecekler: Google Ads semasi, purchase items (Firebase 586 karakter siniri), paymentFailed eksikligi, cift product_detail, add_to_cart fiyat formati, credit_cart yazim hatasi",
+      "iOS'a ozgu: custom scheme deeplink handler'inin Google Sign-In URL scheme'i ile cakismamasi; ATT/IDFA + PrivacyInfo.xcprivacy (kapsam disi, ayri kart onerilir); push event'lerinin Dengage handler'ini bozmadan akmasi",
+      "Ihtiyac: Sukru'den dev/stage semali + test key bagli + loglari acik QA .ipa; Sinem'den AppMetrica OAuth token ve panel erisimi; kabul kriterleri (sayim kurali, value kapsami, PII allowlist); test/prod trafik ayrimi icin qa_run_id onerisi"
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-08-28-appmetrica/appmetrica-firebase-events.csv"
+    ],
+    "aiEvaluation": "Blocker urun/build tarafinda, kod kalitesiyle ilgili degil. .ipa ve token geldiginde ayni 13 maddelik matris kosulacak. Android bulgulari (NSB-6383/6384/6385 dahil) iOS icin de dogrulanmali."
+  }
+}

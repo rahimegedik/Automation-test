@@ -1,0 +1,43 @@
+{
+  "card": "NSB-6173",
+  "history": [
+    {
+      "date": "2026-09-17T12:50:00+03:00",
+      "verdict": "PASS",
+      "summary": "POST /customer/bank V2 (stage): UI'dan Garanti IBAN'ı eklendi → POST www.nadirgold.work/api/v2/customer/bank 200; kayıt V1 GET'te birebir; sonra temizlendi",
+      "notes": [
+        "/hesabim/iban → 'Yeni IBAN Ekle' → banka T.GARANTİ, hesap adı 'QA-6041 stage', IBAN TR47 0006 2077 7778 9633 8597 30 → Kaydet.",
+        "İstek: POST /api/v2/customer/bank payload {bankId:1, iban, accountName, accountNumber:''} → 200 {success:true,data:[{id:59617,...}]}; toast 'Yeni IBAN başarıyla eklendi'.",
+        "Liste yenilendi, 4. kart ekranda. V1 GET /customer/bank aynı id'yi döndürdü; V1 vs V2 kayıt alanları (id, accountName, customerId, firstname, lastname, accountNumber, bankName, logo, iban, currencyId) fark YOK.",
+        "POST yanıtındaki data satırı ile GET liste satırı arasında fark: POST'ta customerId string ('367284'), firstname/lastname null; GET'te int ve dolu — sadece yaratma yanıtı, ekranı etkilemiyor.",
+        "Temizlik: DELETE ?bankAccountId=59617 → 200, listeler [59580,59605,59610]'a döndü (NSB-6041 kanıtı).",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/6041-v2-form-dolu.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/6041-v2-liste-yeni.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/6041-v2-liste-silindi.png"
+      ],
+      "aiEvaluation": "Stage'de yaz-oku-sil döngüsü tutarlı. PASS."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T12:50:00+03:00",
+    "verdict": "PASS",
+    "summary": "POST /customer/bank V2 (stage): UI'dan Garanti IBAN'ı eklendi → POST www.nadirgold.work/api/v2/customer/bank 200; kayıt V1 GET'te birebir; sonra temizlendi",
+    "notes": [
+      "/hesabim/iban → 'Yeni IBAN Ekle' → banka T.GARANTİ, hesap adı 'QA-6041 stage', IBAN TR47 0006 2077 7778 9633 8597 30 → Kaydet.",
+      "İstek: POST /api/v2/customer/bank payload {bankId:1, iban, accountName, accountNumber:''} → 200 {success:true,data:[{id:59617,...}]}; toast 'Yeni IBAN başarıyla eklendi'.",
+      "Liste yenilendi, 4. kart ekranda. V1 GET /customer/bank aynı id'yi döndürdü; V1 vs V2 kayıt alanları (id, accountName, customerId, firstname, lastname, accountNumber, bankName, logo, iban, currencyId) fark YOK.",
+      "POST yanıtındaki data satırı ile GET liste satırı arasında fark: POST'ta customerId string ('367284'), firstname/lastname null; GET'te int ve dolu — sadece yaratma yanıtı, ekranı etkilemiyor.",
+      "Temizlik: DELETE ?bankAccountId=59617 → 200, listeler [59580,59605,59610]'a döndü (NSB-6041 kanıtı).",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/6041-v2-form-dolu.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/6041-v2-liste-yeni.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/6041-v2-liste-silindi.png"
+    ],
+    "aiEvaluation": "Stage'de yaz-oku-sil döngüsü tutarlı. PASS."
+  }
+}

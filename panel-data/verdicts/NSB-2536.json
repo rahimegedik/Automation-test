@@ -1,0 +1,43 @@
+{
+ "card": "NSB-2536",
+ "history": [
+  {
+   "date": "2026-09-03T22:05:00+03:00",
+   "verdict": "KISMI",
+   "summary": "Grafik sol ust fiyati ana urun fiyatiyla ayni (71.534,16 TL) ve analyseUrl tekrarli cagrisi kalkmis (yerine tek category-products/summary); ancak 1 saat / 1 gun cache TTL'leri istemciden dogrulanamiyor — HTTP katmaninda cache belirtisi yok",
+   "notes": [
+    "Ortam: dev, urun detay /10-gr-kumbara-kulce-altin (id 249), storageState'li context",
+    "PASS: Kartin FE maddesi — 'grafigin sol ust kosesindeki guncel urun fiyati yukaridaki asil urun fiyati alanindan gelmeli' -> grafik basligi altindaki fiyat 71.534,16 TL, sayfa ustundeki havale fiyati da 71.534,16 TL (tek cekim 74.037,86 TL). Birebir esit",
+    "PASS/DEGISIM: Urun detayda /analyseUrl?url=CATEGORY_SLUG cagrisi ARTIK YOK. Yerine tek sefer /product/category-products/summary?url=<slug> cagriliyor (benzer urunler + fiyatlar ayni yanittan geliyor) -> kartta tarif edilen 'her seferinde bir kez daha istek' problemi yapisal olarak ortadan kalkmis",
+    "Ardisik 3 SSR yuklemesi: 1154ms / 569ms / 650ms, yanit basliklari her seferinde 'private, no-cache, no-store, max-age=0, must-revalidate', x-nextjs-cache header'i yok, x-api-version=v1",
+    "Legacy API uclari 3 ardisik cagri (govdeler birebir ayni, latency dusmuyor): /analyseUrl?url=kulce-altin 775/713/628ms (no-cache, no-store, private), /layout/product-detail 418/275/345ms (no-cache, private), /layout/homepage 531/520/626ms, /layout/sikca-sorulan-sorular 336/370/375ms — hicbirinde Cache-Control TTL veya Age header'i yok",
+    "DOGRULANAMADI: /product/getPriceHistory legacy host'ta 404 donuyor (?productId, ?id, ?slug, parametresiz ve /product/price-history denendi) -> grafik verisi SSR icinde cekiliyor, uctan olculemedi",
+    "Kartin cache maddelerinin tamami sunucu tarafi (redis / Next.js server cache) — istemciden gozlemlenebilir bir belirti (Age, x-cache, TTL header, istek tekrarinin dusmesi) uretmiyor. Kesin dogrulama icin BE log/redis TTL teyidi ya da FE'de cache instrumentasyonu gerekiyor",
+    "TARIHSEL NOT: Yasemin Turker 09.07.2025 yorumu -> 'Soketi devre disi birakinca burda yaptigimiz duzenlemeler de devre disi kaldi. Bu task simdilik ready for stage'de bekleyebilir'. Kart 07.10.2025'ten beri guncellenmemis; kapsamin hala gecerli olup olmadigi teyit edilmeli"
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-09-03-faruk/2536-urun-detay.png"
+   ],
+   "aiEvaluation": "Musteriye gorunen iki madde (grafik fiyati, analyseUrl tekrari) saglanmis durumda. Cache TTL maddeleri kara-kutu testle ne PASS ne FAIL edilebilir; kartin sahibiyle 'kapsam hala gecerli mi + TTL'leri nasil dogrulayalim' netlestirilmeden nihai verdict verilmemeli."
+  }
+ ],
+ "latest": {
+  "date": "2026-09-03T22:05:00+03:00",
+  "verdict": "KISMI",
+  "summary": "Grafik sol ust fiyati ana urun fiyatiyla ayni (71.534,16 TL) ve analyseUrl tekrarli cagrisi kalkmis (yerine tek category-products/summary); ancak 1 saat / 1 gun cache TTL'leri istemciden dogrulanamiyor — HTTP katmaninda cache belirtisi yok",
+  "notes": [
+   "Ortam: dev, urun detay /10-gr-kumbara-kulce-altin (id 249), storageState'li context",
+   "PASS: Kartin FE maddesi — 'grafigin sol ust kosesindeki guncel urun fiyati yukaridaki asil urun fiyati alanindan gelmeli' -> grafik basligi altindaki fiyat 71.534,16 TL, sayfa ustundeki havale fiyati da 71.534,16 TL (tek cekim 74.037,86 TL). Birebir esit",
+   "PASS/DEGISIM: Urun detayda /analyseUrl?url=CATEGORY_SLUG cagrisi ARTIK YOK. Yerine tek sefer /product/category-products/summary?url=<slug> cagriliyor (benzer urunler + fiyatlar ayni yanittan geliyor) -> kartta tarif edilen 'her seferinde bir kez daha istek' problemi yapisal olarak ortadan kalkmis",
+   "Ardisik 3 SSR yuklemesi: 1154ms / 569ms / 650ms, yanit basliklari her seferinde 'private, no-cache, no-store, max-age=0, must-revalidate', x-nextjs-cache header'i yok, x-api-version=v1",
+   "Legacy API uclari 3 ardisik cagri (govdeler birebir ayni, latency dusmuyor): /analyseUrl?url=kulce-altin 775/713/628ms (no-cache, no-store, private), /layout/product-detail 418/275/345ms (no-cache, private), /layout/homepage 531/520/626ms, /layout/sikca-sorulan-sorular 336/370/375ms — hicbirinde Cache-Control TTL veya Age header'i yok",
+   "DOGRULANAMADI: /product/getPriceHistory legacy host'ta 404 donuyor (?productId, ?id, ?slug, parametresiz ve /product/price-history denendi) -> grafik verisi SSR icinde cekiliyor, uctan olculemedi",
+   "Kartin cache maddelerinin tamami sunucu tarafi (redis / Next.js server cache) — istemciden gozlemlenebilir bir belirti (Age, x-cache, TTL header, istek tekrarinin dusmesi) uretmiyor. Kesin dogrulama icin BE log/redis TTL teyidi ya da FE'de cache instrumentasyonu gerekiyor",
+   "TARIHSEL NOT: Yasemin Turker 09.07.2025 yorumu -> 'Soketi devre disi birakinca burda yaptigimiz duzenlemeler de devre disi kaldi. Bu task simdilik ready for stage'de bekleyebilir'. Kart 07.10.2025'ten beri guncellenmemis; kapsamin hala gecerli olup olmadigi teyit edilmeli"
+  ],
+  "evidence": [
+   "panel-data/evidence/2026-09-03-faruk/2536-urun-detay.png"
+  ],
+  "aiEvaluation": "Musteriye gorunen iki madde (grafik fiyati, analyseUrl tekrari) saglanmis durumda. Cache TTL maddeleri kara-kutu testle ne PASS ne FAIL edilebilir; kartin sahibiyle 'kapsam hala gecerli mi + TTL'leri nasil dogrulayalim' netlestirilmeden nihai verdict verilmemeli."
+ }
+}

@@ -1,0 +1,35 @@
+{
+  "card": "NSB-6214",
+  "history": [
+    {
+      "date": "2026-09-17T14:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "POST /customer/permission/update V2 (stage): SMS izni kapat → /api/v2/customer/permission/update {sms:false,email:true} 200, liste false; geri aç → true; başlangıç durumu geri alındı",
+      "notes": [
+        "/hesabim/duyurular 2 switch. V1: api.nadirgold.work/customer/permission/update, V2: www.nadirgold.work/api/v2/customer/permission/update — payload birebir {sms,email}.",
+        "Her toggle sonrası reload + permission/list ile doğrulandı; V1 ve V2'de aynı davranış. Son durum başlangıçla aynı (sms:true,email:true).",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/6214-v1-izinler.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/6214-v2-izinler.png"
+      ],
+      "aiEvaluation": "PASS."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T14:10:00+03:00",
+    "verdict": "PASS",
+    "summary": "POST /customer/permission/update V2 (stage): SMS izni kapat → /api/v2/customer/permission/update {sms:false,email:true} 200, liste false; geri aç → true; başlangıç durumu geri alındı",
+    "notes": [
+      "/hesabim/duyurular 2 switch. V1: api.nadirgold.work/customer/permission/update, V2: www.nadirgold.work/api/v2/customer/permission/update — payload birebir {sms,email}.",
+      "Her toggle sonrası reload + permission/list ile doğrulandı; V1 ve V2'de aynı davranış. Son durum başlangıçla aynı (sms:true,email:true).",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/6214-v1-izinler.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/6214-v2-izinler.png"
+    ],
+    "aiEvaluation": "PASS."
+  }
+}

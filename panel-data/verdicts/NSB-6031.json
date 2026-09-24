@@ -1,0 +1,37 @@
+{
+  "card": "NSB-6031",
+  "history": [
+    {
+      "date": "2026-09-17T11:40:00+03:00",
+      "verdict": "PASS",
+      "summary": "GET /customer/address V2: /hesabim/adreslerim V2 modunda /api/v2/customer/address; 3/3 adres, 41 alan birebir",
+      "notes": [
+        "Kayıt id 214224, 214221, 214188 — eksik/fazla alan YOK, tip farkı YOK. Tek fark createdAt/updatedAt hassasiyeti: V1 '.000000Z', V2 '.000Z'.",
+        "Ekranda aynı 3 adres kartı render ediliyor.",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+        "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/v1-hesabim_adreslerim.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/v2-hesabim_adreslerim.png"
+      ],
+      "aiEvaluation": "Tam parite. PASS."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T11:40:00+03:00",
+    "verdict": "PASS",
+    "summary": "GET /customer/address V2: /hesabim/adreslerim V2 modunda /api/v2/customer/address; 3/3 adres, 41 alan birebir",
+    "notes": [
+      "Kayıt id 214224, 214221, 214188 — eksik/fazla alan YOK, tip farkı YOK. Tek fark createdAt/updatedAt hassasiyeti: V1 '.000000Z', V2 '.000Z'.",
+      "Ekranda aynı 3 adres kartı render ediliyor.",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+      "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/v1-hesabim_adreslerim.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/v2-hesabim_adreslerim.png"
+    ],
+    "aiEvaluation": "Tam parite. PASS."
+  }
+}

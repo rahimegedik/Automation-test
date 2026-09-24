@@ -1,15 +1,17 @@
 {
   "card": "NSB-5881",
   "latest": {
-    "date": "2026-08-06T14:53:00+03:00",
-    "verdict": "FAIL",
-    "summary": "sitemap.xml hâlâ eski get-all-slugs'tan besleniyor; apiV2 flag'i sitemap route'unu etkilemiyor (yorum 64824)",
+    "date": "2026-09-17T14:10:00+03:00",
+    "verdict": "PASS",
+    "summary": "Sitemap V2 (stage): /sitemap.xml V2 modunda x-api-version v2 ile 195 URL (ürün+blog+statik), V1'in 57 URL'sinin tamamını kapsıyor; content/sitemap/slugs servisi çalışıyor",
     "notes": [
-      "Küme + lastmod parmak iziyle kanıtlandı",
-      "BE yan sorunları: updatedAt +3sa timezone, kapsam boşluğu, duplicate slug'lar"
+      "V1 modu: 57 loc (blog + statik, ürün yok). V2 modu: 195 loc; sadece-V1 URL 0, sadece-V2 138 (ürün slug'ları). Flag SSR'a kadar ulaşıyor.",
+      "BE: api-v2 /content/sitemap/slugs 200 (slug,type,updatedAt,lastmod); V1 get-all-slugs 200 ama ilk kayıtta slug boş ve lastmod null.",
+      "Dev'deki 06.08 FAIL (sitemap eski uçtan besleniyor) stage build'inde görünmüyor. Not: loc'lar www.nadirgold.com host'uyla üretiliyor (stage'de prod host) — beklenen davranış olabilir, SEO ekibine not.",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
     ],
     "evidence": [],
-    "aiEvaluation": "FE'den 'sitemap hangi koşulda yeni endpoint'e bağlanır' cevabı bekleniyor — flag mekanizması sitemap için tasarlanmamış olabilir; kalıcı config gerekebilir."
+    "aiEvaluation": "Stage'de sitemap V2 slug servisinden besleniyor. PASS."
   },
   "history": [
     {
@@ -22,6 +24,19 @@
       ],
       "evidence": [],
       "aiEvaluation": "FE'den 'sitemap hangi koşulda yeni endpoint'e bağlanır' cevabı bekleniyor — flag mekanizması sitemap için tasarlanmamış olabilir; kalıcı config gerekebilir."
+    },
+    {
+      "date": "2026-09-17T14:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "Sitemap V2 (stage): /sitemap.xml V2 modunda x-api-version v2 ile 195 URL (ürün+blog+statik), V1'in 57 URL'sinin tamamını kapsıyor; content/sitemap/slugs servisi çalışıyor",
+      "notes": [
+        "V1 modu: 57 loc (blog + statik, ürün yok). V2 modu: 195 loc; sadece-V1 URL 0, sadece-V2 138 (ürün slug'ları). Flag SSR'a kadar ulaşıyor.",
+        "BE: api-v2 /content/sitemap/slugs 200 (slug,type,updatedAt,lastmod); V1 get-all-slugs 200 ama ilk kayıtta slug boş ve lastmod null.",
+        "Dev'deki 06.08 FAIL (sitemap eski uçtan besleniyor) stage build'inde görünmüyor. Not: loc'lar www.nadirgold.com host'uyla üretiliyor (stage'de prod host) — beklenen davranış olabilir, SEO ekibine not.",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+      ],
+      "evidence": [],
+      "aiEvaluation": "Stage'de sitemap V2 slug servisinden besleniyor. PASS."
     }
   ]
 }

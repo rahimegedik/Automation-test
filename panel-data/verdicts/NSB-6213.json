@@ -1,0 +1,46 @@
+{
+  "card": "NSB-6213",
+  "history": [
+    {
+      "date": "2026-08-27T16:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "GET /customer/bank V2 paritesi tam — FE V2 modunda /api/v2/customer/bank cagiriyor, 2/2 IBAN kaydi alan ve deger bazinda birebir",
+      "notes": [
+        "FE V1 modu: api.nadirgold.dev/customer/bank | V2 modu: www.nadirgold.dev/api/v2/customer/bank (ikisi de 200)",
+        "Yanit govdesi diff: eksik/fazla alan YOK, tip farki YOK, deger farki YOK (id 17805, 17946)",
+        "Tek fark zarf: V1 {data,status,errors} vs V2 {success,data} — dokumante",
+        "Ekranda ayni 2 IBAN render ediliyor; bankList (NSB-6212) de birebir pariteli"
+      ],
+      "evidence": [],
+      "aiEvaluation": "API ve FE katmaninda tam parite. PASS."
+    },
+    {
+      "date": "2026-09-17T12:50:00+03:00",
+      "verdict": "PASS",
+      "summary": "GET /customer/bank V2 (stage retest): /hesabim/iban V2 modunda /api/v2/customer/bank; 3/3 IBAN kaydı alan ve değer bazında birebir",
+      "notes": [
+        "Kayıt id 59580, 59605, 59610 — fark YOK. Dev'deki 27.08 PASS stage'de teyit edildi.",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/v1-hesabim_iban.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/v2-hesabim_iban.png"
+      ],
+      "aiEvaluation": "Stage'de de tam parite. PASS."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T12:50:00+03:00",
+    "verdict": "PASS",
+    "summary": "GET /customer/bank V2 (stage retest): /hesabim/iban V2 modunda /api/v2/customer/bank; 3/3 IBAN kaydı alan ve değer bazında birebir",
+    "notes": [
+      "Kayıt id 59580, 59605, 59610 — fark YOK. Dev'deki 27.08 PASS stage'de teyit edildi.",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/v1-hesabim_iban.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/v2-hesabim_iban.png"
+    ],
+    "aiEvaluation": "Stage'de de tam parite. PASS."
+  }
+}

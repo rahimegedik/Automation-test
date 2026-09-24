@@ -1,18 +1,37 @@
 {
   "card": "NSB-5892",
   "latest": {
-    "date": "2026-08-06T15:52:00+03:00",
-    "verdict": "FAIL",
-    "summary": "Benzer Makaleler v2'de yok — veri SSR payload'ına hiç girmiyor; video posterleri kayıp (yorum 64892)",
+    "date": "2026-09-17T14:10:00+03:00",
+    "verdict": "PASS",
+    "summary": "Blog detay V2 (stage): FIFA makalesi iki modda SSR ile render; 'Benzer Makaleler' 3/3, kırık görsel 0, H1 aynı",
     "notes": [
-      "FE veri katmanı similarPosts'u istemiyor/düşürüyor",
-      "videos[].thumbnail: null BE sorunu layout bozuyor",
-      "API tarafı sağlam (slug desteği + similarPosts dönüyor)"
+      "Sayfa SSR — tarayıcıda API çağrısı yok, x-api-version v1/v2 header'ıyla mod teyit edildi.",
+      "Benzer Makaleler bağlantısı: V1 3, V2 3. Görsel: V1 36 img / 0 kırık, V2 31 img / 0 kırık (fark header/carousel), host cdn.nadirgold.work + www.nadirgold.work; prod CDN sızıntısı yok.",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
     ],
-    "evidence": [],
-    "aiEvaluation": "Fix FE veri katmanında olmalı; retest'te nadirgold-v1v2-compare agent'ıyla blog detay karşılaştırması yeterli. BE yan konuları: dev'de prod CDN URL'leri, thumbnail null."
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/5892-v1-blog-detay.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/5892-v2-blog-detay.png"
+    ],
+    "aiEvaluation": "PASS."
   },
   "history": [
+    {
+      "date": "2026-08-27T16:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "Blog detay V2 paritesi saglandi — Benzer Makaleler artik V2'de de geliyor (3 kart), video posterleri kayip degil; onceki FAIL giderilmis",
+      "notes": [
+        "16 kaydin TAMAMI iki modda karsilastirildi: HTTP 200/200, tip farki yalniz status int->bool",
+        "similarPosts iki tarafta da ayni 3 id (3,4,6); V2'de coverImage/bannerImage->image nesting, ayrica V2 videos alanini dolduruyor (V1 [] donuyor) — iyilesme",
+        "FE: similarHeading=1, similarCards=3, videos=1, posterMissing=0, brokenImgs=0 — iki modda ayni",
+        "Hata senaryolari V2'de daha saglam: olmayan id V1'de 500 (Undefined array key), V2'de 404; nonnumeric id V1 500, V2 404",
+        "fields projeksiyonu: standart ve tekrarli form calisiyor; eski PHP fields[] formu sessizce yok sayiliyor (dokumante migration notu)",
+        "Kalan BE yan konusu: videos[].thumbnail 4/7 null — V1'de de null, regresyon degil",
+        "Kart AC'sinde nonnumeric id icin 400 yaziyor, V2 404 donuyor — kucuk sapma"
+      ],
+      "evidence": [],
+      "aiEvaluation": "Onceki iki FAIL nedeni (similarPosts eksik, video posteri kayip) giderilmis. PASS."
+    },
     {
       "date": "2026-08-06T15:52:00+03:00",
       "verdict": "FAIL",
@@ -24,6 +43,21 @@
       ],
       "evidence": [],
       "aiEvaluation": "Fix FE veri katmanında olmalı; retest'te nadirgold-v1v2-compare agent'ıyla blog detay karşılaştırması yeterli. BE yan konuları: dev'de prod CDN URL'leri, thumbnail null."
+    },
+    {
+      "date": "2026-09-17T14:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "Blog detay V2 (stage): FIFA makalesi iki modda SSR ile render; 'Benzer Makaleler' 3/3, kırık görsel 0, H1 aynı",
+      "notes": [
+        "Sayfa SSR — tarayıcıda API çağrısı yok, x-api-version v1/v2 header'ıyla mod teyit edildi.",
+        "Benzer Makaleler bağlantısı: V1 3, V2 3. Görsel: V1 36 img / 0 kırık, V2 31 img / 0 kırık (fark header/carousel), host cdn.nadirgold.work + www.nadirgold.work; prod CDN sızıntısı yok.",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/5892-v1-blog-detay.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/5892-v2-blog-detay.png"
+      ],
+      "aiEvaluation": "PASS."
     }
   ]
 }

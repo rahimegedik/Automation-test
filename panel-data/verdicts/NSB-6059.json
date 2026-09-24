@@ -1,0 +1,33 @@
+{
+  "card": "NSB-6059",
+  "history": [
+    {
+      "date": "2026-09-17T11:40:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "POST /customer/phoneUpdate V2: happy-path koşulmadı (hesabı kalıcı bozar), kullanıcı onayı bekleniyor",
+      "notes": [
+        "Neden: telefon değişimi — OTP'li hesapta OTP akışı tetikler / OTP kapalı hesapta numarayı doğrudan değiştirir.",
+        "Stage V2 Swagger'da uç mevcut (auth zorunlu). FE bundle'da mutation V2 baseQuery ile tanımlı (updatePhone/updateEmail/deleteAccount).",
+        "Koşmak için: feda edilebilir bir stage test hesabı ya da açık onay gerekli.",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+        "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+      ],
+      "evidence": [],
+      "aiEvaluation": "Bilinçli olarak koşulmadı."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T11:40:00+03:00",
+    "verdict": "UNTESTED",
+    "summary": "POST /customer/phoneUpdate V2: happy-path koşulmadı (hesabı kalıcı bozar), kullanıcı onayı bekleniyor",
+    "notes": [
+      "Neden: telefon değişimi — OTP'li hesapta OTP akışı tetikler / OTP kapalı hesapta numarayı doğrudan değiştirir.",
+      "Stage V2 Swagger'da uç mevcut (auth zorunlu). FE bundle'da mutation V2 baseQuery ile tanımlı (updatePhone/updateEmail/deleteAccount).",
+      "Koşmak için: feda edilebilir bir stage test hesabı ya da açık onay gerekli.",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+      "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+    ],
+    "evidence": [],
+    "aiEvaluation": "Bilinçli olarak koşulmadı."
+  }
+}

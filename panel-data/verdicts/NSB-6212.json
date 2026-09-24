@@ -1,0 +1,37 @@
+{
+  "card": "NSB-6212",
+  "history": [
+    {
+      "date": "2026-09-17T12:50:00+03:00",
+      "verdict": "PASS",
+      "summary": "GET /customer/bankList V2 (stage): /hesabim/iban V2 modunda /api/v2/customer/bankList; 3/3 banka birebir",
+      "notes": [
+        "FE V1: api.nadirgold.work/customer/bankList | V2: www.nadirgold.work/api/v2/customer/bankList (200/200).",
+        "3 kayıt (id 1 Garanti, 3 Kuveyt Türk, 5 Yapı Kredi): eksik/fazla alan YOK, tip farkı YOK, değer farkı YOK. IBAN ekleme formundaki banka select'i 3 seçenekle doluyor.",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/v1-hesabim_iban.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/v2-hesabim_iban.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/6041-v2-form-bos.png"
+      ],
+      "aiEvaluation": "Tam parite. PASS."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T12:50:00+03:00",
+    "verdict": "PASS",
+    "summary": "GET /customer/bankList V2 (stage): /hesabim/iban V2 modunda /api/v2/customer/bankList; 3/3 banka birebir",
+    "notes": [
+      "FE V1: api.nadirgold.work/customer/bankList | V2: www.nadirgold.work/api/v2/customer/bankList (200/200).",
+      "3 kayıt (id 1 Garanti, 3 Kuveyt Türk, 5 Yapı Kredi): eksik/fazla alan YOK, tip farkı YOK, değer farkı YOK. IBAN ekleme formundaki banka select'i 3 seçenekle doluyor.",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/v1-hesabim_iban.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/v2-hesabim_iban.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/6041-v2-form-bos.png"
+    ],
+    "aiEvaluation": "Tam parite. PASS."
+  }
+}

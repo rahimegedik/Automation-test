@@ -1,0 +1,50 @@
+{
+  "card": "NSB-6163",
+  "history": [
+    {
+      "date": "2026-08-27T16:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "POST /customer/contact V2 entegrasyonu dogru — FE mod bazinda govde adlandirmasini dogru esliyor",
+      "notes": [
+        "FE V1 modu: POST api.nadirgold.dev/customer/contact, snake_case govde (first_name/last_name) -> 200",
+        "FE V2 modu: POST www.nadirgold.dev/api/v2/customer/contact, camelCase govde (firstName/lastName) -> 200",
+        "Iki modda da ayni basari mesaji: 'Bize ulastiginiz icin tesekkur ederiz...'",
+        "Negatifler dogru: DTO disi alan -> 400 'property foo should not exist', eksik zorunlu -> 400 validation[], gecersiz email -> 400, bos govde -> 400",
+        "V1 ayni negatiflerde 422 + errors[] donuyor (zarf farki, dokumante)",
+        "Test verisi QA-NSB-6163 isaretli gonderildi (dev)"
+      ],
+      "evidence": [],
+      "aiEvaluation": "API ve FE katmaninda dogru. PASS."
+    },
+    {
+      "date": "2026-09-17T14:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "POST /customer/contact V2 (stage): /iletisim formu V2 modunda /api/v2/customer/contact camelCase gövdeyle 200, V1 snake_case ile 200; aynı teşekkür mesajı",
+      "notes": [
+        "V1 payload {first_name,last_name,email,phone,message,subject} → {data:{success:true}} | V2 payload {firstName,lastName,email,phone,subject,message} → {success:true,data:{success:true}}.",
+        "Ekran iki modda: 'Bize ulaştığınız için teşekkür ederiz. En kısa sürede bir yanıt alacaksınız.' Test verisi 'QA-NSB-6163 stage v1/v2' ile işaretli (2 kayıt).",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/6163-v1-iletisim-sonuc.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/6163-v2-iletisim-sonuc.png"
+      ],
+      "aiEvaluation": "PASS."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T14:10:00+03:00",
+    "verdict": "PASS",
+    "summary": "POST /customer/contact V2 (stage): /iletisim formu V2 modunda /api/v2/customer/contact camelCase gövdeyle 200, V1 snake_case ile 200; aynı teşekkür mesajı",
+    "notes": [
+      "V1 payload {first_name,last_name,email,phone,message,subject} → {data:{success:true}} | V2 payload {firstName,lastName,email,phone,subject,message} → {success:true,data:{success:true}}.",
+      "Ekran iki modda: 'Bize ulaştığınız için teşekkür ederiz. En kısa sürede bir yanıt alacaksınız.' Test verisi 'QA-NSB-6163 stage v1/v2' ile işaretli (2 kayıt).",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/6163-v1-iletisim-sonuc.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/6163-v2-iletisim-sonuc.png"
+    ],
+    "aiEvaluation": "PASS."
+  }
+}

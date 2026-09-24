@@ -1,0 +1,49 @@
+{
+  "card": "NSB-5878",
+  "history": [
+    {
+      "date": "2026-09-17T11:40:00+03:00",
+      "verdict": "BLOCKED",
+      "summary": "Login V2: BE paritesi tam (requiresOtp+hash), ama stage web'de V2 modunda giriş POST'u FE proxy'sinde 302'ye takılıyor — FE seviyesinde doğrulanamadı",
+      "notes": [
+        "V2 modunda /hesap/giris (x-api-version: v2) → FE POST www.nadirgold.work/api/v2/customer/login → 302 → auth.nadirgold.work/auth/oauth2/google (oturumsuz proxy POST gate'e yönleniyor; UA/Bearer/Referer varyantlarıyla da 302). Ekranda OTP adımına geçilemiyor.",
+        "V1 modunda aynı akış: POST api.nadirgold.work/customer/login 200 → data.hash → OTP ekranı ('Sen olduğunu doğrula').",
+        "BE izolasyonu (api-v2.nadirgold.work/api/v1/customer/login): doğru şifre 200 {success,data:{requiresOtp:true,hash}} — hash base64 JSON alanları V1 ile birebir (phone,expire,refCode,hash).",
+        "Yanlış şifre: V1 422 {status.msg:'Lütfen e-mail adresinizi veya şifrenizi kontrol ediniz.'} | V2 401 {success:false,statusCode:401,message:aynı}. HTTP kodu farklı (422→401) — FE hata gösterimi etkilenmiyorsa kabul edilebilir, dokümante.",
+        "Payload: FE V2 'email' gönderiyor, V1 'username'. Swagger LoginDto: username deprecated alias (NSB-6368), email kazanır — uyumlu.",
+        "Blocker: /api/v2 proxy oturumsuz POST'u gate'e yönlendiriyor (CLAUDE.md tuzak #7 ile aynı). Dev'de de böyle; stage'de gerçek kullanıcı V2'ye alınırsa login çalışmaz — proxy/gate tarafında login gibi kimliksiz uçlar için istisna gerekli.",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+        "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/5878-v1-yanlis-sifre.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/5878-v1-otp-ekrani.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/5878-v2-yanlis-sifre.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/5878-v2-otp-ekrani.png"
+      ],
+      "aiEvaluation": "BE parite PASS; FE V2 akışı ortam gate'i yüzünden doğrulanamadı. Gate istisnası gelince FE seviyesinde retest."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T11:40:00+03:00",
+    "verdict": "BLOCKED",
+    "summary": "Login V2: BE paritesi tam (requiresOtp+hash), ama stage web'de V2 modunda giriş POST'u FE proxy'sinde 302'ye takılıyor — FE seviyesinde doğrulanamadı",
+    "notes": [
+      "V2 modunda /hesap/giris (x-api-version: v2) → FE POST www.nadirgold.work/api/v2/customer/login → 302 → auth.nadirgold.work/auth/oauth2/google (oturumsuz proxy POST gate'e yönleniyor; UA/Bearer/Referer varyantlarıyla da 302). Ekranda OTP adımına geçilemiyor.",
+      "V1 modunda aynı akış: POST api.nadirgold.work/customer/login 200 → data.hash → OTP ekranı ('Sen olduğunu doğrula').",
+      "BE izolasyonu (api-v2.nadirgold.work/api/v1/customer/login): doğru şifre 200 {success,data:{requiresOtp:true,hash}} — hash base64 JSON alanları V1 ile birebir (phone,expire,refCode,hash).",
+      "Yanlış şifre: V1 422 {status.msg:'Lütfen e-mail adresinizi veya şifrenizi kontrol ediniz.'} | V2 401 {success:false,statusCode:401,message:aynı}. HTTP kodu farklı (422→401) — FE hata gösterimi etkilenmiyorsa kabul edilebilir, dokümante.",
+      "Payload: FE V2 'email' gönderiyor, V1 'username'. Swagger LoginDto: username deprecated alias (NSB-6368), email kazanır — uyumlu.",
+      "Blocker: /api/v2 proxy oturumsuz POST'u gate'e yönlendiriyor (CLAUDE.md tuzak #7 ile aynı). Dev'de de böyle; stage'de gerçek kullanıcı V2'ye alınırsa login çalışmaz — proxy/gate tarafında login gibi kimliksiz uçlar için istisna gerekli.",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+      "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/5878-v1-yanlis-sifre.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/5878-v1-otp-ekrani.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/5878-v2-yanlis-sifre.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/5878-v2-otp-ekrani.png"
+    ],
+    "aiEvaluation": "BE parite PASS; FE V2 akışı ortam gate'i yüzünden doğrulanamadı. Gate istisnası gelince FE seviyesinde retest."
+  }
+}

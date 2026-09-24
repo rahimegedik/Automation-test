@@ -1,0 +1,50 @@
+{
+  "card": "NSB-5916",
+  "history": [
+    {
+      "date": "2026-08-27T16:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "POST /customer/otp/verify yeni yol ve hash/verifyCode govdesi dogru — eski sozlesme reddediliyor",
+      "notes": [
+        "Yeni yol calisiyor; hatali kodla 400 (V1 de 400) — davranis pariteli",
+        "Eski govde reddediliyor: {email, code} -> 400 'property email should not exist', 'property code should not exist'",
+        "Eski yol V2'de kapali: POST /api/v1/customer/otpVerify -> 404",
+        "Not: hatali kodda mesaj 'Kod suresi dolmus veya gecersiz' — taze hash icin yaniltici, ama V1 de 'Code has expired' diyor, regresyon degil",
+        "Not: kart AC'sinde zarf {success,statusCode,message,errors,path} yaziyor; is-kurali hatalarinda errors alani yok (yalniz validasyon hatalarinda geliyor)",
+        "FE ucu kosulamadi: dev test hesabinda OTP kapali, ayrica /api/v2 proxy'si oturumsuz cagrilarda OAuth gate'ine 302 atiyor"
+      ],
+      "evidence": [],
+      "aiEvaluation": "API sozlesmesi tam dogrulandi; FE ucu ortam kisiti nedeniyle kosulamadi. PASS (API)."
+    },
+    {
+      "date": "2026-09-17T14:10:00+03:00",
+      "verdict": "BLOCKED",
+      "summary": "otp/verify V2 (stage): FE V2 modunda login/üye-ol POST'u proxy'de 302'ye takıldığı için OTP ekranına ulaşılamıyor; BE negatif paritesi tam",
+      "notes": [
+        "Kök neden: /api/v2 proxy'si oturumsuz POST'u auth.nadirgold.work OAuth gate'ine 302 ile yönlendiriyor (dev'deki tuzak #7 ile aynı; UA/Bearer/Referer fark etmiyor). Ortam engeli, ürün hatası değil — ama stage'de gerçek kullanıcı V2'ye alınırsa kimliksiz akışlar (login, üye ol, şifremi unuttum, OTP) çalışmaz; gate'e istisna gerekir.",
+        "BE izolasyonu (bozuk hash): otp/verify V1 400 'Code has expired' | V2 400 'Kod süresi dolmuş veya geçersiz'; otp/resend V1 400 'invalid hash key' | V2 400 'Geçersiz veya kullanılmış OTP hash'i' — kodlar pariteli, mesajlar Türkçeleştirilmiş.",
+        "Pozitif yol (gerçek hash) SMS gerektirdiği için stage'de koşulmadı; dev'de 27.08 PASS.",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/5878-v2-otp-ekrani.png"
+      ],
+      "aiEvaluation": "FE ortam engeli; BE PASS."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T14:10:00+03:00",
+    "verdict": "BLOCKED",
+    "summary": "otp/verify V2 (stage): FE V2 modunda login/üye-ol POST'u proxy'de 302'ye takıldığı için OTP ekranına ulaşılamıyor; BE negatif paritesi tam",
+    "notes": [
+      "Kök neden: /api/v2 proxy'si oturumsuz POST'u auth.nadirgold.work OAuth gate'ine 302 ile yönlendiriyor (dev'deki tuzak #7 ile aynı; UA/Bearer/Referer fark etmiyor). Ortam engeli, ürün hatası değil — ama stage'de gerçek kullanıcı V2'ye alınırsa kimliksiz akışlar (login, üye ol, şifremi unuttum, OTP) çalışmaz; gate'e istisna gerekir.",
+      "BE izolasyonu (bozuk hash): otp/verify V1 400 'Code has expired' | V2 400 'Kod süresi dolmuş veya geçersiz'; otp/resend V1 400 'invalid hash key' | V2 400 'Geçersiz veya kullanılmış OTP hash'i' — kodlar pariteli, mesajlar Türkçeleştirilmiş.",
+      "Pozitif yol (gerçek hash) SMS gerektirdiği için stage'de koşulmadı; dev'de 27.08 PASS.",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/5878-v2-otp-ekrani.png"
+    ],
+    "aiEvaluation": "FE ortam engeli; BE PASS."
+  }
+}

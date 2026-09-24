@@ -1,0 +1,98 @@
+{
+  "card": "NSB-6251",
+  "history": [
+    {
+      "date": "2026-08-28T18:35:00+03:00",
+      "verdict": "FAIL",
+      "summary": "18:16 build'i sema uygulamis ve purchase payload'ini temizlemis (NSB-6384 cozuldu); 3 madde acik + Firebase'de semayi kiran yeni serilestirme hatasi (NSB-6388)",
+      "notes": [
+        "Retest build: com.nadirgold.app.test, kurulum 28.08 18:16, APK hash farkli AMA versionName/versionCode ayni kalmis (2.1.1 / 53) - build'ler ayirt edilemiyor",
+        "DUZELDI: Google Ads event adlari (view_item / view_item_list / view_search_results / add_to_cart / view_cart / purchase) yapilandirilmis items[] ile geliyor",
+        "DUZELDI: currency=TRY ve value (sayisal) her event'te var; purchase transaction_id=1026739 tasiyor, Firebase items'i KABUL ediyor (eski _err=4 gitti) -> NSB-6384 cozuldu",
+        "DUZELDI: add_to_cart.price sayisal (76442.57) ve sepet tutariyla ayni - iki locale formati (280.100,85 / 15,959.82) sorunu kapandi",
+        "DUZELDI: product_detail cift firlamasi - view_item artik 1x",
+        "DUZELDI: payment_method=credit_card (credit_cart yazim hatasi giderildi); ana sayfa page_view'unde page_category=home",
+        "DUZELDI: purchase 1 siparis = 1 event, cift sayim yok (siparis 1026739)",
+        "ACIK: view_item_list bir kategori ziyaretinde 2x, view_cart bir sepet girisinde 2x (+fiyat yenilemesi; toplam 6 event)",
+        "ACIK NSB-6383/B: 3DS reddinde (4351) hicbir event yok - paymentFailed string'i APK'da VAR (0->2) ama bu akistan cagrilmiyor",
+        "ACIK NSB-6383/A: backend reddi (purchase success=false) senaryosu bu turda tetiklenemedi; yeni payload'da success parametresi hic yok, teyit gerekiyor",
+        "ACIK NSB-6385: klavye acikken checkout icerigi TAMAMEN bos render ediliyor - ilk rapordan agir; kart ile odeme fiilen kullanilamiyor",
+        "ACIK: siparis sonrasi bayat checkout ekrani (tutarlar bos, Odeme Yap aktif) hala duruyor",
+        "YENI NSB-6388: google_business_vertical event seviyesinde gonderiliyor, GA4 reddediyor (_err=14) -> Google Ads vertical bilgisi hala yok",
+        "YENI NSB-6388: fiyatlar yuvarlanmamis double; view_item_list'teki 23 urunun 8'inde bozuk deger, biri bilimsel gosterim (8.876294078999999E7)",
+        "YENI: ayni urun icin view_item value=79118.06 (tek cekim) vs add_to_cart/view_cart value=76442.57 (havale) - huni boyunca tutarsiz",
+        "YENI: view_item icinde stock=3.0 (tam sayi alan float)"
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-08-28-appmetrica-v2/events-v2.csv",
+        "panel-data/evidence/2026-08-28-appmetrica-v2/logcat-run2.log.gz",
+        "panel-data/evidence/2026-08-28-appmetrica-v2/checkout-klavye-bos-ekran.jpeg"
+      ],
+      "aiEvaluation": "Ciddi ilerleme: sema uygulanmis, purchase payload'i GA4 sozlesmesine cekilmis, NSB-6384 kapanabilir. PASS yine verilemez cunku (1) google_business_vertical yanlis seviyede oldugu icin Google Ads perakende donusumu hala eksik, (2) fiyatlarda bilimsel gosterim ayristirilamaz, (3) basarisiz odeme hala hic raporlanmiyor, (4) kart ile odeme ekrani klavye acikken kullanilamaz durumda. NSB-6388 ve NSB-6383/B kapandiginda tekrar kosulmali."
+    },
+    {
+      "date": "2026-08-28T16:20:00+03:00",
+      "verdict": "FAIL",
+      "summary": "Entegrasyon calisiyor ama ticket'in amaci olan Google Ads perakende semasi hic uygulanmamis; purchase items'i Firebase'de dusuyor, paymentFailed hic firlamiyor",
+      "notes": [
+        "Oppo A5 2020 (ee44ee11) / com.nadirgold.app.test v2.1.1 / AppMetrica SDK 8.5.0, test key ad0dcc3e-... build'e gomulu, logs=true",
+        "18 akis isaretleyicisiyle segmentlenmis 209 event kaydi (AppMetrica + Firebase yan yana), kaynak adb logcat -s AppMetrica:V FA-SVC:V",
+        "KRITIK: Google Ads perakende semasi hic uygulanmamis - 209 event'in hicbirinde view_item / view_item_list / view_search_results / google_business_vertical yok; ham uygulama adlari gidiyor (search, category_view, product_detail, cart_view)",
+        "KRITIK: purchase -> Firebase items parametresini 586 karakter oldugu icin komple dusuruyor (ga_error=4, _ev=items, _el=586). Firebase'deki purchase'ta urun bilgisi YOK. -> NSB-6384",
+        "items icerigi bozuk: productId '13.0' (string+ondalikli), currency 'GAU' ama price TL, originalPrice 1.67 gram, cargoTracking*/images/thumbnail/variant gereksiz alanlar",
+        "Parametre adlari GA4 sozlesmesine uymuyor: total_amount (->value), order_id (->transaction_id)",
+        "paymentFailed event'i HIC firlamiyor; basarisiz kart odemesinden sonra log tamamen sessiz, error event'i bile yok -> NSB-6383",
+        "product_detail her goruntulemede 2 kez firliyor (69 ms arayla ayni parametreler); page_view de cift. 12 event / 6 gercek goruntuleme",
+        "add_to_cart price = '15,971.08 TL' (string, tek cekim) iken sepete giren cart_value = 15430.99 (havale); product_detail price = 15991.47 sayisal. Ayni urun icin uc farkli temsil",
+        "checkout_payment_select -> payment_method=credit_cart (yazim hatasi), checkout_shipping_select -> shipping_type=Standard (ekranda 'Ayni Gun Kargoda'), checkout_address_add mevcut adres SECILDIGINDE firliyor",
+        "Bos sepette cart_view -> cart_value=0.0; deeplink_open -> source=unknown (3/3); home_view page_view'unde page_category=product",
+        "Tip tutarsizligi: add_to_cart quantity=1.0 (float) / cart_update_quantity quantity=2 (int)",
+        "Uygulamada gercek 404: error {screen=ProductListRepository, error_code=404, message=} - Hesaba Altin Havale akisinda, message BOS oldugu icin teshis edilemez",
+        "Kartta gecmeyen ikinci bir AppMetrica reporter var: 'Activate reporter with APIKey 20799a27-...' - hangi uygulamaya yazdigi netlesmeli",
+        "Odeme ekraninda sabit alt bar (y=888..972) CVV input'unun (y=937..1002) uzerine biniyor, ~65 px cakisma -> NSB-6385. Odeme reddinde kullaniciya ham gateway metni + dahili odeme id'si gosteriliyor",
+        "Siparis sonrasi checkout ekrani canli kaliyor (adres/kart/sozlesme dolu, Odeme Yap aktif) - sepet bos olmasina ragmen; sozlesme onayi sonraki siparise tasiniyor. Cift siparis riski",
+        "DOGRU CALISAN: siparis 1026709 (havale 15420.56) + 1026718 (kredi karti 15985.82) -> 2 siparis / 2 purchase, order_id tekil, CIFT SAYIM YOK",
+        "DOGRU CALISAN: basarisiz odemede purchase firlamiyor -> ciro sismesi duzeltmesi calisiyor",
+        "DOGRU CALISAN: oturum acikken restart'ta profile ID 203478 set ediliyor; deeplink sicak+soguk acilista deeplink_open uretiyor",
+        "DOGRU CALISAN: isaretlenmis akislarin hepsinde AppMetrica ve Firebase sayilari birebir esit - saglayicilar arasinda event kaybi yok",
+        "Prod key (9cca0b37-...) hicbir build'de gecmiyor; prod app (com.nadirgold.app v2.0.7) AppMetrica icermiyor - ortam ayrimi temiz",
+        "Kabul kriteri eksik: cart_view fiyat yenilemesinde tekrar firliyor (sepette 10 dk bekleyen kullanici ~4 event uretir). Sayim kurali, value kapsami (kargo/indirim) ve PII allowlist netlesmeden bug/tasarim ayrimi yapilamiyor"
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-08-28-appmetrica/appmetrica-firebase-events.csv",
+        "panel-data/evidence/2026-08-28-appmetrica/events-by-flow.md",
+        "panel-data/evidence/2026-08-28-appmetrica/logcat-run.log.gz"
+      ],
+      "aiEvaluation": "SDK entegrasyonu ve purchase tetiklemesi saglam (cift sayim yok, basarisiz odemede purchase yok). PASS verilemez cunku ticket'in is hedefi olan reklam attribution'i icin gerekli iki sart karsilanmiyor: (1) Google Ads event adlari ve google_business_vertical hic gonderilmiyor, (2) purchase'in urun bilgisi Firebase'e hic ulasmiyor. Ayrica basarisiz odeme analitikte tamamen gorunmez. NSB-6383/6384/6385 acildi; sema, cift product_detail ve add_to_cart fiyat formati bu kartin kapsaminda."
+    }
+  ],
+  "latest": {
+    "date": "2026-08-28T18:35:00+03:00",
+    "verdict": "FAIL",
+    "summary": "18:16 build'i sema uygulamis ve purchase payload'ini temizlemis (NSB-6384 cozuldu); 3 madde acik + Firebase'de semayi kiran yeni serilestirme hatasi (NSB-6388)",
+    "notes": [
+      "Retest build: com.nadirgold.app.test, kurulum 28.08 18:16, APK hash farkli AMA versionName/versionCode ayni kalmis (2.1.1 / 53) - build'ler ayirt edilemiyor",
+      "DUZELDI: Google Ads event adlari (view_item / view_item_list / view_search_results / add_to_cart / view_cart / purchase) yapilandirilmis items[] ile geliyor",
+      "DUZELDI: currency=TRY ve value (sayisal) her event'te var; purchase transaction_id=1026739 tasiyor, Firebase items'i KABUL ediyor (eski _err=4 gitti) -> NSB-6384 cozuldu",
+      "DUZELDI: add_to_cart.price sayisal (76442.57) ve sepet tutariyla ayni - iki locale formati (280.100,85 / 15,959.82) sorunu kapandi",
+      "DUZELDI: product_detail cift firlamasi - view_item artik 1x",
+      "DUZELDI: payment_method=credit_card (credit_cart yazim hatasi giderildi); ana sayfa page_view'unde page_category=home",
+      "DUZELDI: purchase 1 siparis = 1 event, cift sayim yok (siparis 1026739)",
+      "ACIK: view_item_list bir kategori ziyaretinde 2x, view_cart bir sepet girisinde 2x (+fiyat yenilemesi; toplam 6 event)",
+      "ACIK NSB-6383/B: 3DS reddinde (4351) hicbir event yok - paymentFailed string'i APK'da VAR (0->2) ama bu akistan cagrilmiyor",
+      "ACIK NSB-6383/A: backend reddi (purchase success=false) senaryosu bu turda tetiklenemedi; yeni payload'da success parametresi hic yok, teyit gerekiyor",
+      "ACIK NSB-6385: klavye acikken checkout icerigi TAMAMEN bos render ediliyor - ilk rapordan agir; kart ile odeme fiilen kullanilamiyor",
+      "ACIK: siparis sonrasi bayat checkout ekrani (tutarlar bos, Odeme Yap aktif) hala duruyor",
+      "YENI NSB-6388: google_business_vertical event seviyesinde gonderiliyor, GA4 reddediyor (_err=14) -> Google Ads vertical bilgisi hala yok",
+      "YENI NSB-6388: fiyatlar yuvarlanmamis double; view_item_list'teki 23 urunun 8'inde bozuk deger, biri bilimsel gosterim (8.876294078999999E7)",
+      "YENI: ayni urun icin view_item value=79118.06 (tek cekim) vs add_to_cart/view_cart value=76442.57 (havale) - huni boyunca tutarsiz",
+      "YENI: view_item icinde stock=3.0 (tam sayi alan float)"
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-08-28-appmetrica-v2/events-v2.csv",
+      "panel-data/evidence/2026-08-28-appmetrica-v2/logcat-run2.log.gz",
+      "panel-data/evidence/2026-08-28-appmetrica-v2/checkout-klavye-bos-ekran.jpeg"
+    ],
+    "aiEvaluation": "Ciddi ilerleme: sema uygulanmis, purchase payload'i GA4 sozlesmesine cekilmis, NSB-6384 kapanabilir. PASS yine verilemez cunku (1) google_business_vertical yanlis seviyede oldugu icin Google Ads perakende donusumu hala eksik, (2) fiyatlarda bilimsel gosterim ayristirilamaz, (3) basarisiz odeme hala hic raporlanmiyor, (4) kart ile odeme ekrani klavye acikken kullanilamaz durumda. NSB-6388 ve NSB-6383/B kapandiginda tekrar kosulmali."
+  }
+}

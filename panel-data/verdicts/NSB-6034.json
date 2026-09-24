@@ -1,0 +1,43 @@
+{
+  "card": "NSB-6034",
+  "history": [
+    {
+      "date": "2026-09-17T11:40:00+03:00",
+      "verdict": "PASS",
+      "summary": "POST/DELETE /customer/address V2: UI'dan QA adresi oluşturuldu (id 214237), V1 listesinde de göründü, UI'dan silindi, iki taraf başlangıç durumuna döndü",
+      "notes": [
+        "POST www.nadirgold.work/api/v2/customer/address 200 → liste yenilendi, 'QA-6034-stage-79183' ekranda. Payload: addressType,addressName,firstName,lastName,address,countryId,cityId,countyId,districtId,postalCode,telephone,company,taxNumber,taxOffice...",
+        "Oluşan kayıt V1 GET'te de mevcut; V1 vs V2 kayıt diff: sadece createdAt/updatedAt hassasiyeti.",
+        "DELETE www.nadirgold.work/api/v2/customer/address?id=214237 body {id:214237} → 200, liste [214224,214221,214188]; V1 listesi de başlangıçla aynı. Guard: DELETE id'si oluşturulan id ile eşleşmezse istek iptal edilecek şekilde kilitlendi.",
+        "UX notu: 'Sil' tıklanınca onay modalı YOK, doğrudan siliniyor (IBAN silmede de aynı).",
+        "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+        "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-16-stage-faruk/6034-v2-form-dolu.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/6034-v2-liste-yeni-kayit.png",
+        "panel-data/evidence/2026-09-16-stage-faruk/6034-v2-liste-silindi.png"
+      ],
+      "aiEvaluation": "Yaz-oku-sil döngüsü iki tarafta tutarlı. PASS."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-17T11:40:00+03:00",
+    "verdict": "PASS",
+    "summary": "POST/DELETE /customer/address V2: UI'dan QA adresi oluşturuldu (id 214237), V1 listesinde de göründü, UI'dan silindi, iki taraf başlangıç durumuna döndü",
+    "notes": [
+      "POST www.nadirgold.work/api/v2/customer/address 200 → liste yenilendi, 'QA-6034-stage-79183' ekranda. Payload: addressType,addressName,firstName,lastName,address,countryId,cityId,countyId,districtId,postalCode,telephone,company,taxNumber,taxOffice...",
+      "Oluşan kayıt V1 GET'te de mevcut; V1 vs V2 kayıt diff: sadece createdAt/updatedAt hassasiyeti.",
+      "DELETE www.nadirgold.work/api/v2/customer/address?id=214237 body {id:214237} → 200, liste [214224,214221,214188]; V1 listesi de başlangıçla aynı. Guard: DELETE id'si oluşturulan id ile eşleşmezse istek iptal edilecek şekilde kilitlendi.",
+      "UX notu: 'Sil' tıklanınca onay modalı YOK, doğrudan siliniyor (IBAN silmede de aynı).",
+      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
+      "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-16-stage-faruk/6034-v2-form-dolu.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/6034-v2-liste-yeni-kayit.png",
+      "panel-data/evidence/2026-09-16-stage-faruk/6034-v2-liste-silindi.png"
+    ],
+    "aiEvaluation": "Yaz-oku-sil döngüsü iki tarafta tutarlı. PASS."
+  }
+}
