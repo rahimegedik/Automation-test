@@ -78,6 +78,8 @@ Swagger: `https://api-v2.nadirgold.dev/api/docs-json/customer` (servis başına:
 3. **`?apiV2=1`'i doğrudan hedef URL'e koymak yetmez** — önce normal bir sayfa aç ki cookie set olsun, sonra hedefe git.
 4. **API'yi doğrudan test etmek için**: `POST https://api.nadirgold.dev/customer/login` → `data.token` → `Authorization: Bearer`. **Tarayıcı `User-Agent`'ı şart**; `python-urllib` gibi UA'lar 403 yer.
 5. `ctx.request` uygulamanın Bearer header'ını taşımaz (401 alır) — kimlikli çağrıları sayfanın kendi akışından yakala ya da yukarıdaki token yöntemini kullan.
+6. **Oturumsuz akışlar için `?apiV2=1` yetmez.** Logged-out context'te `/?apiV2=1` OAuth gate'ine yönlenir, query param kaybolur, `NG_API_V2` cookie'si **hiç set olmaz** ve sayfa sessizce V1'de kalır (`x-api-version: v1`). Şifremi-unuttum/register/OTP gibi ekranları test ederken cookie'yi elle ver: `ctx.addCookies([{name:'NG_API_V2',value:'1',domain:'www.nadirgold.dev',path:'/'}])`.
+7. **`/api/v2` proxy'si oturumsuz POST'larda 302 döner** (`auth.nadirgold.dev/auth/oauth2/google`) — FE ekranda "Bir hata oluştu" gösterir. Bu ürün hatası değil, dev gate'i. Kimliksiz uçları ya `storageState`'li context'ten ya da doğrudan `https://api-v2.nadirgold.dev/api/v1/...` üzerinden test et.
 
 ## Bilinen sorunlar (kod tarafı)
 

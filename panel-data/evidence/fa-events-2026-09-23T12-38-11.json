@@ -1,0 +1,41 @@
+{
+ "savedAt": "2026-09-23T12:38:11.650Z",
+ "device": {
+  "running": true,
+  "deviceId": "00008120-0002354114EB401E",
+  "platform": "ios",
+  "since": "2026-09-23T12:30:50.410Z",
+  "restarts": 0,
+  "lastError": null,
+  "debug": true
+ },
+ "expected": [],
+ "events": [
+  {
+   "kind": "userprop",
+   "ts": "2026-09-23 15:37:27.763834",
+   "name": "user_id",
+   "value": "203478",
+   "id": 13
+  },
+  {
+   "kind": "event",
+   "ts": "2026-09-23 15:38:09.270797",
+   "name": "category_view",
+   "origin": "app",
+   "debug": true,
+   "params": {
+    "category_id": "2",
+    "category_name": "Gram Külçe Altın"
+   },
+   "meta": {
+    "ga_debug": "1",
+    "ga_event_origin": "app",
+    "ga_realtime": "1"
+   },
+   "uploaded": false,
+   "id": 14
+  }
+ ],
+ "debugview": null
+}

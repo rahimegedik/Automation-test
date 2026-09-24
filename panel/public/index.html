@@ -67,6 +67,70 @@
   #dev .body { flex: 1; display: flex; overflow: hidden; background: #0b0d12; }
   #dev iframe { flex: 1; width: 100%; height: 100%; border: 0; }
   #dev .msg { color: var(--dim); padding: 30px; margin: auto; text-align: center; line-height: 1.6; }
+  /* Event Testleri (MobAI + Firebase Analytics akışı) */
+  #ev { display: none; grid-column: 1 / -1; flex-direction: column; overflow: hidden; background: var(--bg); }
+  body.ev-on #ev { display: flex; }
+  body.ev-on #list, body.ev-on #detail, body.ev-on #cmp, body.ev-on #dev { display: none !important; }
+  body.ev-on main { grid-template-columns: 1fr; }
+  #ev .bar { display: flex; gap: 8px; align-items: center; padding: 8px 14px; background: var(--panel); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  #ev select, #ev input[type=text], #ev textarea { background: var(--panel2); border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 8px; font-size: 12px; }
+  #ev .runbtn { margin: 0; padding: 6px 12px; font-size: 12px; }
+  #ev .runbtn.ghost { background: var(--panel2); color: var(--text); border: 1px solid var(--border); }
+  #ev .split { flex: 1; display: grid; grid-template-columns: minmax(360px, 1fr) minmax(420px, 520px); overflow: hidden; }
+  #ev .devpane { display: flex; background: #0b0d12; overflow: hidden; }
+  #ev .devpane iframe { flex: 1; border: 0; }
+  #ev .devpane .msg { color: var(--dim); margin: auto; padding: 30px; text-align: center; line-height: 1.6; }
+  #ev .fapane { display: flex; flex-direction: column; overflow: hidden; border-left: 1px solid var(--border); }
+  #ev .fatools { display: flex; gap: 6px; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--border); flex-wrap: wrap; font-size: 12px; color: var(--dim); }
+  #ev .pill { font-size: 11px; padding: 2px 9px; border-radius: 99px; border: 1px solid var(--border); color: var(--dim); white-space: nowrap; }
+  #ev .pill.ok { color: var(--pass); border-color: var(--pass); }
+  #ev .pill.warn { color: var(--blocked); border-color: var(--blocked); }
+  #ev .pill.bad { color: var(--fail); border-color: var(--fail); }
+  #ev details.expect { border-bottom: 1px solid var(--border); padding: 6px 12px; font-size: 12px; }
+  #ev details.expect summary { cursor: pointer; color: var(--dim); }
+  #ev details.expect textarea { width: 100%; min-height: 70px; margin-top: 6px; font: 12px ui-monospace, monospace; }
+  #ev .chk { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+  #ev .chk span { font: 11px ui-monospace, monospace; padding: 2px 7px; border-radius: 6px; border: 1px solid var(--border); }
+  #ev .chk .y { color: var(--pass); border-color: var(--pass); }
+  #ev .chk .p { color: var(--blocked); border-color: var(--blocked); }
+  #ev .chk .n { color: var(--dim); }
+  #ev .split.dbv-on { grid-template-columns: minmax(280px, .75fr) minmax(300px, 360px) minmax(460px, 1.35fr); }
+  #ev .split.dbv-on.nolog { grid-template-columns: minmax(300px, .8fr) minmax(460px, 1.6fr); }
+  #ev .split.nolog .fapane { display: none; }
+  #ev .dbvpane { display: none; flex-direction: column; overflow: hidden; border-left: 1px solid var(--border); background: #fff; }
+  #ev .split.dbv-on .dbvpane { display: flex; }
+  #ev .dbvpane .fatools { background: var(--panel); }
+  #ev .dbvpane .view { flex: 1; overflow: auto; background: #0b0d12; display: flex; align-items: flex-start; justify-content: center; }
+  #ev .dbvpane img { width: 100%; height: auto; display: block; cursor: default; outline: none; }
+  #ev .dbvpane img:focus { box-shadow: inset 0 0 0 2px var(--accent); }
+  #ev .dbvpane .msg { color: var(--dim); margin: auto; padding: 24px; text-align: center; line-height: 1.7; font-size: 13px; }
+  #ev-fbv-url { flex: 1; min-width: 80px; color: var(--dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 11px ui-monospace, monospace; }
+  #fa-list { flex: 1; overflow-y: auto; font-size: 12px; }
+  .fa-row { padding: 7px 12px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .fa-row:hover { background: var(--panel); }
+  .fa-row.fresh { animation: faflash 1.2s ease-out; }
+  @keyframes faflash { from { background: color-mix(in srgb, var(--accent) 25%, transparent); } }
+  .fa-row .h { display: flex; gap: 8px; align-items: baseline; }
+  .fa-row .t { color: var(--dim); font: 11px ui-monospace, monospace; }
+  .fa-row .n { font-weight: 700; font-family: ui-monospace, monospace; }
+  .fa-row .o { font-size: 10px; color: var(--dim); border: 1px solid var(--border); border-radius: 5px; padding: 0 5px; }
+  .fa-row .u { margin-left: auto; font-size: 11px; color: var(--dim); white-space: nowrap; }
+  .fa-row .u.ok { color: var(--pass); }
+  .fa-row .ps { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+  .fa-row .ps span { font: 11px ui-monospace, monospace; background: var(--panel2); border-radius: 5px; padding: 1px 6px; word-break: break-all; }
+  .fa-row .ps b { color: var(--accent); font-weight: 500; }
+  .fa-row pre { display: none; margin-top: 6px; font: 11px ui-monospace, monospace; white-space: pre-wrap; color: var(--dim); }
+  .fa-row.open pre { display: block; }
+  .fa-row.up .n { color: #5fa8ef; }
+  .fa-row.warn { border-left: 3px solid var(--fail); }
+  .fa-row.warn .n { color: var(--fail); }
+  .fa-row .b { font-size: 10px; border-radius: 5px; padding: 0 5px; border: 1px solid var(--border); white-space: nowrap; }
+  .fa-row .b.m { color: var(--pass); border-color: var(--pass); }
+  .fa-row .b.lo { color: var(--blocked); border-color: var(--blocked); }
+  .fa-row .b.dv { color: #5fa8ef; border-color: #5fa8ef; }
+  .fa-row.dvonly { border-left: 3px solid #5fa8ef; background: color-mix(in srgb, #5fa8ef 6%, transparent); }
+  .fa-row.dvonly .n { color: #5fa8ef; }
+  #fa-list .empty { color: var(--dim); padding: 30px; text-align: center; line-height: 1.7; }
   #api-extra { display: none; gap: 8px; align-items: center; padding: 8px 16px; background: var(--panel); border-bottom: 1px solid var(--border); font-size: 12px; }
   #api-extra.on { display: flex; }
   #api-extra input, #api-extra select { background: var(--panel2); border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 8px; font-size: 12px; }
@@ -127,6 +191,7 @@
   <button class="hbtn" onclick="openCompare()">🔍 Karşılaştır</button>
   <button class="hbtn" onclick="openApiDiff()">🧬 API Diff</button>
   <button class="hbtn" onclick="openDevice()">📱 Cihaz</button>
+  <button class="hbtn" onclick="openEvents()">🔥 Event Testleri</button>
   <input id="search" placeholder="Ara: kart, başlık, kişi…" />
   <span id="meta"></span>
 </header>
@@ -172,6 +237,61 @@
     </div>
     <div class="body" id="dev-body"><div class="msg">Cihaz seçin.</div></div>
   </div>
+  <div id="ev">
+    <div class="bar">
+      <b style="color:var(--accent)">🔥 Event Testleri</b>
+      <select id="ev-dev" onchange="evDeviceChanged()"></select>
+      <input type="text" id="ev-bundle" style="width:210px" title="bundle id / paket adı" />
+      <button class="runbtn" onclick="evDebug(true)" title="Uygulamayı Firebase debug moduyla yeniden başlatır (DebugView'a düşer)">🐞 Debug başlat</button>
+      <button class="runbtn ghost" onclick="evDebug(false)" title="iOS'ta debug bayrağı kalıcıdır — kapatmak için">Debug kapat</button>
+      <button class="runbtn" id="ev-listen" onclick="evToggleListen()">▶ Dinle</button>
+      <span class="pill" id="ev-status">bağlı değil</span>
+      <span style="margin-left:auto"></span>
+      <button class="hbtn" id="ev-dbv" onclick="fbvToggle()" title="Firebase DebugView'ı panelin sağ kolonunda gösterir (adres ⚙ ile ayarlanır)">🔥 DebugView</button>
+      <label style="font-size:12px;color:var(--dim)" title="DebugView açıkken log akışı kolonunu gizle"><input type="checkbox" id="ev-nolog" onchange="fbvLayout()" /> log gizle</label>
+      <button class="hbtn" onclick="evSetDbvUrl()" title="DebugView adresini ayarla">⚙</button>
+      <button class="runbtn ghost" onclick="evReloadDevices()" title="Cihazları tara">🔎</button>
+      <button class="runbtn ghost" onclick="closeEvents()" title="Kapat">✕</button>
+    </div>
+    <div class="split">
+      <div class="devpane" id="ev-devpane"><div class="msg">Cihaz seçin.</div></div>
+      <div class="fapane">
+        <div class="fatools">
+          <input type="text" id="ev-filter" placeholder="filtre: event / parametre" style="flex:1;min-width:120px" oninput="evRender()" />
+          <label><input type="checkbox" id="ev-hideauto" onchange="evRender()" /> auto gizle</label>
+          <label><input type="checkbox" id="ev-hidesys" checked onchange="evRender()" /> user prop gizle</label>
+          <span id="ev-count"></span>
+          <span class="pill" id="ev-dvstat" title="DebugView okuyucu (🔥 DebugView kolonunda yayın açıkken çalışır)">DebugView okunmuyor</span>
+        </div>
+        <details class="expect" id="ev-expect-box">
+          <summary>✅ Beklenen eventler <span id="ev-chk-sum"></span></summary>
+          <textarea id="ev-expect" placeholder="her satıra bir event, zorunlu parametreler ':' sonrası&#10;home_view&#10;page_view: page_name, page_category&#10;add_to_cart: item_id, value, currency" oninput="evExpectChanged()"></textarea>
+          <div class="chk" id="ev-chk"></div>
+        </details>
+        <div class="fatools">
+          <input type="text" id="ev-card" placeholder="NSB-…" style="width:90px" />
+          <button class="runbtn" onclick="evSave()">💾 Kanıt kaydet</button>
+          <button class="runbtn ghost" onclick="evClear()">🧹 Temizle</button>
+          <span id="ev-saved"></span>
+        </div>
+        <div id="fa-list"><div class="empty">Henüz event yok.<br>1) Cihazı seç · 2) 🐞 Debug başlat · 3) ▶ Dinle<br>Sonra soldaki cihazda akışı tetikle; eventler burada anında görünür.</div></div>
+      </div>
+      <div class="dbvpane">
+        <div class="fatools">
+          <b style="color:var(--accent)">🔥 DebugView</b>
+          <button class="runbtn" id="fbv-start" onclick="fbvStart()">▶ Yayını başlat</button>
+          <button class="runbtn ghost" onclick="fbvInput({type:'back'})" title="geri">←</button>
+          <button class="runbtn ghost" onclick="fbvInput({type:'reload'})" title="yenile">↻</button>
+          <button class="runbtn ghost" onclick="fbvGo()" title="kayıtlı DebugView adresine git">⌂</button>
+          <span id="ev-fbv-url"></span>
+          <button class="runbtn ghost" onclick="fbvLogin()" title="Google girişi (bir kez) — görünür Chrome penceresi açar">🔑 Giriş</button>
+        </div>
+        <div class="view" id="fbv-view"><div class="msg">Firebase DebugView burada canlı görünecek.<br><br>
+          <b>İlk kez:</b> 🔑 Giriş → açılan Chrome penceresinde Google'a girin → pencereyi kapatın → ▶ Yayını başlat.<br>
+          Sonra görüntüye tıklayıp doğrudan kullanabilirsiniz (tıklama, kaydırma, klavye).</div></div>
+      </div>
+    </div>
+  </div>
 </main>
 <div id="runlog"></div>
 <dialog id="zoom"><img id="zoomimg" /></dialog>
@@ -180,8 +300,8 @@ let view = "test", cards = [], verdicts = {}, selected = null, runsInfo = { runs
 
 const $ = (s) => document.querySelector(s);
 const esc = (s) => (s || "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-// nadirgold.dev URL'lerini panel içi karşılaştırmada aç
-const linkify = (s) => s.replace(/https?:\/\/(www\.)?nadirgold\.dev(\/[^\s<>"')]*)?/g, (m, _w, p) => {
+// nadirgold.dev / nadirgold.work URL'lerini panel içi karşılaştırmada aç
+const linkify = (s) => s.replace(/https?:\/\/(www\.)?nadirgold\.(?:dev|work)(\/[^\s<>"')]*)?/g, (m, _w, p) => {
   const clean = (p || "/").replace(/[?&]apiV2=1/, "").replace(/\?$/, "");
   return `<span class="cmp-link" onclick="openCompare('${clean.replace(/'/g, "")}')">${m}</span>`;
 });
@@ -219,7 +339,7 @@ function setCmpMode(m) {
 }
 function openCompare(path) {
   $("#cmp-path").value = path || localStorage.getItem("cmp-path") || "/";
-  document.body.classList.remove("dev-on");
+  document.body.classList.remove("dev-on", "ev-on");
   document.body.classList.add("cmp-on");
   applyCmpModeUi();
   loadCompare();
@@ -316,7 +436,7 @@ function loadDevice() {
   $("#dev-body").innerHTML = `<iframe src="${esc(d.controlUrl)}" allow="clipboard-read; clipboard-write"></iframe>`;
 }
 function openDevice() {
-  document.body.classList.remove("cmp-on");
+  document.body.classList.remove("cmp-on", "ev-on");
   document.body.classList.add("dev-on");
   if (!devices.length) reloadDevices(); else loadDevice();
 }
@@ -563,7 +683,7 @@ function extractTargets(d) {
   }
   // sayfa URL'leri
   const pages = new Set();
-  for (const m of text.matchAll(/https?:\/\/(?:www\.)?nadirgold\.dev(\/[^\s<>"')]*)?/g)) {
+  for (const m of text.matchAll(/https?:\/\/(?:www\.)?nadirgold\.(?:dev|work)(\/[^\s<>"')]*)?/g)) {
     const p = (m[1] || "/").replace(/[?&]apiV2=1/, "").replace(/\?$/, "").replace(/[.,)]+$/, "");
     if (!p.startsWith("/api")) pages.add(p || "/");
   }
@@ -855,6 +975,283 @@ es.addEventListener("run-end", (e) => {
 
 setInterval(loadCards, 60000);
 loadCards();
+
+// ================= 🔥 Event Testleri =================
+// Sol: MobAI cihaz kontrol arayüzü (tetikleme). Sağ: cihaz logundan Firebase Analytics akışı
+// (debug modda SDK'nın DebugView'a gönderdiği eventlerin aynısı; ✓2xx = Google'a upload edildi).
+let faEvents = [], faStatus = {}, faPresets = {}, faFreshId = 0;
+// DebugView (Firebase'in gördüğü) eventleri — log kayıplı olduğu için varlık/sayı referansı bu
+let dvEvents = [], dvStatus = {}, dvFreshId = 0;
+const logSec = (ts) => { const m = String(ts).match(/(\d\d):(\d\d):(\d\d(?:\.\d+)?)/); return m ? +m[1] * 3600 + +m[2] * 60 + +m[3] : null; };
+const fmtSec = (s) => [Math.floor(s / 3600), Math.floor(s / 60) % 60, Math.floor(s) % 60].map((x) => String(x).padStart(2, "0")).join(":");
+// DebugView ↔ log: aynı ad + ±3 sn, en yakın eşleşmemiş log event'i
+// log dinleme başlangıcından önceki DebugView geçmişi "log kaçırdı" sayılmasın
+function evDvScope() {
+  if (!faStatus.since) return dvEvents;
+  const d = new Date(faStatus.since), cut = d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds() - 2;
+  return dvEvents.filter((e) => e.sec >= cut);
+}
+function evMatch() {
+  const logs = faEvents.filter((e) => e.kind === "event");
+  logs.forEach((e) => { e.dvId = null; e.sec = logSec(e.ts); });
+  dvEvents.forEach((d) => { d.logId = null; });
+  for (const d of [...dvEvents].sort((a, b) => a.sec - b.sec)) {
+    let best = null;
+    for (const e of logs) {
+      if (e.dvId || e.name !== d.name || e.sec == null) continue;
+      const diff = Math.abs(e.sec - d.sec);
+      if (diff <= 3 && (!best || diff < best.diff)) best = { e, diff };
+    }
+    if (best) { best.e.dvId = d.id; d.logId = best.e.id; }
+  }
+}
+const evDev = () => devices.find((d) => d.id === $("#ev-dev").value);
+async function openEvents() {
+  document.body.classList.remove("cmp-on", "dev-on");
+  document.body.classList.add("ev-on");
+  $("#ev-expect").value = localStorage.getItem("ev-expect") || "";
+  fbvLayout(); if (localStorage.getItem("ev-dbv-on") === "1") fbvRefreshStatus();
+  const r = await fetch("/api/fa/events").then((x) => x.json());
+  faEvents = r.events || []; faPresets = r.presets || {}; faStatus = r.status || {};
+  const dv = await fetch("/api/fbv/events").then((x) => x.json()).catch(() => ({ events: [], status: {} }));
+  dvEvents = dv.events || []; dvStatus = dv.status || {}; evDvStatusUi();
+  evStatusUi(); evRender();
+  await evReloadDevices();
+}
+function closeEvents() {
+  document.body.classList.remove("ev-on");
+  $("#ev-devpane").innerHTML = `<div class="msg">Cihaz seçin.</div>`;
+}
+async function evReloadDevices() {
+  const sel = $("#ev-dev");
+  sel.innerHTML = `<option>yükleniyor…</option>`;
+  const r = await fetch("/api/devices").then((x) => x.json()).catch((e) => ({ ok: false, error: String(e) }));
+  devices = r.devices || [];
+  if (!r.ok || !devices.length) {
+    sel.innerHTML = `<option>cihaz yok</option>`;
+    $("#ev-devpane").innerHTML = `<div class="msg">${esc(r.error || "Cihaz bulunamadı.")}<br>MobAI desktop app açık mı? (127.0.0.1:8686)</div>`;
+    return;
+  }
+  // yerel + bridge açık cihazlar öne; bulut cihazlarda log okunamaz
+  devices.sort((a, b) => (b.bridgeRunning - a.bridgeRunning) || (a.cloud - b.cloud));
+  sel.innerHTML = devices.map((d) => `<option value="${esc(d.id)}">${d.bridgeRunning ? "🟢" : "⚪"} ${esc(d.name)} · ${esc(d.platform)} ${esc(d.osVersion)}${d.cloud ? " · cloud" : ""}</option>`).join("");
+  const prev = faStatus.running ? faStatus.deviceId : localStorage.getItem("ev-dev");
+  if (prev && devices.some((d) => d.id === prev)) sel.value = prev;
+  evDeviceChanged();
+}
+function evDeviceChanged() {
+  const d = evDev();
+  if (!d) return;
+  localStorage.setItem("ev-dev", d.id);
+  $("#ev-bundle").value = localStorage.getItem("ev-bundle-" + d.platform) || faPresets[d.platform]?.bundle || "";
+  $("#ev-devpane").innerHTML = d.bridgeRunning
+    ? `<iframe src="${esc(d.controlUrl)}" allow="clipboard-read; clipboard-write"></iframe>`
+    : `<div class="msg">Bridge kapalı — MobAI'dan başlatın.<br><a href="${esc(d.controlUrl)}" target="_blank" rel="noopener">↗ MobAI kontrol ekranı</a></div>`;
+  evStatusUi();
+}
+function evStatusUi() {
+  const s = faStatus, pill = $("#ev-status"), d = evDev();
+  const onThis = s.running && d && s.deviceId === d.id;
+  $("#ev-listen").textContent = s.running ? "■ Durdur" : "▶ Dinle";
+  pill.className = "pill " + (s.running ? (s.debug ? "ok" : "warn") : s.lastError ? "bad" : "");
+  pill.textContent = s.running
+    ? `${onThis ? "dinleniyor" : "başka cihaz dinleniyor"} · ${s.platform}${s.debug ? " · debug açık ✓" : " · debug durumu bilinmiyor"}${s.restarts ? ` · ${s.restarts} yeniden bağlanma` : ""}`
+    : s.lastError ? "hata" : "bağlı değil";
+  pill.title = s.lastError || "";
+}
+async function evPost(act, body) {
+  const r = await fetch("/api/fa/" + act, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body || {}) }).then((x) => x.json());
+  if (r.error) alert(r.error);
+  return r;
+}
+async function evToggleListen() {
+  if (faStatus.running) { faStatus = await evPost("stop"); return evStatusUi(); }
+  const d = evDev();
+  if (!d) return;
+  if (d.cloud) return alert("Bulut (BrowserStack) cihazlarda cihaz logu okunamıyor — yerel cihaz seçin.");
+  const r = await evPost("start", { deviceId: d.id, platform: d.platform });
+  if (!r.error) { faStatus = r; evStatusUi(); }
+}
+async function evDebug(enable) {
+  const d = evDev();
+  if (!d) return;
+  const bundle = $("#ev-bundle").value.trim();
+  localStorage.setItem("ev-bundle-" + d.platform, bundle);
+  if (!enable && !confirm("Uygulama debug bayrağı kapalı olarak yeniden başlatılacak. Devam?")) return;
+  if (enable && !faStatus.running) await evToggleListen(); // debug açılış eventlerini (app_open vb.) kaçırma
+  const pill = $("#ev-status");
+  pill.textContent = enable ? "debug modda başlatılıyor…" : "debug kapatılıyor…";
+  const r = await evPost("debug", { deviceId: d.id, platform: d.platform, bundle, enable });
+  if (!r.ok && !r.error) alert("Başlatma hatası:\n" + (r.steps || []).map((s) => s.out).join("\n"));
+  evStatusUi();
+}
+function evSetDbvUrl() {
+  const cur = localStorage.getItem("ev-dbv") || "";
+  const v = prompt("Firebase DebugView adresi (Console → Analytics → DebugView sayfasının URL'i):", cur || "https://console.firebase.google.com/project/<proje>/analytics/app/<app>/debugview");
+  if (v === null) return;
+  localStorage.setItem("ev-dbv", v.trim());
+}
+// ---- DebugView yansıtması: sunucudaki headless Chrome'un ekranı (MJPEG) + CDP ile girdi ----
+// Konsol X-Frame-Options: SAMEORIGIN gönderdiği için iframe'e gömülemiyor.
+let fbvLast = {};
+const fbvUrl = () => localStorage.getItem("ev-dbv") || fbvLast.dvUrl || "https://console.firebase.google.com/";
+function fbvLayout() {
+  const on = localStorage.getItem("ev-dbv-on") === "1";
+  const split = $("#ev .split");
+  split.classList.toggle("dbv-on", on);
+  split.classList.toggle("nolog", on && $("#ev-nolog").checked);
+  $("#ev-dbv").classList.toggle("on", on);
+  $("#ev-dbv").style.borderColor = on ? "var(--accent)" : "";
+}
+function fbvToggle() {
+  localStorage.setItem("ev-dbv-on", localStorage.getItem("ev-dbv-on") === "1" ? "0" : "1");
+  fbvLayout();
+  if (localStorage.getItem("ev-dbv-on") === "1") fbvRefreshStatus();
+}
+async function fbvRefreshStatus() {
+  const s = await fetch("/api/fbv/status").then((r) => r.json());
+  fbvLast = s;
+  $("#ev-fbv-url").textContent = s.mode === "stream" ? (s.url || "") : s.mode === "login" ? "giriş penceresi açık — girip pencereyi kapatın" : (s.error || "");
+  $("#fbv-start").textContent = s.mode === "stream" ? "■ Durdur" : "▶ Yayını başlat";
+  if (s.mode === "stream" && !$("#fbv-img")) fbvShow();
+  return s;
+}
+function fbvShow() {
+  $("#fbv-view").innerHTML = `<img id="fbv-img" tabindex="0" src="/api/fbv/stream?t=${Date.now()}" alt="DebugView" />`;
+  const img = $("#fbv-img");
+  const rel = (ev) => { const r = img.getBoundingClientRect(); return { rx: (ev.clientX - r.left) / r.width, ry: (ev.clientY - r.top) / r.height }; };
+  img.addEventListener("click", (ev) => { img.focus(); fbvInput({ type: "click", ...rel(ev) }); });
+  img.addEventListener("wheel", (ev) => { ev.preventDefault(); fbvInput({ type: "wheel", ...rel(ev), dx: ev.deltaX, dy: ev.deltaY }); }, { passive: false });
+  img.addEventListener("keydown", (ev) => {
+    if ((ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === "v") return; // paste olayına bırak
+    ev.preventDefault();
+    if (ev.key.length === 1 && !ev.metaKey && !ev.ctrlKey) fbvInput({ type: "text", text: ev.key });
+    else fbvInput({ type: "key", key: ev.key, meta: ev.metaKey, ctrl: ev.ctrlKey, shift: ev.shiftKey });
+  });
+  img.addEventListener("paste", (ev) => { ev.preventDefault(); fbvInput({ type: "text", text: ev.clipboardData.getData("text") }); });
+  img.addEventListener("error", () => { $("#fbv-view").innerHTML = `<div class="msg">Yayın kesildi. ▶ ile yeniden başlatın.</div>`; });
+}
+async function fbvInput(e) {
+  const r = await fetch("/api/fbv/input", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(e) }).then((x) => x.json());
+  if (r.error && !/bağlı değil/.test(r.error)) console.warn(r.error);
+}
+const fbvGo = () => fbvInput({ type: "navigate", url: fbvUrl() });
+async function fbvStart() {
+  const s = await fetch("/api/fbv/status").then((r) => r.json());
+  if (s.mode === "stream") { await fetch("/api/fbv/stop", { method: "POST" }); $("#fbv-view").innerHTML = `<div class="msg">Yayın durduruldu.</div>`; return fbvRefreshStatus(); }
+  $("#fbv-view").innerHTML = `<div class="msg">Chrome başlatılıyor…</div>`;
+  const r = await fetch("/api/fbv/start", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url: localStorage.getItem("ev-dbv") || undefined }) }).then((x) => x.json());
+  if (r.error) { $("#fbv-view").innerHTML = `<div class="msg" style="color:var(--fail)">${esc(r.error)}</div>`; return; }
+  fbvShow(); fbvRefreshStatus();
+  setTimeout(fbvRefreshStatus, 4000);
+}
+async function fbvLogin() {
+  await fetch("/api/fbv/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url: fbvUrl() }) });
+  $("#fbv-view").innerHTML = `<div class="msg">Ayrı bir Chrome penceresi açıldı (panelin kendi profili).<br>Orada Google hesabınızla Firebase'e girin, DebugView'ı açın, sonra <b>pencereyi kapatın</b> ve ▶ Yayını başlat'a basın.</div>`;
+  fbvRefreshStatus();
+}
+setInterval(() => { if (document.body.classList.contains("ev-on") && localStorage.getItem("ev-dbv-on") === "1") fbvRefreshStatus(); }, 5000);
+
+
+async function evClear() {
+  if (!confirm("Akış temizlensin mi? (log + DebugView listesi; kaydedilmemiş eventler gider)")) return;
+  await evPost("clear");
+  await fetch("/api/fbv/clear", { method: "POST" });
+}
+async function evSave() {
+  const card = $("#ev-card").value.trim().toUpperCase();
+  evMatch();
+  const r = await evPost("save", { card, expected: evExpected(), debugview: { status: dvStatus, events: dvEvents } });
+  if (r.file) $("#ev-saved").innerHTML = `✓ <a href="/evidence/${encodeURIComponent(r.file)}" target="_blank">${esc(r.file)}</a> (${r.count})`;
+}
+function evExpected() {
+  return $("#ev-expect").value.split("\n").map((l) => l.trim()).filter(Boolean).map((l) => {
+    const [name, ps] = l.split(":");
+    return { name: name.trim(), params: (ps || "").split(",").map((x) => x.trim()).filter(Boolean) };
+  });
+}
+function evExpectChanged() { localStorage.setItem("ev-expect", $("#ev-expect").value); evRenderChecklist(); }
+function evRenderChecklist() {
+  const exp = evExpected();
+  if (!exp.length) { $("#ev-chk").innerHTML = ""; $("#ev-chk-sum").textContent = ""; return; }
+  let ok = 0;
+  $("#ev-chk").innerHTML = exp.map((x) => {
+    const hits = faEvents.filter((e) => e.kind === "event" && e.name === x.name);
+    const dvHits = evDvScope().filter((d) => d.name === x.name).length;
+    const full = hits.find((e) => x.params.every((p) => e.params && e.params[p] !== undefined && e.params[p] !== ""));
+    if (full) ok++;
+    const missing = hits.length && !full ? x.params.filter((p) => !hits.some((e) => e.params?.[p] !== undefined && e.params?.[p] !== "")) : [];
+    const onlyDv = !hits.length && dvHits > 0;
+    if (onlyDv && !x.params.length) ok++;
+    const cls = full || (onlyDv && !x.params.length) ? "y" : hits.length || onlyDv ? "p" : "n";
+    const n = Math.max(hits.length, dvHits);
+    const title = full ? `log ${hits.length}× · DebugView ${dvHits}×` : onlyDv ? (x.params.length ? `DebugView'da ${dvHits}× var ama log kaçırdı — parametreler doğrulanamadı` : `DebugView'da ${dvHits}× görüldü`) : hits.length ? `görüldü ama eksik parametre: ${missing.join(", ")}` : "henüz görülmedi";
+    const mark = cls === "y" ? "✓" : cls === "p" ? "◑" : "○";
+    return `<span class="${cls}" title="${esc(title)}">${mark} ${esc(x.name)}${n ? ` ×${n}` : ""}${missing.length ? ` −${esc(missing.join(","))}` : ""}${onlyDv && x.params.length ? " (param ?)" : ""}</span>`;
+  }).join("");
+  $("#ev-chk-sum").innerHTML = `<b style="color:${ok === exp.length ? "var(--pass)" : "var(--blocked)"}">${ok}/${exp.length}</b>`;
+}
+function evDvBadge(e) {
+  if (e.dvId) return `<span class="b m" title="Firebase DebugView'da da görüldü">✓ DebugView</span>`;
+  if (!dvStatus.reading) return "";
+  // DebugView ~5-60 sn gecikebilir; 90 sn geçtiyse ve yoksa "yalnız log"
+  const now = new Date(), nowSec = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+  return nowSec - (e.sec ?? nowSec) > 90 ? `<span class="b lo" title="Log'da var, DebugView'da eşleşen yok (±3 sn)">yalnız log</span>` : `<span class="b" title="DebugView'da henüz görünmedi">⏳ DebugView</span>`;
+}
+function evRowHtml(e) {
+  if (e.kind === "dv") {
+    const fresh = e.dvNum > dvFreshId ? " fresh" : "";
+    return `<div class="fa-row dvonly${fresh}"><div class="h"><span class="t">${esc(e.ts)}</span><span class="n">${esc(e.name)}</span><span class="b dv" title="Firebase DebugView'da var ama cihaz logu bu satırı kaçırdı — parametreleri bilinmiyor">yalnız DebugView · log kaçırdı</span></div></div>`;
+  }
+  const t = String(e.ts || "").replace(/^\d{4}-\d\d-\d\d /, "").replace(/^\d\d-\d\d /, "").slice(0, 12);
+  const fresh = e.id > faFreshId ? " fresh" : "";
+  if (e.kind === "warn") return `<div class="fa-row warn${fresh}" onclick="this.classList.toggle('open')"><div class="h"><span class="t">${esc(t)}</span><span class="n">⚠ ${esc(e.level || "uyarı")} ${esc(e.code || "")}</span></div><div class="ps"><span>${esc(e.msg.split("\n")[0].slice(0, 200))}</span></div><pre>${esc(e.msg)}</pre></div>`;
+  if (e.kind === "userprop") return `<div class="fa-row up${fresh}"><div class="h"><span class="t">${esc(t)}</span><span class="n">👤 ${esc(e.name)}</span><span class="o">user property</span></div><div class="ps"><span>${esc(e.value)}</span></div></div>`;
+  const ps = Object.entries(e.params || {});
+  const dvb = evDvBadge(e);
+  const up = e.uploaded ? `<span class="u ok" title="Google'a upload edildi (HTTP ${e.uploaded})">✓ ${e.uploaded}</span>` : `<span class="u" title="cihazda kuyrukta, henüz upload edilmedi">⏳ kuyrukta</span>`;
+  return `<div class="fa-row${fresh}" onclick="this.classList.toggle('open')"><div class="h"><span class="t">${esc(t)}</span><span class="n">${esc(e.name)}</span>${e.origin ? `<span class="o">${esc(e.origin)}</span>` : ""}${dvb}${e.debug ? "" : `<span class="o" style="color:var(--blocked)" title="ga_debug yok → DebugView'da görünmez">debug yok</span>`}${up}</div>` +
+    (ps.length ? `<div class="ps">${ps.map(([k, v]) => `<span><b>${esc(k)}</b>=${esc(String(v).slice(0, 120))}</span>`).join("")}</div>` : "") +
+    `<pre>${esc(JSON.stringify({ params: e.params, meta: e.meta }, null, 1))}</pre></div>`;
+}
+function evRender() {
+  if (!document.body.classList.contains("ev-on")) return;
+  const q = $("#ev-filter").value.trim().toLowerCase();
+  const hideAuto = $("#ev-hideauto").checked, hideUp = $("#ev-hidesys").checked;
+  evMatch();
+  const dvScope = evDvScope();
+  const dvOnly = dvScope.filter((d) => !d.logId).map((d) => ({ kind: "dv", id: "dv" + d.id, dvNum: d.id, name: d.name, sec: d.sec, ts: fmtSec(d.sec) }));
+  const merged = [...faEvents.map((e) => ({ ...e, sec: e.sec ?? logSec(e.ts) })), ...dvOnly].sort((a, b) => (a.sec ?? 0) - (b.sec ?? 0));
+  const list = merged.filter((e) => {
+    if (hideAuto && e.kind === "event" && e.origin === "auto") return false;
+    if (hideUp && e.kind === "userprop") return false;
+    return !q || JSON.stringify(e).toLowerCase().includes(q);
+  });
+  const evs = faEvents.filter((e) => e.kind === "event");
+  const nWarn = faEvents.filter((e) => e.kind === "warn").length;
+  $("#ev-count").textContent = `log ${evs.length} · DebugView ${dvScope.length} · eşleşen ${evs.filter((e) => e.dvId).length}${dvOnly.length ? ` · log kaçırdı ${dvOnly.length}` : ""}${nWarn ? " · ⚠ " + nWarn : ""}`;
+  $("#fa-list").innerHTML = list.length ? list.slice().reverse().slice(0, 400).map(evRowHtml).join("")
+    : `<div class="empty">${faEvents.length ? "Filtreye uyan event yok." : "Henüz event yok.<br>1) Cihazı seç · 2) 🐞 Debug başlat · 3) ▶ Dinle<br>Sonra soldaki cihazda akışı tetikle; eventler burada anında görünür."}</div>`;
+  faFreshId = faEvents.length ? faEvents[faEvents.length - 1].id : 0;
+  dvFreshId = dvEvents.length ? dvEvents[dvEvents.length - 1].id : 0;
+  evRenderChecklist();
+}
+let evRenderTimer = null;
+const evRenderSoon = () => { clearTimeout(evRenderTimer); evRenderTimer = setTimeout(evRender, 120); };
+es.addEventListener("fa-event", (e) => { faEvents.push(JSON.parse(e.data)); if (faEvents.length > 1000) faEvents = faEvents.slice(-1000); evRenderSoon(); });
+es.addEventListener("fa-uploaded", (e) => { const { ids, code } = JSON.parse(e.data); const set = new Set(ids); faEvents.forEach((x) => { if (set.has(x.id)) x.uploaded = code; }); evRenderSoon(); });
+es.addEventListener("fa-clear", () => { faEvents = []; evRender(); });
+es.addEventListener("dv-events", (e) => { dvEvents.push(...JSON.parse(e.data).events); if (dvEvents.length > 1000) dvEvents = dvEvents.slice(-1000); evRenderSoon(); });
+es.addEventListener("dv-clear", () => { dvEvents = []; evRenderSoon(); });
+es.addEventListener("dv-status", (e) => { dvStatus = JSON.parse(e.data); evDvStatusUi(); });
+function evDvStatusUi() {
+  const p = $("#ev-dvstat"); if (!p) return;
+  const s = dvStatus;
+  p.className = "pill " + (s.reading ? (s.error ? "bad" : "ok") : "");
+  p.textContent = s.reading ? (s.error ? "DebugView: okunamıyor" : `DebugView okunuyor${s.device ? " · " + s.device : ""}`) : "DebugView okunmuyor";
+  p.title = s.error || (s.at ? "son okuma " + new Date(s.at).toLocaleTimeString() : "🔥 DebugView kolonunda ▶ Yayını başlat");
+}
+es.addEventListener("fa-status", (e) => { faStatus = JSON.parse(e.data); if (document.body.classList.contains("ev-on")) evStatusUi(); });
 </script>
 </body>
 </html>

@@ -6,6 +6,8 @@ import path from "path";
 import os from "os";
 import { spawn } from "child_process";
 import { fileURLToPath } from "url";
+import { createFaStream } from "./fa-stream.mjs";
+import { createFbView } from "./fb-view.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(__dirname, "..");
@@ -13,6 +15,12 @@ const DATA = path.join(REPO, "panel-data");
 const VERDICTS = path.join(DATA, "verdicts");
 const EVIDENCE = path.join(DATA, "evidence");
 const PORT = Number(process.env.PANEL_PORT || 4646);
+// ---- Hedef ortam: PANEL_ENV=dev|staging|prod (varsayılan dev). staging/prod → nadirgold.work ----
+const PANEL_ENV = (process.env.PANEL_ENV || "dev").toLowerCase();
+const SITE_DOMAIN = PANEL_ENV === "staging" || PANEL_ENV === "prod" ? "nadirgold.work" : "nadirgold.dev";
+const SITE = `https://www.${SITE_DOMAIN}`;
+const API_V1 = `https://api.${SITE_DOMAIN}`;
+const AUTH_FILE = path.join(REPO, `playwright/.auth/${PANEL_ENV}-user.json`);
 
 for (const d of [DATA, VERDICTS, EVIDENCE]) fs.mkdirSync(d, { recursive: true });
 
@@ -244,10 +252,10 @@ async function fetchApi(base, pathAndQuery, method, body, extraCookie) {
 async function apiDiff({ v1Path, v2Path, method = "GET", body = "" }) {
   if (!authCookieHeader) await refreshAuth();
   const [v1, v2] = await Promise.all([
-    fetchApi("https://api.nadirgold.dev", v1Path, method, body),
-    fetchApi("https://www.nadirgold.dev/api/v2", v2Path, method, body, authCookieHeader + "; NG_API_V2=1"),
+    fetchApi(API_V1, v1Path, method, body),
+    fetchApi(`${SITE}/api/v2`, v2Path, method, body, authCookieHeader + "; NG_API_V2=1"),
   ]);
-  return { v1: { ...v1, url: "api.nadirgold.dev" + v1Path }, v2: { ...v2, url: "www.nadirgold.dev/api/v2" + v2Path } };
+  return { v1: { ...v1, url: `api.${SITE_DOMAIN}` + v1Path }, v2: { ...v2, url: `www.${SITE_DOMAIN}/api/v2` + v2Path } };
 }
 
 // ---- Koşumlar (whitelist) ----
@@ -262,6 +270,10 @@ function broadcast(event, data) {
   for (const res of sseClients) res.write(msg);
 }
 fs.watch(VERDICTS, () => broadcast("verdicts", { at: Date.now() }));
+
+// ---- Firebase Analytics event akışı (Event Testleri sekmesi) ----
+const fa = createFaStream({ repo: REPO, evidenceDir: EVIDENCE, broadcast });
+const fbv = createFbView({ repo: REPO, broadcast }); // DebugView yansıtması (ayrı profilli headless Chrome)
 
 function startRun(runId) {
   const def = runsConfig.runs[runId];
@@ -297,10 +309,10 @@ async function getContext(mode) {
   }
   if (!pwContexts[mode]) {
     pwContexts[mode] = await pwBrowser.newContext({
-      storageState: path.join(REPO, "playwright/.auth/dev-user.json"),
+      storageState: AUTH_FILE,
       viewport: { width: 1280, height: 800 },
     });
-    if (mode === "v2") await pwContexts[mode].addCookies([{ name: "NG_API_V2", value: "1", domain: ".nadirgold.dev", path: "/" }]);
+    if (mode === "v2") await pwContexts[mode].addCookies([{ name: "NG_API_V2", value: "1", domain: `.${SITE_DOMAIN}`, path: "/" }]);
   }
   return pwContexts[mode];
 }
@@ -312,7 +324,7 @@ async function snapshot(pagePath, mode, fullPage) {
   const ctx = await getContext(mode);
   const page = await ctx.newPage();
   try {
-    const url = "https://www.nadirgold.dev" + pagePath + (mode === "v2" ? (pagePath.includes("?") ? "&" : "?") + "apiV2=1" : "");
+    const url = SITE + pagePath + (mode === "v2" ? (pagePath.includes("?") ? "&" : "?") + "apiV2=1" : "");
     const resp = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });
     const apiVer = resp?.headers()["x-api-version"] || "?";
     await page.waitForTimeout(2500);
@@ -345,12 +357,12 @@ async function refreshAuth() {
     const ctx = await getContext("v1");
     const page = await ctx.newPage();
     try {
-      await page.goto("https://www.nadirgold.dev/", { waitUntil: "domcontentloaded", timeout: 45000 });
-      const cookies = await ctx.cookies("https://www.nadirgold.dev");
+      await page.goto(SITE + "/", { waitUntil: "domcontentloaded", timeout: 45000 });
+      const cookies = await ctx.cookies(SITE);
       authCookiesArr = cookies.filter((c) => c.name !== "NG_API_V2");
       authCookieHeader = authCookiesArr.map((c) => `${c.name}=${c.value}`).join("; ");
       extractBearer();
-      await ctx.storageState({ path: path.join(REPO, "playwright/.auth/dev-user.json") });
+      await ctx.storageState({ path: AUTH_FILE });
       console.log("auth tazelendi:", new Date().toISOString());
     } finally { await page.close(); authRefreshing = null; }
   })();
@@ -376,9 +388,9 @@ function startProxy(port, mode) {
       let upstream;
       if (req.url.startsWith("/__api/")) {
         const ep = req.url.slice("/__api".length);
-        upstream = mode === "v1" ? "https://api.nadirgold.dev" + ep : "https://www.nadirgold.dev/api/v2" + ep;
+        upstream = mode === "v1" ? API_V1 + ep : `${SITE}/api/v2` + ep;
       } else {
-        upstream = "https://www.nadirgold.dev" + req.url;
+        upstream = SITE + req.url;
       }
       if (!authCookieHeader) await refreshAuth();
       let body;
@@ -402,14 +414,14 @@ function startProxy(port, mode) {
         return fetch(upstream, { method: req.method, headers, body, redirect: "manual" });
       };
       let r = await doFetch();
-      if (r.status >= 300 && r.status < 400 && (r.headers.get("location") || "").includes("auth.nadirgold.dev")) {
+      if (r.status >= 300 && r.status < 400 && (r.headers.get("location") || "").includes(`auth.${SITE_DOMAIN}`)) {
         await refreshAuth();
         r = await doFetch();
       }
       const out = {};
       r.headers.forEach((v, k) => {
         if (["set-cookie", "content-encoding", "content-length", "x-frame-options", "content-security-policy", "strict-transport-security"].includes(k)) return;
-        if (k === "location") { try { const u = new URL(v, upstream); out[k] = u.host.endsWith("nadirgold.dev") ? u.pathname + u.search : v; } catch { out[k] = v; } return; }
+        if (k === "location") { try { const u = new URL(v, upstream); out[k] = u.host.endsWith(SITE_DOMAIN) ? u.pathname + u.search : v; } catch { out[k] = v; } return; }
         out[k] = v;
       });
       let buf = Buffer.from(await r.arrayBuffer());
@@ -519,6 +531,45 @@ const server = http.createServer(async (req, res) => {
       } catch (e) {
         return send(200, { ok: false, devices: [], error: "MobAI erişilemedi (desktop app kapalı?): " + String(e.message || e) });
       }
+    }
+    // Event Testleri: cihaz logundan Firebase Analytics akışı
+    if (url.pathname === "/api/fa/events") return send(200, fa.list());
+    if (url.pathname === "/api/fbv/status") return send(200, fbv.status());
+    if (url.pathname === "/api/fbv/events") return send(200, fbv.dvList());
+    if (url.pathname === "/api/fbv/stream") return fbv.stream(req, res);
+    if (url.pathname.startsWith("/api/fbv/") && req.method === "POST") {
+      let body = "";
+      req.on("data", (c) => (body += c));
+      req.on("end", async () => {
+        try {
+          const p = JSON.parse(body || "{}");
+          const act = url.pathname.slice("/api/fbv/".length);
+          if (act === "login") return send(200, await fbv.login(p.url));
+          if (act === "start") return send(200, await fbv.start(p.url));
+          if (act === "stop") return send(200, fbv.stop());
+          if (act === "input") return send(200, await fbv.input(p));
+          if (act === "clear") return send(200, fbv.dvClear());
+          send(404, { error: "bilinmeyen işlem" });
+        } catch (e) { send(400, { error: String(e.message || e) }); }
+      });
+      return;
+    }
+    if (url.pathname.startsWith("/api/fa/") && req.method === "POST") {
+      let body = "";
+      req.on("data", (c) => (body += c));
+      req.on("end", async () => {
+        try {
+          const p = JSON.parse(body || "{}");
+          const act = url.pathname.slice("/api/fa/".length);
+          if (act === "start") return send(200, fa.start(p));
+          if (act === "stop") return send(200, fa.stop());
+          if (act === "clear") return send(200, fa.clear());
+          if (act === "debug") return send(200, await fa.debugLaunch(p));
+          if (act === "save") return send(200, fa.save(p));
+          send(404, { error: "bilinmeyen işlem" });
+        } catch (e) { send(400, { error: String(e.message || e) }); }
+      });
+      return;
     }
     if (url.pathname === "/api/snapshot") {
       const p = url.searchParams.get("path") || "/";
@@ -640,5 +691,5 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, "127.0.0.1", () => {
-  console.log(`QA Panel hazır: http://localhost:${PORT}`);
+  console.log(`QA Panel hazır: http://localhost:${PORT}  (ortam: ${PANEL_ENV} → ${SITE}, oturum: ${path.basename(AUTH_FILE)})`);
 });

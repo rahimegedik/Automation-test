@@ -1,0 +1,970 @@
+{
+ "savedAt": "2026-09-23T12:44:31.304Z",
+ "device": {
+  "running": true,
+  "deviceId": "00008120-0002354114EB401E",
+  "platform": "ios",
+  "since": "2026-09-23T12:30:50.410Z",
+  "restarts": 0,
+  "lastError": null,
+  "debug": true
+ },
+ "expected": [],
+ "events": [
+  {
+   "kind": "userprop",
+   "ts": "2026-09-23 15:37:27.763834",
+   "name": "user_id",
+   "value": "203478",
+   "id": 13
+  },
+  {
+   "kind": "event",
+   "ts": "2026-09-23 15:38:09.270797",
+   "name": "category_view",
+   "origin": "app",
+   "debug": true,
+   "params": {
+    "category_id": "2",
+    "category_name": "Gram Külçe Altın"
+   },
+   "meta": {
+    "ga_debug": "1",
+    "ga_event_origin": "app",
+    "ga_realtime": "1"
+   },
+   "uploaded": 204,
+   "id": 14
+  },
+  {
+   "kind": "event",
+   "ts": "2026-09-23 15:38:09.284011",
+   "name": "page_view",
+   "origin": "app",
+   "debug": true,
+   "params": {
+    "page_category": "category",
+    "page_name": "Category Detail",
+    "page_title": "Gram Külçe Altın"
+   },
+   "meta": {
+    "ga_debug": "1",
+    "ga_event_origin": "app",
+    "ga_realtime": "1"
+   },
+   "uploaded": 204,
+   "id": 15
+  },
+  {
+   "kind": "event",
+   "ts": "2026-09-23 15:38:21.476340",
+   "name": "app_open",
+   "origin": "app",
+   "debug": true,
+   "params": {},
+   "meta": {
+    "ga_debug": "1",
+    "ga_event_origin": "app",
+    "ga_realtime": "1"
+   },
+   "uploaded": 204,
+   "id": 16
+  },
+  {
+   "kind": "event",
+   "ts": "2026-09-23 15:38:25.306617",
+   "name": "home_view",
+   "origin": "app",
+   "debug": true,
+   "params": {
+    "user_id": "203478"
+   },
+   "meta": {
+    "ga_debug": "1",
+    "ga_event_origin": "app",
+    "ga_realtime": "1"
+   },
+   "uploaded": 204,
+   "id": 17
+  },
+  {
+   "kind": "event",
+   "ts": "2026-09-23 15:38:25.309157",
+   "name": "page_view",
+   "origin": "app",
+   "debug": true,
+   "params": {
+    "page_category": "home",
+    "page_name": "Home",
+    "page_title": "Ana Sayfa"
+   },
+   "meta": {
+    "ga_debug": "1",
+    "ga_event_origin": "app",
+    "ga_realtime": "1"
+   },
+   "uploaded": 204,
+   "id": 18
+  },
+  {
+   "kind": "event",
+   "ts": "2026-09-23 15:38:57.450376",
+   "name": "page_view",
+   "origin": "app",
+   "debug": true,
+   "params": {
+    "page_category": "checkout",
+    "page_name": "Checkout",
+    "page_title": "Ödeme",
+    "referral_page": "Basket"
+   },
+   "meta": {
+    "ga_debug": "1",
+    "ga_event_origin": "app",
+    "ga_realtime": "1"
+   },
+   "uploaded": 204,
+   "id": 19
+  },
+  {
+   "kind": "event",
+   "ts": "2026-09-23 15:39:07.264360",
+   "name": "checkout_payment_select",
+   "origin": "app",
+   "debug": true,
+   "params": {
+    "payment_method": "Mpay"
+   },
+   "meta": {
+    "ga_debug": "1",
+    "ga_event_origin": "app",
+    "ga_realtime": "1"
+   },
+   "uploaded": 204,
+   "id": 20
+  },
+  {
+   "kind": "event",
+   "ts": "2026-09-23 15:39:09.797368",
+   "name": "checkout_payment_select",
+   "origin": "app",
+   "debug": true,
+   "params": {
+    "payment_method": "Mpay"
+   },
+   "meta": {
+    "ga_debug": "1",
+    "ga_event_origin": "app",
+    "ga_realtime": "1"
+   },
+   "uploaded": 204,
+   "id": 21
+  },
+  {
+   "kind": "event",
+   "ts": "2026-09-23 15:39:12.174102",
+   "name": "checkout_payment_select",
+   "origin": "app",
+   "debug": true,
+   "params": {
+    "payment_method": "Mpay"
+   },
+   "meta": {
+    "ga_debug": "1",
+    "ga_event_origin": "app",
+    "ga_realtime": "1"
+   },
+   "uploaded": 204,
+   "id": 22
+  },
+  {
+   "kind": "event",
+   "ts": "2026-09-23 15:39:15.698629",
+   "name": "checkout_payment_select",
+   "origin": "app",
+   "debug": true,
+   "params": {
+    "payment_method": "Mpay"
+   },
+   "meta": {
+    "ga_debug": "1",
+    "ga_event_origin": "app",
+    "ga_realtime": "1"
+   },
+   "uploaded": 204,
+   "id": 23
+  },
+  {
+   "kind": "event",
+   "ts": "2026-09-23 15:39:19.071428",
+   "name": "checkout_payment_select",
+   "origin": "app",
+   "debug": true,
+   "params": {
+    "payment_method": "Mpay"
+   },
+   "meta": {
+    "ga_debug": "1",
+    "ga_event_origin": "app",
+    "ga_realtime": "1"
+   },
+   "uploaded": 204,
+   "id": 24
+  }
+ ],
+ "debugview": {
+  "status": {
+   "reading": true,
+   "device": "Apple iPhone15,2",
+   "at": "2026-09-23T12:40:43.132Z",
+   "error": null,
+   "count": 93
+  },
+  "events": [
+   {
+    "id": 1,
+    "key": "3:28:15 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:28:15 PM",
+    "sec": 55695,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 2,
+    "key": "3:28:15 PM|category_view|1",
+    "name": "category_view",
+    "label": "3:28:15 PM",
+    "sec": 55695,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 3,
+    "key": "3:28:10 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:28:10 PM",
+    "sec": 55690,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 4,
+    "key": "3:28:10 PM|category_view|1",
+    "name": "category_view",
+    "label": "3:28:10 PM",
+    "sec": 55690,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 5,
+    "key": "3:28:04 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:28:04 PM",
+    "sec": 55684,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 6,
+    "key": "3:28:04 PM|category_view|1",
+    "name": "category_view",
+    "label": "3:28:04 PM",
+    "sec": 55684,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 7,
+    "key": "3:28:02 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:28:02 PM",
+    "sec": 55682,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 8,
+    "key": "3:28:02 PM|home_view|1",
+    "name": "home_view",
+    "label": "3:28:02 PM",
+    "sec": 55682,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 9,
+    "key": "3:27:58 PM|app_open|1",
+    "name": "app_open",
+    "label": "3:27:58 PM",
+    "sec": 55678,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 10,
+    "key": "3:25:30 PM|cart_view|1",
+    "name": "cart_view",
+    "label": "3:25:30 PM",
+    "sec": 55530,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 11,
+    "key": "3:25:29 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:25:29 PM",
+    "sec": 55529,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 12,
+    "key": "3:25:26 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:25:26 PM",
+    "sec": 55526,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 13,
+    "key": "3:25:26 PM|category_view|1",
+    "name": "category_view",
+    "label": "3:25:26 PM",
+    "sec": 55526,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 14,
+    "key": "3:25:21 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:25:21 PM",
+    "sec": 55521,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 15,
+    "key": "3:25:21 PM|category_view|1",
+    "name": "category_view",
+    "label": "3:25:21 PM",
+    "sec": 55521,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 16,
+    "key": "3:25:17 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:25:17 PM",
+    "sec": 55517,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 17,
+    "key": "3:25:17 PM|category_view|1",
+    "name": "category_view",
+    "label": "3:25:17 PM",
+    "sec": 55517,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 18,
+    "key": "3:21:30 PM|user_engagement|1",
+    "name": "user_engagement",
+    "label": "3:21:30 PM",
+    "sec": 55290,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 19,
+    "key": "3:21:29 PM|user_engagement|1",
+    "name": "user_engagement",
+    "label": "3:21:29 PM",
+    "sec": 55289,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 20,
+    "key": "3:16:24 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:16:24 PM",
+    "sec": 54984,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 21,
+    "key": "3:16:24 PM|category_view|1",
+    "name": "category_view",
+    "label": "3:16:24 PM",
+    "sec": 54984,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 22,
+    "key": "3:16:20 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:16:20 PM",
+    "sec": 54980,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 23,
+    "key": "3:16:20 PM|category_view|1",
+    "name": "category_view",
+    "label": "3:16:20 PM",
+    "sec": 54980,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 24,
+    "key": "3:16:15 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:16:15 PM",
+    "sec": 54975,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 25,
+    "key": "3:16:15 PM|category_view|1",
+    "name": "category_view",
+    "label": "3:16:15 PM",
+    "sec": 54975,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 26,
+    "key": "3:16:11 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:16:11 PM",
+    "sec": 54971,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 27,
+    "key": "3:16:11 PM|category_view|1",
+    "name": "category_view",
+    "label": "3:16:11 PM",
+    "sec": 54971,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 28,
+    "key": "3:16:08 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:16:08 PM",
+    "sec": 54968,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 29,
+    "key": "3:16:08 PM|home_view|1",
+    "name": "home_view",
+    "label": "3:16:08 PM",
+    "sec": 54968,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 30,
+    "key": "3:16:04 PM|app_open|1",
+    "name": "app_open",
+    "label": "3:16:04 PM",
+    "sec": 54964,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 31,
+    "key": "3:12:09 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:12:09 PM",
+    "sec": 54729,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 32,
+    "key": "3:12:07 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:12:07 PM",
+    "sec": 54727,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 33,
+    "key": "3:12:06 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:12:06 PM",
+    "sec": 54726,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 34,
+    "key": "3:12:03 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:12:03 PM",
+    "sec": 54723,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 35,
+    "key": "3:12:03 PM|purchase|1",
+    "name": "purchase",
+    "label": "3:12:03 PM",
+    "sec": 54723,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 36,
+    "key": "3:12:03 PM|checkout_payment_select|2",
+    "name": "checkout_payment_select",
+    "label": "3:12:03 PM",
+    "sec": 54723,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 37,
+    "key": "3:12:00 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:12:00 PM",
+    "sec": 54720,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 38,
+    "key": "3:11:59 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:11:59 PM",
+    "sec": 54719,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 39,
+    "key": "3:11:57 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:11:57 PM",
+    "sec": 54717,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 40,
+    "key": "3:11:56 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:11:56 PM",
+    "sec": 54716,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 41,
+    "key": "3:11:54 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:11:54 PM",
+    "sec": 54714,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 42,
+    "key": "3:11:53 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:11:53 PM",
+    "sec": 54713,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 43,
+    "key": "3:11:51 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:11:51 PM",
+    "sec": 54711,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 44,
+    "key": "3:11:50 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:11:50 PM",
+    "sec": 54710,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 45,
+    "key": "3:11:48 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:11:48 PM",
+    "sec": 54708,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 46,
+    "key": "3:11:47 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:11:47 PM",
+    "sec": 54707,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 47,
+    "key": "3:11:47 PM|checkout_payment_select|2",
+    "name": "checkout_payment_select",
+    "label": "3:11:47 PM",
+    "sec": 54707,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 48,
+    "key": "3:11:45 PM|checkout_shipping_select|1",
+    "name": "checkout_shipping_select",
+    "label": "3:11:45 PM",
+    "sec": 54705,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 49,
+    "key": "3:11:44 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:11:44 PM",
+    "sec": 54704,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 50,
+    "key": "3:11:44 PM|checkout_start|1",
+    "name": "checkout_start",
+    "label": "3:11:44 PM",
+    "sec": 54704,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 51,
+    "key": "3:11:30 PM|cart_view|1",
+    "name": "cart_view",
+    "label": "3:11:30 PM",
+    "sec": 54690,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 52,
+    "key": "3:11:30 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:11:30 PM",
+    "sec": 54690,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 53,
+    "key": "3:11:28 PM|add_to_cart|1",
+    "name": "add_to_cart",
+    "label": "3:11:28 PM",
+    "sec": 54688,
+    "at": "2026-09-23T12:31:01.479Z"
+   },
+   {
+    "id": 54,
+    "key": "3:31:01 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:31:01 PM",
+    "sec": 55861,
+    "at": "2026-09-23T12:31:19.529Z"
+   },
+   {
+    "id": 55,
+    "key": "3:31:01 PM|category_view|1",
+    "name": "category_view",
+    "label": "3:31:01 PM",
+    "sec": 55861,
+    "at": "2026-09-23T12:31:19.529Z"
+   },
+   {
+    "id": 56,
+    "key": "3:31:06 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:31:06 PM",
+    "sec": 55866,
+    "at": "2026-09-23T12:31:22.529Z"
+   },
+   {
+    "id": 57,
+    "key": "3:31:06 PM|category_view|1",
+    "name": "category_view",
+    "label": "3:31:06 PM",
+    "sec": 55866,
+    "at": "2026-09-23T12:31:22.529Z"
+   },
+   {
+    "id": 58,
+    "key": "3:31:11 PM|cart_view|1",
+    "name": "cart_view",
+    "label": "3:31:11 PM",
+    "sec": 55871,
+    "at": "2026-09-23T12:31:28.529Z"
+   },
+   {
+    "id": 59,
+    "key": "3:31:10 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:31:10 PM",
+    "sec": 55870,
+    "at": "2026-09-23T12:31:28.529Z"
+   },
+   {
+    "id": 60,
+    "key": "3:36:14 PM|user_engagement|1",
+    "name": "user_engagement",
+    "label": "3:36:14 PM",
+    "sec": 56174,
+    "at": "2026-09-23T12:36:35.311Z"
+   },
+   {
+    "id": 61,
+    "key": "3:36:00 PM|user_engagement|1",
+    "name": "user_engagement",
+    "label": "3:36:00 PM",
+    "sec": 56160,
+    "at": "2026-09-23T12:36:35.311Z"
+   },
+   {
+    "id": 62,
+    "key": "3:36:13 PM|user_engagement|1",
+    "name": "user_engagement",
+    "label": "3:36:13 PM",
+    "sec": 56173,
+    "at": "2026-09-23T12:37:15.443Z"
+   },
+   {
+    "id": 63,
+    "key": "3:37:22 PM|app_open|1",
+    "name": "app_open",
+    "label": "3:37:22 PM",
+    "sec": 56242,
+    "at": "2026-09-23T12:37:39.455Z"
+   },
+   {
+    "id": 64,
+    "key": "3:37:26 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:37:26 PM",
+    "sec": 56246,
+    "at": "2026-09-23T12:37:45.489Z"
+   },
+   {
+    "id": 65,
+    "key": "3:37:26 PM|home_view|1",
+    "name": "home_view",
+    "label": "3:37:26 PM",
+    "sec": 56246,
+    "at": "2026-09-23T12:37:45.489Z"
+   },
+   {
+    "id": 66,
+    "key": "3:38:08 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:38:08 PM",
+    "sec": 56288,
+    "at": "2026-09-23T12:38:27.685Z"
+   },
+   {
+    "id": 67,
+    "key": "3:38:08 PM|category_view|1",
+    "name": "category_view",
+    "label": "3:38:08 PM",
+    "sec": 56288,
+    "at": "2026-09-23T12:38:27.685Z"
+   },
+   {
+    "id": 68,
+    "key": "3:38:17 PM|user_engagement|1",
+    "name": "user_engagement",
+    "label": "3:38:17 PM",
+    "sec": 56297,
+    "at": "2026-09-23T12:38:37.000Z"
+   },
+   {
+    "id": 69,
+    "key": "3:38:18 PM|app_open|1",
+    "name": "app_open",
+    "label": "3:38:18 PM",
+    "sec": 56298,
+    "at": "2026-09-23T12:38:39.643Z"
+   },
+   {
+    "id": 70,
+    "key": "3:38:24 PM|home_view|1",
+    "name": "home_view",
+    "label": "3:38:24 PM",
+    "sec": 56304,
+    "at": "2026-09-23T12:38:43.235Z"
+   },
+   {
+    "id": 71,
+    "key": "3:38:24 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:38:24 PM",
+    "sec": 56304,
+    "at": "2026-09-23T12:38:43.235Z"
+   },
+   {
+    "id": 72,
+    "key": "3:38:46 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:38:46 PM",
+    "sec": 56326,
+    "at": "2026-09-23T12:39:03.655Z"
+   },
+   {
+    "id": 73,
+    "key": "3:38:46 PM|category_view|1",
+    "name": "category_view",
+    "label": "3:38:46 PM",
+    "sec": 56326,
+    "at": "2026-09-23T12:39:03.655Z"
+   },
+   {
+    "id": 74,
+    "key": "3:38:53 PM|add_to_cart|1",
+    "name": "add_to_cart",
+    "label": "3:38:53 PM",
+    "sec": 56333,
+    "at": "2026-09-23T12:39:09.628Z"
+   },
+   {
+    "id": 75,
+    "key": "3:38:55 PM|cart_view|1",
+    "name": "cart_view",
+    "label": "3:38:55 PM",
+    "sec": 56335,
+    "at": "2026-09-23T12:39:12.633Z"
+   },
+   {
+    "id": 76,
+    "key": "3:38:55 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:38:55 PM",
+    "sec": 56335,
+    "at": "2026-09-23T12:39:12.633Z"
+   },
+   {
+    "id": 77,
+    "key": "3:38:58 PM|checkout_shipping_select|1",
+    "name": "checkout_shipping_select",
+    "label": "3:38:58 PM",
+    "sec": 56338,
+    "at": "2026-09-23T12:39:15.656Z"
+   },
+   {
+    "id": 78,
+    "key": "3:38:57 PM|page_view|1",
+    "name": "page_view",
+    "label": "3:38:57 PM",
+    "sec": 56337,
+    "at": "2026-09-23T12:39:15.656Z"
+   },
+   {
+    "id": 79,
+    "key": "3:38:57 PM|checkout_start|1",
+    "name": "checkout_start",
+    "label": "3:38:57 PM",
+    "sec": 56337,
+    "at": "2026-09-23T12:39:15.656Z"
+   },
+   {
+    "id": 80,
+    "key": "3:39:00 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:39:00 PM",
+    "sec": 56340,
+    "at": "2026-09-23T12:39:18.621Z"
+   },
+   {
+    "id": 81,
+    "key": "3:39:00 PM|checkout_payment_select|2",
+    "name": "checkout_payment_select",
+    "label": "3:39:00 PM",
+    "sec": 56340,
+    "at": "2026-09-23T12:39:18.621Z"
+   },
+   {
+    "id": 82,
+    "key": "3:39:03 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:39:03 PM",
+    "sec": 56343,
+    "at": "2026-09-23T12:39:21.650Z"
+   },
+   {
+    "id": 83,
+    "key": "3:39:03 PM|checkout_payment_select|2",
+    "name": "checkout_payment_select",
+    "label": "3:39:03 PM",
+    "sec": 56343,
+    "at": "2026-09-23T12:39:21.650Z"
+   },
+   {
+    "id": 84,
+    "key": "3:39:01 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:39:01 PM",
+    "sec": 56341,
+    "at": "2026-09-23T12:39:21.650Z"
+   },
+   {
+    "id": 85,
+    "key": "3:39:06 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:39:06 PM",
+    "sec": 56346,
+    "at": "2026-09-23T12:39:24.713Z"
+   },
+   {
+    "id": 86,
+    "key": "3:39:05 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:39:05 PM",
+    "sec": 56345,
+    "at": "2026-09-23T12:39:24.713Z"
+   },
+   {
+    "id": 87,
+    "key": "3:39:09 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:39:09 PM",
+    "sec": 56349,
+    "at": "2026-09-23T12:39:27.661Z"
+   },
+   {
+    "id": 88,
+    "key": "3:39:08 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:39:08 PM",
+    "sec": 56348,
+    "at": "2026-09-23T12:39:27.661Z"
+   },
+   {
+    "id": 89,
+    "key": "3:39:12 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:39:12 PM",
+    "sec": 56352,
+    "at": "2026-09-23T12:39:30.689Z"
+   },
+   {
+    "id": 90,
+    "key": "3:39:12 PM|checkout_payment_select|2",
+    "name": "checkout_payment_select",
+    "label": "3:39:12 PM",
+    "sec": 56352,
+    "at": "2026-09-23T12:39:30.689Z"
+   },
+   {
+    "id": 91,
+    "key": "3:39:15 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:39:15 PM",
+    "sec": 56355,
+    "at": "2026-09-23T12:39:33.634Z"
+   },
+   {
+    "id": 92,
+    "key": "3:39:15 PM|purchase|1",
+    "name": "purchase",
+    "label": "3:39:15 PM",
+    "sec": 56355,
+    "at": "2026-09-23T12:39:33.634Z"
+   },
+   {
+    "id": 93,
+    "key": "3:39:19 PM|checkout_payment_select|1",
+    "name": "checkout_payment_select",
+    "label": "3:39:19 PM",
+    "sec": 56359,
+    "at": "2026-09-23T12:39:39.665Z"
+   }
+  ]
+ }
+}

@@ -24,3 +24,9 @@ panel-data/device-queue.json
 # depoya girmesinler.
 .recon-*
 .homee-recon.mjs
+
+.venv-ios/
+.chrome-debugview/
+panel-data/fbv.json
+panel-data/fbv-chrome.log
+panel-data/evidence/.tmp-*
