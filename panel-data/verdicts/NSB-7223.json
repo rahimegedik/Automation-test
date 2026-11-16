@@ -1,0 +1,31 @@
+{
+  "card": "NSB-7223",
+  "history": [
+    {
+      "date": "2026-11-16T12:00:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · V2 · spec 34 parti1] Bug repro: külçe sepetteyken hesaba altın havale eklendi → sepet birleşti (basketType Standard, items NDR10Y Standard + NDRHASCALC TransferFromBankAccount). Takı + külçe: BE 422 ile reddetti (sepet karışmadı) ama mesaj alakasız ('…taksit uygulanmamaktadır') ve ekranda uyarı yok — kart uyarı istiyor.",
+      "notes": [
+        "Kalan kurallar (hesaptan fiziki, düzenli birikim, Fifa, ters yönler, standart pozitif kontrol) spec 34 parti2/parti3'te; sonraki regresyonda koşulacak.",
+        "Yeni bağlamda FE sepeti 0 gösteriyor ama ilk basket/add sunucudaki eski sepeti geri getiriyor (08.11 stage bulgusuyla aynı) — TC-01 bu kalıntıdan patladı, spec düzeltildi.",
+        "Temizlik: DELETE /api/v2/basket/delete ile sepet boşaltıldı, basket/get items [] ölçüldü.",
+        "Spec: tests/34-sepet-tur-kurallari.spec.ts (commit 0c11f49)."
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV UI+API; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-11-16T12:00:00+03:00",
+    "verdict": "FAIL",
+    "summary": "[DEV · V2 · spec 34 parti1] Bug repro: külçe sepetteyken hesaba altın havale eklendi → sepet birleşti (basketType Standard, items NDR10Y Standard + NDRHASCALC TransferFromBankAccount). Takı + külçe: BE 422 ile reddetti (sepet karışmadı) ama mesaj alakasız ('…taksit uygulanmamaktadır') ve ekranda uyarı yok — kart uyarı istiyor.",
+    "notes": [
+      "Kalan kurallar (hesaptan fiziki, düzenli birikim, Fifa, ters yönler, standart pozitif kontrol) spec 34 parti2/parti3'te; sonraki regresyonda koşulacak.",
+      "Yeni bağlamda FE sepeti 0 gösteriyor ama ilk basket/add sunucudaki eski sepeti geri getiriyor (08.11 stage bulgusuyla aynı) — TC-01 bu kalıntıdan patladı, spec düzeltildi.",
+      "Temizlik: DELETE /api/v2/basket/delete ile sepet boşaltıldı, basket/get items [] ölçüldü.",
+      "Spec: tests/34-sepet-tur-kurallari.spec.ts (commit 0c11f49)."
+    ],
+    "evidence": [],
+    "aiEvaluation": "DEV UI+API; Jira statüsü değiştirilmedi."
+  }
+}
