@@ -11,7 +11,9 @@
     "test:all:report:headed": "powershell -ExecutionPolicy Bypass -Command \"playwright test --project=chromium --headed; node scripts/create-test-report.cjs\"",
     "test:all:report:prod": "powershell -ExecutionPolicy Bypass -Command \"$env:ALLOW_PROD_ORDERS='1'; playwright test --project=chromium; node scripts/create-test-report.cjs\"",
     "test:sepet": "playwright test tests/03-cart.spec.ts --project=chromium --headed",
-
+    "test:sepet-tur:p1": "playwright test tests/34-sepet-tur-kurallari.spec.ts --project=chromium --grep @parti1",
+    "test:sepet-tur:p2": "playwright test tests/34-sepet-tur-kurallari.spec.ts --project=chromium --grep @parti2",
+    "test:sepet-tur:p3": "playwright test tests/34-sepet-tur-kurallari.spec.ts --project=chromium --grep @parti3",
     "test:all:report:prod:headed": "powershell -ExecutionPolicy Bypass -Command \"$env:ALLOW_PROD_ORDERS='1'; playwright test --project=chromium --headed; node scripts/create-test-report.cjs\"",
     "test:e2e": "playwright test tests/09-full-user-journey.spec.ts --project=chromium --headed",
     "test:havale": "playwright test tests/09-full-user-journey.spec.ts --project=chromium --headed",

@@ -54,6 +54,7 @@ scripts/                     # rapor üreticileri
 - `09–21` **journey — her koşum gerçek sipariş açar** (havale, kredi kartı, gümüş, ziynet, hesaptan-fiziki + 5 düzenli birikim periyodu)
 - `22–27` Hesabım CRUD — **kasıtlı olarak yıkıcı değil** (gerçek silme/şifre değişimi yok), bu tasarımı bozma
 - `28–33` özel akışlar (multi-banka havale, takı, kur güncelleme)
+- `34` sepet türü kuralları (NSB-7223) — sipariş açmaz; dev sepet kotası yüzünden **3 partide** koşulur: `npm run test:sepet-tur:p1|p2|p3` (~45 dk ara)
 
 **"Tüm testleri koş" = journey seti (09–20)**, utility'ler (01–08) değil.
 
@@ -84,6 +85,7 @@ Swagger: `https://api-v2.nadirgold.dev/api/docs-json/customer` (servis başına:
 ## Bilinen sorunlar (kod tarafı)
 
 - **`global-setup.ts` → `checkSession` yanlış pozitif veriyor.** Sadece `/hesabim/siparislerim`'in login'e yönlenmediğine bakıyor; FE hesap iskeletini cookie varlığına göre render ettiği için **iptal edilmiş bir JWT bu kontrolü geçer** ("✓ Mevcut session geçerli" yazar), ama içerideki API çağrıları sessizce 401 döner ve testler alakasız yerlerde patlar. Gerçek doğrulama için kimlikli bir API yanıtının 200 olduğu da assert edilmeli.
+- **Yeni bağlamda sepet "0" görünür ama sunucuda eski sepet durabilir** — FE basketHash'i ilk `basket/add`'e kadar bilmez, o eklemeyle eski kalemler geri gelir. `CartPage.clearAll()` bu yüzden temizlik garantisi vermez; ayrıca ilk "Sil" ekran dışı hızlı sepet çekmecesine denk gelip takılabiliyor. Sıkı temizlik: `CartTypeHelpers.clearCartStrict`.
 - Logout testi token'ı sunucu tarafında iptal eder. Sonrasında oturumu yenilemek için `playwright/.auth/dev-user.json`'ı kenara al ve herhangi bir spec koş (global-setup tam login yapar).
 - `zsh`'de çoklu spec'i değişkenle geçerken **`${=VAR}`** kullan, yoksa "No tests found".
 - zsh fonksiyonları içinde `set -a; source .env` sonrası PATH bozulabiliyor — çok adımlı ölçümleri bash fonksiyonu yerine Python'da yaz.
