@@ -1,0 +1,22 @@
+{
+  "card": "NSB-6710",
+  "history": [
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] Hesaba Altın Havale repeatOrder’da taxRate, tutarlar ve yüzde kampanya indirimi V1 ile aynı.",
+      "notes": [
+        "Stage’de 1026447 yok; P2 müşterisinin TransferFromBankAccount siparişleri kullanıldı: 1725460 (NDRHASCALC 1.35) ve 1725879 (2.82). Sepet her çağrıdan önce boşaltıldı; V1 → V2 sıralı. Yeni sipariş açılmadı.",
+        "1725460: items[].taxRate 0.74653 iki tarafta, price/priceTotal 8677.71, subTotal 8612.93, taxAmount 64.78, servicePrice 175.78; taxes.tax_rate yalnız son hanede farklı (…151↔…152).",
+        "1725879: taxRate 0.74653, grandTotal 18125.76, subTotal 17991.44, VIP %1 kampanyası (percent, TL tavanı 1) disc_total 1 iki tarafta.",
+        "Her tarafın kendi get’i: V1 repeatOrder → V1 get 18125.76 / discount 1; V2 repeatOrder → V2 get 18125.76 / discount 1.",
+        "Kapsam dışı: V2’nin yazdığı sepeti V1 get kampanyasız okuyor (18126.76; NSB-6918 yönü). Tavansız %1 kategori kampanyasıyla (dev vakası) ölçüm yapılamadı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6710/ro-1725460.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6710/ro-1725879.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6710/ro-1725879-v1w-get.v1.json"
+      ]
+    }
+  ]
+}

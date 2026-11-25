@@ -1,0 +1,25 @@
+{
+  "card": "NSB-6918",
+  "history": [
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[STAGE] V1’in yazdığı qty>1 sepeti V2 tek kalemde ve doğru toplamla okuyor, ancak itemsCount V1’in satır sayısını veriyor (3↔1, 2↔1) ve müşteri sepetinde kalem indirimi satır sayısıyla çarpılıyor.",
+      "notes": [
+        "✅ NDR1YC misafir: V1 add+update q3 → V2 get tek kalem NDR1YC×3, subTotal 33500.85 / grandTotal 33491.77 / servicePriceTotal 954.6 / gTOP 5.01 V1 ile aynı.",
+        "✅ Aynı V1 sepetinde V2 update q2 → V2 get qty 2, itemsCount 1, grandTotal 22261.18.",
+        "✅ HAH 99950gr50 V1 add q2 → V2 get: tek kalem ×2, grandTotal 105.6, goldToCurrency 657159.36 V1 ile aynı.",
+        "🔴 itemsCount: NDR1YC V1 1 ↔ V2 3; HAH V1 1 ↔ V2 2; müşteri sepeti NDR1194060×2 V1 1 ↔ V2 2.",
+        "🔴 Müşteri sepeti (V1 update q2 ile bölünmüş): V2 get items[].discountAmount 400, items[].price 12896.72; zarf discountAmount 200, grandTotal 13096.72 — kalem tutarları zarfla tutarsız (V1 kampanyayı hiç uygulamıyor: 13296.72, NSB-6654).",
+        "Bilinçli kapsam dışı (V2 yaz → V1 oku): HAH q2 V1 grandTotal 52.8 ↔ 105.6; NDR1YC q2 V1 servicePriceTotal 318.2 ↔ 636.4; V1, V2’nin yazdığı sepette kampanyaları uygulamıyor (NDRG50: V1 5101.31 ↔ V2 4901.31).",
+        "❓ Stok/limit 2N sayımı kara kutuda tetiklenmedi."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6918/std-chain-NDR1YC.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6918/B2-get-q2.v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6918/C6-get-q2-v1yaz.v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6918/C6-get-q2-v1yaz.v1.json"
+      ]
+    }
+  ]
+}

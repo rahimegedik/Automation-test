@@ -1,0 +1,22 @@
+{
+  "card": "NSB-6314",
+  "history": [
+    {
+      "date": "2026-11-19T17:10:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "500K eşik dalı ve ödeme tetikli DocumentRequest üretimi stage'de ölçülemedi (gerçek ≥500K ödemeli sipariş gerekir, sipariş açılmadı); okuma tarafı parity'si temiz.",
+      "notes": [
+        "Okuma tarafı: POST /customer/orders (P2, limit 20) V1 200 / V2 200, totalCount 38 = 38, sipariş alan seti 23 = 23 aynı; ilk 12 siparişte incrementId/status/createdAt birebir. orderStatusId iki tarafta da YOK (Lumen NSB-5709-2 V1 stage'e inmemiş — V2 parity'si korunuyor). grandTotal V1 number ↔ V2 string (bilinen NSB-7032).",
+        "customer/detail.hasDocumentHistory: V1 false / V2 false (alan iki tarafta var).",
+        "Gözlem: 08.11 siparişleri 1727238 ve 1727247 (V1 kart) 'Belge Bekleniyor', 1727256 (V2 kart, 7.449,18 TL) 'Siparişiniz Hazırlanıyor' — V2 belge temini akışını atlıyor, açık bug NSB-7029. Bu tutarlar eşik altı; tetikleyen kural eşik değil. customer/documents iki tarafta boş (48 saatlik talepler muhtemelen süresi dolup elendi) → talep kaydının oluşup oluşmadığı API'den görülemiyor.",
+        "Gerekli: stage'de high_value_order_total_threshold_active=1 + iptal olmayan, toplamı 500.000 TL'yi geçen kartlı/ComPay ödemeli sipariş (ya da eşiğin geçici düşürülmesi) ve callback sonrası customer/documents kontrolü; ya da DB'de document_requests satırı. Ödeme/sipariş açılmadı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6314/6314_orders.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6314/list_P2_v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6314/list_P2_v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6314/neg_auth.json"
+      ]
+    }
+  ]
+}

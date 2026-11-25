@@ -1,0 +1,22 @@
+{
+  "card": "NSB-6692",
+  "history": [
+    {
+      "date": "2026-11-20T17:45:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "Stage'de doğrulanmamış e-postalı hesap olmadığı için aktivasyon dalı (422 + data.code 1001, mail, TTL, is_active=0, partner, mail hatası) gözlenemedi; ölçülebilen yanlış şifre yolunda V2 var olan/olmayan e-postaya aynı yanıtı veriyor.",
+      "notes": [
+        "Yanlış şifre, var olmayan e-posta (qa-nsb6692-yok-*@example.com) ↔ P2 e-postası (TEST_EMAIL_STAGING), her biri 1 deneme: V2 POST api-v2.nadirgold.work/api/v1/customer/login {email,password} → ikisinde de 401 'Lütfen e-mail adresinizi veya şifrenizi kontrol ediniz.' (gövde birebir aynı). V1 POST api.nadirgold.work/customer/login {username,password} → ikisinde de 422 status.code 0 aynı mesaj. Hesabın var olup olmadığı yanıttan anlaşılmıyor (bilgi sızıntısı yok).",
+        "V1↔V2 farkı: yanlış kimlikte V1 422 (status.code 0), V2 401 — swagger'da V2 401 olarak tanımlı; önceden bilinen sözleşme farkı, bu kartın konusu değil.",
+        "Süre (tek ölçüm, istatistik değil): V2 var olmayan 373 ms / P2 644 ms; V1 688 / 794 ms. Tek örnekle zamanlama farkı hakkında hüküm verilmedi.",
+        "V1'de 'email' alanı kabul edilmiyor (422 'Username alanı gereklidir.'); V2 email ile çalışıyor (alias username). İlk V1 denemesi bu yüzden geçersizdi, username ile tekrarlandı. P2'ye toplam 2 yanlış şifre denemesi yapıldı, kilit oluşmadı.",
+        "Deploy ipucu: canlı stage swagger'da (/api/docs-json/customer) login için yalnız 200/401 tanımlı, '1001' hiç geçmiyor — 422/1001 dokümante değil (kodun inip inmediği bundan çıkarılamaz).",
+        "P2 /customer/detail emailVerify=1 (doğrulanmış). P1 token'ı 401 (geçersiz). Doğrulanmamış stage hesabı bulunamadı; yeni hesap açılmadı (onay yok).",
+        "Mutlu yolu test etmek için gerekli: OTP kapalı register ile açılmış doğrulanmamış (emailVerify=0) bir stage hesabı + o e-postanın gelen kutusu (aktivasyon maili ve TTL içinde ikinci mailin gelmediğini görmek için); is_active=0 dalı ve partner hesabı için ilgili durumda hesaplar; mail hatası dalı için BE tarafında mail servisinin hata vermesi (QA'dan tetiklenemez)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-stage-test-2/NSB-6692/login-probe.json"
+      ]
+    }
+  ]
+}

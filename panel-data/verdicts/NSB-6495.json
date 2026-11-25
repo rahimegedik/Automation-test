@@ -1,0 +1,29 @@
+{
+  "card": "NSB-6495",
+  "history": [
+    {
+      "date": "2026-11-12T13:40:00+03:00",
+      "verdict": "PASS",
+      "summary": "STAGE: genel liste 428 yorum id sırası aynı, 0 alan farkı (zarf: meta kasıtlı); 83 ürün × tüm sayfalar ürün yorumları 0 fark; /yorumlar ekranı iki modda aynı.",
+      "notes": [
+        "Sayfalama butonu otomasyonda tıklanamadı; sayfalama API düzeyinde doğrulandı.",
+        "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-12-deploy-stage/"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-12T13:40:00+03:00",
+    "verdict": "PASS",
+    "summary": "STAGE: genel liste 428 yorum id sırası aynı, 0 alan farkı (zarf: meta kasıtlı); 83 ürün × tüm sayfalar ürün yorumları 0 fark; /yorumlar ekranı iki modda aynı.",
+    "notes": [
+      "Sayfalama butonu otomasyonda tıklanamadı; sayfalama API düzeyinde doğrulandı.",
+      "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-12-deploy-stage/"
+    ]
+  }
+}

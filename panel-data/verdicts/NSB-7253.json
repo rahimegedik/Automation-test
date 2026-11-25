@@ -1,0 +1,19 @@
+{
+ "card": "NSB-7253",
+ "history": [
+  {
+   "date": "2026-11-20T16:10:00+03:00",
+   "verdict": "BLOCKED",
+   "summary": "[DEPLOY YOK] STAGE 20.11: Aynı HAH basket/add yolu stage'de eski (qty 1 gram, kargo Standard; NSB-7266); V2 sepet transferBankId null.",
+   "notes": [
+    "Misafir basket/add {sku:NDRHASCALC, qty:1, price:\"10000\", transferBankId:1}: V2 sepet transferBankId null, calculatedAmount null.",
+    "Not: bugün V1 misafir sepetinde de sepet seviyesinde transferBankId null döndü (19.11'de V1 1 dönüyordu) — bu yüzden 7253 için tek başına kesin deploy kanıtı değil; 7266 düzeltmesinin (aynı use-case) stage'de olmaması esas alındı.",
+    "customer/bank filtresi (müşteri sepeti + kayıtlı IBAN) koşulmadı; deploy sonrası planlı."
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7266/v1-hah-add1.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7266/v2-hah-add1.json"
+   ]
+  }
+ ]
+}

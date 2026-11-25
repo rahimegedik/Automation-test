@@ -1,0 +1,37 @@
+{
+  "card": "NSB-6580",
+  "history": [
+    {
+      "date": "2026-09-29T00:30:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "DEV: var olmayan abonelik/plan: V1 422 'Subscription not found or access denied' ↔ V2 422 'Abonelik bulunamadı veya erişim reddedildi.' (TR, iyileşme); tokensiz 401 iki tarafta. Mutlu yol (adres onayı) mutasyon → koşulmadı.",
+      "notes": [
+        "DEV: V1 DEV ↔ V2 DEV, P1 QA 203311 + P2 FE hesabı; yalnız salt-okuma ve doğrulama/hata yolu (mutasyon yok)."
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV koşulmayanlar turu (29.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "[DEV · 27 kart toplu koşum] Hata yolları tamam; adres onayı bekleyen plan yok.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-29T08:00:00+03:00",
+    "verdict": "UNTESTED",
+    "summary": "[DEV · 27 kart toplu koşum] Hata yolları tamam; adres onayı bekleyen plan yok.",
+    "notes": [
+      "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+      "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+  }
+}

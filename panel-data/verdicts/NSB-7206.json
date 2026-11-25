@@ -1,0 +1,30 @@
+{
+  "card": "NSB-7206",
+  "history": [
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] E-bülten captcha hatası iki modda ekranda \"Güvenlik doğrulaması başarısız oldu, lütfen tekrar deneyin.\" olarak görünüyor; bundle'da \"Turnsitle\" yok.",
+      "notes": [
+        "FE: footer e-bülten formu, qa-nsb7206-{0,1}@example.com → Gönder. Headless Chromium'da Turnstile (sitekey 0x4AAAAAAA3-btcKzuUxG8Rl) başarısız oldu, onError tetiklendi.",
+        "V2 (?apiV2=1, x-api-version v2) ve V1 (?apiV2=0, x-api-version v1): \"Hata\" modalında \"Güvenlik doğrulaması başarısız oldu, lütfen tekrar deneyin.\" (kartın önerdiği teknik ad içermeyen metin).",
+        "FE bundle taraması (34 chunk): \"Turnsitle\" 0 eşleşme. Mesaj kaynağı onError → errorHandle({status:{msg:\"Güvenlik doğrulaması başarısız oldu, lütfen tekrar deneyin.\"}}).",
+        "Captcha geçmediği için newsletter isteği gitmedi, kayıt oluşmadı.",
+        "Not: anasayfa pop-up'ı (görseli stage CDN'de 404) arka planı kapladığı için forma tıklamadan önce kapatılması gerekiyor."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7206/bundle-grep.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7206/fe-capture.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7206/fe-normal.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7206/m0-once.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7206/m0-sonra.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7206/m1-once.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7206/m1-sonra.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7206/normal-m0.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7206/normal-m1.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7206/popup-1366.png"
+      ],
+      "aiEvaluation": "Stage Test turu 19.11.2026 — brief kuralları; Jira'ya yazılmadı."
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "card": "NSB-6534",
+  "history": [
+    {
+      "date": "2026-09-29T00:30:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "DEV: yeni yol PUT /savingsSubscriptions/{id} çalışıyor (eski /get/{id} iki tarafta 405). Var olmayan id: V1 422 (önce gövde) ↔ V2 404; eksik gövde iki tarafta 422 errors[]; tokensiz 401. Mutlu yol mutasyon → koşulmadı.",
+      "notes": [
+        "DEV: V1 DEV ↔ V2 DEV, P1 QA 203311 + P2 FE hesabı; yalnız salt-okuma ve doğrulama/hata yolu (mutasyon yok)."
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV koşulmayanlar turu (29.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "[DEV · 27 kart toplu koşum] Yeni PUT yolu çalışıyor; mutlu yol kullanıcının oluşturacağı QA talimatını bekliyor.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:45:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV] DEV API: PUT /savingsSubscriptions/1897 V2 200 (yol artık çalışıyor, 405 kapanmış) ve V1 200; iki güncelleme de V1 ve V2 detayında yansıyor (kabul ✓), tarih/plan hesabı tutarlı. Kusur: güncelleme yanıtındaki liste V2'de getPlans[].savingSubscription içermiyor (6531 ile aynı kök neden, 'kayıp alan' kuralı).",
+      "notes": [
+        "Olmayan id: V1 422 (önce gövde) ↔ V2 404.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/s5_* s6_* s7_*"
+      ],
+      "evidence": [],
+      "aiEvaluation": "Kullanıcının isteğiyle API'den koşuldu; oluşturulan QA talimatları iptal edildi. Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-29T08:45:00+03:00",
+    "verdict": "FAIL",
+    "summary": "[DEV] DEV API: PUT /savingsSubscriptions/1897 V2 200 (yol artık çalışıyor, 405 kapanmış) ve V1 200; iki güncelleme de V1 ve V2 detayında yansıyor (kabul ✓), tarih/plan hesabı tutarlı. Kusur: güncelleme yanıtındaki liste V2'de getPlans[].savingSubscription içermiyor (6531 ile aynı kök neden, 'kayıp alan' kuralı).",
+    "notes": [
+      "Olmayan id: V1 422 (önce gövde) ↔ V2 404.",
+      "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/s5_* s6_* s7_*"
+    ],
+    "evidence": [],
+    "aiEvaluation": "Kullanıcının isteğiyle API'den koşuldu; oluşturulan QA talimatları iptal edildi. Jira statüsü değiştirilmedi."
+  }
+}

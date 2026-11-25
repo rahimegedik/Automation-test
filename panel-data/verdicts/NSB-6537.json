@@ -1,0 +1,38 @@
+{
+  "card": "NSB-6537",
+  "history": [
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "[DEV · 27 kart toplu koşum] Yalnız kullanıcının oluşturduğu QA talimatı iptal edilecek.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:45:00+03:00",
+      "verdict": "KISMI",
+      "summary": "[DEV] DEV API: V2 cancel/1897 200 'Talimat başarıyla iptal edildi.'; V1 cancel/1900 200 'successfully deactivated'; iki talimat V1 ve V2 listesinde active 0, canceledDate aynı (kabul ✓). Olmayan id 404 ve tokensiz 401 iki tarafta. FE iptal akışı ölçülmedi.",
+      "notes": [
+        "V2 404 path'i iç rota sızdırıyor (/api/v1/savings-subscriptions/cancel/…, NSB-6193 ailesi).",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/s5_* s6_* s7_*"
+      ],
+      "evidence": [],
+      "aiEvaluation": "Kullanıcının isteğiyle API'den koşuldu; oluşturulan QA talimatları iptal edildi. Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-29T08:45:00+03:00",
+    "verdict": "KISMI",
+    "summary": "[DEV] DEV API: V2 cancel/1897 200 'Talimat başarıyla iptal edildi.'; V1 cancel/1900 200 'successfully deactivated'; iki talimat V1 ve V2 listesinde active 0, canceledDate aynı (kabul ✓). Olmayan id 404 ve tokensiz 401 iki tarafta. FE iptal akışı ölçülmedi.",
+    "notes": [
+      "V2 404 path'i iç rota sızdırıyor (/api/v1/savings-subscriptions/cancel/…, NSB-6193 ailesi).",
+      "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/s5_* s6_* s7_*"
+    ],
+    "evidence": [],
+    "aiEvaluation": "Kullanıcının isteğiyle API'den koşuldu; oluşturulan QA talimatları iptal edildi. Jira statüsü değiştirilmedi."
+  }
+}

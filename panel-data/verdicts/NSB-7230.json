@@ -1,0 +1,29 @@
+{
+  "card": "NSB-7230",
+  "history": [
+    {
+      "date": "2026-11-16T13:30:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · V2 API · spec 35 TC-03/04/05] changeProduct:true + price:'x' (NDRHASCALC) → 500 ve mevcut sepet (NDR1YC01×1) SİLİNDİ — kartın iddiası birebir. qty=10000 → 422, 300 karakter sku → 422 (500 yok).",
+      "notes": [
+        "qty=10000'ün 422'si stok kontrolünden (stok 48) gelmiş olabilir — DTO üst sınırının varlığını kanıtlamaz; stoklu üründe ≥10000 denemesi gerekir.",
+        "price/sku MaxLength, delete sku[] ArrayMaxSize test edilmedi.",
+        "Spec: tests/35-sepet-api-negatif.spec.ts (doğrudan api-v2 + Bearer, UI'sız)."
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV API; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-11-16T13:30:00+03:00",
+    "verdict": "FAIL",
+    "summary": "[DEV · V2 API · spec 35 TC-03/04/05] changeProduct:true + price:'x' (NDRHASCALC) → 500 ve mevcut sepet (NDR1YC01×1) SİLİNDİ — kartın iddiası birebir. qty=10000 → 422, 300 karakter sku → 422 (500 yok).",
+    "notes": [
+      "qty=10000'ün 422'si stok kontrolünden (stok 48) gelmiş olabilir — DTO üst sınırının varlığını kanıtlamaz; stoklu üründe ≥10000 denemesi gerekir.",
+      "price/sku MaxLength, delete sku[] ArrayMaxSize test edilmedi.",
+      "Spec: tests/35-sepet-api-negatif.spec.ts (doğrudan api-v2 + Bearer, UI'sız)."
+    ],
+    "evidence": [],
+    "aiEvaluation": "DEV API; Jira statüsü değiştirilmedi."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "card": "NSB-7205",
+  "history": [
+    {
+      "date": "2026-11-12T17:13:27+03:00",
+      "verdict": "PASS",
+      "summary": "DEV retest (MR !630): V2 kategori fiyatları kur güncellemesiyle aynı anda değişiyor. API: 16:45–16:55 arasında 2 kur güncellemesi (16:48, 16:52) boyunca products/{id}, category/list/{id} ve category-products/summary aynı poll'da değişti (ürün 11 külçe, 248 ziynet). summary her yanıtta Cache-Control: private, no-cache, no-store, must-revalidate (404 dahil). FE: /kulce-altin (24 fiyat) ve /ziynet (14 fiyat) V1↔V2 sayfa fiyatları 9 turda 0 fark; 17:01, 17:04, 17:09, 17:12 kur değişimlerinde iki mod aynı turda güncellendi. x-api-version v1/v2 teyitli.",
+      "notes": [
+        "Dev'de ziynet kategori slug'ı \"ziynet\" (stage'de \"ziynet-altin\"); /ziynet-altin dev'de boş sayfa, summary?url=ziynet-altin 404 — ortam farkı, bug değil.",
+        "Stage'de deploy sonrası aynı retest tekrarlanmalı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-12-dev-retest/nsb7205-poll.log",
+        "panel-data/evidence/2026-11-12-dev-retest/nsb7205-fe-ssr-kulce.json",
+        "panel-data/evidence/2026-11-12-dev-retest/nsb7205-fe-ssr-ziynet.json",
+        "panel-data/evidence/2026-11-12-dev-retest/7205-kulce-altin-v1.png",
+        "panel-data/evidence/2026-11-12-dev-retest/7205-kulce-altin-v2.png",
+        "panel-data/evidence/2026-11-12-dev-retest/7205-ziynet-v1.png",
+        "panel-data/evidence/2026-11-12-dev-retest/7205-ziynet-v2.png"
+      ],
+      "aiEvaluation": "",
+      "manual": true
+    }
+  ],
+  "latest": {
+    "date": "2026-11-12T17:13:27+03:00",
+    "verdict": "PASS",
+    "summary": "DEV retest (MR !630): V2 kategori fiyatları kur güncellemesiyle aynı anda değişiyor. API: 16:45–16:55 arasında 2 kur güncellemesi (16:48, 16:52) boyunca products/{id}, category/list/{id} ve category-products/summary aynı poll'da değişti (ürün 11 külçe, 248 ziynet). summary her yanıtta Cache-Control: private, no-cache, no-store, must-revalidate (404 dahil). FE: /kulce-altin (24 fiyat) ve /ziynet (14 fiyat) V1↔V2 sayfa fiyatları 9 turda 0 fark; 17:01, 17:04, 17:09, 17:12 kur değişimlerinde iki mod aynı turda güncellendi. x-api-version v1/v2 teyitli.",
+    "notes": [
+      "Dev'de ziynet kategori slug'ı \"ziynet\" (stage'de \"ziynet-altin\"); /ziynet-altin dev'de boş sayfa, summary?url=ziynet-altin 404 — ortam farkı, bug değil.",
+      "Stage'de deploy sonrası aynı retest tekrarlanmalı."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-12-dev-retest/nsb7205-poll.log",
+      "panel-data/evidence/2026-11-12-dev-retest/nsb7205-fe-ssr-kulce.json",
+      "panel-data/evidence/2026-11-12-dev-retest/nsb7205-fe-ssr-ziynet.json",
+      "panel-data/evidence/2026-11-12-dev-retest/7205-kulce-altin-v1.png",
+      "panel-data/evidence/2026-11-12-dev-retest/7205-kulce-altin-v2.png",
+      "panel-data/evidence/2026-11-12-dev-retest/7205-ziynet-v1.png",
+      "panel-data/evidence/2026-11-12-dev-retest/7205-ziynet-v2.png"
+    ],
+    "aiEvaluation": "",
+    "manual": true
+  }
+}

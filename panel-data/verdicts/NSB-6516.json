@@ -1,0 +1,44 @@
+{
+  "card": "NSB-6516",
+  "history": [
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "[DEV · 27 kart toplu koşum] Kart kaydı kullanıcı tarafından; gözlemci penceresinde kayıt yapılmadı.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T09:10:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV] DEV FE (kullanıcı ekrandan): V2 modunda POST /api/v2/card-storage 200 + transaction_state 'redirect_3d' dönüyor ama yanıt snake_case (transaction_id, transaction_state, cc_masked…); FE 3DS'e yönlenmiyor, kart kaydedilmiyor (8 deneme, 8 tamamlanmamış 1 TL sandbox provizyonu 296497–296518). V1 modunda aynı akış camelCase (isRedirect/redirectUrl) → 3DS → callback → kart listede (413226******0003). Kaydedilen kart V1/V2 listesinde 0 fark.",
+      "notes": [
+        "Kök neden adayı: V2 yanıt alanları snake_case — kart NSB-6300 camelCase istiyor; FE redirectUrl/isRedirect bulamıyor.",
+        "Kanıt: panel-data/evidence/2026-09-29-dev-kart/6516-*.json (maskeli)"
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-29-dev-kart/6516-v1-fe-kart-kaydet-3ds.json",
+        "panel-data/evidence/2026-09-29-dev-kart/6516-v2-fe-kart-kaydet-3ds-yok.json"
+      ],
+      "aiEvaluation": "Kullanıcı FE'den yaptı, gözlemci maskeli kaydetti. Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-29T09:10:00+03:00",
+    "verdict": "FAIL",
+    "summary": "[DEV] DEV FE (kullanıcı ekrandan): V2 modunda POST /api/v2/card-storage 200 + transaction_state 'redirect_3d' dönüyor ama yanıt snake_case (transaction_id, transaction_state, cc_masked…); FE 3DS'e yönlenmiyor, kart kaydedilmiyor (8 deneme, 8 tamamlanmamış 1 TL sandbox provizyonu 296497–296518). V1 modunda aynı akış camelCase (isRedirect/redirectUrl) → 3DS → callback → kart listede (413226******0003). Kaydedilen kart V1/V2 listesinde 0 fark.",
+    "notes": [
+      "Kök neden adayı: V2 yanıt alanları snake_case — kart NSB-6300 camelCase istiyor; FE redirectUrl/isRedirect bulamıyor.",
+      "Kanıt: panel-data/evidence/2026-09-29-dev-kart/6516-*.json (maskeli)"
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-29-dev-kart/6516-v1-fe-kart-kaydet-3ds.json",
+      "panel-data/evidence/2026-09-29-dev-kart/6516-v2-fe-kart-kaydet-3ds-yok.json"
+    ],
+    "aiEvaluation": "Kullanıcı FE'den yaptı, gözlemci maskeli kaydetti. Jira statüsü değiştirilmedi."
+  }
+}

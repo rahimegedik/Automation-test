@@ -1,0 +1,21 @@
+{
+  "card": "NSB-7212",
+  "history": [
+    {
+      "date": "2026-11-19T17:10:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "Kredi kartı talebine ön+arka yüz yükleme stage'de denenemedi: awaiting_document credit_card talebi/token yok; olmayan token'la yükleme dosya kuralından önce 404'e düşüyor.",
+      "notes": [
+        "Stage'de belge talebi olan müşteri yok: P2 (müşteri 367284) V1 ve V2 GET /customer/documents → 200 {general:[],orders:[]} (3/3 tur). P1 ve rahime token'ları V2'de 401 'Hesap aktif değil' (V1 200 boş). Panel erişimimiz olmadığı için talep açılamadı.",
+        "Yoklama (olmayan token 7c9e6679-…, QA 1x1 PNG 'QA-7212-front.png' / 'QA-7212-back.png'): yalnız file → V1 404 / V2 404 'Belge talebi bulunamadı.'; file + file_back(png) → V1 404 / V2 404 (aynı). Token doğrulaması dosya/tip kuralından önce çalıştığı için 'File back alanı yasaktır' dalına ulaşılamıyor. Hiçbir kayıt değişmedi.",
+        "Sonraki denemeler (file+file_back pdf, dosyasız, yalnız file_back) V1/V2 422 'Çok fazla giriş denemesi… 3597 saniye' — aynı token'a 3. yükleme denemesinden sonra 1 saatlik kilit, V1 ve V2 aynı mesaj/kova. Kural dalları bu yüzden ölçülemedi.",
+        "Sözleşme: stage swagger upload şemasında file_back açıklaması 'identity / identity_second zorunlu; credit_card isteğe bağlı (yalnız görsel); diğer tiplerde yasak' — MR !636 stage spec'ine yansımış görünüyor; davranış gözlenmedi.",
+        "Gerekli: stage'de panelden açılmış credit_card awaiting_document talebi; QA görseli ile (1) yalnız ön, (2) ön+arka png, (3) arka pdf (reddedilmeli) denenir, listede ikinci satır credit_card_back + ön/arka etiketleri kontrol edilir."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7212/neg_upload.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7212/neg_rate_v2.json"
+      ]
+    }
+  ]
+}

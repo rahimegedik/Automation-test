@@ -1,0 +1,28 @@
+{
+  "card": "NSB-7242",
+  "history": [
+    {
+      "date": "2026-11-20T17:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "Stage'de Belgelerim'de seçilen sekme URL'e ?sekme=orders/general olarak yazılıyor ve sayfa yenilendiğinde aynı sekme açık kalıyor; V1 ve V2 modunda aynı.",
+      "notes": [
+        "Ortam: stage FE https://www.nadirgold.work/hesabim/belgelerim, storageState staging-user.json (P2). V1: ?apiV2=0 → x-api-version v1, belgeler api.nadirgold.work/customer/documents 200. V2: ?apiV2=1 → NG_API_V2=1, x-api-version v2 (reload sonrası da v2), belgeler /api/v2/customer/documents 200.",
+        "Sekmeler role=tab; seçim aria-selected ile ölçüldü. İlk açılış: Genel Belgeler aria-selected=true.",
+        "Sipariş Belgeleri tık → URL /hesabim/belgelerim?sekme=orders, Sipariş=true. Reload → URL korunuyor, Sipariş Belgeleri seçili kalıyor (V1 ve V2).",
+        "Ters yön: Genel Belgeler tık → ?sekme=general; reload → Genel seçili kalıyor (V1 ve V2).",
+        "Doğrudan link: yeni sekmede /hesabim/belgelerim?sekme=orders → Sipariş Belgeleri seçili açılıyor (V1 ve V2). Tanımsız parametreler (?tab=siparis, ?tab=order, #siparis) → Genel (varsayılan) açılıyor.",
+        "Not: sekme değişimi tarayıcı geçmişine kayıt eklemiyor (replace); Belgelerim'de geri tuşu bir önceki sayfaya (ana sayfa) dönüyor. Kart kapsamı dışında, bilgi notu.",
+        "P2'de belge talebi yok; iki sekmede de 'Sizden talep edilen bir belge bulunmuyor.' görünüyor. Sekme seçimi aria-selected + URL + görsel vurgu ile ölçülebildiği için engel değil; dolu liste içeriği bu turda görülmedi."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-stage-test-2/NSB-7242/tab-state.json",
+        "panel-data/evidence/2026-11-20-stage-test-2/NSB-7242/V1-02-siparis-tik.png",
+        "panel-data/evidence/2026-11-20-stage-test-2/NSB-7242/V1-03-siparis-reload.png",
+        "panel-data/evidence/2026-11-20-stage-test-2/NSB-7242/V2-02-siparis-tik.png",
+        "panel-data/evidence/2026-11-20-stage-test-2/NSB-7242/V2-03-siparis-reload.png",
+        "panel-data/evidence/2026-11-20-stage-test-2/NSB-7242/V2-05-genel-reload.png",
+        "panel-data/evidence/2026-11-20-stage-test-2/NSB-7242/V2-07-direkt-0.png"
+      ]
+    }
+  ]
+}

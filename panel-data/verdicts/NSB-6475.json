@@ -1,0 +1,33 @@
+{
+  "card": "NSB-6475",
+  "history": [
+    {
+      "date": "2026-11-12T14:15:00+03:00",
+      "verdict": "PASS",
+      "summary": "STAGE: V2 yorum gönderimi /api/v2/product/comments 200 (id 3471, status 0) → \"Yorum Başarıyla Kaydedildi — onay sürecinden sonra yayınlanacak\"; herkese açık listede görünmüyor (onay bekliyor). Validasyon (subject≥5, comment≥10) V1/V2 aynı, hata errors[]’dan modalda TR gösteriliyor. V2 gövdesi camelCase (productId, orderId, starScore, isNameVisible).",
+      "notes": [
+        "Temizlik: yorum 3471 (\"QA-NSB-6475 test\") panelden REDDEDİLMELİ — müşteri tarafında silme yok.",
+        "Hesabın yorumlanabilir tek ürünü (sipariş 1725138 / ürün 145) bu testle tükendi.",
+        "Hata mesajlarında alan adı İngilizce (\"Subject\", \"Comment\") — V1’de de aynı.",
+        "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-12-deploy-stage/untested/"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-12T14:15:00+03:00",
+    "verdict": "PASS",
+    "summary": "STAGE: V2 yorum gönderimi /api/v2/product/comments 200 (id 3471, status 0) → \"Yorum Başarıyla Kaydedildi — onay sürecinden sonra yayınlanacak\"; herkese açık listede görünmüyor (onay bekliyor). Validasyon (subject≥5, comment≥10) V1/V2 aynı, hata errors[]’dan modalda TR gösteriliyor. V2 gövdesi camelCase (productId, orderId, starScore, isNameVisible).",
+    "notes": [
+      "Temizlik: yorum 3471 (\"QA-NSB-6475 test\") panelden REDDEDİLMELİ — müşteri tarafında silme yok.",
+      "Hesabın yorumlanabilir tek ürünü (sipariş 1725138 / ürün 145) bu testle tükendi.",
+      "Hata mesajlarında alan adı İngilizce (\"Subject\", \"Comment\") — V1’de de aynı.",
+      "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-12-deploy-stage/untested/"
+    ]
+  }
+}

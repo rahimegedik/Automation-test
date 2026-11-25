@@ -1,15 +1,20 @@
 {
   "card": "NSB-6184",
   "latest": {
-    "date": "2026-08-07T17:00:00+03:00",
-    "verdict": "UNTESTED",
-    "summary": "Henüz test edilmedi — web kapsamındaki sıradaki aday",
+    "date": "2026-11-19T17:45:00+03:00",
+    "verdict": "PASS",
+    "summary": "[STAGE] ?apiV2=1/0 bayrağı tarayıcı bazında V2/V1 arasında geçiyor: çerez kalıcı, SSR başlığı ve tüm API çağrıları doğru hedefe gidiyor, paralel kullanıcı etkilenmiyor.",
     "notes": [
-      "05.08'den beri Test kolonunda",
-      "Frontend component'li: dönüşüm servisleri feature flag ile erişilebilir olmalı"
+      "A bağlamı ?apiV2=1: NG_API_V2=1, x-api-version v2, API çağrıları yalnız /api/v2 proxy (customer/detail, product/counter), V1 çağrısı 0.",
+      "Paramsız gezinmede (/kulce-altin, /hesabim/siparislerim) bayrak kalıcı: v2, proxy 3/3, V1 0. /sitemap.xml SSR v2.",
+      "Aynı anda B bağlamı (paramsız): x-api-version v1, çerez yok, çağrılar api.nadirgold.work. A'nın bayrağı B'yi etkilemiyor (tarayıcı/kişi bazlı).",
+      "?apiV2=0: çerez siliniyor, v1, sonraki sayfalar ve hesabım V1 hostuna gidiyor (proxy 0). ?apiV2=xyz V1'de kalıyor. Tekrar ?apiV2=1 V2'ye dönüyor.",
+      "Not: bayrak hesap bazlı değil, istemci çerezi. Gate arkasındaki herkes açabiliyor. Oturumsuz ekranlarda param OAuth yönlendirmesinde kayboluyor (CLAUDE.md tuzak 6, dev gate kaynaklı)."
     ],
-    "evidence": [],
-    "aiEvaluation": "Test planı: feature flag'in aç/kapa davranışını iki modda doğrula; flag kapalıyken dönüşüm servislerine istek gitmediğini network'ten kanıtla."
+    "evidence": [
+      "panel-data/evidence/2026-11-19-stage-test/NSB-6184/flag-akisi.json"
+    ],
+    "aiEvaluation": "Stage Test turu 19.11.2026 — brief kuralları; Jira'ya yazılmadı."
   },
   "history": [
     {
@@ -22,6 +27,22 @@
       ],
       "evidence": [],
       "aiEvaluation": "Test planı: feature flag'in aç/kapa davranışını iki modda doğrula; flag kapalıyken dönüşüm servislerine istek gitmediğini network'ten kanıtla."
+    },
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] ?apiV2=1/0 bayrağı tarayıcı bazında V2/V1 arasında geçiyor: çerez kalıcı, SSR başlığı ve tüm API çağrıları doğru hedefe gidiyor, paralel kullanıcı etkilenmiyor.",
+      "notes": [
+        "A bağlamı ?apiV2=1: NG_API_V2=1, x-api-version v2, API çağrıları yalnız /api/v2 proxy (customer/detail, product/counter), V1 çağrısı 0.",
+        "Paramsız gezinmede (/kulce-altin, /hesabim/siparislerim) bayrak kalıcı: v2, proxy 3/3, V1 0. /sitemap.xml SSR v2.",
+        "Aynı anda B bağlamı (paramsız): x-api-version v1, çerez yok, çağrılar api.nadirgold.work. A'nın bayrağı B'yi etkilemiyor (tarayıcı/kişi bazlı).",
+        "?apiV2=0: çerez siliniyor, v1, sonraki sayfalar ve hesabım V1 hostuna gidiyor (proxy 0). ?apiV2=xyz V1'de kalıyor. Tekrar ?apiV2=1 V2'ye dönüyor.",
+        "Not: bayrak hesap bazlı değil, istemci çerezi. Gate arkasındaki herkes açabiliyor. Oturumsuz ekranlarda param OAuth yönlendirmesinde kayboluyor (CLAUDE.md tuzak 6, dev gate kaynaklı)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6184/flag-akisi.json"
+      ],
+      "aiEvaluation": "Stage Test turu 19.11.2026 — brief kuralları; Jira'ya yazılmadı."
     }
   ]
 }

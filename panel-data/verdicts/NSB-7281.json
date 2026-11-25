@@ -1,0 +1,50 @@
+{
+  "card": "NSB-7281",
+  "history": [
+    {
+      "date": "2026-11-20T15:45:00+03:00",
+      "verdict": "BLOCKED",
+      "summary": "[DEPLOY YOK] V2 POST customer/address stage'de pasif ilçeyi (Ankara/ETİMESGUT 49, KUŞADASI 220) ve pasif şirket ilçesini 200 ile kaydediyor; V1 aynı isteklere 422 dönüyor — kartta tarif edilen hata aynen duruyor.",
+      "notes": [
+        "Pasif kayıt bulma: getCities/1 V1=V2 (80 il, 964 ilçe, id+ad birebir). İlçe id dizisinde boşluklar 49 ve 220; ikisi de getCities listesinde yok ama getDistricts/49 (35 mahalle) ve /220 (23 mahalle) 200 dönüyor → pasif ilçe. Dev'deki pasif mahalle örneği Mamak 2013 stage'de hâlâ listede (MEHTAP 2012 ile kopya; NSB-7268 migration'ı stage'de çalışmamış), bu yüzden pasif mahalle yolu stage'de denenemedi.",
+        "V2 create QA-NSB-7281-A-aktif (il 2 / ilçe 58 / mahalle 2012) → 200 (pozitif kontrol).",
+        "V2 create QA-NSB-7281-B (il 2 / pasif ilçe 49 / mahalle 1527) → 200, adres ETİMESGUT olarak kaydedildi. V1 aynı gövde → 422 errors[countyId] 'Seçili olan county id geçersiz.'",
+        "V2 create QA-NSB-7281-C (il 10 AMASYA / pasif ilçe 220 KUŞADASI / mahalle 11013) → 200. Ek bulgu: ilçenin seçilen ile ait olup olmadığı da kontrol edilmiyor (Amasya + Kuşadası kaydedildi).",
+        "Şirket ili/ilçesi: V2 isCorporationalInvoiceRequested + companyCity 2 / companyCounty 49 → 200; V1 → 422 errors[companyCounty] 'Seçili olan company county geçersiz.'",
+        "V2 olmayan mahalle 9999999 → 422 'Geçersiz mahalle bilgisi' (var olmayan kontrolü çalışıyor; aktiflik kontrolü yok).",
+        "V2 güncelleme: mevcut adres 214224'e pasif ilçe 49 → 200 (kabul edildi).",
+        "Beklenen 422 mesajı ('Seçtiğiniz mahalle artık kullanılamıyor...') stage'de hiçbir yanıtta görülmedi; deploy ipucu yok.",
+        "Temizlik: 214224 orijinal il/ilçe/mahalleye (5/117/5033) geri yüklendi, ölçüldü: updatedAt dışında alan farkı yok. QA adresleri 214261/214264/214267/214270 silindi (DELETE 200); son liste [214224,214221,214188] = başlangıç, V1 listesi de aynı. Kalan QA-NSB-7281 adresi 0."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-7281/save-matrix.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-7281/cleanup.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-7281/raw-addr-cities.json"
+      ]
+    },
+    {
+      "date": "2026-11-20T17:50:00+03:00",
+      "verdict": "PASS",
+      "summary": "Customer deploy'u sonrası stage'de V2 POST customer/address, eklemede ve güncellemede pasif il, ilçe ve mahalleyi, ayrıca pasif şirket il/ilçesini 422 ve yol gösteren mesajla reddediyor; V1 de aynı istekleri 422 ile reddediyor, aktif kayıtlar 200 dönüyor.",
+      "notes": [
+        "Hesap P2, V2 api-v2.nadirgold.work/api/v1/customer/address ↔ V1 api.nadirgold.work/customer/address, gövde addressType shipping + default false (zorunlu). Pasif kayıtlar: il 81 (getCities'te yok, V2 'il artık kullanılamıyor' diyor; 82 ve 0 'Geçersiz şehir bilgisi'), ilçe 49 ETİMESGUT ve 220 KUŞADASI (getCities'te yok), mahalle 2013 Mamak MEHTAP kopyası, 14753 Tatvan adsız, 142 Bayrampaşa kopyası (V1 getDistricts listesinden düşmüş, V2 listesinde hâlâ var: NSB-7268).",
+        "(a) Yeni adres, pasif ilçe 49 ve 220 (Aydın/14): V2 422 'Seçtiğiniz ilçe artık kullanılamıyor. Lütfen ilçe listesinden yeniden seçim yapın.' / V1 422 countyId 'Seçili olan county id geçersiz.' Pasif il 81: V2 422 'Seçtiğiniz il artık kullanılamıyor. Lütfen il listesinden yeniden seçim yapın.' / V1 422 cityId.",
+        "(b) Güncelleme (id 214224): pasif ilçe 49 ve 220, pasif il 81, pasif mahalle 2013 ve 14753, pasif şirket ilçesi 49, olmayan mahalle 9999999 → V2 ve V1'de hepsi 422; her denemeden sonra 214224 ölçüldü, değişmedi (5/117/5033). Aktif güncelleme (2/58/2012) V2 200 → orijinale geri yükleme 200.",
+        "(c) Şirket: isCorporationalInvoiceRequested 1 + companyCounty 49 → V2 422 'Seçtiğiniz şirket ilçesi artık kullanılamıyor...' / V1 422 companyCounty. companyCity 81 → V2 422 'Seçtiğiniz şirket ili artık kullanılamıyor...' / V1 422 companyCity. Olmayan companyCounty 9999999 → V2 422 'Geçersiz şirket ilçesi bilgisi' / V1 422. Aktif şirket ili/ilçesi 2/58 → V2 200, V1 200.",
+        "(d) Pasif mahalle (yeni adres ve güncelleme): 2013, 14753 (adsız), 142 → V2 422 'Seçtiğiniz mahalle artık kullanılamıyor. Lütfen mahalle listesinden yeniden seçim yapın.' / V1 422 districtId 'Seçili olan district id geçersiz.'",
+        "(e) Olmayan id: il 9999999 → V2 'Geçersiz şehir bilgisi', ilçe → 'Geçersiz ilçe bilgisi', mahalle → 'Geçersiz mahalle bilgisi' (hepsi 422); V1 422 alan bazlı.",
+        "(f) Pozitif kontrol: 2/58/2012 ve Tatvan 21/281/14729 → V2 200, V1 200 ve kayıt doğru il/ilçe/mahalleyle listelendi.",
+        "(g) İl-ilçe uyuşmazlığı: öğleden sonra 200 dönen Amasya(10)+Kuşadası(220) artık V2 ve V1'de 422 (ilçe pasif olduğu için). Aktif ilçeyle uyuşmazlık hâlâ kabul ediliyor: Amasya(10)+Mamak(58) → V2 200 / V1 200 (adres AMASYA/MAMAK olarak kaydedildi); Mamak ilçesi + Karaisalı mahallesi 5033 → V2 200 / V1 200; şirket ili 10 + şirket ilçesi 58 → V2 200 / V1 200. V1 ile aynı olduğu için bu kartta FAIL sayılmadı; il-ilçe-mahalle hiyerarşi kontrolü yok, ayrı kart adayı.",
+        "Deploy kanıtı: aynı istekler (pasif ilçe 49/220, şirket ilçesi 49) 15:27 ölçümünde 200 dönüyordu, şimdi 422 ve kartta beklenen mesaj ailesi geliyor.",
+        "Temizlik: 14 QA-NSB-7281-* adresi (V2 7, V1 7) V2 DELETE ile silindi (hepsi 200). Son liste V1 ve V2'de [214224, 214221, 214188] = başlangıç; QA adresi kalmadı. 214224'te updatedAt dışında alan farkı yok. TCKN/telefon kanıtta maskeli."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-stage-test-2/NSB-7281/save-matrix.json",
+        "panel-data/evidence/2026-11-20-stage-test-2/NSB-7281/update-matrix.json",
+        "panel-data/evidence/2026-11-20-stage-test-2/NSB-7281/pasif-mahalle.json",
+        "panel-data/evidence/2026-11-20-stage-test-2/NSB-7281/cleanup.json",
+        "panel-data/evidence/2026-11-20-stage-test-2/NSB-7281/orig-214224.json"
+      ]
+    }
+  ]
+}

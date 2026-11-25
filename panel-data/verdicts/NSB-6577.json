@@ -1,0 +1,91 @@
+{
+  "card": "NSB-6577",
+  "history": [
+    {
+      "date": "2026-09-28T16:05:00+03:00",
+      "verdict": "KISMI",
+      "summary": "intervals V2 STAGE: API birebir (for=orders 9 aralık, for=transactions 9 aralık; 7 geçersiz değer iki tarafta 422). FE ucu hiç çağırmıyor — iki modda da filtre seçenekleri FE'de sabit.",
+      "notes": [
+        "❓ FE entegrasyonu: /hesabim/siparislerim 'Filtrele' seçenekleri (today…last_six_month) sabit; V1 ve V2 modunda /intervals isteği yok. Kartın 'web filtre aralıklarını V2 ucundan al' işi yapılmamış ya da gerekmiyor — Faruk'la teyit.",
+        "Madde 14 (iki tarafta aynı): for=transactions'da 'This Quarter' / 'Last Quarter' İngilizce.",
+        "Cache: ETag+304 var, Cache-Control yok.",
+        "Yöntem: V1 STAGE (api.nadirgold.work) ↔ V2 STAGE (api-v2.nadirgold.work/api/v1) canlı, id/sku hizalı alan-alan diff; 2 profil (P1 QA 181484, P2 FE hesabı). FE: www.nadirgold.work ?apiV2=0/1 Playwright ağ yakalama. qa-parity 14 madde kontrol listesi.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw/6577_*"
+      ],
+      "evidence": [],
+      "aiEvaluation": "STAGE adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-28T17:25:00+03:00",
+      "verdict": "KISMI",
+      "summary": "DEV: API birebir (orders/transactions); FE /intervals'ı iki modda da çağırmıyor, filtre sabit (stage ile aynı).",
+      "notes": [
+        "FE V1↔V2 (dev): 9 filtre seçeneğinin hepsinde listelenen siparişler iki modda aynı (filtre FE'de sabit).",
+        "DEV turu: V1 DEV (api.nadirgold.dev) ↔ V2 DEV (api-v2.nadirgold.dev/api/v1), id hizalı alan-alan diff, 2 profil (P1 QA 203311, P2 FE hesabı). FE: www.nadirgold.dev ?apiV2=0/1 ağ yakalama + UI metin diff; mutasyon 0."
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · 27 kart toplu koşum] API birebir ama FE /intervals'ı iki modda da çağırmıyor (kartın işi yapılmamış).",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-10-05T12:20:19.457Z",
+      "verdict": "FAIL",
+      "summary": "[DEV · renewal koşucusu] API birebir (orders/transactions). FE yeniden ölçülemedi (V2 customer/orders 500); önceki FE bulgusu (V2 FE /intervals çağırmıyor) açık.",
+      "notes": [
+        "✅ API temiz",
+        "❓ FE: DEV customer-service kimlikli isteklerde 500 (customer/detail, customer/orders, customer/documents, token'lı getContractsByType) → V2 FE oturumu \"Giriş Yap\" gösteriyor; bu koşumdaki FE karşılaştırmaları geçersiz.",
+        "Koşum: renewal/out/dev-2026-10-05-12-14"
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-11-20T15:45:00+03:00",
+      "verdict": "KISMI",
+      "summary": "Stage'de intervals API V1=V2 (orders/transactions/ios, negatifler 422 aynı) ve V2 FE sipariş filtresi seçenekleri API ile birebir; ancak liste SSR ile geldiğinden V2 modunda sunucunun hangi uçtan aldığı dışarıdan gözlenemiyor.",
+      "notes": [
+        "API: for=orders ve for=transactions V1 ↔ V2 data birebir (9 aralık; transactions'ta 'This Quarter/Last Quarter' iki tarafta İngilizce, bilinen ortak durum). device-type: ios liste biçimi birebir. for=qa → 422/422 errors[for] 'For geçerli bir değer olmalıdır'; for yok → 422/422 'For alanı gereklidir.' V2 ETag var, Cache-Control yok.",
+        "FE: /hesabim/siparislerim ?apiV2=0 (x-api-version v1) ve ?apiV2=1 (x-api-version v2) — select seçenekleri iki modda aynı: Filtrele: Tümü, Bugün, Dün, Bu Hafta, Geçen Hafta, Bu Ay, Geçen Ay, Bu Yıl, Geçen Yıl, Son 6 Ay (= API for=orders). Seçenekler SSR HTML'inde <option value=last_six_month> olarak geliyor; bundle'da bileşen intervals'ı prop olarak alıyor.",
+        "renewal koşucusunun 🔴 'V2 FE intervals ucunu /api/v2 üzerinden çağırmadı' bulgusu bu nedenle yanlış pozitif: tarayıcıdan intervals çağrısı iki modda da yok (V1'de de yok).",
+        "UNTESTED: SSR'ın V2 modunda api-v2 intervals ucunu çağırdığı. Gerekli: FE sunucu/gateway logu (correlationId ile) ya da FE ekibinden SSR çağrı kaynağı teyidi.",
+        "Sipariş filtresi seçilerek liste filtrelenmesi denenmedi (salt okuma, gerek görülmedi)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6577/api.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6577/fe-ssr.txt",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6577/fe-probe.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6577/fe-siparis-filtre-m0.png",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6577/fe-siparis-filtre-m1.png"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-20T15:45:00+03:00",
+    "verdict": "KISMI",
+    "summary": "Stage'de intervals API V1=V2 (orders/transactions/ios, negatifler 422 aynı) ve V2 FE sipariş filtresi seçenekleri API ile birebir; ancak liste SSR ile geldiğinden V2 modunda sunucunun hangi uçtan aldığı dışarıdan gözlenemiyor.",
+    "notes": [
+      "API: for=orders ve for=transactions V1 ↔ V2 data birebir (9 aralık; transactions'ta 'This Quarter/Last Quarter' iki tarafta İngilizce, bilinen ortak durum). device-type: ios liste biçimi birebir. for=qa → 422/422 errors[for] 'For geçerli bir değer olmalıdır'; for yok → 422/422 'For alanı gereklidir.' V2 ETag var, Cache-Control yok.",
+      "FE: /hesabim/siparislerim ?apiV2=0 (x-api-version v1) ve ?apiV2=1 (x-api-version v2) — select seçenekleri iki modda aynı: Filtrele: Tümü, Bugün, Dün, Bu Hafta, Geçen Hafta, Bu Ay, Geçen Ay, Bu Yıl, Geçen Yıl, Son 6 Ay (= API for=orders). Seçenekler SSR HTML'inde <option value=last_six_month> olarak geliyor; bundle'da bileşen intervals'ı prop olarak alıyor.",
+      "renewal koşucusunun 🔴 'V2 FE intervals ucunu /api/v2 üzerinden çağırmadı' bulgusu bu nedenle yanlış pozitif: tarayıcıdan intervals çağrısı iki modda da yok (V1'de de yok).",
+      "UNTESTED: SSR'ın V2 modunda api-v2 intervals ucunu çağırdığı. Gerekli: FE sunucu/gateway logu (correlationId ile) ya da FE ekibinden SSR çağrı kaynağı teyidi.",
+      "Sipariş filtresi seçilerek liste filtrelenmesi denenmedi (salt okuma, gerek görülmedi)."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6577/api.json",
+      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6577/fe-ssr.txt",
+      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6577/fe-probe.json",
+      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6577/fe-siparis-filtre-m0.png",
+      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6577/fe-siparis-filtre-m1.png"
+    ]
+  }
+}

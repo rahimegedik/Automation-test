@@ -1,22 +1,28 @@
 {
   "card": "NSB-5982",
   "latest": {
-    "date": "2026-09-17T14:10:00+03:00",
-    "verdict": "KISMI",
-    "summary": "product/other V2 (stage): BE/proxy paritesi tam (4/4 ürün birebir) — ama stage FE ürün detayında 'İlgili Ürünler' bölümü yok, product/other hiç çağrılmıyor (bundle'da da yok)",
+    "date": "2026-11-12T13:40:00+03:00",
+    "verdict": "PASS",
+    "summary": "STAGE: product/other 83/83 üründe V1↔V2 alan alan birebir; PDP \"Benzer Ürünler\" iki modda aynı. Çağrı SSR’da, kaynak (V1/V2) HTML izinden ayırt edilemedi (veri özdeş).",
     "notes": [
-      "GET api.nadirgold.work/product/other/171 vs www.nadirgold.work/api/v2/product/other/171: {categoryId, categorySlug, items[4]} fark YOK.",
-      "FE: /nadirgold-1-gr-kulce-altin-9999 iki modda da yalnızca product/category-products/summary çağırıyor; sayfada 'Çok Satanlar' var, 'İlgili/Benzer Ürünler' yok. Stage bundle'ında 'product/other' string'i geçmiyor → FE entegrasyonu bu build'de yok ya da başka sayfada.",
-      "Dev'de (27.08) sidebar 3 ürünle render olmuştu — stage build'i farklı olabilir; FE ile teyit gerekli.",
-      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li)."
+      "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
     ],
     "evidence": [
-      "panel-data/evidence/2026-09-16-stage-faruk/5982-v1-urun-detay.png",
-      "panel-data/evidence/2026-09-16-stage-faruk/5982-v2-urun-detay.png"
-    ],
-    "aiEvaluation": "BE PASS, FE stage'de gözlemlenemedi. KISMI."
+      "panel-data/evidence/2026-11-12-deploy-stage/"
+    ]
   },
   "history": [
+    {
+      "date": "2026-11-12T13:40:00+03:00",
+      "verdict": "PASS",
+      "summary": "STAGE: product/other 83/83 üründe V1↔V2 alan alan birebir; PDP \"Benzer Ürünler\" iki modda aynı. Çağrı SSR’da, kaynak (V1/V2) HTML izinden ayırt edilemedi (veri özdeş).",
+      "notes": [
+        "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-12-deploy-stage/"
+      ]
+    },
     {
       "date": "2026-08-19T13:18:48.441Z",
       "verdict": "PASS",

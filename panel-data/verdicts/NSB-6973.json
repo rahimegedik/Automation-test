@@ -1,0 +1,19 @@
+{
+ "card": "NSB-6973",
+ "history": [
+  {
+   "date": "2026-11-20T16:10:00+03:00",
+   "verdict": "UNTESTED",
+   "summary": "[STAGE 20.11] payment-again mutlu yolu gerçek kart çekimi ve sipariş oluşturur; bu turda sipariş/çekim onayı yok.",
+   "notes": [
+    "P2 hesabında 7 talimat var; isRetriggerable=true CANCELED planlar mevcut (ör. 4978 / talimat 538, 5005 / talimat 544) — subscriptions-plans.json.",
+    "Güvenli yoklama: olmayan plan PUT /savingsSubscriptions/payment-again/999999999 → V2 422 \"Plan not found\"; tokensız 401.",
+    "Gereken: kullanıcı onayıyla retriggerable bir planda tek payment-again + oluşan siparişin V1/V2 customer/orderDetail ile okunması (statü 2, ccMasked, adet, originalPrice, contacts, isIndividualCompany)."
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6973/subscriptions-plans.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6972/payment-again-unknown-plan.v2.json"
+   ]
+  }
+ ]
+}

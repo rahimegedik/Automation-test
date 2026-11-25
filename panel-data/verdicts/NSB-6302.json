@@ -1,0 +1,20 @@
+{
+  "card": "NSB-6302",
+  "history": [
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] repeatOrder sepetinde basketType, highValueOrderThreshold, transferRate ve calculatedAmount V1 ile birebir.",
+      "notes": [
+        "1725460: basketType TransferFromBankAccount/TransferFromBankAccount, highValueOrderThreshold false/false, transferRate \"1.0000\"/\"1.0000\" (string), calculatedAmount \"1.35\"/\"1.35\" (string), paymentMethod MpayBankTransfer, transferBankId 3.",
+        "1725879: TransferFromBankAccount, false/false, transferRate \"0.9950\"/\"0.9950\", calculatedAmount \"2.81\"/\"2.81\", transferBankId 1.",
+        "V2 ek kalem alanları: items[].calculatedAmount, transferBankId, id (17.08 notuyla aynı)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6302/ro-1725460.v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6302/ro-1725460.v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6302/ro-1725879.v2.json"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "card": "NSB-6702",
+  "history": [
+    {
+      "date": "2026-10-05T12:38:08.522Z",
+      "verdict": "KISMI",
+      "summary": "[DEV · renewal koşucusu] dataLayer (V1, tam sayfa yükleme): ana sayfa/kategori/ürün/takı ürününde sayfa başına VirtualPageView 1 + view_item_list 1 (+ ürünlerde view_item 1), event_id benzersiz, her ecommerce push öncesi ecommerce:null. GA4 item şeması: item_id/item_name/item_brand/item_category/item_category2/price/index/item_list_*. DEV'de GTM/GA ağ isteği yok → tag'lerin GA4'e gidişi doğrulanamadı. Kabul kriteri tanımsız.",
+      "notes": [
+        "✅ GA4 ecommerce yapısı + temizlik + tekil event",
+        "❓ \"Çok Satanlar\" view_item_list'te item_list_id ve item_category yok (kategori listesinde var)",
+        "❓ DEV'de GTM container yüklenmiyor — DebugView/beacon doğrulaması stage/prod GTM preview ile",
+        "❓ add_to_cart/begin_checkout/purchase ölçülmedi (mutasyon; sepet rate-limit)",
+        "❓ SPA içi geçişlerde VirtualPageView ölçülmedi",
+        "❓ kartta beklenen hiyerarşi tanımı yok — Faruk'tan event listesi istenmeli",
+        "Kanıt: panel-data/evidence/2026-10-05-nsb6702/datalayer.json"
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-10-05T12:38:08.522Z",
+    "verdict": "KISMI",
+    "summary": "[DEV · renewal koşucusu] dataLayer (V1, tam sayfa yükleme): ana sayfa/kategori/ürün/takı ürününde sayfa başına VirtualPageView 1 + view_item_list 1 (+ ürünlerde view_item 1), event_id benzersiz, her ecommerce push öncesi ecommerce:null. GA4 item şeması: item_id/item_name/item_brand/item_category/item_category2/price/index/item_list_*. DEV'de GTM/GA ağ isteği yok → tag'lerin GA4'e gidişi doğrulanamadı. Kabul kriteri tanımsız.",
+    "notes": [
+      "✅ GA4 ecommerce yapısı + temizlik + tekil event",
+      "❓ \"Çok Satanlar\" view_item_list'te item_list_id ve item_category yok (kategori listesinde var)",
+      "❓ DEV'de GTM container yüklenmiyor — DebugView/beacon doğrulaması stage/prod GTM preview ile",
+      "❓ add_to_cart/begin_checkout/purchase ölçülmedi (mutasyon; sepet rate-limit)",
+      "❓ SPA içi geçişlerde VirtualPageView ölçülmedi",
+      "❓ kartta beklenen hiyerarşi tanımı yok — Faruk'tan event listesi istenmeli",
+      "Kanıt: panel-data/evidence/2026-10-05-nsb6702/datalayer.json"
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+  }
+}

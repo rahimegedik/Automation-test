@@ -1,0 +1,27 @@
+{
+  "card": "NSB-6424",
+  "history": [
+    {
+      "date": "2026-11-12T13:40:00+03:00",
+      "verdict": "PASS",
+      "summary": "STAGE: averageStarScore 83 üründe V1↔V2 aynı; FE özet \"5.0 / 1 Değerlendirme - 1 Yorum\" iki modda aynı; yorumsuz üründe (2, 11) özet gizli, çökme yok.",
+      "notes": [
+        "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-12-deploy-stage/"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-12T13:40:00+03:00",
+    "verdict": "PASS",
+    "summary": "STAGE: averageStarScore 83 üründe V1↔V2 aynı; FE özet \"5.0 / 1 Değerlendirme - 1 Yorum\" iki modda aynı; yorumsuz üründe (2, 11) özet gizli, çökme yok.",
+    "notes": [
+      "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-12-deploy-stage/"
+    ]
+  }
+}

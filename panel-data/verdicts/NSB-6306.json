@@ -1,47 +1,54 @@
 {
- "card": "NSB-6306",
- "history": [
-  {
-   "date": "2026-09-03T22:05:00+03:00",
-   "verdict": "KISMI",
-   "summary": "Belgelerim ekrani, bos-durum metni ve menu gating dogru calisiyor; ancak 'Belge Bekleniyor' statusundeki siparise ragmen /customer/documents bos donuyor -> belge yukleme akisi test edilemedi",
-   "notes": [
-    "Ortam: dev (www.nadirgold.dev), storageState'li Playwright context, kullanici mirac.kasapoglu",
-    "PASS: /hesabim/belgelerim rotasi 200 donuyor, baslik 'Belgelerim', aciklama metni ve bos durum 'Sizden talep edilen bir belge bulunmuyor.' dogru",
-    "PASS: GET /customer/documents 200 + data:[] -> talep yoksa 'Belgelerim' hesabim menusunde GORUNMUYOR (kartin 'diger kullanicilarda gosterilmeyecek' kurali dogru uygulanmis)",
-    "PASS: /hesabim/belgeler, /belgelerim, /hesabim/belgelerim/kyc gibi yanlis rotalar 404 -> rota sadece dogru path'te acik",
-    "BULGU (soru isareti): siparislerim listesinde id=823768 / incrementId=1026718 siparisi 'Belge Bekleniyor' statusunde (28.08, MpayCreditCard, 15.985,82 TL) ama /customer/documents bos donuyor ve Belgelerim menusu cikmiyor -> musteri bekleyen belgeyi yukleyemez. Bu siparis statusu ile documents servisi arasinda baglanti kurulmus mu, teyit gerekiyor",
-    "TEST EDILEMEDI: 5 belge turu (KYC, Uye Kimlik, Kart Sahibi Kimlik, Nufus Kayit Ornegi, Kredi Karti) listesi, 'Yukle' butonunun aktiflesmesi, GET /customer/documents/{token}, POST /customer/documents/{token}/upload ve belge durum statuleri -> test kullanicisinda belge talebi olmadigi icin dogrulanamadi",
-    "V2 NOTU: NG_API_V2=1 modunda /customer/detail -> /api/v2/customer/detail'e giderken /customer/documents legacy host'ta kaliyor (proxy'ye alinmamis). Kart Frontend component'inde oldugu icin blocker degil ama V2 gecisinde takip edilmeli",
-    "V1 ve V2 modunda ekran ciktisi ayni (bos durum) — regresyon yok"
-   ],
-   "evidence": [
-    "panel-data/evidence/2026-09-03-faruk/6306-belgelerim-v1.png",
-    "panel-data/evidence/2026-09-03-faruk/6306-belgelerim-v2.png",
-    "panel-data/evidence/2026-09-03-faruk/6306-siparislerim-belge-bekleniyor.png"
-   ],
-   "aiEvaluation": "Iskelet ve gating dogru; PASS verilemez cunku akisin cekirdegi (talep edilen belge turleri + yukleme) veri yoklugundan kosulamadi. Faruk/BE'den test kullanicisina belge talebi acilmasi istenmeli; ayrica 823768 siparisinin 'Belge Bekleniyor' statusunun documents servisine yansimamasi ayri bir bulgu olarak sorulmali."
+  "card": "NSB-6306",
+  "history": [
+    {
+      "date": "2026-09-03T22:05:00+03:00",
+      "verdict": "KISMI",
+      "summary": "Belgelerim ekrani, bos-durum metni ve menu gating dogru calisiyor; ancak 'Belge Bekleniyor' statusundeki siparise ragmen /customer/documents bos donuyor -> belge yukleme akisi test edilemedi",
+      "notes": [
+        "Ortam: dev (www.nadirgold.dev), storageState'li Playwright context, kullanici mirac.kasapoglu",
+        "PASS: /hesabim/belgelerim rotasi 200 donuyor, baslik 'Belgelerim', aciklama metni ve bos durum 'Sizden talep edilen bir belge bulunmuyor.' dogru",
+        "PASS: GET /customer/documents 200 + data:[] -> talep yoksa 'Belgelerim' hesabim menusunde GORUNMUYOR (kartin 'diger kullanicilarda gosterilmeyecek' kurali dogru uygulanmis)",
+        "PASS: /hesabim/belgeler, /belgelerim, /hesabim/belgelerim/kyc gibi yanlis rotalar 404 -> rota sadece dogru path'te acik",
+        "BULGU (soru isareti): siparislerim listesinde id=823768 / incrementId=1026718 siparisi 'Belge Bekleniyor' statusunde (28.08, MpayCreditCard, 15.985,82 TL) ama /customer/documents bos donuyor ve Belgelerim menusu cikmiyor -> musteri bekleyen belgeyi yukleyemez. Bu siparis statusu ile documents servisi arasinda baglanti kurulmus mu, teyit gerekiyor",
+        "TEST EDILEMEDI: 5 belge turu (KYC, Uye Kimlik, Kart Sahibi Kimlik, Nufus Kayit Ornegi, Kredi Karti) listesi, 'Yukle' butonunun aktiflesmesi, GET /customer/documents/{token}, POST /customer/documents/{token}/upload ve belge durum statuleri -> test kullanicisinda belge talebi olmadigi icin dogrulanamadi",
+        "V2 NOTU: NG_API_V2=1 modunda /customer/detail -> /api/v2/customer/detail'e giderken /customer/documents legacy host'ta kaliyor (proxy'ye alinmamis). Kart Frontend component'inde oldugu icin blocker degil ama V2 gecisinde takip edilmeli",
+        "V1 ve V2 modunda ekran ciktisi ayni (bos durum) — regresyon yok"
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-03-faruk/6306-belgelerim-v1.png",
+        "panel-data/evidence/2026-09-03-faruk/6306-belgelerim-v2.png",
+        "panel-data/evidence/2026-09-03-faruk/6306-siparislerim-belge-bekleniyor.png"
+      ],
+      "aiEvaluation": "Iskelet ve gating dogru; PASS verilemez cunku akisin cekirdegi (talep edilen belge turleri + yukleme) veri yoklugundan kosulamadi. Faruk/BE'den test kullanicisina belge talebi acilmasi istenmeli; ayrica 823768 siparisinin 'Belge Bekleniyor' statusunun documents servisine yansimamasi ayri bir bulgu olarak sorulmali."
+    },
+    {
+      "date": "2026-10-05T12:38:08.520Z",
+      "verdict": "KISMI",
+      "summary": "[DEV · renewal koşucusu] Menü gating ve liste/statü gösterimi doğru (P1: 5 kart, sayaç 1/5, Bekleyen/Reddedilen/Onaylanan filtreleri). Yükleme akışı ölçülemedi. Hiçbir hesapta canUpload:true (awaiting_document) kayıt yok — bekleyen belge talebi gerekiyor (NSB-6598 ile aynı engel).",
+      "notes": [
+        "✅ P1 menüde Belgelerim var; statüler Onay Bekliyor/Reddedildi/Onaylandı + adım çubuğu",
+        "✅ reddedilende \"müşteri hizmetleri\" mesajı",
+        "❓ P2: tek kayıt (admin KYC available) varken menü gizli ve \"talep edilen belge yok\" — bkz. 6436",
+        "❓ yükleme: Hiçbir hesapta canUpload:true (awaiting_document) kayıt yok — bekleyen belge talebi gerekiyor (NSB-6598 ile aynı engel).",
+        "Kanıt: panel-data/evidence/2026-10-05-belgelerim/P1-belgelerim.png, P2-belgelerim.png"
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-10-05T12:38:08.520Z",
+    "verdict": "KISMI",
+    "summary": "[DEV · renewal koşucusu] Menü gating ve liste/statü gösterimi doğru (P1: 5 kart, sayaç 1/5, Bekleyen/Reddedilen/Onaylanan filtreleri). Yükleme akışı ölçülemedi. Hiçbir hesapta canUpload:true (awaiting_document) kayıt yok — bekleyen belge talebi gerekiyor (NSB-6598 ile aynı engel).",
+    "notes": [
+      "✅ P1 menüde Belgelerim var; statüler Onay Bekliyor/Reddedildi/Onaylandı + adım çubuğu",
+      "✅ reddedilende \"müşteri hizmetleri\" mesajı",
+      "❓ P2: tek kayıt (admin KYC available) varken menü gizli ve \"talep edilen belge yok\" — bkz. 6436",
+      "❓ yükleme: Hiçbir hesapta canUpload:true (awaiting_document) kayıt yok — bekleyen belge talebi gerekiyor (NSB-6598 ile aynı engel).",
+      "Kanıt: panel-data/evidence/2026-10-05-belgelerim/P1-belgelerim.png, P2-belgelerim.png"
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
   }
- ],
- "latest": {
-  "date": "2026-09-03T22:05:00+03:00",
-  "verdict": "KISMI",
-  "summary": "Belgelerim ekrani, bos-durum metni ve menu gating dogru calisiyor; ancak 'Belge Bekleniyor' statusundeki siparise ragmen /customer/documents bos donuyor -> belge yukleme akisi test edilemedi",
-  "notes": [
-   "Ortam: dev (www.nadirgold.dev), storageState'li Playwright context, kullanici mirac.kasapoglu",
-   "PASS: /hesabim/belgelerim rotasi 200 donuyor, baslik 'Belgelerim', aciklama metni ve bos durum 'Sizden talep edilen bir belge bulunmuyor.' dogru",
-   "PASS: GET /customer/documents 200 + data:[] -> talep yoksa 'Belgelerim' hesabim menusunde GORUNMUYOR (kartin 'diger kullanicilarda gosterilmeyecek' kurali dogru uygulanmis)",
-   "PASS: /hesabim/belgeler, /belgelerim, /hesabim/belgelerim/kyc gibi yanlis rotalar 404 -> rota sadece dogru path'te acik",
-   "BULGU (soru isareti): siparislerim listesinde id=823768 / incrementId=1026718 siparisi 'Belge Bekleniyor' statusunde (28.08, MpayCreditCard, 15.985,82 TL) ama /customer/documents bos donuyor ve Belgelerim menusu cikmiyor -> musteri bekleyen belgeyi yukleyemez. Bu siparis statusu ile documents servisi arasinda baglanti kurulmus mu, teyit gerekiyor",
-   "TEST EDILEMEDI: 5 belge turu (KYC, Uye Kimlik, Kart Sahibi Kimlik, Nufus Kayit Ornegi, Kredi Karti) listesi, 'Yukle' butonunun aktiflesmesi, GET /customer/documents/{token}, POST /customer/documents/{token}/upload ve belge durum statuleri -> test kullanicisinda belge talebi olmadigi icin dogrulanamadi",
-   "V2 NOTU: NG_API_V2=1 modunda /customer/detail -> /api/v2/customer/detail'e giderken /customer/documents legacy host'ta kaliyor (proxy'ye alinmamis). Kart Frontend component'inde oldugu icin blocker degil ama V2 gecisinde takip edilmeli",
-   "V1 ve V2 modunda ekran ciktisi ayni (bos durum) — regresyon yok"
-  ],
-  "evidence": [
-   "panel-data/evidence/2026-09-03-faruk/6306-belgelerim-v1.png",
-   "panel-data/evidence/2026-09-03-faruk/6306-belgelerim-v2.png",
-   "panel-data/evidence/2026-09-03-faruk/6306-siparislerim-belge-bekleniyor.png"
-  ],
-  "aiEvaluation": "Iskelet ve gating dogru; PASS verilemez cunku akisin cekirdegi (talep edilen belge turleri + yukleme) veri yoklugundan kosulamadi. Faruk/BE'den test kullanicisina belge talebi acilmasi istenmeli; ayrica 823768 siparisinin 'Belge Bekleniyor' statusunun documents servisine yansimamasi ayri bir bulgu olarak sorulmali."
- }
 }

@@ -1,0 +1,21 @@
+{
+ "card": "NSB-7256",
+ "history": [
+  {
+   "date": "2026-11-20T16:10:00+03:00",
+   "verdict": "BLOCKED",
+   "summary": "[DEPLOY YOK] STAGE 20.11: HFA sepetinde V2 STAGE payment/get hâlâ 8 TRY havale bankası + kredi kartı dönüyor; V1 yalnız 3 GAU banka (Kuveyt Türk, Yapı Kredi, Garanti).",
+   "notes": [
+    "Misafir basket/add NDR2525 (FromBankAccountToPhysical) her taraf kendi sepeti, ardından P2 token'ıyla payment/get {basketHash}:",
+    "V1: yalnız MpayBankTransfer, 3 hesap currency GAU (Kuveyt Türk / Yapı Kredi / Garanti).",
+    "V2: MpayCreditCard (kayıtlı kart) + MpayBankTransfer 8 hesap currency TRY (Ziraat, Yapı Kredi, Kuveyt Türk, Akbank, Halkbank, İş, Garanti, QNB) — 19.11 ölçümüyle aynı, kartın hatalı davranışı.",
+    "Yan etki notu: V1 payment/get (token + misafir hash) misafir HFA sepetini müşteriye bağladı; sepet sonradan temizlendi."
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7256/v1-hfa-payment-get.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7256/v2-hfa-payment-get.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7256/probe-summary.json"
+   ]
+  }
+ ]
+}

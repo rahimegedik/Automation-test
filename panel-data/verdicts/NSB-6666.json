@@ -1,0 +1,37 @@
+{
+  "card": "NSB-6666",
+  "history": [
+    {
+      "date": "2026-09-29T00:30:00+03:00",
+      "verdict": "FAIL",
+      "summary": "DEV: geçersiz link: V1 422 errors[phone] 'Telefon numarası geçersiz.' ↔ V2 422 V1 zarfında 'Telefon bulunamadı !' (errors boş). Kabul: 'geçersiz hash → V1 ile aynı hata mesajı' karşılanmıyor. Sayısal olmayan id: V1 500 ↔ V2 404. Geçerli link yok → mutlu yol ölçülmedi. BE NSB-5837 Test'te.",
+      "notes": [
+        "DEV: V1 DEV ↔ V2 DEV, P1 QA 203311 + P2 FE hesabı; yalnız salt-okuma ve doğrulama/hata yolu (mutasyon yok)."
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV koşulmayanlar turu (29.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · 27 kart toplu koşum] Geçersiz link mesajı V1'den farklı (kabul kriteri).",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-29T08:00:00+03:00",
+    "verdict": "FAIL",
+    "summary": "[DEV · 27 kart toplu koşum] Geçersiz link mesajı V1'den farklı (kabul kriteri).",
+    "notes": [
+      "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+      "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+  }
+}

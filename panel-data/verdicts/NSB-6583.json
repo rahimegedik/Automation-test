@@ -1,0 +1,31 @@
+{
+  "card": "NSB-6583",
+  "history": [
+    {
+      "date": "2026-11-12T13:40:00+03:00",
+      "verdict": "KISMI",
+      "summary": "STAGE: etiketler artık Türkçe (1 Ay/3 Ay/6 Ay/1 Yıl — 15.09 bulgusu kapanmış); 8 üründe gün bazında fiyat değerleri birebir; SSR V2 kullanıyor (HTML’de V2 tarih formatı). Fark: 1 Yıl serisinde V2 bir gün fazla (2025-11-12, 345↔344 nokta); tarih formatı saatsiz ve sıra artan (bilinen drift).",
+      "notes": [
+        "V1 yolu /product/getPriceHistory/{id} (kart açıklamasındaki /getPriceHistory 404).",
+        "Takı 361 için getPriceHistory 422.",
+        "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-12-deploy-stage/"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-12T13:40:00+03:00",
+    "verdict": "KISMI",
+    "summary": "STAGE: etiketler artık Türkçe (1 Ay/3 Ay/6 Ay/1 Yıl — 15.09 bulgusu kapanmış); 8 üründe gün bazında fiyat değerleri birebir; SSR V2 kullanıyor (HTML’de V2 tarih formatı). Fark: 1 Yıl serisinde V2 bir gün fazla (2025-11-12, 345↔344 nokta); tarih formatı saatsiz ve sıra artan (bilinen drift).",
+    "notes": [
+      "V1 yolu /product/getPriceHistory/{id} (kart açıklamasındaki /getPriceHistory 404).",
+      "Takı 361 için getPriceHistory 422.",
+      "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-12-deploy-stage/"
+    ]
+  }
+}

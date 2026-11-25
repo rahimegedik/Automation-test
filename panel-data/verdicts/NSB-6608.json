@@ -1,0 +1,22 @@
+{
+  "card": "NSB-6608",
+  "history": [
+    {
+      "date": "2026-11-20T16:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] Kartın üç bulgusu stage'de kapandı: gram 82 sonuç (V1 ile aynı sıra), altin = altın, çeyrek/yarım/ata/kulce V1 ile aynı küme+sıra; FE V2 aramada da aynı sonuçlar.",
+      "notes": [
+        "İstek: V1 STAGE POST /search ↔ V2 STAGE POST /api/v1/product/search, 24 sorgu × 2 profil × 3 tur.",
+        "Kart tablosu (11.09 → bugün): gram/Gram 0 → V2 5 ürün [2,67,148,433,41] = V1, total 82=82; gram altın, 1 gram aynı; altın ve altin aynı küme [156,13,67,157,135] total 90; çeyrek/ceyrek aynı; yarım ve ata birleşik küme/sıra aynı (sayfa dilimleme farkı NSB-6402 notunda); kulce = külçe.",
+        "3 tur deterministik, 144/144 ürün sırası farkı 0.",
+        "FE (stage, storageState): ?apiV2=1 sayfa x-api-version v2, NG_API_V2=1; arama kutusuna \"gram\" → POST https://www.nadirgold.work/api/v2/product/search 200, ilk 4 ürün [2,67,343,148], total 88; ?apiV2=0 → api.nadirgold.work/search aynı ids/total. Ekran: kategoriler + 4 ürün kartı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6608/fe-search-gram-m0.png",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6608/fe-search-gram-m1.png",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6608/fe-search.json"
+      ],
+      "aiEvaluation": "Stage RFS turu 20.11.2026 — brief kuralları; Jira'ya yazılmadı, statü değiştirilmedi."
+    }
+  ]
+}

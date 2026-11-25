@@ -1,0 +1,46 @@
+{
+ "card": "NSB-6507",
+ "history": [
+  {
+   "date": "2026-09-29T08:00:00+03:00",
+   "verdict": "PASS",
+   "summary": "[DEV · 27 kart toplu koşum] API delete 200, yanıt sepeti boş (ölçüldü); FE 'Sil' → DELETE /api/v2/basket/delete 200, V1 ve V2 okumasında sepet boş, iki FE'de 'Sepetim (0)'.",
+   "notes": [
+    "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+    "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+   ],
+   "evidence": [],
+   "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+  },
+  {
+   "date": "2026-11-20T16:10:00+03:00",
+   "verdict": "PASS",
+   "summary": "[STAGE 20.11] STAGE: V2 basket/delete API ve FE (?apiV2=1 \"Sil\" → DELETE /api/v2/basket/delete 200) çalışıyor; silme sonrası V1 ve V2 basket/get 0 kalem, toplam 0.",
+   "notes": [
+    "API: POST /basket/delete tüm kalemler → 200, yanıt sepeti items [] grandTotal 0 (birden çok kez). Olmayan basketId → 404 \"Sepet bulunamadı\"; olmayan sku [QA-YOK] → 200 sepet değişmedi; sku string → 422 (DTO dizi).",
+    "FE (staging-user, ?apiV2=1, x-api-version v2): sepet 4 adet (NDR1194060 + NDRG50x3) → iki \"Sil\" → DELETE /api/v2/basket/delete 200 ×2 (sku dizi, basketId 145454875); ekranda \"Sepetim (0)\".",
+    "Son ölçüm: V1 basket/get ve V2 basket/get → basketId 145454875, items [], grandTotal 0.",
+    "Not: yeni FE bağlamında sepet hash bilinmediği için \"Sepetim (0)\" görünüyor (bilinen NSB-7231 tuzağı); hash ilk basket/add ile öğreniliyor."
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6507/fe-v2-delete.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6507/fe-v2-sepet-before.png",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6507/fe-v2-sepet-after.png",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6507/delete-unknown-basketId.v2.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/_basket/end-get.v1.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/_basket/end-get.v2.json"
+   ]
+  }
+ ],
+ "latest": {
+  "date": "2026-09-29T08:00:00+03:00",
+  "verdict": "PASS",
+  "summary": "[DEV · 27 kart toplu koşum] API delete 200, yanıt sepeti boş (ölçüldü); FE 'Sil' → DELETE /api/v2/basket/delete 200, V1 ve V2 okumasında sepet boş, iki FE'de 'Sepetim (0)'.",
+  "notes": [
+   "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+   "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+  ],
+  "evidence": [],
+  "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+ }
+}

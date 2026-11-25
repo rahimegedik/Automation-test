@@ -1,0 +1,40 @@
+{
+  "card": "NSB-6525",
+  "history": [
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "[DEV · 27 kart toplu koşum] Talimat kullanıcı tarafından FE'den oluşturulacak.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:45:00+03:00",
+      "verdict": "KISMI",
+      "summary": "[DEV] DEV API: abonelik sepeti (NDRG50, isSubscribe) → V2 POST /savingsSubscriptions 200, talimat 1897 'QA-6525' V1 ve V2 listesinde görünüyor (kabul ✓), detay V1↔V2 aynı (yalnız bilinen nextSavingPlan.savingSubscription eksik). ❓ V1 aynı gövdeyi 422 'Ürünler alanı gereklidir' ile reddediyor — iki tarafın oluşturma sözleşmesi farklı, V1 baseline yok; V2 yanıtı snake_case ve id string ('1897'). FE oluşturma akışı ölçülmedi.",
+      "notes": [
+        "Not: NDR1194060 aboneliğe uygun değil (422 'satışta değil'); uygun ürünler best-seller-lite canBeSubscription.",
+        "Temizlik: 1897 ve 1900 iptal edildi, sepet boşaltıldı; başlangıçtaki 1563/1527/1524 aktif ve değişmedi.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/s5_* s6_* s7_*"
+      ],
+      "evidence": [],
+      "aiEvaluation": "Kullanıcının isteğiyle API'den koşuldu; oluşturulan QA talimatları iptal edildi. Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-29T08:45:00+03:00",
+    "verdict": "KISMI",
+    "summary": "[DEV] DEV API: abonelik sepeti (NDRG50, isSubscribe) → V2 POST /savingsSubscriptions 200, talimat 1897 'QA-6525' V1 ve V2 listesinde görünüyor (kabul ✓), detay V1↔V2 aynı (yalnız bilinen nextSavingPlan.savingSubscription eksik). ❓ V1 aynı gövdeyi 422 'Ürünler alanı gereklidir' ile reddediyor — iki tarafın oluşturma sözleşmesi farklı, V1 baseline yok; V2 yanıtı snake_case ve id string ('1897'). FE oluşturma akışı ölçülmedi.",
+    "notes": [
+      "Not: NDR1194060 aboneliğe uygun değil (422 'satışta değil'); uygun ürünler best-seller-lite canBeSubscription.",
+      "Temizlik: 1897 ve 1900 iptal edildi, sepet boşaltıldı; başlangıçtaki 1563/1527/1524 aktif ve değişmedi.",
+      "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/s5_* s6_* s7_*"
+    ],
+    "evidence": [],
+    "aiEvaluation": "Kullanıcının isteğiyle API'den koşuldu; oluşturulan QA talimatları iptal edildi. Jira statüsü değiştirilmedi."
+  }
+}

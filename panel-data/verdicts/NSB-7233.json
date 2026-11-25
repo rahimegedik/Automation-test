@@ -1,0 +1,29 @@
+{
+  "card": "NSB-7233",
+  "history": [
+    {
+      "date": "2026-11-16T13:30:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "[DEV · V2+V1 API · spec 35 TC-06] Dışarıdan gözlenemedi: Hesaba Altın Havale (price 12345.67) sepetinde V2 add yanıtı ve aynı sepetin V1 basket/get okuması tüm tutarlarda ≤2 hane ve birebir eşit.",
+      "notes": [
+        "Kart DB'ye yazılan ham değeri iddia ediyor; her iki API çıktısı yuvarlıyor olabilir → PASS değil, kara kutuyla doğrulanamadı. DB/ödeme tahsil tutarı (ödeme sonrası) kontrolü gerekir.",
+        "Yan gözlem: FE'de 20000 TL girişi → basket grandTotal 7637.07, qty 1 (NDRHASCALC). Gram nerede tutuluyor ve tutar neden girişten farklı — ayrıca sorulmalı.",
+        "Spec: tests/35-sepet-api-negatif.spec.ts (doğrudan api-v2 + Bearer, UI'sız)."
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV API; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-11-16T13:30:00+03:00",
+    "verdict": "UNTESTED",
+    "summary": "[DEV · V2+V1 API · spec 35 TC-06] Dışarıdan gözlenemedi: Hesaba Altın Havale (price 12345.67) sepetinde V2 add yanıtı ve aynı sepetin V1 basket/get okuması tüm tutarlarda ≤2 hane ve birebir eşit.",
+    "notes": [
+      "Kart DB'ye yazılan ham değeri iddia ediyor; her iki API çıktısı yuvarlıyor olabilir → PASS değil, kara kutuyla doğrulanamadı. DB/ödeme tahsil tutarı (ödeme sonrası) kontrolü gerekir.",
+      "Yan gözlem: FE'de 20000 TL girişi → basket grandTotal 7637.07, qty 1 (NDRHASCALC). Gram nerede tutuluyor ve tutar neden girişten farklı — ayrıca sorulmalı.",
+      "Spec: tests/35-sepet-api-negatif.spec.ts (doğrudan api-v2 + Bearer, UI'sız)."
+    ],
+    "evidence": [],
+    "aiEvaluation": "DEV API; Jira statüsü değiştirilmedi."
+  }
+}

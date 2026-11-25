@@ -1,0 +1,47 @@
+{
+  "card": "NSB-6657",
+  "history": [
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · 27 kart toplu koşum] V2 ile adet 2'ye güncellenen sepeti V1 okuyunca servicePrice 384,41↔768,82, originalPrice 1,01↔2,01 (NSB-5768 ailesi); FE + butonu koşucuda eşleşmedi.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[STAGE] FE +/− butonu /api/v2/basket/update çağırıyor ve 422 doğrulamaları V1 ile uyumlu, ancak qty 2 güncellemesinde V2 toplamı V1’den 200 TL farklı (V2 ek kampanya) ve satır fiyatları indirimli gösteriliyor.",
+      "notes": [
+        "FE V2: NDRG250 \"+\" → POST /api/v2/basket/update {\"sku\":\"NDRG250\",\"qty\":2,\"basketHash\":…} 200; FE V1 \"−\" → api.nadirgold.work/basket/update qty 1 200 (sepet eski haline döndü).",
+        "🔴 Müşteri sepeti NDR1194060 qty 1→2: V2 update grandTotal 13096.72, discountAmount 200 (Kişiye Özel İndirim) ↔ V1 update 13296.72, discountAmount 0; taxAmount 75.35↔75.34, subTotal 13221.37↔13221.38; items[].orderType \"buy\"↔\"normal\".",
+        "✅ Misafir NDR1YC (kampanya 26) kendi sepetlerinde qty 2/3: grandTotal 22261.18 / 33491.77 V1=V2, servicePriceTotal 636.4/954.6 eşit.",
+        "✅ Negatif: qty 0 / -1 / \"x\" → V1 422 ↔ V2 422 errors[label:qty] (mesaj metinleri farklı: V2 \"Qty en az 1 olmalıdır\"/\"Qty tam sayı olmalıdır\", V1 \"Qty, 0 değerinden daha büyük olmalıdır.\"/\"Qty rakam olmalıdır.\"); qty 1000000 → ikisi 422 \"Bu üründen sepete daha fazla eklenemez.\"; geçersiz SKU ikisi 422 errors[sku].",
+        "🔴 FE V2 satırı NDRG250×2 43.764,20 TL (= 2×21.982,10 − 200) — kampanya her satıra yazılıyor (NSB-6654)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6657/fe-plus-v2-m1.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6657/fe-plus-v2-m1-net.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6657/fe-minus-v1-m0-net.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6657/C4-v2-upd-q2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6657/C5-v1-upd-q2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6635/negatives.json"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-09-29T08:00:00+03:00",
+    "verdict": "FAIL",
+    "summary": "[DEV · 27 kart toplu koşum] V2 ile adet 2'ye güncellenen sepeti V1 okuyunca servicePrice 384,41↔768,82, originalPrice 1,01↔2,01 (NSB-5768 ailesi); FE + butonu koşucuda eşleşmedi.",
+    "notes": [
+      "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+      "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+  }
+}

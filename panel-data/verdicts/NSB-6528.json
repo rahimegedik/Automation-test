@@ -1,0 +1,86 @@
+{
+  "card": "NSB-6528",
+  "history": [
+    {
+      "date": "2026-09-28T16:05:00+03:00",
+      "verdict": "PASS",
+      "summary": "savingsSubscriptions/get/{id} V2 STAGE: 25 kayıt (P1 18 + P2 7) alanlar aynı, tarih 0 kayma; BOLA iki yönde 404; yok/bozuk id 404. FE Talimat Düzenle modalı değerleri iki modda birebir.",
+      "notes": [
+        "❓ nextSavingPlan.savingSubscription (üst kaydın kopyası) V2'de yok; UI etkilenmiyor.",
+        "✅ paymentInfo.logo V1 null ↔ V2 tam CDN URL (iyileşme). deliveryAddress.logoKuyumsoftId string→int.",
+        "Madde 12 (iki tarafta aynı): deliveryAddress.tckn ve secondRecipientTckn maskesiz dönüyor.",
+        "V1-only kapsam dışı: /get/abc V1 500 (V2 404).",
+        "FE: 'Talimatı Düzenle' → /api/v2/savingsSubscriptions/get/678.",
+        "Yöntem: V1 STAGE (api.nadirgold.work) ↔ V2 STAGE (api-v2.nadirgold.work/api/v1) canlı, id/sku hizalı alan-alan diff; 2 profil (P1 QA 181484, P2 FE hesabı). FE: www.nadirgold.work ?apiV2=0/1 Playwright ağ yakalama. qa-parity 14 madde kontrol listesi.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw/6528_*"
+      ],
+      "evidence": [],
+      "aiEvaluation": "STAGE adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-28T17:25:00+03:00",
+      "verdict": "PASS",
+      "summary": "DEV: 103 kayıt (P1 100 + P2 3) alanlar aynı, tarih 0 kayma, BOLA iki yönde 404; nextSavingPlan.savingSubscription kopyası yok (❓); paymentInfo.logo V2'de tam URL. FE Talimat Düzenle → /api/v2/savingsSubscriptions/get/1563, değerler iki modda aynı.",
+      "notes": [
+        "FE V1↔V2 (dev): 3 Talimat Düzenle modalı 8/8 alan, metin ve piksel aynı.",
+        "DEV turu: V1 DEV (api.nadirgold.dev) ↔ V2 DEV (api-v2.nadirgold.dev/api/v1), id hizalı alan-alan diff, 2 profil (P1 QA 203311, P2 FE hesabı). FE: www.nadirgold.dev ?apiV2=0/1 ağ yakalama + UI metin diff; mutasyon 0."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-28-dev-faruk-adim1/fe-v1-v2/6528-v1-talimat-duzenle.png",
+        "panel-data/evidence/2026-09-28-dev-faruk-adim1/fe-v1-v2/6528-v2-talimat-duzenle.png"
+      ],
+      "aiEvaluation": "DEV adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T00:10:00+03:00",
+      "verdict": "KISMI",
+      "summary": "Katı kontrol (29.09): PASS'ten KISMI'ya çekildi. Parity/tarih/IDOR/FE ✓; V2 nextSavingPlan.savingSubscription döndürmüyor (BE teyidi yok), spec'te 200 yanıt şeması tanımsız; TCKN iki tarafta maskesiz (güvenlik notu).",
+      "notes": [
+        "FE V1↔V2 (dev): 3 Talimat Düzenle modalı 8/8 alan, metin ve piksel aynı.",
+        "DEV turu: V1 DEV (api.nadirgold.dev) ↔ V2 DEV (api-v2.nadirgold.dev/api/v1), id hizalı alan-alan diff, 2 profil (P1 QA 203311, P2 FE hesabı). FE: www.nadirgold.dev ?apiV2=0/1 ağ yakalama + UI metin diff; mutasyon 0."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-28-dev-faruk-adim1/fe-v1-v2/6528-v1-talimat-duzenle.png",
+        "panel-data/evidence/2026-09-28-dev-faruk-adim1/fe-v1-v2/6528-v2-talimat-duzenle.png"
+      ],
+      "aiEvaluation": "Katı kural (kusur/teyit varken PASS yok) ile yeniden değerlendirme. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · 27 kart toplu koşum] V2 nextSavingPlan.savingSubscription döndürmüyor; spec'te yanıt şeması yok; TCKN maskesiz (iki tarafta).",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-10-05T12:20:19.455Z",
+      "verdict": "FAIL",
+      "summary": "[DEV · renewal koşucusu] V2 nextSavingPlan.savingSubscription hâlâ yok (3/5 id). FE ölçülemedi.",
+      "notes": [
+        "🔴 eksik alan nextSavingPlan.savingSubscription",
+        "❓ spec'te yanıt şeması yok",
+        "❓ FE: DEV customer-service kimlikli isteklerde 500 (customer/detail, customer/orders, customer/documents, token'lı getContractsByType) → V2 FE oturumu \"Giriş Yap\" gösteriyor; bu koşumdaki FE karşılaştırmaları geçersiz.",
+        "Koşum: renewal/out/dev-2026-10-05-12-14"
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-10-05T12:20:19.455Z",
+    "verdict": "FAIL",
+    "summary": "[DEV · renewal koşucusu] V2 nextSavingPlan.savingSubscription hâlâ yok (3/5 id). FE ölçülemedi.",
+    "notes": [
+      "🔴 eksik alan nextSavingPlan.savingSubscription",
+      "❓ spec'te yanıt şeması yok",
+      "❓ FE: DEV customer-service kimlikli isteklerde 500 (customer/detail, customer/orders, customer/documents, token'lı getContractsByType) → V2 FE oturumu \"Giriş Yap\" gösteriyor; bu koşumdaki FE karşılaştırmaları geçersiz.",
+      "Koşum: renewal/out/dev-2026-10-05-12-14"
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "card": "NSB-6120",
+  "history": [
+    {
+      "date": "2026-11-19T17:10:00+03:00",
+      "verdict": "KISMI",
+      "summary": "GET /customer/documents stage'de V1=V2 (talepsiz müşteri, gruplu {general,orders} zarfı, auth matrisi 401) ve Belgelerim ekranı iki modda aynı; dolu kayıtlı senaryolar (documents dizisi, uploadUrl, süresi dolmuş/çoklu talep) stage'de veri olmadığı için ölçülemedi.",
+      "notes": [
+        "Stage'de belge talebi olan müşteri yok: P2 (müşteri 367284) V1 ve V2 GET /customer/documents → 200 {general:[],orders:[]} (3/3 tur). P1 ve rahime token'ları V2'de 401 'Hesap aktif değil' (V1 200 boş). Panel erişimimiz olmadığı için talep açılamadı.",
+        "Liste: V1 api.nadirgold.work/customer/documents ↔ V2 api-v2.nadirgold.work/api/v1/customer/documents, P2 JWT, 3 tur: ikisi de 200, data birebir {\"general\":[],\"orders\":[]}. Zarf farkı V1 {data,status,errors} ↔ V2 {success,data} (NSB-6355 kapsamı, yeni değil). Not: yanıt artık NSB-7110 ile gruplu (general/orders); swagger CustomerDocumentGroupedListDto ile uyumlu.",
+        "Auth: tokensiz, imza bozuk, sub değişmiş (başka müşteri), alg none, süresi dolmuş JWT → V1 401 / V2 401 (5/5). 'Başka müşterinin belgeleri dönmez' kriteri sub değiştirilmiş JWT ile 401 olarak doğrulandı.",
+        "FE: /hesabim/belgelerim ?apiV2=0 → x-api-version v1, çağrı 200 GET api.nadirgold.work/customer/documents; ?apiV2=1 → x-api-version v2, çağrı 200 GET www.nadirgold.work/api/v2/customer/documents. Tam sayfa ekran görüntüleri piksel olarak aynı (tek fark üst şeritteki kur sayacı).",
+        "UNTESTED kalan: documents[] dolu kayıt, uploadUrl üretimi, isExpired/isActive türetimi, created_at desc sıralaması, d.m.Y H:i tarih formatı. Gerekli: stage QA hesabına panelden awaiting_document talebi (tercihen biri yüklenmiş, biri süresi dolmuş)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6120/list_P2_v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6120/list_P2_v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6120/neg_auth.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6120/belgelerim-v1.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6120/belgelerim-v2.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6120/fe.json"
+      ]
+    }
+  ]
+}

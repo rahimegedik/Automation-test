@@ -1,0 +1,33 @@
+{
+  "card": "NSB-6669",
+  "history": [
+    {
+      "date": "2026-10-05T12:20:19.453Z",
+      "verdict": "UNTESTED",
+      "summary": "[DEV · renewal koşucusu] Mutlu yol gerçek çekim + başarısız taksit gerektiriyor. Olmayan plan: iki taraf 422 (V1 \"Plan Not Found\" ↔ V2 \"Plan bulunamadı.\"), JWT matrisi 401. Dikkat: savingsSubscriptions/list'te P1 için isRetriggerable V1 true ↔ V2 false → V2 modunda \"tekrar dene\" butonu çıkmıyor olabilir.",
+      "notes": [
+        "✅ olmayan plainId 422 iki tarafta, tokensiz/bozuk JWT 401",
+        "❓ mesaj dili farklı (V2 TR — kabul kriteri \"V1 ile aynı TR\")",
+        "🔴 aday: isRetriggerable V1 true ↔ V2 false (6531 list, P1) — butonun görünmeme nedeni olabilir",
+        "Başkasının plainId'si denenmedi (auth açığı varsa gerçek çekim olur)",
+        "Koşum: renewal/out/dev-2026-10-05-12-14"
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-10-05T12:20:19.453Z",
+    "verdict": "UNTESTED",
+    "summary": "[DEV · renewal koşucusu] Mutlu yol gerçek çekim + başarısız taksit gerektiriyor. Olmayan plan: iki taraf 422 (V1 \"Plan Not Found\" ↔ V2 \"Plan bulunamadı.\"), JWT matrisi 401. Dikkat: savingsSubscriptions/list'te P1 için isRetriggerable V1 true ↔ V2 false → V2 modunda \"tekrar dene\" butonu çıkmıyor olabilir.",
+    "notes": [
+      "✅ olmayan plainId 422 iki tarafta, tokensiz/bozuk JWT 401",
+      "❓ mesaj dili farklı (V2 TR — kabul kriteri \"V1 ile aynı TR\")",
+      "🔴 aday: isRetriggerable V1 true ↔ V2 false (6531 list, P1) — butonun görünmeme nedeni olabilir",
+      "Başkasının plainId'si denenmedi (auth açığı varsa gerçek çekim olur)",
+      "Koşum: renewal/out/dev-2026-10-05-12-14"
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+  }
+}

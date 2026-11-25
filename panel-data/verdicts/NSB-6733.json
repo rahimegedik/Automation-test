@@ -1,0 +1,22 @@
+{
+  "card": "NSB-6733",
+  "history": [
+    {
+      "date": "2026-11-20T16:10:00+03:00",
+      "verdict": "KISMI",
+      "summary": "[STAGE] suggestions[] şekli V1 ile aynı (düz metaTitle/metaDescription, id anahtarlı subCategories, meta/description/link yok); header'sız 72/72 birebir, ama ios profilinde 72/72 yanıtta V2 iki fazla öneri (58/61) dönüyor.",
+      "notes": [
+        "İstek: V1 POST /search ↔ V2 POST /api/v1/product/search, suggestion:true, 24 sorgu × 2 profil × 3 tur (1.080 öneri kaydı).",
+        "✅ Şekil: öneri anahtarları iki tarafta [id,title,metaTitle,metaDescription,h1,seoKeyword,slug,parentId,status,orderNo,subCategories,images,badge]; V2'de meta{}/description/link yok. Header'sız profilde 72/72 yanıt anahtar sırasından bağımsız tam JSON eşit.",
+        "🔴 ios (device-type: ios): 72/72 yanıtta V1 [2,3,4,12,13,43,23] ↔ V2 [2,3,4,12,13,43,58,61,23]. 58 \"Gram Külçe Altın\" ve 61 \"Gram Külçe Gümüş\" FIFA World Cup 2026 (55) alt kategorileri; V1 mobilde 55'i ve çocuklarını gizliyor, V2 yalnız 55'i gizliyor. Dev'de 144/144 eşitti (dev verisinde FIFA mobil gizli değildi). Kartın konusu şekil olduğu için ayrıntı NSB-5405'e yazıldı; yeni bulgu, Jira kartı yok."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5405/search-raw-r1.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5405/search-raw-r2.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5405/search-raw-r3.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5405/analyze.txt"
+      ],
+      "aiEvaluation": "Stage RFS turu 20.11.2026 — brief kuralları; Jira'ya yazılmadı, statü değiştirilmedi."
+    }
+  ]
+}

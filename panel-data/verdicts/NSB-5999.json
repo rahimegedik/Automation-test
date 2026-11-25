@@ -1,0 +1,33 @@
+{
+  "card": "NSB-5999",
+  "history": [
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] Gerçek Turnstile ile V2 FE'den 2 taze QA e-postası ilk denemede 200 \"E-bülten aboneliğiniz başlamıştır\" döndü; create-path 500 artık yok, negatif yüzey V1 ile birebir.",
+      "notes": [
+        "Uçtan uca (gerçek Chrome, CDP 9333, ?apiV2=1): POST https://www.nadirgold.work/api/v2/notification/newsletter {email, captchaToken}.",
+        "Taze qa-nsb5999+20261119171749@example.com: 1. çağrı 200 {\"success\":true,\"message\":\"Başarılı\"}. Aynı e-posta 2. çağrı: 200. Taze qa-nsb5999+20261119171835@example.com: 1. çağrı 200. Ekranda \"Başarılı / E-bülten aboneliğiniz başlamıştır.\" görüldü.",
+        "API negatif (V1 /newsletter/save ↔ V2 /notification/newsletter), 11 senaryo: gövde yok, email yok/boş/geçersiz/sayı ve token yok/boş için iki tarafta 422 \"Turnstile verification required\". Sahte captcha_token için iki tarafta 422 \"validation failed\". captchaToken ya da cf-turnstile-response gönderilince V1 \"required\" dönüyor (alanı okumuyor), V2 \"failed\" dönüyor (okuyor). 5xx yok.",
+        "🟡 V2 hata gövdesindeki path \"/api/v1/newsletter\" (gerçek route /notification/newsletter), küçük.",
+        "🟡 Doğrulama farkı (NSB-5358/6626 kapsamı): V1 FE (?apiV2=0) @example.com adresini 422 \"Email doğru bir e-posta olmalıdır\" ile reddediyor (+ olan ve olmayan adreste aynı; muhtemelen DNS/MX kuralı). V2 aynı alan adını kabul ediyor.",
+        "UNTESTED: subscription + history kayıtlarının DB'de tutarlı oluşması API çıktısında görünmüyor. Bunun için DB erişimi gerekir; dev entegrasyon testi MR !491 kabulü geçerli.",
+        "Oluşturulan veri: 2 V2 bülten aboneliği (yukarıdaki iki @example.com adresi). Black-box abonelikten çıkma ucu yok, temizlenmedi. V1 denemeleri 422 ile reddedildi, kayıt oluşmadı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5999/fe-ikinci-m1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5999/fe-ikinci-m1.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5999/fe-ilk-m1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5999/fe-ilk-m1.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5999/fe-tekrar-m1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5999/fe-tekrar-m1.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5999/fe-v1-m0.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5999/fe-v1-m0.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5999/fe-v1-plussuz-m0.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5999/fe-v1-plussuz-m0.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5999/negatif-v1-v2.json"
+      ],
+      "aiEvaluation": "Stage Test turu 19.11.2026 — brief kuralları; Jira'ya yazılmadı."
+    }
+  ]
+}

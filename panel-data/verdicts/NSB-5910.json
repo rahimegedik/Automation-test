@@ -1,0 +1,40 @@
+{
+  "card": "NSB-5910",
+  "history": [
+    {
+      "date": "2026-11-12T13:40:00+03:00",
+      "verdict": "KISMI",
+      "summary": "STAGE: FE /taki ve ürün sayfası V1↔V2 aynı, /api/v2 çağrılıyor. API: Takı 361/364/367 variantStocks anahtarları V1 \"doku6,2\" ↔ V2 \"doku 6,2\" (değerler aynı). FE anahtarları normalize ederek eşleştiriyor (boşluk silme + lowercase) → ekran etkisi yok.",
+      "notes": [
+        "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-12-deploy-stage/"
+      ]
+    },
+    {
+      "date": "2026-10-05T12:20:19.448Z",
+      "verdict": "KISMI",
+      "summary": "[DEV · renewal koşucusu] NSB-6123 alanları geldi (quantity/variantStocks/installments eksik alan yok, Takı quantity dolu). İlk koşumda 9 çağrıda V2 fiyatı V1'den farklı (ör. 683913.77 ↔ 684194.17), 20 sn arayla 3 tekrar ölçümde birebir → kur geçişinde V2 geçici farklı fiyat (NSB-6750 ailesi). FE ölçülemedi.",
+      "notes": [
+        "✅ url/productId/categoryId formları 200, eksik alan yok; fiyatlar V2'de string (kart gereği)",
+        "❓ geçici fiyat farkı: url=taki/kulce-altin/gumus + 5 productId; tekrar ölçümde eşit",
+        "❓ FE: DEV customer-service kimlikli isteklerde 500 (customer/detail, customer/orders, customer/documents, token'lı getContractsByType) → V2 FE oturumu \"Giriş Yap\" gösteriyor; bu koşumdaki FE karşılaştırmaları geçersiz.",
+        "Koşum: renewal/out/dev-2026-10-05-12-14"
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-11-12T13:40:00+03:00",
+    "verdict": "KISMI",
+    "summary": "STAGE: FE /taki ve ürün sayfası V1↔V2 aynı, /api/v2 çağrılıyor. API: Takı 361/364/367 variantStocks anahtarları V1 \"doku6,2\" ↔ V2 \"doku 6,2\" (değerler aynı). FE anahtarları normalize ederek eşleştiriyor (boşluk silme + lowercase) → ekran etkisi yok.",
+    "notes": [
+      "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-12-deploy-stage/"
+    ]
+  }
+}

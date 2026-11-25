@@ -1,0 +1,23 @@
+{
+ "card": "NSB-6794",
+ "history": [
+  {
+   "date": "2026-11-20T16:10:00+03:00",
+   "verdict": "UNTESTED",
+   "summary": "[STAGE 20.11] STAGE'de moto kurye seçeneği V1'de de dönmüyor (İstanbul 1/6/98, 1/10/157, kurye saati içinde); kartın \"V1 dolu ↔ V2 null\" durumu stage'de kurulamadı.",
+   "notes": [
+    "15:27 TSİ misafir sepet (NDRİSCİLİKSİZ1) 1/6/98 Standard: V1 200 motoDeliveryOptions anahtarı yok, V2 200 null. 1/10/157 (Beşiktaş/Bebek): aynı.",
+    "Slot listesi gelmediği için aktif/pasif slotla MotoDelivery seçimi denenemedi. Bölge dışı + MotoDelivery iki tarafta 422 (aynı kural).",
+    "HFA sepeti (NDR2525) 1/6/98 Standard: V1 422 \"Shipping methods are incompatible!\" ↔ V2 422 \"Kargo yöntemleri uyumsuz!\" (dev'de HAH sepetinde moto dönüyordu).",
+    "Gereken: stage'de moto kurye bölgesi/servisinin açık olduğu bir ilçe bilgisi (ya da stage moto yapılandırmasının teyidi)."
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6794/moto-summary.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6794/v1-std-besiktas.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6794/v2-std-besiktas.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6794/v1-hfa-setaddr-std.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6794/v2-hfa-setaddr-std.json"
+   ]
+  }
+ ]
+}

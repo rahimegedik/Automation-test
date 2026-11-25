@@ -1,0 +1,24 @@
+{
+  "card": "NSB-6760",
+  "history": [
+    {
+      "date": "2026-11-20T16:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] 28 alias × 2 tur: SSS kategori sırası ve 94 soru/cevap V1 ile birebir, mobil-listeleme bölüm sırası ve öğe kümesi eşit, bilinmeyen alias iki tarafta 200 (V1 paritesi); productSlug koşulu stage verisinde yok.",
+      "notes": [
+        "İstek: V1 GET https://api.nadirgold.work/layout/{alias} ↔ V2 GET https://api-v2.nadirgold.work/api/v1/content/layout/{alias}, 28 alias × 2 tur, eşzamanlı; durum kodu farkı 0, 5xx 0.",
+        "✅ sikca-sorulan-sorular: 7 kategori, sıra iki tarafta [duzenli-birikim, hesaptan-fiziki-altina, kulce-altin, ziynet, genel, gumus, hesaba-altin-havale]; 94 soru, quest/answer/title tam eşit, boş quest/answer 0 (28.09 stage'deki eksik kayıt sorunu yok); category JSON birebir.",
+        "✅ mobil-listeleme: bölüm sırası ve öğe kümesi eşit. Aynı order'lı öğelerin iç sırası: mobil-transfer-gold-to-account-category 835/826 yer değişik (14.10'da kabul edilen tie-break, FE notu: CMS'te order benzersiz olmalı).",
+        "Bilinmeyen alias (olmayan-alias-qa-6760): V1 200 / V2 200, structuredData ile — V1 paritesi; \"404 zarfı\" kriteri ürün kararı olarak açık (Murat 19.10).",
+        "UNTESTED: productSlug (NSB-6869) — stage verisinde productSlug taşıyan öğe yok (V1 dolu productSlug 0), koşul oluşmuyor.",
+        "🟡 Kart dışı, dev'de de var: listing ve product-detail alias'larında section sırası farklı (V1 alfabetik görünümlü ↔ V2 order'a göre; küme aynı). anasayfa'da V2 11 ek section (bilinen V2 eki)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6760/analyze.txt",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6760/layout-r1.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6760/layout-r2.json"
+      ],
+      "aiEvaluation": "Stage RFS turu 20.11.2026 — brief kuralları; Jira'ya yazılmadı, statü değiştirilmedi."
+    }
+  ]
+}

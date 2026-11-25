@@ -1,0 +1,23 @@
+{
+  "card": "NSB-6956",
+  "history": [
+    {
+      "date": "2026-11-23T16:40:00+03:00",
+      "verdict": "KISMI",
+      "summary": "Stage V2: commerce→notification taşıma düzeltmesi (MR !694) çalışıyor — V2 siparişlerinde mail geliyor; kategori (takı) şablonu, belge talebi ertelemesi doğru. Moto kurye öncelikli şablonlar (kartın başlığı) bugün test edilemedi: moto slotları saat dışı (isActive:false), standart 1 gr ekleme sepet kotasında sessiz red. SMS gözlenemedi.",
+      "notes": [
+        "1727395 (22.11, V2 standart havale): 'Siparişinizi Aldık' — sipariş no, Ziraat IBAN TR79…, 20 dk uyarısı → siparis-email-transfer beklentisiyle uyumlu.",
+        "1727470 (23.11 14:22, V2 takı havale): takı kategori şablonu (üretim süresi 5 iş günü, Ölçü: 5.8). IBAN/banka/sipariş no YOK — ancak 09.11 stage ve 13.11 dev (düzeltme öncesi = V1) takı havale maillerinde de yok → V1=V2, şablon tasarımı; NSB-6956 bulgusu değil (ayrı ürün iyileştirmesi önerisi).",
+        "1727458 (23.11, V2 KK, belge talebi): yalnız 'Belge Talebi: Kart Sahibi Kimliği, Kredi Kartı' maili (13:21); 'sipariş aldık' gelmedi → kartta tarif edilen 'belge talebi varsa KK sipariş aldık ertelenir' kuralına uygun.",
+        "Birikim 916: yalnız 'Talimatınız Oluştu' (ayrı bildirim) — kapsam kuralı (birikimde sipariş alındı gitmez) ile uyumlu. İleri tarihli birikim 913: mail yok (NSB-6959 kapsamı).",
+        "1727473 (23.11 ~16:05, V2 takı KK) maili henüz kontrol edilmedi.",
+        "UNTESTED: moto+havale (siparis-email-transfer-moto-kurye-email + waiting-payment-sms), moto+KK, moto+hesaptan fiziki, hesaptan fiziki (siparis-email-from-account-to-physical), hesaba altın havale (transfer-from-bank-account). 16:30'da V2 setAddress motoDeliveryOptions dolu döndü (NSB-6794 düzelmiş) ama slotlar isActive:false (09-14 cutoff 11:00) → sabah cutoff öncesi koşulmalı.",
+        "SMS: QA erişimi yok, telefondan kontrol gerekli."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-22-checkout-regresyon/BILDIRIMLER.md",
+        "panel-data/evidence/2026-11-22-checkout-regresyon/retestE-39.log"
+      ]
+    }
+  ]
+}

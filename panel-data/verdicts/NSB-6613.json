@@ -1,0 +1,29 @@
+{
+  "card": "NSB-6613",
+  "history": [
+    {
+      "date": "2026-11-19T17:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "Hiç belge talebi olmayan müşteride (stage P2, 367284) V2 GET /customer/documents 500 değil 200 boş grup ({general:[],orders:[]}) dönüyor, V1 ile birebir; 3/3 tur.",
+      "notes": [
+        "Hesap seçimi: P2 (müşteri 367284) API'den ölçüldü — V1 ve V2 listesi boş, customer/detail.hasDocumentHistory V1 false / V2 false. Kartın kendi müşterisi 181484'ün token'ı elimizde yok; aynı koşulu (talepsiz müşteri) sağlayan P2 kullanıldı.",
+        "GET https://api-v2.nadirgold.work/api/v1/customer/documents (Bearer P2) → 200 {\"success\":true,\"data\":{\"general\":[],\"orders\":[]}}; V1 https://api.nadirgold.work/customer/documents → 200 {\"data\":{\"general\":[],\"orders\":[]},…}. 3 turda aynı. Not: boş yanıt artık dizi değil gruplu nesne (NSB-7110 değişikliği, iki tarafta aynı).",
+        "FE: /hesabim/belgelerim ?apiV2=1 → x-api-version v2, /api/v2/customer/documents 200, sayfa V1 ile piksel aynı (hata ekranı yok).",
+        "Yan gözlem (V2 hatası değil): ikinci hesaplar (.otp_state.stage.json, .otp_state.stage.rahime.json) V2'de 401 'Hesap aktif değil'; V1 customer/detail de 401 veriyor ama V1 customer/documents aynı token'a 200 boş liste dönüyor — pasif hesapta V1 liste ucu auth'u gevşek."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6613/list_P2_v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6613/list_P2_v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6613/neg_auth.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6613/belgelerim-v1.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6613/belgelerim-v2.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6613/fe.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6613/list_P1_v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6613/list_P1_v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6613/list_R_v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6613/list_R_v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6613/6314_orders.json"
+      ]
+    }
+  ]
+}

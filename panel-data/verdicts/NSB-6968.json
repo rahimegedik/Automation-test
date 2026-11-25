@@ -1,0 +1,22 @@
+{
+ "card": "NSB-6968",
+ "history": [
+  {
+   "date": "2026-11-20T16:10:00+03:00",
+   "verdict": "KISMI",
+   "summary": "[STAGE 20.11] STAGE: stok 0 dalı V1=V2 (422, aktif sepet değişmiyor); kartın asıl dalı (0 < stok < adet) stage'de uygun sipariş/stok fixture'ı olmadığından ölçülmedi.",
+   "notes": [
+    "1725138 (NDR11940602, stage stoğu 0): V1 422 status.code 422 \"One or more products are out of stock.\" ↔ V2 422 aynı mesaj.",
+    "Aktif sepet 145454875 (NDR1194060x1 + NDRG50x1) çağrıdan sonra V2 basket/get ile aynı (id, hash, kalemler, 10949.36) — sepet yazılmadı ✓.",
+    "Ana dal (stok 1 < adet 4 → \"En fazla N adet eklenebilir\") için stage'de stoğu adetten düşük kalem içeren sipariş yok (38 siparişin kalemleri tarandı: orders-items-20.json). Gereken: stok fixture'ı (ör. NDR1194060 stoğunu 1'e çekmek) veya qty≥2 siparişte stok düşürme.",
+    "Not: V2 422 gövdesinde code alanı yok (V1 status.code 422)."
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6968/ro-1725138-stok0.v1.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6968/ro-1725138-stok0.v2.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6968/after-stok0-get.v2.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/_basket/orders-items-20.json"
+   ]
+  }
+ ]
+}

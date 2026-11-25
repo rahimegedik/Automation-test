@@ -1,0 +1,22 @@
+{
+  "card": "NSB-6793",
+  "history": [
+    {
+      "date": "2026-11-20T16:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] BSMV'li NDRHASCALC: priceConverter 48/48 çağrıda V1 ile birebir, getPrices 219 price/extraTax/bankTransferPrice ham (6211.88898 / 12.39898 / 5995.63898) ve eşit; sepet ayağı kural gereği koşulmadı.",
+      "notes": [
+        "Deploy kanıtı: 02.10'da stage 219 extraTax 14.2 / bankTransferPrice 6866.1 (yuvarlanmış) idi; bugün V2 extraTax \"12.39898\", bankTransferPrice \"5995.63898\" = V1 (ilk probe'da da 12.42648 / 6008.93648 = V1).",
+        "priceConverter: {sku:NDRHASCALC, price, bankId} × 8 tutar (1.000, 20.000, 50.000, 500.000, 1.000.000, 5.000.000, 7.900.000, 8.000.000) × bankId 1/2/3 × 2 tur = 48 çift. 200 olanlarda amount/rateAmount/price/rate birebir (örn. 5.000.000 → 4999949.44 = 4999949.44). 1.000 → iki tarafta 422 \"Girilen tutar 6.212,00 TL den büyük…\" minPrice 6212. 7,9M/8M → 422, maxPrice 6211888.98 iki tarafta (ham BSMV'li fiyat × 1000).",
+        "🟡 Üst sınır mesajı: V1 İngilizce \"The amount entered must be less than 6.211.888,98 TL.\" ↔ V2 Türkçe \"Girilen tutarın 6.211.888,98 TL'den az olması gerekmektedir.\" (V1 tarafı tutarsızlığı).",
+        "Negatif: sku yok → iki tarafta 422 (V1 \"Lütfen bilezik ölçünüzü seçerek…\", V2 \"Sku alanı gereklidir.\"); olmayan sku → 422 \"Seçili olan sku geçersiz.\" (aynı); price -5 → 422 minPrice (aynı); price abc → 422 (mesaj farklı). 5xx yok.",
+        "BSMV'siz ürünler: detay sweep'inde 108 ürünün fiyat alanları V1 ile eşit (NSB-5398 notu).",
+        "UNTESTED: HAH sepetinde havale fiyatı/BSMV karşılaştırması — bu turda sepete ekleme yasak (paylaşılan sepet rate-limit'i). Ayrıca 02.10'daki kapsam dışı yan bulgu (V2 basket/add HAH'ta price alanını yok sayıyor) ölçülmedi."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6793/priceconverter-getprices.json"
+      ],
+      "aiEvaluation": "Stage RFS turu 20.11.2026 — brief kuralları; Jira'ya yazılmadı, statü değiştirilmedi."
+    }
+  ]
+}

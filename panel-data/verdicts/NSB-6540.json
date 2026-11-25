@@ -1,0 +1,54 @@
+{
+  "card": "NSB-6540",
+  "history": [
+    {
+      "date": "2026-09-28T16:05:00+03:00",
+      "verdict": "KISMI",
+      "summary": "savingsSubscriptions/calculator V2 STAGE: API 80/80 senaryo aynı durum kodu, 70 başarılı çağrıda tarih listesi birebir (ay sonu, 29 Şubat, hafta sonu, geçmiş tarih; frekans 1/2/3/4/6/12). FE çağrısı salt-okuma akışlarda tetiklenmedi.",
+      "notes": [
+        "⚠ FE: Talimat Düzenle modalında gönderim günü değişince tarih istemcide hesaplanıyor, calculator çağrılmıyor (iki mod). Ucun FE tüketicisi talimat oluşturma akışında (adım 3, mutasyon) doğrulanacak. Kayıt yapılmadı (mutasyon isteği 0).",
+        "Validation: repeatNumber>12, paymentFrequency>12/float, bozuk tarih iki tarafta 422; mesaj metinleri farklı, alan adları camelCase (kasıtlı).",
+        "Not: V2 422 path'i iç rota sızdırıyor '/api/v1/savings-subscriptions/calculator' (NSB-6193 ailesi, bilinen).",
+        "Madde 14: geçmiş başlangıç tarihi (2020-01-01) iki tarafta kabul ediliyor.",
+        "Yöntem: V1 STAGE (api.nadirgold.work) ↔ V2 STAGE (api-v2.nadirgold.work/api/v1) canlı, id/sku hizalı alan-alan diff; 2 profil (P1 QA 181484, P2 FE hesabı). FE: www.nadirgold.work ?apiV2=0/1 Playwright ağ yakalama. qa-parity 14 madde kontrol listesi.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw/6540_*"
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-28-stage-faruk-adim1/6540-v2-talimat-duzenle.png"
+      ],
+      "aiEvaluation": "STAGE adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-28T17:25:00+03:00",
+      "verdict": "KISMI",
+      "summary": "DEV: API 80/80 aynı kod, 70 başarılı çağrıda tarih listeleri birebir; FE çağrısı talimat oluşturmada (adım 3).",
+      "notes": [
+        "DEV turu: V1 DEV (api.nadirgold.dev) ↔ V2 DEV (api-v2.nadirgold.dev/api/v1), id hizalı alan-alan diff, 2 profil (P1 QA 203311, P2 FE hesabı). FE: www.nadirgold.dev ?apiV2=0/1 ağ yakalama + UI metin diff; mutasyon 0."
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "KISMI",
+      "summary": "[DEV · 27 kart toplu koşum] API 80/80 aynı kod; FE çağrısı talimat oluşturmada (ölçülmedi).",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-29T08:00:00+03:00",
+    "verdict": "KISMI",
+    "summary": "[DEV · 27 kart toplu koşum] API 80/80 aynı kod; FE çağrısı talimat oluşturmada (ölçülmedi).",
+    "notes": [
+      "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+      "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "card": "NSB-5804",
+  "history": [
+    {
+      "date": "2026-11-20T16:10:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[STAGE 20.11] STAGE repeatOrder: kalem sırası, taxes ve grandTotal V1=V2; ancak V2 yanıtında shippingMethodAlias/Text null (V1 \"Standard\"/\"Ücretsiz\") ve kampanya kalem dağılımı (items[].price, discountAmount, discountAmountSplit) V1'den farklı.",
+      "notes": [
+        "Hesap P2, 1725111 (NDR1194060 + NDRG50), her taraf kendi sepetinde (arada V2 basket/delete ile boşaltıldı), 1 tur.",
+        "V1 200 / V2 200; items sırası NDR1194060, NDRG50 iki tarafta; taxes \"[{tax_rate:0.5666627..., amount:63.18}]\" iki tarafta aynı; grandTotal 10949.36 = 10949.36.",
+        "🔴 shippingMethodAlias: V1 \"Standard\" ↔ V2 null; shippingMethodText: V1 \"Ücretsiz\" ↔ V2 null (repeatOrder sonrası V2 basket/get'te de null; setAddress sonrası Standard oldu).",
+        "🔴/❓ Kampanya 28 (Kişiye Özel İndirim 200 TL) her iki tarafta zarf discounts'ta var ama kalemlere dağılım farklı: items[0].price V1 6442.28 ↔ V2 6242.28, items[].discountAmount 0 ↔ 200, discountAmountSplit 1 ↔ 100, items[].discounts null ↔ dolu, priceWithInstallment de aynı farkla. Toplamlar eşit. Kampanya action category/exclude_category V1 string dizi [\"2\",..] ↔ V2 sayı dizi [2,..]. Dev turunda kampanyalı sipariş denenmemişti; NSB-6414 ailesi olabilir, triage gerekli.",
+        "Ek: items[].isSubscribe V1 0 ↔ V2 false; V2 fazla alan subtotalInclTax, items[].calculatedAmount/transferBankId (null).",
+        "Negatif: olmayan incrementId 9999999 → V1 404 / V2 404 \"Order not found.\"; V2 boş gövde 422; V2 tokensız 401. Stok 0 siparişi (1725138) iki tarafta 422, aktif sepet değişmedi (NSB-6968)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6919/ro-1725111.v1.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6919/ro-1725111.v2.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6919/diff-1725111.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5804/ro-unknown.v2.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5804/ro-empty.v2.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5804/ro-noauth.v2.json"
+      ]
+    },
+    {
+      "date": "2026-11-20T17:20:00+03:00",
+      "verdict": "BLOCKED",
+      "summary": "[DEPLOY YOK] 16:10 FAIL yeniden sınıflandırıldı: stage commerce build'i güncel değil (setInstallment 404, commerce swagger 19.11 ile birebir); shippingMethodAlias/Text null ve kampanya kalem dağılımı farkı eski build'e ait olabilir. Deploy sonrası tekrar koşulacak.",
+      "notes": [
+        "Aynı turda commerce kartlarından 6'sı (7236/7257/7256/7252/7253/7266) DEPLOY YOK çıktı; 5804 de commerce-service'te.",
+        "Dev'de 04.11 PASS (kanıt rag/sources/qa-evidence-2026-11-04/nsb-5804/).",
+        "Ölçülen farklar (stage 20.11): V2 shippingMethodAlias/Text null (V1 Standard/Ücretsiz); items[].price 200 düşük, discountAmount 200 (V1 0), discountAmountSplit 100 (V1 1); toplamlar eşit. Deploy sonrası bu üç alan özellikle kontrol edilecek."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5804/"
+      ]
+    }
+  ]
+}

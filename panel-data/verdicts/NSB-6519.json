@@ -1,0 +1,50 @@
+{
+  "card": "NSB-6519",
+  "history": [
+    {
+      "date": "2026-09-28T16:05:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "order/iban-update GET V2 STAGE: yalnız hata yolları ölçülebildi — parametresiz 422, geçersiz order/hash/email 400; 4/4 senaryoda kod ve mesaj birebir. Başarılı okuma (form verisi) geçerli IBAN linki olmadan ölçülemedi.",
+      "notes": [
+        "❓ Kabul kriteri (form verisi V1 ile aynı) doğrulanmadı: geçerli order_id+hash+email linki gerekiyor (FT IBAN Failed siparişi 1727140 P1'de var — link e-postası gerekli).",
+        "Auth: iki taraf public (tokensiz yanıt).",
+        "Yöntem: V1 STAGE (api.nadirgold.work) ↔ V2 STAGE (api-v2.nadirgold.work/api/v1) canlı, id/sku hizalı alan-alan diff; 2 profil (P1 QA 181484, P2 FE hesabı). FE: www.nadirgold.work ?apiV2=0/1 Playwright ağ yakalama. qa-parity 14 madde kontrol listesi.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw/6519_*"
+      ],
+      "evidence": [],
+      "aiEvaluation": "STAGE adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-28T17:25:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "DEV: hata yolları 4/4 birebir; başarılı okuma için geçerli IBAN linki yok.",
+      "notes": [
+        "DEV turu: V1 DEV (api.nadirgold.dev) ↔ V2 DEV (api-v2.nadirgold.dev/api/v1), id hizalı alan-alan diff, 2 profil (P1 QA 203311, P2 FE hesabı). FE: www.nadirgold.dev ?apiV2=0/1 ağ yakalama + UI metin diff; mutasyon 0."
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "[DEV · 27 kart toplu koşum] Hata yolları birebir; geçerli IBAN linki yok.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-29T08:00:00+03:00",
+    "verdict": "UNTESTED",
+    "summary": "[DEV · 27 kart toplu koşum] Hata yolları birebir; geçerli IBAN linki yok.",
+    "notes": [
+      "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+      "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+  }
+}

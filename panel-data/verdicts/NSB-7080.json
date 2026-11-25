@@ -1,0 +1,23 @@
+{
+ "card": "NSB-7080",
+ "history": [
+  {
+   "date": "2026-11-20T16:10:00+03:00",
+   "verdict": "BLOCKED",
+   "summary": "[DEPLOY YOK] STAGE 20.11: Barem üstü sepet (6.03 M TL, highValueOrderThreshold true) pasif ilçe adresinde STAGE'de hem V1 hem V2 422 10424; zırhlı kargo istisnası stage'de iki tarafta da yok.",
+   "notes": [
+    "Müşteri sepeti 145454875 + NDR1000 → grandTotal 6.032.634,71; payment/set yanıtında highValueOrderThreshold true (iki taraf).",
+    "setAddress kayıtlı QA-7022 adresi (ETİMESGUT, pasif): V1 422 status.code 10424 ↔ V2 422 aynı mesaj (code yok). Beklenen 200.",
+    "Misafir inline (NDR1000 + NDRİSCİLİKSİZ1, 6.03 M): V2 422 pasif ilçe; V1 validasyon 422.",
+    "V1 de istisnayı uygulamadığı için Lumen NSB-7057 ve V2 cd5a482a/ef91cd4a stage'de yok görünüyor. Pasif lokasyon ayarı panelde olduğundan mahalle/il senaryoları denenmedi.",
+    "Test adresi 214273 silindi, NDR1000 sepetten çıkarıldı."
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7080/setAddress-pasifIlce-barem-ustu.v1.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7080/setAddress-pasifIlce-barem-ustu.v2.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7080/paymentSet-barem-ustu.v1.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7080/summary-guest.json"
+   ]
+  }
+ ]
+}

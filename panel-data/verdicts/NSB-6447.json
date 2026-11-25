@@ -1,0 +1,22 @@
+{
+  "card": "NSB-6447",
+  "history": [
+    {
+      "date": "2026-11-20T16:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] quantity 108/108 üründe liste, detay, by-skus, by-skus/lite ve category-products/summary uçlarında V1 ile eşit; stage'deki eski 12 farklı ürün (146–155, 160, 68, 27) dahil fark 0.",
+      "notes": [
+        "Liste: V1 GET /product/list?limit=200 ↔ V2 GET /api/v1/product/products?limit=200 → 108 ↔ 108, küme farkı 0, quantity farkı 0, basketLimit farkı 0.",
+        "Havuzlu ürünler: 145 NDR11940602 0/0, 146 NDR2525 205/205, 156 NDR1YC01 199/199; 148 72, 152 5, 153 44, 154 16, 155 8, 160 26, 68 74, 27 49 → V1 = V2 (149/150/151 iki tarafta 0).",
+        "Detay: 108 ürün × 2 profil × 2 tur quantity farkı 0 (NSB-5398 notu). Arama: 591 eşleşen üründe quantity farkı 0.",
+        "V2 by-skus ve by-skus/lite (skus=NDR11940602&skus=NDR2525&skus=NDR1YC01) → 0 / 205 / 199. category-products/summary product_id ↔ productId 145/146/156 → 0/205/199 = V1.",
+        "UNTESTED: basket/add \"En fazla N adet\" ile gerçek stok teyidi — bu turda sepete ekleme yasak. Referans V1 (dev'de 25.10'da V1 = sepet N doğrulanmıştı)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6447/list-v1-v2.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5398/negatif-cache.json"
+      ],
+      "aiEvaluation": "Stage RFS turu 20.11.2026 — brief kuralları; Jira'ya yazılmadı, statü değiştirilmedi."
+    }
+  ]
+}

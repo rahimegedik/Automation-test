@@ -1,0 +1,37 @@
+{
+  "card": "NSB-7208",
+  "history": [
+    {
+      "date": "2026-11-12T17:13:27+03:00",
+      "verdict": "PASS",
+      "summary": "DEV retest (MR !631): V2 POST /product/comments validasyon mesajları Türkçe. Kısa başlık+yorum → \"Başlık en az 5 karakter olmalıdır.\" / \"Yorum en az 10 karakter olmalıdır.\"; boş/eksik yorum → \"Yorum alanı gereklidir.\"; 256 karakter başlık → \"Başlık en fazla 255 karakter olabilir.\". errors[].label subject/comment korunuyor. FE (/yorumlar, V2 proxy) Hata modalında: \"Başlık en az 5 karakter olmalıdır. Yorum en az 10 karakter olmalıdır.\" — beklenen metin birebir. Yorum oluşmadı (commentable sayısı 2→2).",
+      "notes": [
+        "V1 (api.nadirgold.dev/product/comment) hâlâ \"Subject değeri en az 5 karakter uzunluğunda olmalıdır. Comment değeri…\" — fix yalnız V2 BE kapsamında; V1 için ayrı kart gerekirse açılmalı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-12-dev-retest/nsb7208-v2-validation.json",
+        "panel-data/evidence/2026-11-12-dev-retest/7208-error-v2.png",
+        "panel-data/evidence/2026-11-12-dev-retest/7208-error-v1.png",
+        "panel-data/evidence/2026-11-12-dev-retest/7208-filled-v2.png"
+      ],
+      "aiEvaluation": "",
+      "manual": true
+    }
+  ],
+  "latest": {
+    "date": "2026-11-12T17:13:27+03:00",
+    "verdict": "PASS",
+    "summary": "DEV retest (MR !631): V2 POST /product/comments validasyon mesajları Türkçe. Kısa başlık+yorum → \"Başlık en az 5 karakter olmalıdır.\" / \"Yorum en az 10 karakter olmalıdır.\"; boş/eksik yorum → \"Yorum alanı gereklidir.\"; 256 karakter başlık → \"Başlık en fazla 255 karakter olabilir.\". errors[].label subject/comment korunuyor. FE (/yorumlar, V2 proxy) Hata modalında: \"Başlık en az 5 karakter olmalıdır. Yorum en az 10 karakter olmalıdır.\" — beklenen metin birebir. Yorum oluşmadı (commentable sayısı 2→2).",
+    "notes": [
+      "V1 (api.nadirgold.dev/product/comment) hâlâ \"Subject değeri en az 5 karakter uzunluğunda olmalıdır. Comment değeri…\" — fix yalnız V2 BE kapsamında; V1 için ayrı kart gerekirse açılmalı."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-12-dev-retest/nsb7208-v2-validation.json",
+      "panel-data/evidence/2026-11-12-dev-retest/7208-error-v2.png",
+      "panel-data/evidence/2026-11-12-dev-retest/7208-error-v1.png",
+      "panel-data/evidence/2026-11-12-dev-retest/7208-filled-v2.png"
+    ],
+    "aiEvaluation": "",
+    "manual": true
+  }
+}

@@ -1,0 +1,21 @@
+{
+ "card": "NSB-7266",
+ "history": [
+  {
+   "date": "2026-11-20T16:10:00+03:00",
+   "verdict": "BLOCKED",
+   "summary": "[DEPLOY YOK] STAGE 20.11: STAGE V2 HAH sepetinde 10.000 TL hesaplama hâlâ 1 adet (grandTotal 6225.67, kargo Standard) ve farklı bankayla ekleme adedi 2 yapıyor; V1 1.6 g → 2.4 g.",
+   "notes": [
+    "Misafir, her taraf kendi sepeti: add {NDRHASCALC, price \"10000\", transferBankId 1} → V1 qty 1.6, grandTotal 9961.07, ship TransferFromBankAccount ↔ V2 qty 1, grandTotal 6225.67, ship Standard.",
+    "Aynı sepete {price \"5000\", transferBankId 2} → V1 tek satır 2.4 g, grandTotal 14941.6 ↔ V2 qty 2, grandTotal 12451.33.",
+    "19.11 ölçümüyle aynı; düzeltme (726b0dbc/a13fa5b7/877efb4c) stage build'inde yok."
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7266/v1-hah-add1.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7266/v1-hah-add2.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7266/v2-hah-add1.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7266/v2-hah-add2.json"
+   ]
+  }
+ ]
+}

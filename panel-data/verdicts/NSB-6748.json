@@ -1,0 +1,28 @@
+{
+  "card": "NSB-6748",
+  "history": [
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "KISMI",
+      "summary": "[STAGE] card-storage negatif yüzeyde V2 camelCase ve V1'den önce doğruluyor, FE camelCase redirectUrl okuyor; 3DS'li gerçek kart kaydı yapılmadığı için mutlu yol (redirectUrl/isRedirect) stage'de ölçülmedi.",
+      "notes": [
+        "Gerçek kart kaydı ve 3DS yapılmadı. Yalnız doğrulamada düşen gövdeler gönderildi: POST V1 https://api.nadirgold.work/card-storage (snake_case) ↔ V2 https://api-v2.nadirgold.work/api/v1/card-storage (camelCase), P2 token.",
+        "Boş gövde: iki tarafta 422. V1 label cc_number/cc_month…, V2 label ccNumber/ccMonth/ccYear/ccCvv/cardHolderName (camelCase).",
+        "ccMonth=13: V2 422 \"Cc month biçimi geçersiz\" (yerel doğrulama). V1 422 \"Mpay error: -4153 - Kart son kullanma ayı geçersiz\", yani V1 isteği MPay'e kadar iletti. Sonuçta kart kaydı yok, provizyon beklenmez ama V1 tarafında MPay çağrısı oldu.",
+        "ccYear=30: iki tarafta 422. Eksik cvv: iki tarafta 422.",
+        "Tokensiz ve bozuk token: iki tarafta 401. Mesaj farkı: V1 TR \"Lütfen e-mail adresinizi veya şifrenizi kontrol ediniz.\", V2 EN \"Unauthorized.\" / \"Invalid or expired token.\".",
+        "Salt-okuma GET /card-storage: iki tarafta 200 {cards[1]}, kart anahtar kümesi aynı (15 alan, camelCase).",
+        "Swagger (commerce) POST 200 şeması camelCase: transactionState, transactionId, ccMasked, cardFamily.",
+        "FE bundle (stage, kartlarim chunk 0_ns_84f5a3-y.js): \"t.redirectUrl?s(t.redirectUrl):t.cardUuid&&…\". FE camelCase redirectUrl bekliyor. V2 modunda liste GET /api/v2/card-storage 200, x-api-version v2.",
+        "UNTESTED: stage V2 POST 200 yanıt şekli (redirectUrl/isRedirect) ve 3DS → callback → kartın listede görünmesi. Gerekenler: kullanıcı onayı ile stage sandbox 3DS test kartı; 1 TL provizyon yan etkisi kabul edilmeli."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6748/fe-bundle.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6748/kartlarim-m0.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6748/kartlarim-m1.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6748/negatif-v1-v2.json"
+      ],
+      "aiEvaluation": "Stage Test turu 19.11.2026 — brief kuralları; Jira'ya yazılmadı."
+    }
+  ]
+}

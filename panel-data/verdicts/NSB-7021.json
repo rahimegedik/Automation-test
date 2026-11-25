@@ -1,0 +1,23 @@
+{
+  "card": "NSB-7021",
+  "history": [
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] Checkout’ta Yeni Adres açılınca seçili adres kalkıyor, Vazgeç sonrası adres seçili gelmiyor, adressiz Ödeme Yap adres alanını kırmızıya çevirip oraya kaydırıyor ve sipariş isteği gitmiyor.",
+      "notes": [
+        "Masaüstü, V2 (?apiV2=1) ve V1 (?apiV2=0) modlarında aynı sonuç. Sepette 5 kalem, havale + banka (bankId 3) seçili, sözleşme kutusu işaretli.",
+        "Başlangıç: \"prod test\" adresi seçili. \"Yeni Adres\" → liste yerine form; \"Vazgeç\" → 3 adresin hiçbiri seçili değil.",
+        "\"ÖDEME YAP\": #address-section border-error (rgb 180,35,24), \"Lütfen gönderim adresi seçiniz.\", scrollY 982→145 (adres kutusu viewport y≈136). payment/order isteği gitmedi (route ile izlendi), URL /checkout’ta kaldı.",
+        "Yeni adres kaydedilmedi. Mobil \"Yeni Adres Ekle\" görünümü test edilmedi."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7021/m1-agr-02-yeni-adres-acik.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7021/m1-agr-03-vazgec-sonrasi.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7021/m1-agr-04-odeme-yap-sonrasi.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7021/m1-agr-log.txt",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7021/m0-agr-log.txt"
+      ]
+    }
+  ]
+}

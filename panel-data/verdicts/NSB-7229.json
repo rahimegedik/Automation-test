@@ -1,0 +1,29 @@
+{
+  "card": "NSB-7229",
+  "history": [
+    {
+      "date": "2026-11-16T13:30:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · V2 API · spec 35 TC-02] Bug repro: NDR10Y (basketLimit=5, canlı satırdan okundu) boş sepete ilk eklemede qty=6 → 200, sepette 6 adet.",
+      "notes": [
+        "Stok limitin üstünde (stok kontrolü karışmadı).",
+        "Temizlik: delete yanıtında items [] ve grandTotal 0 ölçüldü.",
+        "Spec: tests/35-sepet-api-negatif.spec.ts (doğrudan api-v2 + Bearer, UI'sız)."
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV API; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-11-16T13:30:00+03:00",
+    "verdict": "FAIL",
+    "summary": "[DEV · V2 API · spec 35 TC-02] Bug repro: NDR10Y (basketLimit=5, canlı satırdan okundu) boş sepete ilk eklemede qty=6 → 200, sepette 6 adet.",
+    "notes": [
+      "Stok limitin üstünde (stok kontrolü karışmadı).",
+      "Temizlik: delete yanıtında items [] ve grandTotal 0 ölçüldü.",
+      "Spec: tests/35-sepet-api-negatif.spec.ts (doğrudan api-v2 + Bearer, UI'sız)."
+    ],
+    "evidence": [],
+    "aiEvaluation": "DEV API; Jira statüsü değiştirilmedi."
+  }
+}

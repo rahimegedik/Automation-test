@@ -1,0 +1,27 @@
+{
+  "card": "NSB-6743",
+  "history": [
+    {
+      "date": "2026-10-05T12:38:08.521Z",
+      "verdict": "UNTESTED",
+      "summary": "[DEV · renewal koşucusu] Ön/arka yüz iki alanlı yükleme yalnız Üye/Kart Sahibi Kimliği talebi açıkken ölçülebilir. Mevcut kimlik kayıtları yalnız \"Ön yüz\" içeriyor. Hiçbir hesapta canUpload:true (awaiting_document) kayıt yok — bekleyen belge talebi gerekiyor (NSB-6598 ile aynı engel).",
+      "notes": [
+        "Hiçbir hesapta canUpload:true (awaiting_document) kayıt yok — bekleyen belge talebi gerekiyor (NSB-6598 ile aynı engel).",
+        "Not: V2 documents[].side bug NSB-6758 + V2 customer-service 500 (05.10) bu kartın V2 tarafını da etkiler"
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-10-05T12:38:08.521Z",
+    "verdict": "UNTESTED",
+    "summary": "[DEV · renewal koşucusu] Ön/arka yüz iki alanlı yükleme yalnız Üye/Kart Sahibi Kimliği talebi açıkken ölçülebilir. Mevcut kimlik kayıtları yalnız \"Ön yüz\" içeriyor. Hiçbir hesapta canUpload:true (awaiting_document) kayıt yok — bekleyen belge talebi gerekiyor (NSB-6598 ile aynı engel).",
+    "notes": [
+      "Hiçbir hesapta canUpload:true (awaiting_document) kayıt yok — bekleyen belge talebi gerekiyor (NSB-6598 ile aynı engel).",
+      "Not: V2 documents[].side bug NSB-6758 + V2 customer-service 500 (05.10) bu kartın V2 tarafını da etkiler"
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+  }
+}

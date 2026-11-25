@@ -1,0 +1,29 @@
+{
+  "card": "NSB-6436",
+  "history": [
+    {
+      "date": "2026-10-05T12:38:08.521Z",
+      "verdict": "KISMI",
+      "summary": "[DEV · renewal koşucusu] P1: panelden yüklenen Müşteri Tanı Formu KYC kartında \"Örnek Form\" olarak görünüyor, İndir → müşteri tanı formu-2025 (1).pdf (/api/download, cdn document-templates/kyc-blank) ✅. P2: API aynı türde tek kayıt (source admin, available, canDownload) döndürüyor ama FE menüyü gizliyor ve \"Sizden talep edilen bir belge bulunmuyor\" gösteriyor.",
+      "notes": [
+        "✅ P1 görüntüleme + indirme",
+        "❓ P2: yalnız admin formu olan müşteride form görünmüyor/indirilemiyor — beklenen davranış ürün kararı (6306 \"istenen ya da eklenen belge\" kuralı)",
+        "Kanıt: panel-data/evidence/2026-10-05-belgelerim/P1-belgelerim.png, P2-belgelerim.png"
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-10-05T12:38:08.521Z",
+    "verdict": "KISMI",
+    "summary": "[DEV · renewal koşucusu] P1: panelden yüklenen Müşteri Tanı Formu KYC kartında \"Örnek Form\" olarak görünüyor, İndir → müşteri tanı formu-2025 (1).pdf (/api/download, cdn document-templates/kyc-blank) ✅. P2: API aynı türde tek kayıt (source admin, available, canDownload) döndürüyor ama FE menüyü gizliyor ve \"Sizden talep edilen bir belge bulunmuyor\" gösteriyor.",
+    "notes": [
+      "✅ P1 görüntüleme + indirme",
+      "❓ P2: yalnız admin formu olan müşteride form görünmüyor/indirilemiyor — beklenen davranış ürün kararı (6306 \"istenen ya da eklenen belge\" kuralı)",
+      "Kanıt: panel-data/evidence/2026-10-05-belgelerim/P1-belgelerim.png, P2-belgelerim.png"
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+  }
+}

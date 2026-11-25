@@ -1,0 +1,17 @@
+{
+ "card": "NSB-7252",
+ "history": [
+  {
+   "date": "2026-11-20T16:10:00+03:00",
+   "verdict": "BLOCKED",
+   "summary": "[DEPLOY YOK] STAGE 20.11: Aynı commerce build'indeki 7256/7266/7236 düzeltmeleri stage'de yok; kartın doğrulaması havale ile payment/create (sipariş açar) gerektiriyor — sipariş onayı gerekiyor.",
+   "notes": [
+    "payment/create çağrılmadı (sipariş açma onayı yok). Deploy durumu dolaylı: stage commerce swagger 19.11 ile aynı; HAH/HFA/setInstallment ölçümleri eski davranış.",
+    "Sipariş onayı gelirse: STAGE V2 MpayBankTransfer ile payment/create → 500 yerine sipariş no dönmeli."
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-11-20-rfs-stage/_basket/commerce-spec-20.json"
+   ]
+  }
+ ]
+}

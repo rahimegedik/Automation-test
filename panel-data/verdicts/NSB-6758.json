@@ -1,0 +1,20 @@
+{
+  "card": "NSB-6758",
+  "history": [
+    {
+      "date": "2026-11-19T17:10:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "documents[].side alanı stage'de ölçülemedi: belge yüklenmiş (documents dizisi dolu) hiçbir talep yok.",
+      "notes": [
+        "Stage'de belge talebi olan müşteri yok: P2 (müşteri 367284) V1 ve V2 GET /customer/documents → 200 {general:[],orders:[]} (3/3 tur). P1 ve rahime token'ları V2'de 401 'Hesap aktif değil' (V1 200 boş). Panel erişimimiz olmadığı için talep açılamadı.",
+        "Sözleşme: stage swagger (docs-json/customer) CustomerDocumentItemDto'da side alanı var ('Lumen DocumentType::sideLabel — kimlik ön/arka; diğer belge tiplerinde null'). Bu yalnız şema kanıtı, değer gözlenmedi.",
+        "Gerekli: stage'de identity/identity_second talebi + ön ve arka yüz yüklenmiş belge ('Ön yüz' ve 'Arka yüz' değerlerini görmek için). Yükleme gerçek talebi kalıcı değiştireceğinden ve talep yokluğundan denenmedi."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6758/list_P2_v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6758/list_P2_v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6758/neg_auth.json"
+      ]
+    }
+  ]
+}

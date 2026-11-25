@@ -1,0 +1,22 @@
+{
+  "card": "NSB-6897",
+  "history": [
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] HAH sepetinde eşik üstü (qty 2) iki yazım yönünde de V1 ve V2 \"Ücretsiz Zırhlı Taşıma\", eşik altı \"Ücretsiz\" dönüyor.",
+      "notes": [
+        "Misafir HAH sepeti 99950gr50 (stok 3).",
+        "V2 add q1 → V1/V2 get: highValueOrderThreshold false/false, shippingMethodText \"Ücretsiz\"/\"Ücretsiz\".",
+        "V2 update q2 → V1/V2 get: true/true, \"Ücretsiz Zırhlı Taşıma\"/\"Ücretsiz Zırhlı Taşıma\".",
+        "V1 add q2 → V1/V2 get: true/true, \"Ücretsiz Zırhlı Taşıma\" iki tarafta.",
+        "Ücretli kargo yöntemlerinde metin ölçülmedi (HAH yalnız FromBankAccountToPhysical kabul ediyor)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6897/hah-chain.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6897/A4-get-q2.v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6897/B2-get-q2.v2.json"
+      ]
+    }
+  ]
+}

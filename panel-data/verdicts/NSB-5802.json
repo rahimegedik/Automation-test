@@ -1,0 +1,22 @@
+{
+  "card": "NSB-5802",
+  "history": [
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "KISMI",
+      "summary": "[STAGE] PUT assign-customer V2’de müşteri sepetini koruyup misafir kalemini ekliyor, idempotent ve 401/404 davranışı V1 ile aynı; BOLA ve s-token test edilmedi, sonraki get’te kalem dağıtımı farkı var.",
+      "notes": [
+        "✅ Misafir V2 sepeti (NDR5) → V2 PUT /basket/{hash}/assign-customer 200: basketId 145454710 korunuyor, itemsQty 2→3, grandTotal 54015.69. Aynı hash 2. kez → 200, qty artmıyor. Misafir hash ile get → 404.",
+        "✅ Misafir V1 sepeti (NDR1YC) → V1 assign 200: 4 kalem, grandTotal 65241.88.",
+        "✅ Tokensiz: V1 401 ↔ V2 401. Olmayan hash: V1 200 ↔ V2 200, çağıranın kendi sepeti (V1 ile aynı).",
+        "⚠️ Sonraki get V1↔V2: zarf eşit (grandTotal 65241.88, discountAmount 200) ama grandTotalOriginalPrice 10.19↔10.2 ve V2 her kaleme discountAmount 200 yazıyor (NSB-6654).",
+        "❓ Hesaplar arası BOLA ve s-token/s-hash fallback test edilmedi (ikinci hesap yok)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5802/assign-chain.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5802/A4-get.v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5802/A4-get.v2.json"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "card": "NSB-7315",
+  "history": [
+    {
+      "date": "2026-11-24T17:05:00+03:00",
+      "verdict": "FAIL",
+      "summary": "FE payment/familyInstallments V2 (dev): mutlu yol doğru (kayıtlı kartta cardUuid, yeni kartta 8 haneli binNumber; tablo yanıtla birebir; V1=V2), ama hata yolları kriteri karşılamıyor: data.success:false ve 503'te taksit tablosu sessizce kayboluyor (Tek Çekim satırı, genel hata ve tekrar dene yok); 422 binNumber hatası hiçbir yerde gösterilmiyor.",
+      "notes": [
+        "AC1 ✅ BIN'siz 4 aile (BONUS/World/Axess/Bankkart), BIN 540061 → yalnız World; V1 ile alan alan aynı (spec 40 API-01/02). Ekranda Tek Çekim 62.530,17 / 2 x 31.265,09 / 3 x 20.843,39 TL = yanıt (FE-01).",
+        "AC2 BE ✅ külçe sepetinde 200, success:true, list:[] 'No installment option available for this basket.' (API-13). Külçe UI akışı kota nedeniyle henüz koşulmadı.",
+        "AC3 ❌ data.success:false (200) taklidi: tablo gizleniyor, ödeme yapılabiliyor ama 'Tek Çekim' seçeneği ve tekrar deneme yok (FE-05). 503 taklidi: aynı şekilde sessiz, genel hata yok (FE-06). Kart: 'tek çekim gösterilmeli ve tekrar deneme imkânı verilmeli' / '503: genel hata gösterilmeli'.",
+        "422 ❌ binNumber 422 taklidi (Luhn-geçerli 5400610000000001): kart numarası alanında ve sayfada hata yok (FE-09). Kart: 'BIN alanında gösterilmeli'.",
+        "AC4 ✅ taksit seçimi setInstallment'a yazılıyor (NSB-7314 ile).",
+        "AC5 ✅ yeni kart → {basketHash, binNumber:'54006100'}; kayıtlı kart → {basketHash, cardUuid} (FE-01/03).",
+        "BE notları (spec 40): binNumber 5/9 hane ve harf → 422 label binNumber; 8 hane 200; tutar tutarlılığı (taksitler toplamı = totalPrice, taban×(1+oran)) tam. ⚠️ Geçersiz basketHash 422 label 'basket_hash' (snake) dönüyor, eksikte 'basketHash' → FE label eşlemesi tutarsız (BE, NSB-7237 alanı). Pasif (siparişe dönüşmüş) sepet hash'i ile liste hesaplanıyor — V1 de aynı, parite."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-24-taksit/api-run2.log",
+        "panel-data/evidence/2026-11-24-taksit/api-run3.log",
+        "panel-data/evidence/2026-11-24-taksit/fe-run1.log",
+        "panel-data/evidence/2026-11-24-taksit/fe-run2.log",
+        "panel-data/evidence/2026-11-24-taksit/fe-net-saved.json",
+        "panel-data/evidence/2026-11-24-taksit/fe-fails/FE-05-crop.png",
+        "panel-data/evidence/2026-11-24-taksit/fe-fails/FE-06-crop.png",
+        "panel-data/evidence/2026-11-24-taksit/fe-fails/FE-09b-crop.png"
+      ]
+    }
+  ]
+}

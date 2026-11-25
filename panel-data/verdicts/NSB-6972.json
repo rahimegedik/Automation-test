@@ -1,0 +1,19 @@
+{
+ "card": "NSB-6972",
+ "history": [
+  {
+   "date": "2026-11-20T16:10:00+03:00",
+   "verdict": "UNTESTED",
+   "summary": "[STAGE 20.11] Eşzamanlılık testi gerçek plan üzerinde yapılmadı (brief kuralı); yalnız güvenli negatifler koşuldu.",
+   "notes": [
+    "Olmayan plan → V2 422 \"Plan not found\"; tokensız → 401.",
+    "Tamamlanmış (retriggerable olmayan) planla \"yeniden denenemez\" yoklaması auto-mode izin kontrolünde reddedildi, koşulmadı.",
+    "Gereken: kullanıcı onayıyla retriggerable plana eşzamanlı 2 istek (beklenen 200 + 422 \"Devam eden bir talimat ödeme işleminiz var\") — gerçek çekim içerir."
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6972/payment-again-unknown-plan.v2.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6972/payment-again-noauth.v2.json"
+   ]
+  }
+ ]
+}

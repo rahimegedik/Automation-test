@@ -1,0 +1,29 @@
+{
+  "card": "NSB-7227",
+  "history": [
+    {
+      "date": "2026-11-16T13:30:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · V2 API · spec 35 TC-01] Bug repro: siparişi verilmiş sepette (id 15296042, isActive=0) POST basket/delete → 200; yanıt pasif sepeti döndürdü (NDRG50×2, grandTotal 11912.66). Beklenen 404/409.",
+      "notes": [
+        "Yıkıcı değil: var olmayan SKU (QA-YOK) gönderildi, sipariş sepetinden kalem silinmedi; sunucunun pasif sepeti yükleyip işlediği yanıttan görülüyor.",
+        "basket/get eski hash'i yok sayıp aktif sepeti döndürüyor — pasif sepet yalnız delete ile görünüyor.",
+        "Spec: tests/35-sepet-api-negatif.spec.ts (doğrudan api-v2 + Bearer, UI'sız)."
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV API; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-11-16T13:30:00+03:00",
+    "verdict": "FAIL",
+    "summary": "[DEV · V2 API · spec 35 TC-01] Bug repro: siparişi verilmiş sepette (id 15296042, isActive=0) POST basket/delete → 200; yanıt pasif sepeti döndürdü (NDRG50×2, grandTotal 11912.66). Beklenen 404/409.",
+    "notes": [
+      "Yıkıcı değil: var olmayan SKU (QA-YOK) gönderildi, sipariş sepetinden kalem silinmedi; sunucunun pasif sepeti yükleyip işlediği yanıttan görülüyor.",
+      "basket/get eski hash'i yok sayıp aktif sepeti döndürüyor — pasif sepet yalnız delete ile görünüyor.",
+      "Spec: tests/35-sepet-api-negatif.spec.ts (doğrudan api-v2 + Bearer, UI'sız)."
+    ],
+    "evidence": [],
+    "aiEvaluation": "DEV API; Jira statüsü değiştirilmedi."
+  }
+}

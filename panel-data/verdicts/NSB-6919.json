@@ -1,0 +1,20 @@
+{
+ "card": "NSB-6919",
+ "history": [
+  {
+   "date": "2026-11-20T16:10:00+03:00",
+   "verdict": "PASS",
+   "summary": "[STAGE 20.11] STAGE repeatOrder 1725111 (2 kalem): items[] sırası ve taxes[] V1 ile birebir aynı, grandTotal eşit.",
+   "notes": [
+    "1725111 (NDR1194060 + NDRG50), her taraf kendi sepetinde, 1 tur: items sırası V1=V2 = [NDR1194060, NDRG50] (SKU sırası); taxes tek kayıt tax_rate 0.566662734311455 amount 63.18 iki tarafta; grandTotal 10949.36 iki tarafta.",
+    "Kartın kapsamı dışındaki farklar (shippingMethodAlias null, kampanya kalem dağılımı) NSB-5804 kaydında.",
+    "Stage'de 3 kalemli/yakın vergi oranlı sipariş yok; hesapta çok kalemli tek standart sipariş 1725111. Tek tur koşuldu (sepet rate-limit bütçesi)."
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6919/ro-1725111.v1.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6919/ro-1725111.v2.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6919/diff-1725111.json"
+   ]
+  }
+ ]
+}

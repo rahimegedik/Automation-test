@@ -1,0 +1,41 @@
+{
+  "card": "NSB-7268",
+  "history": [
+    {
+      "date": "2026-11-20T15:45:00+03:00",
+      "verdict": "BLOCKED",
+      "summary": "[DEPLOY YOK] Stage'de adı boş 149 mahalle (kartta sayılan Bitlis/Hakkari/Muş ilçelerinde) ve birebir aynı adlı kopyalar V1 ve V2 getDistricts listelerinde hâlâ dönüyor; migration stage'de çalışmamış görünüyor.",
+      "notes": [
+        "Ölçüm: 62 ilçe (kartta geçen Bitlis 7, Hakkari 4, Muş 6 ilçe + Mamak, Sincan, Bayrampaşa, Çankaya, Karaisalı + 40 rastgele ilçe, sabit tohum), V1 api.nadirgold.work/getDistricts/{id} ↔ V2 api-v2.nadirgold.work/api/v1/getDistricts/{id}. V1=V2 id+ad+sıra 62/62.",
+        "Adı boş mahalle (V1 ve V2'de aynı): Bitlis Adilcevaz 2 (14451,14452), Güroymak 1, Hizan 1, Merkez 2, Mutki 26, Tatvan 38; Hakkari Çukurca 1, Merkez 5; Muş Bulanık 20, Merkez 53 → toplam 149 (kartta 'adı boş 149 mahalle pasife alınıyor' denen sayıyla birebir). Ahlat, Şemdinli, Yüksekova, Hasköy, Korkut, Malazgirt, Varto ve 40 rastgele ilçede boş ad yok.",
+        "Birebir aynı ad (ad+kod kopyaları, dev'de teke indirilmişti): İstanbul Bayrampaşa'da 11 ad çift (ALTINTEPSİ, CEVATPAŞA, İSMET PAŞA, KARTALTEPE, KOCATEPE, ...); Ankara Mamak MEHTAP 2012/2013; Muş Merkez 9, Bulanık 3, Kastamonu Merkez 21 vb. — 16 ilçede kopya ad var. (Ad aynı/kod farklı ayrımı listeden yapılamıyor; kod alanı yanıtta yok.)",
+        "Dev'de (19.11) aynı ölçüm boş ad 0 / kopya 0 vermişti; stage'de durum migration öncesiyle aynı.",
+        "Adres/sipariş taşıma sayıları listeden doğrulanamaz (UNTESTED kalır; DB erişimi gerekir)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-7268/districts-scan.json"
+      ]
+    },
+    {
+      "date": "2026-11-20T17:50:00+03:00",
+      "verdict": "KISMI",
+      "summary": "Migration stage veritabanında çalışmış (V1 listelerinde adsız mahalle ve aynı ilçede birebir aynı ad kalmadı), ancak V2 getDistricts hâlâ 149 adsız ve 75 pasif kopya mahalleyi döndürüyor; V1 ve V2 23 ilçede farklı.",
+      "notes": [
+        "Tam tarama (16:57 civarı): getCities/1 V1=V2 (80 il, 964 ilçe, birebir). 964 ilçe için getDistricts V1 ve V2, hepsi 200, 429 yok.",
+        "V1: 47.206 mahalle, adı boş veya yalnız boşluk olan 0, aynı ilçede birebir aynı ad 0, büyük/küçük harf ve boşluk normalize edilince de aynı ad 0. 15:xx ölçümündeki 149 adsız mahalle V1'den düşmüş → migration stage DB'de koşmuş.",
+        "V2: 47.430 mahalle (+224). Adsız 149 (Bitlis Adilcevaz 2, Güroymak 1, Hizan 1, Merkez 2, Mutki 26, Tatvan 38; Hakkari Çukurca 1, Merkez 5; Muş Bulanık 20, Merkez 53). 16 ilçede 46 ad tekrarlı (ör. Mamak MEHTAP 2012/2013, Bayrampaşa 11 ad çift, Ayancık MERKEZ x4).",
+        "Fark analizi (23 ilçe): V2'deki fazla 224 kayıt = V1'den düşen 149 adsız + 75 kopya; V1'de olup V2'de olmayan kayıt yok; ortak kayıtlarda id+ad+sıra aynı. Geri kalan 941 ilçede V1=V2.",
+        "Bu fazla kayıtların gerçekten pasif olduğu NSB-7281 testinde doğrulandı: V2 POST customer/address 2013, 14753 (adsız) ve 142 için 422 'Seçtiğiniz mahalle artık kullanılamıyor...' dönüyor. Yani V2 listesi bayat (önbellek ya da aktiflik filtresi yok); müşteri V2'de adsız/pasif mahalleyi listede görüp seçebiliyor, kayıtta 422 alıyor.",
+        "Başlıklar: V2 getDistricts yanıtında cache-control yok, ETag var (W/...); cf-cache-status DYNAMIC. Önbelleğin TTL'i dışarıdan ölçülemiyor. Kartta 'Mahalle listesi önbelleğinin panelden temizlenememesi bu MR kapsamında değil' notu var; dev'de (18.11) V1 ve V2 listelerinin temiz olduğu yazılmıştı.",
+        "Kartta adı geçen ilçeler: Bitlis 7, Hakkari 4, Muş 6 ilçenin tümü V1'de temiz; V2'de Ahlat, Yüksekova, Hasköy, Varto dışındakilerde fazla kayıt var.",
+        "Ek karar (18.11, aynı ad farklı kod): V1'de aynı ilçede aynı adlı mahalle kalmadı, yani her grupta tek kayıt kalmış. Kod alanı API'de olmadığı için ad+kod ayrımı ve 'en küçük id kaldı mı' sorusu kısmen ölçülebildi (Mamak 2012 kaldı, 2013 düştü; Bayrampaşa'da 142-152 düştü).",
+        "UNTESTED: müşteri/sepet/sipariş adreslerinin kalan kayda taşınması ve yedek tablo (DB erişimi gerekir). V2 listesinin önbellek temizliğinden sonra yeniden taranması gerekiyor. Bu aşamada PASS denemez."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-stage-test-2/NSB-7268/districts-fullscan.json",
+        "panel-data/evidence/2026-11-20-stage-test-2/NSB-7268/v2-extra.json",
+        "panel-data/evidence/2026-11-20-stage-test-2/NSB-7281/pasif-mahalle.json"
+      ]
+    }
+  ]
+}

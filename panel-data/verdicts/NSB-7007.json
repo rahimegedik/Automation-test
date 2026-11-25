@@ -1,0 +1,20 @@
+{
+  "card": "NSB-7007",
+  "history": [
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] nadirgold.work'te 9 sayfa tipinde iki modda SSR HTML'de <meta name=\"robots\" content=\"noindex, nofollow\"> var; prod nadirgold.com'da yok.",
+      "notes": [
+        "Sayfalar: /, /kulce-altin, /ziynet-altin, /50-gram-altin-kulce-altin, /ceyrek-altin-2025-tarihli, /hakkimizda, /sikca-sorulan-sorular, /blog, 404 sayfası. V1 (x-api-version v1) ve V2 (v2) modlarının her ikisinde SSR yanıtında ve DOM'da robots=noindex, nofollow.",
+        "404 sayfasında ayrıca Next'in kendi <meta name=\"robots\" content=\"noindex\"> etiketi var (çift etiket, zararsız).",
+        "X-Robots-Tag başlığı hiçbir yanıtta yok (kart istemiyor). robots.txt crawl'a izin veriyor (Disallow yalnız hesabim/sepet/odeme…). noindex'in okunabilmesi için bu doğru.",
+        "Prod kontrolü (salt-okuma GET https://www.nadirgold.com/): robots meta yok, X-Robots-Tag yok. Satır live'a taşınmamış."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-7007/robots-check.json"
+      ],
+      "aiEvaluation": "Stage Test turu 19.11.2026 — brief kuralları; Jira'ya yazılmadı."
+    }
+  ]
+}

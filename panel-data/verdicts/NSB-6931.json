@@ -1,0 +1,19 @@
+{
+  "card": "NSB-6931",
+  "history": [
+    {
+      "date": "2026-11-20T15:45:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "Maskeleme OpenSearch dokümanında doğrulanmalı, QA'nın okuma erişimi yok; sahte parola/TCKN ile izlenebilir istekler atıldı (correlationId qa-6931-*), kayıtlar okunamadığı için sonuç ölçülemedi.",
+      "notes": [
+        "Gönderilen istekler (yalnız sahte değerler): POST api-v2 /customer/login {email: qa-nsb6931@example.invalid, password: sahte} → 401, x-correlation-id qa-6931-login-fake, x-request-id 0f47c012-b162-43db-a62a-66237909e480. POST /customer/register {identityNumber: 11111111110 (sahte), password, passwordConfirmation sahte} → 422 (validation), x-correlation-id qa-6931-register-fake, x-request-id 714ca629-8f38-4809-ae17-fe9ed134c535. Saat: 20.11.2026 15:32:54–55 TSİ.",
+        "Beklenen (kart kabul kriteri): bu dokümanlarda password/passwordConfirmation değerleri açık metin yok (passwordConfirmation düşürülmüş), identityNumber '***'.",
+        "Kartta 20.11 13:31 Yasemin Türker 'TCKN maskeli görünüyor' notu ve ekran görüntüsü var; bu QA ölçümü değil, kanıt olarak kullanılmadı. Parola alanları, header'lar (X-Cache-Sync-Secret, device-token, s-token) ve 9+ seviye derin gövde hiç doğrulanmadı.",
+        "Gerekli: stage OpenSearch salt-okur erişimi ya da yukarıdaki iki correlationId'nin ham dokümanının karta eklenmesi."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6931/gateway-headers.json"
+      ]
+    }
+  ]
+}

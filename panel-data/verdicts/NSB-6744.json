@@ -1,0 +1,25 @@
+{
+  "card": "NSB-6744",
+  "history": [
+    {
+      "date": "2026-10-05T12:38:08.521Z",
+      "verdict": "UNTESTED",
+      "summary": "[DEV · renewal koşucusu] Belge akışına düşen kredi kartı ödemesi (gerçek sipariş) gerekli; tebrikler ekranında data.documentFlow.message ölçülemedi.",
+      "notes": [
+        "Kullanıcı FE'den belge akışlı KK siparişi verirse gözlemci callback/postMessage/sessionStorage'ı ölçer"
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-10-05T12:38:08.521Z",
+    "verdict": "UNTESTED",
+    "summary": "[DEV · renewal koşucusu] Belge akışına düşen kredi kartı ödemesi (gerçek sipariş) gerekli; tebrikler ekranında data.documentFlow.message ölçülemedi.",
+    "notes": [
+      "Kullanıcı FE'den belge akışlı KK siparişi verirse gözlemci callback/postMessage/sessionStorage'ı ölçer"
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+  }
+}

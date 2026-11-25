@@ -1,0 +1,51 @@
+{
+  "card": "NSB-6638",
+  "history": [
+    {
+      "date": "2026-09-29T12:00:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV] basket/merge: misafir sepeti (NDR1194060 ×1) V1 ve V2 ile müşteri sepetine birleşiyor, kalem ve toplam aynı (13.210,29). Kusurlar: (1) V2, müşteri sepeti boşken misafir sepetini müşteri sepeti yapıyor (basketId/basketHash değişiyor: 15293704 → 15294232); V1 aynı koşulda müşteri sepetini koruyor. (2) Olmayan/yabancı hash iki tarafta 200 (V2 gövdede success:false) — kabul 403/404. (3) item.images V1 {main[]} ↔ V2 dizi (NSB-6635 ile aynı).",
+      "notes": [
+        "Tokensiz iki tarafta 401.",
+        "Misafir add'de orderType gönderilemiyor (V2 'Sipariş tipi belirtmek için giriş yapmanız gerekiyor').",
+        "FE girişte birleştirme akışı ölçülmedi (logout token'ı iptal ettiği için).",
+        "Temizlik: her tur sonrası delete ile sepet boş ölçüldü; son sepet 15294232 boş.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/m*"
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV API zinciri; Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "KISMI",
+      "summary": "[STAGE] V2 merge müşteri sepetini koruyor ve birleşmiş toplamlar V1 ile aynı; yabancı müşteri hash’i ve FE giriş akışı test edilemedi, olmayan hash 403/404 değil 200 success:false (V1 ile aynı).",
+      "notes": [
+        "✅ Müşteri sepeti boşken (basketId 145454710) misafir V2 sepeti (NDR1194060) V2 merge → basketId 145454710 korunuyor (dev’deki eski kusur 1 yok); V1/V2 get zarf birebir (grandTotal 6647.08).",
+        "✅ İkinci misafir sepeti (NDR25, V1 yazdı) V1 merge → 2 kalem; V1/V2 get grandTotal 22444.63 eşit; grandTotalOriginalPrice 3.51↔3.52 (1 kuruş).",
+        "✅ Tokensiz merge: V1 401 ↔ V2 401. Boş gövde V2 422.",
+        "⚠️ Olmayan hash ve tüketilmiş hash: V1 200 ↔ V2 200, success:false \"Guest basket not found\", gövdede kendi sepeti — kabul kriterindeki 403/404 sağlanmıyor ama V1 ile aynı.",
+        "❓ Başka müşterinin hash’i (NSB-6141) test edilmedi — ikinci geçerli müşteri hesabı yok (P1 kullanılmadı).",
+        "❓ FE girişte birleştirme akışı ölçülmedi (logout token’ı iptal ediyor).",
+        "Kalem seviyesinde kampanya dağıtım farkı (her kaleme 200) NSB-6654 ile aynı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6638/merge-chain.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6638/merge-negatives.json"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-09-29T12:00:00+03:00",
+    "verdict": "FAIL",
+    "summary": "[DEV] basket/merge: misafir sepeti (NDR1194060 ×1) V1 ve V2 ile müşteri sepetine birleşiyor, kalem ve toplam aynı (13.210,29). Kusurlar: (1) V2, müşteri sepeti boşken misafir sepetini müşteri sepeti yapıyor (basketId/basketHash değişiyor: 15293704 → 15294232); V1 aynı koşulda müşteri sepetini koruyor. (2) Olmayan/yabancı hash iki tarafta 200 (V2 gövdede success:false) — kabul 403/404. (3) item.images V1 {main[]} ↔ V2 dizi (NSB-6635 ile aynı).",
+    "notes": [
+      "Tokensiz iki tarafta 401.",
+      "Misafir add'de orderType gönderilemiyor (V2 'Sipariş tipi belirtmek için giriş yapmanız gerekiyor').",
+      "FE girişte birleştirme akışı ölçülmedi (logout token'ı iptal ettiği için).",
+      "Temizlik: her tur sonrası delete ile sepet boş ölçüldü; son sepet 15294232 boş.",
+      "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/m*"
+    ],
+    "evidence": [],
+    "aiEvaluation": "DEV API zinciri; Jira statüsü değiştirilmedi."
+  }
+}

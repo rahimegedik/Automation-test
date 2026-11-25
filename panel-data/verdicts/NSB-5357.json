@@ -1,0 +1,45 @@
+{
+  "card": "NSB-5357",
+  "history": [
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "KISMI",
+      "summary": "[STAGE] 9 alias V1↔V2 alan diff: yapı/sıra/structuredData/fields/404 parity tamam; homepage ürün bloğunda deterministik sıra farkı var, productSlug koşulu stage verisinde oluşmadığı için doğrulanamadı.",
+      "notes": [
+        "İstek: V1 GET https://api.nadirgold.work/layout/{alias} ↔ V2 GET https://api-v2.nadirgold.work/api/v1/content/layout/{alias}; alias: homepage, mobil-listeleme, general-contract, sikca-sorulan-sorular, cok-satanlar, yorumlar, nadir-bilgiler, footer, olmayan-alias-qa-5357 — 9/9 iki tarafta 200.",
+        "Section sırası 9/9 alias birebir (homepage 11/11, mobil-listeleme 11/11). structuredData iki tarafta var. sikca-sorulan-sorular 621/621 yaprak alan birebir, 0 fark.",
+        "Bilinmeyen alias: V1 200 ↔ V2 200, sections boş (parity).",
+        "?fields=popup → yalnız popup; ?fields=sections,popup → 200; ?fields=zzz → 422 \"Fields geçerli bir değer olmalıdır\".",
+        "🔴 homepage › nadir-gold-selling-price ürün sırası farklı, 3/3 ölçümde aynı: V1 [13,62,48,175] ↔ V2 [13,48,62,175] (2. ve 3. ürün yer değiştirmiş). Ürün kümesi aynı. Sıralama alanı yok.",
+        "🟡 mobil-listeleme › mobil-transfer-gold-to-account-category: attributeId 835/826 yer değiştirmiş. İkisinin de order=1 olduğu için eşitlik sırası belirsiz (tie-break).",
+        "❓ productSlug kaybı (22.09 dev bulgusu): stage verisinde productId taşıyan banner öğesi yok (mobil-listeleme 0 kayıt). Koşul oluşmadığı için UNTESTED. Doğrulamak için dev verisi ya da stage CMS'te productId'li bir banner gerekir.",
+        "Kartta ilan edilmemiş, bilinen biçim farkları sürüyor: metaTitle/metaDescription → meta.title/description (tüm section'lar); type Image→IMAGE (177 öğe); boş CDN URL \"https://cdn.nadirgold.work/\" → null; finansal alanlar number→string (AC gereği); isSubscribe vb. int→bool; datetime formatı.",
+        "popup: V2'de backgroundImage, mobileBackgroundImage, imageLink ve imageCategoryId anahtarları yok. V1'de bunlar boş (\"\" / null) olduğu için değer kaybı yok, şema farkı var. V1'deki bozuk video \"https://cdn.nadirgold.work/[]\" V2'de null olarak dönüyor (iyileşme).",
+        "Önbellek: V1 Cache-Control \"no-cache, private\", V2'de Cache-Control yok, ETag var. Stage'de If-None-Match aynı ETag ile 304 değil 200 dönüyor (dev'de 304'tü)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/cok-satanlar-v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/cok-satanlar-v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/diff-summary.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/etag-order.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/footer-v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/footer-v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/general-contract-v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/general-contract-v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/homepage-v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/homepage-v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/mobil-listeleme-v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/mobil-listeleme-v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/nadir-bilgiler-v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/nadir-bilgiler-v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/olmayan-alias-qa-5357-v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/olmayan-alias-qa-5357-v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/sikca-sorulan-sorular-v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/sikca-sorulan-sorular-v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/yorumlar-v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5357/yorumlar-v2.json"
+      ],
+      "aiEvaluation": "Stage Test turu 19.11.2026 — brief kuralları; Jira'ya yazılmadı."
+    }
+  ]
+}

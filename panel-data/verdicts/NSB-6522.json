@@ -1,0 +1,37 @@
+{
+  "card": "NSB-6522",
+  "history": [
+    {
+      "date": "2026-09-29T00:30:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "DEV: hata yolları 3/3 birebir (eksik alan 422, geçersiz link 400, camelCase gövde 422 → V2 hâlâ snake_case bekliyor, kart NSB-6300 camelCase diyor). Geçerli IBAN linki yok → mutlu yol ölçülmedi.",
+      "notes": [
+        "DEV: V1 DEV ↔ V2 DEV, P1 QA 203311 + P2 FE hesabı; yalnız salt-okuma ve doğrulama/hata yolu (mutasyon yok)."
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV koşulmayanlar turu (29.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "[DEV · 27 kart toplu koşum] Hata yolları birebir; geçerli IBAN linki yok; V2 snake_case bekliyor.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-29T08:00:00+03:00",
+    "verdict": "UNTESTED",
+    "summary": "[DEV · 27 kart toplu koşum] Hata yolları birebir; geçerli IBAN linki yok; V2 snake_case bekliyor.",
+    "notes": [
+      "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+      "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+  }
+}

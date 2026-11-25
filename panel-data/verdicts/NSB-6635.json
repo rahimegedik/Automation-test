@@ -1,0 +1,50 @@
+{
+  "card": "NSB-6635",
+  "history": [
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · 27 kart toplu koşum] FE Sepete Ekle → /api/v2/basket/add ✓; kabul ihlali: geçersiz SKU'da errors[] yok, item.images V1 {main[]} ↔ V2 dizi (NSB-6261).",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[STAGE] FE sepete ekle /api/v2/basket/add çağırıyor ve negatifler V1 ile uyumlu, ancak V2 Hesaptan Fiziki Altına + standart ürünü uyarısız aynı sepette birleştiriyor (V1 423 ile engelliyor).",
+      "notes": [
+        "FE (?apiV2=1, x-api-version v2): \"Sepete Ekle\" → POST /api/v2/basket/add 200, gövde {\"sku\":\"NDRG250\",\"qty\":1,\"isSubscribe\":false}; ardından /api/v2/basket/get.",
+        "🔴 Karışık sepet (misafir, API): V2 standart(NDR1194060)→HAH(99950gr50) 200 ve HAH→standart 200, sepette iki kalem kalıyor. V1 aynı sıralarda 423 \"Hesaptan Fiziki Altına ürünü ile diğer kategoriler birleştirilemez.\" / \"Gram Külçe Altın ürünü ile diğer kategoriler birleştirilemez.\" (NSB-6740 kabulü stage’de sağlanmıyor).",
+        "✅ Takı+standart: V1 1003/1004 (422) ↔ V2 422 code 1003 aynı mesaj.",
+        "✅ Geçersiz SKU: V1 422 ↔ V2 422, errors=[{label:\"sku\",msg:[\"Seçili olan sku geçersiz.\"]}] aynı.",
+        "⚠️ Ölçüsüz takı (sku \"\"): mesaj aynı \"Lütfen bilezik ölçünüzü seçerek devam ediniz.\" (code 1002), ama HTTP V1 422 ↔ V2 400.",
+        "⚠️ add yanıtında kampanyalı üründe subTotal farkı: NDR1YC misafir V1 11166.95 ↔ V2 10966.95 (grandTotal ikisinde 11030.59).",
+        "items[].images V1 {main[]} ↔ V2 dizi (NSB-6755 kararı); items[].isSubscribe number↔boolean.",
+        "❓ Rate-limit mesajının FE’de gösterimi ölçülemedi: doğrudan API kilitliyken (422 \"Çok fazla giriş denemesi… 2994 saniye\") FE /api/v2 proxy’si üzerinden add 200 döndü, kilit FE’ye yansımadı.",
+        "Satır fiyatı farkı (kampanya kalem dağıtımı) NSB-6654 notlarında."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6635/mixed-basket.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6635/mixed-taki.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6635/negatives.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6635/fe-v2-net.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6635/fe-v2-sepet.png"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-09-29T08:00:00+03:00",
+    "verdict": "FAIL",
+    "summary": "[DEV · 27 kart toplu koşum] FE Sepete Ekle → /api/v2/basket/add ✓; kabul ihlali: geçersiz SKU'da errors[] yok, item.images V1 {main[]} ↔ V2 dizi (NSB-6261).",
+    "notes": [
+      "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+      "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+  }
+}

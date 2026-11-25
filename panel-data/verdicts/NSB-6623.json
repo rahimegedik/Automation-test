@@ -51,57 +51,41 @@
         "panel-data/evidence/2026-09-17-nsb6623/11-sss-v2.png"
       ],
       "aiEvaluation": "Faz 1'deki 10 alias stage'de FE seviyesinde birebir; API farkları kozmetik ve FE tarafından karşılanıyor. PASS. BE notu: pdf '[]' string ve about-us section sırası NSB-5357'ye iletilmeli."
+    },
+    {
+      "date": "2026-09-29T00:30:00+03:00",
+      "verdict": "FAIL",
+      "summary": "DEV: 28 alias, hepsi 200/200. Sıra farkı: sikca-sorulan-sorular 9 kategori var (NSB-6705 kaybı düzelmiş) ama sıra farklı (V1 …duzenli-birikim, gumus, hesaptan-fiziki-altina, kulce-altin, ziynet ↔ V2 …kulce-altin, gumus, ziynet, hesaptan-fiziki-altina, duzenli-birikim); mobil-listeleme mobil-transfer-gold-to-account-category öğeleri 1 kaymış. Bilinmeyen alias iki tarafta 200 (kabul: 404 zarfı). general-contract pdf farkı artık yok.",
+      "notes": [
+        "✅ Kasıtlı: metaTitle/metaDescription → meta.title/description, type 'Image'→'IMAGE', tarih UTC 'Z'. V1'in boş 'https://cdn.nadirgold.dev/' görsel URL'leri V2'de null (iyileşme).",
+        "anasayfa: V2 sections döndürüyor, V1 döndürmüyor (21.09 notu, V1 baseline yok → ❓).",
+        "DEV: V1 DEV ↔ V2 DEV, P1 QA 203311 + P2 FE hesabı; yalnız salt-okuma ve doğrulama/hata yolu (mutasyon yok).",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/6623_*"
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV koşulmayanlar turu (29.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · 27 kart toplu koşum] SSS ve mobil-listeleme sıra farkı; bilinmeyen alias 200 (kabul 404).",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
     }
   ],
   "latest": {
-    "date": "2026-09-17T16:40:00+03:00",
-    "verdict": "PASS",
-    "summary": "content/layout/{alias} V2 (stage, Faz 1 — 10 alias): 10 sayfa ?apiV2=0/1 ile birebir (piksel farkı %0.00–1.88, hepsi bilinen oynak alanlar); API alan/sıra paritesi kozmetik farklar dışında tam; bilinmeyen alias V2'de 404 zarfı",
+    "date": "2026-09-29T08:00:00+03:00",
+    "verdict": "FAIL",
+    "summary": "[DEV · 27 kart toplu koşum] SSS ve mobil-listeleme sıra farkı; bilinmeyen alias 200 (kabul 404).",
     "notes": [
-      "Yöntem: doc.md (NSB-6623 Faz 1 Manuel Test Rehberi) adım adım otomatikleştirildi. Her sayfa stage'de ?apiV2=0 ve ?apiV2=1 ile açıldı (x-api-version v1/v2 teyit), tam sayfa ekran görüntüsü + DOM ölçümü + piksel diff; layout API'leri doğrudan api.nadirgold.work/layout/{alias} ↔ www.nadirgold.work/api/v2/content/layout/{alias} alan alan diff'lendi.",
-      "1 scrolling-text: üst şerit metni iki modda aynı ('Türkiye'nin Güvenle Tercih Ettiği Altın Alışveriş Sitesi - nadirgold.com | Hızlı ve Sigortalı Kargo | Şimdi Sipariş Verin.'). Piksel farkı %1.41 (çok satanlar sırası + fiyatlar, 'bu fark normal' listesinde).",
-      "2 nadir-bilgiler: başlık + alt metin + sağda GÖRSEL (video yok) iki modda; piksel %0.04 (kur sayacı). API: type 'Image'→'IMAGE' (FE doğru çeviriyor).",
-      "3 yorumlar + /yorumlar/50-gr-kulce-altin: Google 4.8 ★ rozeti, '1000+ Yorum var', 'Yorumlarınızı Bekliyoruz →', lider görseli, ürün sayfasında breadcrumb — iki modda aynı (piksel %0.03 / %0.15). Not: stage metni dokümandaki '1 yılda yüzbinlerce…' değil 'Son 1 Yıl içinde dünyayı 1 tur saracak 15 Ton…' — ortam içeriği, iki modda aynı.",
-      "4 nadir-gold-ozellikler: 6 kart doğru sırada (Moto Kurye, Aynı Gün Ücretsiz Kargo, Hesaba Altın Havale, Üst Düzey Kalite, Güvenle Alışveriş Yapın, Sigortalı Kargo), 6/6 ikon cdn.nadirgold.work'ten, kırık 0.",
-      "5 mobile-apps-banner (/nadir-bilgiler altı): başlık + 'Mobil uygulamamızı şimdi indirin' + App Store/Google Play iki modda; görsel/arka plan kırık yok.",
-      "6 product-detail (/nadirgold-1-gr-kulce-altin-9999; /10-gr-kulce-altin-9999 stage'de 404): Tek Seferlik Alım 3 ikon (kırık 0), Düzenli Birikim 5 madde + 5 ikon; 'Talimat nasıl oluşturulur?' tıklaması iki modda da role=dialog açmadı (ölçüm sınırı, her iki modda aynı davranış). Fiyat geçmişi sekmeleri V2'de '1 Month/3 Month/6 Month/1 Year' — bilinen BE sorunu (NSB-5401), kapsam dışı.",
-      "7 kargo-landing-page (/teslimat): video 1, bloklar (Zırhlı Araç…), 38/33 görsel kırık 0, alt banner arka plan görseli var; piksel %0.99 (mux video poster kareleri).",
-      "8 mobil-app (/mobil-uygulama): başlık, 'Hemen İndirin', video, App Store https://apps.apple.com/tr/app/nadirgold/id1642796877 ve Google Play com.nadirgold.app linkleri iki modda aynı; piksel %0.05.",
-      "9 about-us (/hakkimizda): bölüm sırası (video metni → Genel Müdür → Vizyon-Misyon → Akreditasyonlar → butonlar) ve 4 akreditasyon kartı (COMEX, AMD, BİST, LBMA) iki modda aynı; 49/44 görsel kırık 0; piksel %0.01. API'de V2 section sırası farklı (yetkili-mesaji önce) — FE sıralamayı düzeltiyor, ekranda fark yok (doküman bunu bekliyor; NSB-6296 sıra kararı BE tarafında not).",
-      "10 checkout: sepete 1 Gr Külçe eklendi → /checkout: 'Teslimat Seçenekleri' > 'Aynı Gün Ücretsiz Kargo' + 16:00 açıklaması + ikon, Sipariş Özeti'nde aynı bilgilendirme + kamyon ikonu iki modda; Moto Kurye adres uygun olmadığı için pasif (aynı). Taksit/Üretim Süreci mesajları tek kategorili sepette beklenmiyor. Sepet test sonrası boşaltıldı (0 Ürün).",
-      "11 flag KAPALI kontrolleri (?apiV2=0): anasayfa 'Çok Satanlar' + 'Tümünü Gör' var; /sepet çok satanlar başlık+buton var; /duzenli-birikim-detay başlık/video/içerik geliyor (layout/duzenli-birikim-detay + duzenli-birikim-sss hâlâ V1 host'undan, henüz taşınmayanlar listesiyle uyumlu); SSS altı destek@nadirgold.com + +902125279497 var; ürün detay 3 ikon gerçek (placeholder 0).",
-      "API paritesi (10 alias, V1 ↔ V2 proxy): structuredData ve popup 10/10 birebir; section alias kümeleri aynı. Sistematik kozmetik farklar: data[].type 'Image/Video'→'IMAGE/VIDEO'; section.metaTitle/metaDescription → section.meta{title,description}; V1'de 'https://cdn.nadirgold.work/' (boş yol) olan image/imageMobile V2'de null (mobile-apps-banner, mobil-app, about-us, checkout installment-message); scrolling-text/product-detail/checkout/mobil-app'te pdf V1 null → V2 '[]' STRING (dizi değil, küçük BE tutarsızlığı).",
-      "Bilinmeyen alias: V1 /layout/olmayan-alias-qa 200 (boş popup + structuredData), V2 404 {success:false,statusCode:404,message:'Layout not found'} — kabul kriteri karşılanıyor."
+      "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+      "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
     ],
-    "evidence": [
-      "panel-data/evidence/2026-09-17-nsb6623/01-home-v1.png",
-      "panel-data/evidence/2026-09-17-nsb6623/01-home-v2.png",
-      "panel-data/evidence/2026-09-17-nsb6623/02-nadir-bilgiler-v1.png",
-      "panel-data/evidence/2026-09-17-nsb6623/02-nadir-bilgiler-v2.png",
-      "panel-data/evidence/2026-09-17-nsb6623/03-yorumlar-v1.png",
-      "panel-data/evidence/2026-09-17-nsb6623/03-yorumlar-v2.png",
-      "panel-data/evidence/2026-09-17-nsb6623/03b-yorumlar-urun-v1.png",
-      "panel-data/evidence/2026-09-17-nsb6623/03b-yorumlar-urun-v2.png",
-      "panel-data/evidence/2026-09-17-nsb6623/06-urun-detay-v1.png",
-      "panel-data/evidence/2026-09-17-nsb6623/06-urun-detay-v2.png",
-      "panel-data/evidence/2026-09-17-nsb6623/06b-talimat-modal-v1.png",
-      "panel-data/evidence/2026-09-17-nsb6623/06b-talimat-modal-v2.png",
-      "panel-data/evidence/2026-09-17-nsb6623/07-teslimat-v1.png",
-      "panel-data/evidence/2026-09-17-nsb6623/07-teslimat-v2.png",
-      "panel-data/evidence/2026-09-17-nsb6623/08-mobil-uygulama-v1.png",
-      "panel-data/evidence/2026-09-17-nsb6623/08-mobil-uygulama-v2.png",
-      "panel-data/evidence/2026-09-17-nsb6623/09-hakkimizda-v1.png",
-      "panel-data/evidence/2026-09-17-nsb6623/09-hakkimizda-v2.png",
-      "panel-data/evidence/2026-09-17-nsb6623/10-checkout-v1.png",
-      "panel-data/evidence/2026-09-17-nsb6623/10-checkout-v2.png",
-      "panel-data/evidence/2026-09-17-nsb6623/10b-sepet-v1.png",
-      "panel-data/evidence/2026-09-17-nsb6623/10b-sepet-v2.png",
-      "panel-data/evidence/2026-09-17-nsb6623/10c-sepet-temizlik-oncesi.png",
-      "panel-data/evidence/2026-09-17-nsb6623/11-duzenli-birikim-detay-v1.png",
-      "panel-data/evidence/2026-09-17-nsb6623/11-duzenli-birikim-detay-v2.png",
-      "panel-data/evidence/2026-09-17-nsb6623/11-sss-v1.png",
-      "panel-data/evidence/2026-09-17-nsb6623/11-sss-v2.png"
-    ],
-    "aiEvaluation": "Faz 1'deki 10 alias stage'de FE seviyesinde birebir; API farkları kozmetik ve FE tarafından karşılanıyor. PASS. BE notu: pdf '[]' string ve about-us section sırası NSB-5357'ye iletilmeli."
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
   }
 }

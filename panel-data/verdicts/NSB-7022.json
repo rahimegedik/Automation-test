@@ -1,0 +1,23 @@
+{
+ "card": "NSB-7022",
+ "history": [
+  {
+   "date": "2026-11-20T16:10:00+03:00",
+   "verdict": "KISMI",
+   "summary": "[STAGE 20.11] STAGE setAddress kapısı çalışıyor (pasif ilçe ETİMESGUT → V1=V2 422, aynı Türkçe mesaj), ancak V2 gövdesinde code: 10424 yok (c870c568 stage'de görünmüyor); payment/set ve createOrder kapıları ölçülemedi.",
+   "notes": [
+    "QA-7022-pasifIlce49 adresi (id 214273, ANKARA/ETİMESGUT/30 AĞUSTOS 2/49/1527) V2 customer/address ile oluşturuldu, test sonunda silindi; liste [214224, 214221, 214188] ile doğrulandı.",
+    "Müşteri sepeti 145454875, kayıtlı adres yolu: barem altı (10.9 bin TL) V1 422 status.code 10424 ↔ V2 422 mesaj aynı \"Seçili adresinizdeki ETİMESGUT ilçesine ... \", V2 gövdesinde code alanı YOK ({success,statusCode,message,path}).",
+    "Misafir inline adres: V1 doğrulama hatası \"countyId geçersiz\" (pasif ilçe listede yok) ↔ V2 422 pasif lokasyon mesajı, code yok.",
+    "payment/set ve createOrder kapıları: pasif adres sepete yazılamadığı (barem istisnası stage'de yok, NSB-7080) için denenemedi; payment/set sepetteki aktif adresle 200/200.",
+    "Ersin 11.11'de \"dev, stage ve main merge\" yazmıştı; c870c568 (code alanı) stage yanıtında görünmüyor → deploy teyidi gerekli."
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7022/summary-saved-address.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7022/setAddress-pasifIlce-barem-alti.v1.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7022/setAddress-pasifIlce-barem-alti.v2.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7022/v2-pasif-ilce-barem-alti.json"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+  "card": "NSB-6727",
+  "history": [
+    {
+      "date": "2026-11-20T16:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] BE parity tam: V1 /redirectUrls 478 ↔ V2 content/redirect-urls 478 kayıt, alan farkı 0, sıra aynı, statusCode 475×301 + 3×302 aynı; FE hâlâ 301'i 308 olarak uyguluyor (FE kapsamı).",
+      "notes": [
+        "İstek: V1 GET https://api.nadirgold.work/redirectUrls ↔ V2 GET https://api-v2.nadirgold.work/api/v1/content/redirect-urls?page=1..5&limit=100 (meta.total 478). Yalnız-V1 0, yalnız-V2 0, alan farkı 0, id sırası aynı. Kod değişikliği istenmeyen kart; BE değeri DB'den aynen geçiriyor.",
+        "V2 validation: limit=0 / limit=1000 / page=0 / limit=abc → 422 TR mesaj (spec 400 diyor, 02.10 notu sürüyor); path \"/api/v1/redirect-urls…\" (gateway prefix'siz, kozmetik).",
+        "FE (stage www, storageState, yönlendirme takip edilmeden, apiV2=0 ve 1 aynı): 301 kayıtları → 308 (ör. 2331 10-gram-kumbara-kulce-altin → 308 /10-gram-altin-kumbara-kulce-altin); 302 kayıtları 1572/1573/1574 → 307 (geçici korunuyor; prod'daki zincirli 302 → 308 kaybı stage'de yok). Kartın 301↔308 gözlemi FE'de sürüyor → FE kartı kapsamı.",
+        "🟡 Kart dışı FE gözlemi (iki modda aynı): bazı kayıtlar www'de 404 — tire ile biten (1316 efsane-gemi-mahmudiye-2019-paketli-), eğik çizgili eski yollar (m/…/85/d, …/967/d, m/sepet_odeme_ok.aspx) ve 3 ozel-koleksiyonlar. 15 örnekten 7'si; FE'nin bu biçimleri yönlendirmediği görülüyor."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6727/fe-redirects-cutoff.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6727/fe-redirects.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6727/redirect-urls-v1-v2.json"
+      ],
+      "aiEvaluation": "Stage RFS turu 20.11.2026 — brief kuralları; Jira'ya yazılmadı, statü değiştirilmedi."
+    }
+  ]
+}

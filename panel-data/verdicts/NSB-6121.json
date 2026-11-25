@@ -1,0 +1,24 @@
+{
+  "card": "NSB-6121",
+  "history": [
+    {
+      "date": "2026-11-19T17:10:00+03:00",
+      "verdict": "KISMI",
+      "summary": "GET /customer/documents/{token} negatif/sınır dalları stage'de V1=V2 (404 + aynı mesaj, IP rate limit 20. istekte 422, upload ile ortak kova); geçerli/süresi dolmuş token mutlu yolu stage'de token olmadığı için ölçülemedi.",
+      "notes": [
+        "Stage'de belge talebi olan müşteri yok: P2 (müşteri 367284) V1 ve V2 GET /customer/documents → 200 {general:[],orders:[]} (3/3 tur). P1 ve rahime token'ları V2'de 401 'Hesap aktif değil' (V1 200 boş). Panel erişimimiz olmadığı için talep açılamadı. Bu yüzden geçerli token yok.",
+        "Geçersiz token'lar (olmayan UUID v4, 'qa-yok', 300 karakter, SQL benzeri ' OR 1=1--, büyük harfli UUID) → V1 404 / V2 404, V2 mesajı 'Belge talebi bulunamadı veya süresi doldu.' (5/5). 422 (pipe) dönmüyor, parity korunuyor. Bearer P2 eklenince de V2 404 aynı (uç public).",
+        "Rate limit: aynı olmayan token'la ardışık 23 GET (≈150 ms aralık). V2: 1–19 → 404, 20–23 → 422 'Çok fazla giriş denemesi yaptınız. Lütfen 53 saniye sonra tekrar deneyiniz.' V1: birebir aynı dizilim (1–19 404, 20. istekten itibaren 422). Kova dolunca POST .../upload da 422 (her iki tarafta) → show+upload ortak kova parity'si doğrulandı. Ayrıca V2 kovası dolunca V1 de 422 veriyor (ve tersi): iki taraf aynı Redis anahtarını paylaşıyor. Not: yanıt kodu 429 değil 422; Lumen davranışıyla aynı, swagger da 422 belgeliyor.",
+        "FE: /hesabim/belgelerim?token=<olmayan UUID> iki modda aynı 'Belge talebi bulunamadı — Belge talebi bulunamadı veya süresi doldu…' kutusu + 'Tüm belgelerim' butonu; V2'de çağrı /api/v2/customer/documents/{token} → 404 (x-api-version v2).",
+        "UNTESTED: geçerli token alan kümesi (id, documentType, documentTypeLabel, status, statusLabel, source, canUpload, canDownload, expiresAt, isExpired, isActive), süresi dolmuş token'da 200 + isExpired:true, approved/rejected token. Gerekli: stage'de panelden açılmış belge talebi ve TTL dolumu."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6121/neg_token.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6121/neg_rate_v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6121/neg_rate_v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6121/belgelerim-faketoken-v1.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6121/belgelerim-faketoken-v2.png"
+      ]
+    }
+  ]
+}

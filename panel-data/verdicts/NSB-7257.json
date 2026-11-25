@@ -1,0 +1,18 @@
+{
+ "card": "NSB-7257",
+ "history": [
+  {
+   "date": "2026-11-20T16:10:00+03:00",
+   "verdict": "BLOCKED",
+   "summary": "[DEPLOY YOK] STAGE 20.11: Kartın commerce düzeltmeleri stage build'inde görünmüyor (aynı build'deki 7236/7256/7266 düzeltmeleri yok); test ayrıca kayıtlı kartla 2 taksitli takı ödemesi (sipariş) gerektiriyor.",
+   "notes": [
+    "Doğrudan ölçüm yok: POS seçimi ve fiziksel silme iç durum; doğrulama ancak kredi kartıyla taksitli takı siparişiyle mümkün → sipariş onayı gerekiyor.",
+    "Deploy ipucu: stage commerce swagger 19.11 ile aynı, setInstallment uç yok (404), HAH/HFA davranışları eski (NSB-7266/7256 kayıtları)."
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-11-20-rfs-stage/_basket/commerce-spec-20.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7236/v2-setInstallment-probe.json"
+   ]
+  }
+ ]
+}

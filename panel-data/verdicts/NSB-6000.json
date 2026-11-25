@@ -1,0 +1,22 @@
+{
+  "card": "NSB-6000",
+  "history": [
+    {
+      "date": "2026-11-20T16:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] Turnstile guard V1 paritesinde: eksik/geçersiz token iş mantığından önce 422 ile reddediliyor, V2 token'ı gerçekten doğruluyor (validation failed); gerçek token ile 200 19.11'de görüldü.",
+      "notes": [
+        "V1 POST https://api.nadirgold.work/newsletter/save ↔ V2 POST https://api-v2.nadirgold.work/api/v1/notification/newsletter, 12 senaryo eşzamanlı, e-posta qa-nsb6000+<ts>@example.com: hepsi 422, 5xx yok, kayıt oluşmadı.",
+        "Gövde yok / email yok / token yok / boş token / geçersiz email → iki tarafta \"Turnstile verification required\" (iş mantığından önce). Sahte captcha_token ve CF test değeri → iki tarafta \"Turnstile validation failed\". Aşırı uzun e-posta (300+ karakter) + sahte token → V2 422 validation failed (guard önce).",
+        "Kasıtlı: V2 dört token kanalını okuyor (captcha_token, captchaToken, body/header cf-turnstile-response); V1 yalnız captcha_token → bu kanallarda V1 \"required\", V2 \"failed\".",
+        "🟡 V2 hata gövdesindeki path \"/api/v1/newsletter\" (gerçek route /api/v1/notification/newsletter), kozmetik.",
+        "Validate yolu: 19.11 stage turunda gerçek Turnstile token'ı ile V2 200 (NSB-5999/7206 kanıtları) — kartın 30.07'deki geri çekilme sebebi kapandı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6000/newsletter-matrix.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5999/negatif-v1-v2.json"
+      ],
+      "aiEvaluation": "Stage RFS turu 20.11.2026 — brief kuralları; Jira'ya yazılmadı, statü değiştirilmedi."
+    }
+  ]
+}

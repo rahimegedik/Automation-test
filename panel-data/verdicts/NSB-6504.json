@@ -1,0 +1,71 @@
+{
+  "card": "NSB-6504",
+  "history": [
+    {
+      "date": "2026-09-28T16:05:00+03:00",
+      "verdict": "FAIL",
+      "summary": "customer/orderDetail V2 STAGE (12 sipariş, 2 profil): Faruk'un bildirdiği orderStatusId ve items[].isReviewable eksikliği sürüyor + 4 yeni kayıp: havale banka bilgisi (UI'da IBAN boş), bilezik ölçüsü, kargo firması, abonelik taksit no.",
+      "notes": [
+        "🔴 orderStatusId 12/12 yok (V1 3/5/6/104).",
+        "🔴 items[].isReviewable 16/16 yok (teslim edilen siparişlerde V1 true → değerlendirme butonu).",
+        "🔴 transferBankInformation: havale siparişlerinde (4/4) V1 banka nesnesi (Kuveyt Türk, hesap adı/no, IBAN) ↔ V2 []. FE sipariş 1726779 detayında V2 modunda Hesap Adı/Hesap No/IBAN boş (kanıt PNG).",
+        "🔴 items[].variant: V1 {name:'6.6',size:'6.6'} (bilezik ölçüsü) ↔ V2 null (2 sipariş).",
+        "🔴 cargoTracking: teslim edilen 2 siparişte V1 'Yurtiçi Kargo' + logo ↔ V2 '' ; number '' ↔ null (12/12).",
+        "🔴 subscriptionNumber/subscriptionTotalNumber: abonelik siparişinde (1727116) V1 4/12 ↔ V2 null.",
+        "✅ Tutarlar float→string (money kuralı); items[].qty int→string (spec teyidi).",
+        "Güvenlik: başka müşterinin siparişi iki tarafta 422 (BOLA yok); V2 mesajı 'Sipariş detayı: işlenemedi' (V1 'Order not found').",
+        "FE: sipariş + ikonu → /api/v2/customer/orderDetail.",
+        "Yöntem: V1 STAGE (api.nadirgold.work) ↔ V2 STAGE (api-v2.nadirgold.work/api/v1) canlı, id/sku hizalı alan-alan diff; 2 profil (P1 QA 181484, P2 FE hesabı). FE: www.nadirgold.work ?apiV2=0/1 Playwright ağ yakalama. qa-parity 14 madde kontrol listesi.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw/6504_*"
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-28-stage-faruk-adim1/6504-v1-siparis-1726779-havale.png",
+        "panel-data/evidence/2026-09-28-stage-faruk-adim1/6504-v2-siparis-1726779-havale.png",
+        "panel-data/evidence/2026-09-28-stage-faruk-adim1/6504-v2-siparislerim.png"
+      ],
+      "aiEvaluation": "STAGE adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-28T17:25:00+03:00",
+      "verdict": "FAIL",
+      "summary": "DEV: stage ile aynı — orderStatusId 12/12, items[].isReviewable 15/15, variant 15/15, transferBankInformation havale 9/9 [] (FE 1027051 V2 modunda Hesap Adı/No/IBAN boş), cargoTracking 'Loomis Zırhlı Taşımacılık' 4/4 boş.",
+      "notes": [
+        "FE V1↔V2 (dev, paralel): 20 siparişin 17'sinde (tüm havale siparişleri; Kuveyt Türk, Garanti, Ziraat, Halkbank) V2 FE banka adı/Hesap Adı/Hesap No/IBAN boş; 3 kredi kartı siparişi birebir.",
+        "FE: sipariş + → /api/v2/customer/orderDetail; UI diff: V1'deki banka bloğu (4 satır) V2'de boş.",
+        "DEV turu: V1 DEV (api.nadirgold.dev) ↔ V2 DEV (api-v2.nadirgold.dev/api/v1), id hizalı alan-alan diff, 2 profil (P1 QA 203311, P2 FE hesabı). FE: www.nadirgold.dev ?apiV2=0/1 ağ yakalama + UI metin diff; mutasyon 0.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/6504_*"
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-28-dev-faruk-adim1/6504-v1-siparis-1027051-havale.png",
+        "panel-data/evidence/2026-09-28-dev-faruk-adim1/6504-v2-siparis-1027051-havale.png",
+        "panel-data/evidence/2026-09-28-dev-faruk-adim1/fe-v1-v2/6504-v1-siparis-1026709-garanti.png",
+        "panel-data/evidence/2026-09-28-dev-faruk-adim1/fe-v1-v2/6504-v1-siparis-1027045-kart.png",
+        "panel-data/evidence/2026-09-28-dev-faruk-adim1/fe-v1-v2/6504-v2-siparis-1026709-garanti.png",
+        "panel-data/evidence/2026-09-28-dev-faruk-adim1/fe-v1-v2/6504-v2-siparis-1027045-kart.png"
+      ],
+      "aiEvaluation": "DEV adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · 27 kart toplu koşum] orderStatusId/isReviewable/variant/transferBankInformation/cargoTracking kayıp; FE'de havale IBAN'ı boş.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-29T08:00:00+03:00",
+    "verdict": "FAIL",
+    "summary": "[DEV · 27 kart toplu koşum] orderStatusId/isReviewable/variant/transferBankInformation/cargoTracking kayıp; FE'de havale IBAN'ı boş.",
+    "notes": [
+      "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+      "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+  }
+}

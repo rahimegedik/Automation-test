@@ -1,0 +1,40 @@
+{
+  "card": "NSB-6663",
+  "history": [
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "[DEV · 27 kart toplu koşum] 6516'dan sonra.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T09:10:00+03:00",
+      "verdict": "KISMI",
+      "summary": "[DEV] DEV FE (kullanıcı ekrandan): V2 'Sil' → DELETE /api/v2/card-storage 200 'Card has been deleted'; liste 6→5, V1 ve V2'de kart yok, başlangıç 5 kart durumu ölçülerek doğrulandı. Tokensiz/bozuk token 401 (iki taraf). Açık: olmayan kart uuid V2 422 'Mpay error: Kart bulunamadı' (kabul 403/404; V1 de 422) — mesajda iç servis adı; başkasının gerçek kartı denenmedi.",
+      "notes": [
+        "Kanıt: panel-data/evidence/2026-09-29-dev-kart/6663-v2-fe-kart-sil.json"
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-29-dev-kart/6663-v2-fe-kart-sil.json"
+      ],
+      "aiEvaluation": "Kullanıcı FE'den yaptı, gözlemci maskeli kaydetti. Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-09-29T09:10:00+03:00",
+    "verdict": "KISMI",
+    "summary": "[DEV] DEV FE (kullanıcı ekrandan): V2 'Sil' → DELETE /api/v2/card-storage 200 'Card has been deleted'; liste 6→5, V1 ve V2'de kart yok, başlangıç 5 kart durumu ölçülerek doğrulandı. Tokensiz/bozuk token 401 (iki taraf). Açık: olmayan kart uuid V2 422 'Mpay error: Kart bulunamadı' (kabul 403/404; V1 de 422) — mesajda iç servis adı; başkasının gerçek kartı denenmedi.",
+    "notes": [
+      "Kanıt: panel-data/evidence/2026-09-29-dev-kart/6663-v2-fe-kart-sil.json"
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-09-29-dev-kart/6663-v2-fe-kart-sil.json"
+    ],
+    "aiEvaluation": "Kullanıcı FE'den yaptı, gözlemci maskeli kaydetti. Jira statüsü değiştirilmedi."
+  }
+}

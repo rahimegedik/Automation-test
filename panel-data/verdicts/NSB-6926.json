@@ -1,0 +1,20 @@
+{
+  "card": "NSB-6926",
+  "history": [
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] Flat kategori kampanyası (Yeni Üyelere Özel İndirim 200 TL) qty 1/2/3’te V1 ve V2’de 200 TL kalıyor; toplamlar V1 ile aynı.",
+      "notes": [
+        "Misafir sepetleri, her taraf kendi sepeti, SKU NDR1YC, kampanya 26 (flat 200, discount_on_categories, kategori [2,3,4,43]).",
+        "V2 add q1 / update q2 / update q3 / get: disc_total 200/200/200/200, grandTotal 11030.59 / 22261.18 / 33491.77 / 33491.77.",
+        "V1 add q1 / update q2 / update q3 / get: disc_total 200 her adımda, grandTotal 11030.59 / 22261.18 / 33491.77 / 33491.77. servicePriceTotal 318.2/636.4/954.6 eşit.",
+        "Yüzde tipli kategori kampanyası: VIP %1 (kategori 12, TL tavanı 1) repeatOrder qty 2.82’de V1=V2 disc_total 1 (NSB-6710). Tavansız yüzde kampanya stage’de ölçülmedi.",
+        "Kapsam dışı: add yanıtında V1 subTotal 11166.95 ↔ V2 10966.95; kalem seviyesinde V2 items[].discountAmount 200, V1 0 (NSB-6654)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6926/std-chain-NDR1YC.json"
+      ]
+    }
+  ]
+}

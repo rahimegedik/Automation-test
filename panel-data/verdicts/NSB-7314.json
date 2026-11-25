@@ -1,0 +1,29 @@
+{
+  "card": "NSB-7314",
+  "history": [
+    {
+      "date": "2026-11-24T17:05:00+03:00",
+      "verdict": "PASS",
+      "summary": "FE basket/setInstallment V2 (dev, apiV2=1): 2/3 taksit ve tek çekim seçimi V2 proxy'ye {installment, basketHash} ile gidiyor (BIN yok), Ödenecek Tutar yanıttaki grandTotal; seçilen taksit payment/create'e taşınıyor; 422 mesajı gösteriliyor ve seçim tek çekime dönüyor; 503'te 'uygun değil' değil genel 'Hata' modalı.",
+      "notes": [
+        "Ortam: dev, x-api-version: v2 teyitli. Sepet: 22 Ayar 10 Gr Ajda Bilezik 6.4, kayıtlı Bonus kart (520922******6660).",
+        "AC1: setInstallment 2/3 → rate 8, installmentFee 0, grandTotal = familyInstallments totalPrice; V1 setInstallment aynı sepette aynı oran/fee/toplam (spec 40 TAKSIT-API-08). Bu sepette tek çekim de %8 olduğu için taksit farkı 0 (V1=V2).",
+        "AC2: 422 (installment) taklit yanıtında 'Bu sepet için seçilen taksit seçeneği uygun değil.' ekranda, seçim Tek Çekim'e döndü (FE-07). Gerçek külçe sepetinde BE 422 + NOT_AVAILABLE doğrulandı (API-13); külçe UI akışı kota nedeniyle ayrıca koşulacak.",
+        "AC3: Tek Çekim → setInstallment installment:1, rate 0 (FE-02).",
+        "AC4: 2 taksit + ÖDEME YAP → payment/create gövdesinde installment 2 (istek durduruldu, sipariş açılmadı) (FE-04).",
+        "AC5: setInstallment gövdesi yalnız basketHash + installment; bin_number/binNumber yok (FE-02). BE tanımsız alanı 422 ile reddediyor (API-12).",
+        "503: 'Hata — Service Unavailable' modalı, seçim tek çekimde kaldı, 'uygun değil' gösterilmedi (FE-08).",
+        "BE sınırları (spec 40): installment 0/13/-1/2.5/eksik → 422 label installment, sepet korunuyor; listede olmayan 12 → 422 'uygun değil'. Not: installment:\"2\" (string) kabul ediliyor (zararsız tip dönüşümü)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-24-taksit/api-run2.log",
+        "panel-data/evidence/2026-11-24-taksit/api-run3.log",
+        "panel-data/evidence/2026-11-24-taksit/fe-run1.log",
+        "panel-data/evidence/2026-11-24-taksit/fe-run2.log",
+        "panel-data/evidence/2026-11-24-taksit/fe-net-saved.json",
+        "panel-data/evidence/2026-11-24-taksit/fe-03-kk.png",
+        "panel-data/evidence/2026-11-24-taksit/fe-fails/FE-08-crop.png"
+      ]
+    }
+  ]
+}

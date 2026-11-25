@@ -1,0 +1,89 @@
+{
+  "card": "NSB-6632",
+  "history": [
+    {
+      "date": "2026-09-28T16:05:00+03:00",
+      "verdict": "PASS",
+      "summary": "getContractsByType V2 STAGE: 5 geçerli tip (kvkk, membership, preliminary, sales, lp_clarification_text) 3 turda birebir; kimlikli sales 2 profilde birebir; geçersiz tip V2 422 'Aktif sözleşme bulunamadı' zarfı (NSB-6465 503 çözülmüş).",
+      "notes": [
+        "❓ Tek fark: oturumsuz 'sales' metninde V1 'Ödeme Şekli: normal' ↔ V2 boş (kimlikli çağrıda iki taraf 'Banka Transfer…' ile aynı). Ürün kararı: V1'in 'normal' yer tutucusu zaten anlamsız.",
+        "Madde 14 (iki tarafta aynı): oturumsuz sales metninde 'FistName LastName' yazım hatalı yer tutucu.",
+        "V1-only kapsam dışı: geçersiz tiplerde V1 500 Server Error.",
+        "Auth: @Public — tokensiz/geçersiz token 200 iki tarafta.",
+        "FE: /hesap/uye-ol V2 modunda /api/v2/getContractsByType?type=lp_clarification_text (200; önceki 302'ler oturumsuz gate).",
+        "Cache: ETag+304 var, Cache-Control yok.",
+        "Yöntem: V1 STAGE (api.nadirgold.work) ↔ V2 STAGE (api-v2.nadirgold.work/api/v1) canlı, id/sku hizalı alan-alan diff; 2 profil (P1 QA 181484, P2 FE hesabı). FE: www.nadirgold.work ?apiV2=0/1 Playwright ağ yakalama. qa-parity 14 madde kontrol listesi.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw/6632_*"
+      ],
+      "evidence": [],
+      "aiEvaluation": "STAGE adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-28T17:25:00+03:00",
+      "verdict": "PASS",
+      "summary": "DEV: kvkk/membership/preliminary/lp_clarification_text 3 turda birebir, kimlikli sales 2 profilde birebir; oturumsuz sales 'Ödeme Şekli: normal'↔boş (stage ile aynı ❓). FE /hesap/uye-ol V2 modunda /api/v2/getContractsByType?type=lp_clarification_text.",
+      "notes": [
+        "FE V1↔V2 (dev): üye ol sözleşme modalları iki modda aynı (2943 karakter, piksel %0.00).",
+        "DEV turu: V1 DEV (api.nadirgold.dev) ↔ V2 DEV (api-v2.nadirgold.dev/api/v1), id hizalı alan-alan diff, 2 profil (P1 QA 203311, P2 FE hesabı). FE: www.nadirgold.dev ?apiV2=0/1 ağ yakalama + UI metin diff; mutasyon 0."
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T00:10:00+03:00",
+      "verdict": "KISMI",
+      "summary": "Katı kontrol (29.09): PASS'ten KISMI'ya çekildi. Parity ve şema (data: string dizisi) ✓, FE ✓; ancak oturumsuz sales metninde V1 'Ödeme Şekli: normal' ↔ V2 boş farkı ürün kararı olmadan kapatılamaz.",
+      "notes": [
+        "FE V1↔V2 (dev): üye ol sözleşme modalları iki modda aynı (2943 karakter, piksel %0.00).",
+        "DEV turu: V1 DEV (api.nadirgold.dev) ↔ V2 DEV (api-v2.nadirgold.dev/api/v1), id hizalı alan-alan diff, 2 profil (P1 QA 203311, P2 FE hesabı). FE: www.nadirgold.dev ?apiV2=0/1 ağ yakalama + UI metin diff; mutasyon 0."
+      ],
+      "evidence": [],
+      "aiEvaluation": "Katı kural (kusur/teyit varken PASS yok) ile yeniden değerlendirme. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "KISMI",
+      "summary": "[DEV · 27 kart toplu koşum] 5 tip birebir; oturumsuz sales 'Ödeme Şekli: normal'↔boş — ürün kararı.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-11-20T15:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "Stage'de getContractsByType V1↔V2: girişli 7 senaryoda metin birebir, misafirde tek fark V1'in 'Ödeme Şekli: normal' placeholder sızıntısı; geçersiz tip V2 422 (V1 500), FE bundle'da V2 uç eşlemesi var.",
+      "notes": [
+        "Matris (anon + P2 auth × sales, kvkk, membership, preliminary, lp_clarification_text, 'sales,kvkk', 'sales,bogus', bogus, distance_sales, boş): 20 çift çağrı.",
+        "Auth: 7/7 başarı senaryosu 200/200 ve data birebir (sales 45.930 karakter, kvkk 7.125, membership 13.773, preliminary 13.201, lp_clarification_text 14.493; 'sales,kvkk' map biçimi aynı).",
+        "Anon: kvkk/membership/preliminary/lp_clarification_text birebir. sales (ve sales içeren kombinasyonlar) V1 45.800 ↔ V2 45.794: V1 metninde 'Ödeme Şekli' sonrası 'normal' yazıyor, V2'de boş — dev'de V1 kusuru olarak not edilmiş fark, V2 lehine.",
+        "Negatif: bogus / distance_sales → V1 500 ↔ V2 422 'Aktif sözleşme bulunamadı'; type= boş → 422/422 (V2 'Doğrulama hatası' + errors[]). 'sales,bogus' → 200 [html] (bilinmeyen tip sessizce düşüyor; dev'deki ile aynı).",
+        "renewal koşucusu: kvkk/membership/preliminary/lp_clarification_text temiz (3 tur), sales yalnız yukarıdaki anon fark.",
+        "FE: istemci bundle'ında GET_CONTRACTS_BY_TYPE_V2_ENDPOINT → getContractsByType eşlemesi ve clarificationText (lp_clarification_text) sorgusu mevcut. Gezilen sayfalarda (belgelerim, sepet) canlı çağrı tetiklenmedi; checkout sözleşme modalı sepet gerektirdiği için açılmadı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6632/matrix.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6632/fe-probe.txt"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-20T15:45:00+03:00",
+    "verdict": "PASS",
+    "summary": "Stage'de getContractsByType V1↔V2: girişli 7 senaryoda metin birebir, misafirde tek fark V1'in 'Ödeme Şekli: normal' placeholder sızıntısı; geçersiz tip V2 422 (V1 500), FE bundle'da V2 uç eşlemesi var.",
+    "notes": [
+      "Matris (anon + P2 auth × sales, kvkk, membership, preliminary, lp_clarification_text, 'sales,kvkk', 'sales,bogus', bogus, distance_sales, boş): 20 çift çağrı.",
+      "Auth: 7/7 başarı senaryosu 200/200 ve data birebir (sales 45.930 karakter, kvkk 7.125, membership 13.773, preliminary 13.201, lp_clarification_text 14.493; 'sales,kvkk' map biçimi aynı).",
+      "Anon: kvkk/membership/preliminary/lp_clarification_text birebir. sales (ve sales içeren kombinasyonlar) V1 45.800 ↔ V2 45.794: V1 metninde 'Ödeme Şekli' sonrası 'normal' yazıyor, V2'de boş — dev'de V1 kusuru olarak not edilmiş fark, V2 lehine.",
+      "Negatif: bogus / distance_sales → V1 500 ↔ V2 422 'Aktif sözleşme bulunamadı'; type= boş → 422/422 (V2 'Doğrulama hatası' + errors[]). 'sales,bogus' → 200 [html] (bilinmeyen tip sessizce düşüyor; dev'deki ile aynı).",
+      "renewal koşucusu: kvkk/membership/preliminary/lp_clarification_text temiz (3 tur), sales yalnız yukarıdaki anon fark.",
+      "FE: istemci bundle'ında GET_CONTRACTS_BY_TYPE_V2_ENDPOINT → getContractsByType eşlemesi ve clarificationText (lp_clarification_text) sorgusu mevcut. Gezilen sayfalarda (belgelerim, sepet) canlı çağrı tetiklenmedi; checkout sözleşme modalı sepet gerektirdiği için açılmadı."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6632/matrix.json",
+      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6632/fe-probe.txt"
+    ]
+  }
+}

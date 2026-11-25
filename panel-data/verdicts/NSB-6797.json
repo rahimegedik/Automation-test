@@ -1,0 +1,28 @@
+{
+  "card": "NSB-6797",
+  "history": [
+    {
+      "date": "2026-11-12T13:40:00+03:00",
+      "verdict": "PASS",
+      "summary": "STAGE: orders/completed tüm sayfalar V1↔V2 birebir; /yorumlar sipariş seçici V2 modda /api/v2/customer/orders/completed 200, aynı liste (1725138).",
+      "notes": [
+        "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-12-deploy-stage/"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-12T13:40:00+03:00",
+    "verdict": "PASS",
+    "summary": "STAGE: orders/completed tüm sayfalar V1↔V2 birebir; /yorumlar sipariş seçici V2 modda /api/v2/customer/orders/completed 200, aynı liste (1725138).",
+    "notes": [
+      "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE.",
+      "Boş liste durumu da doğrulandı: yorum sonrası seçici \"Yorum yapabileceğiniz bir siparişiniz bulunmuyor.\" gösteriyor (V2)."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-12-deploy-stage/"
+    ]
+  }
+}

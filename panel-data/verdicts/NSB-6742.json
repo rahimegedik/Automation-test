@@ -1,0 +1,19 @@
+{
+  "card": "NSB-6742",
+  "history": [
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] HAH sepetinde zarf currencyCode V1 ve V2’de \"AU\", kalem \"GAU\".",
+      "notes": [
+        "Misafir 99950gr50 q1 V2 add → V1 POST get / V2 POST get: currencyCode AU/AU, items[].currencyCode GAU/GAU, basketType FromBankAccountToPhysical.",
+        "V1’in yazdığı q2 sepetinde de V2 AU/GAU.",
+        "Tutarlar NSB-6870 notunda (AU ölçeği eşit)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6742/A2-get-q1.v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6742/A2-get-q1.v2.json"
+      ]
+    }
+  ]
+}

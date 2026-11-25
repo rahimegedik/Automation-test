@@ -1,0 +1,79 @@
+{
+  "card": "NSB-6654",
+  "history": [
+    {
+      "date": "2026-09-28T16:05:00+03:00",
+      "verdict": "FAIL",
+      "summary": "basket/get V2 STAGE: aynı sepet (basketId 145453744, P2) için V2 'Nilgün Hn %1' kampanyasını uyguluyor, V1 uygulamıyor — 2 ölçümde grandTotal V1 7105,64/7108,70 ↔ V2 7034,58 (−71,06 TL). Bilinmeyen hash iki tarafta 404.",
+      "notes": [
+        "🔴 Kampanya/toplam farkı (kabul kriterindeki 'kalem/toplam/kampanya alanları'): V2 discounts[campaign_id 21, category [2], %1] + discountAmount 71,06; V1 discounts [] / 0. V2 fiyatı iki ölçümde sabit kaldı, V1 kurla değişti (fiyat cache'i şüphesi, bkz. 6586).",
+        "Yapı farkı (FE uyarlama): items[].images {main:[…]} → […]; options alanları yeniden adlandırılmış; categories sırası ters; estimationDate '+03:00' ↔ 'Z' (aynı an).",
+        "❓ NSB-6416: V2 misafir basket/get 15 ardışık istekte yalnız global limit (x-ratelimit 300) — V1 benzeri sepet limiti görülmedi (sepet oluşturma denenmedi).",
+        "⚠ FE: stage FE sepeti boş olduğundan /sepet sayfası basket/get çağırmadı; FE entegrasyonu adım 2'de (sepete ekle) doğrulanacak. V1 rate limit nedeniyle V1'e toplam 2 istek atıldı.",
+        "Yöntem: V1 STAGE (api.nadirgold.work) ↔ V2 STAGE (api-v2.nadirgold.work/api/v1) canlı, id/sku hizalı alan-alan diff; 2 profil (P1 QA 181484, P2 FE hesabı). FE: www.nadirgold.work ?apiV2=0/1 Playwright ağ yakalama. qa-parity 14 madde kontrol listesi.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw/6654_*"
+      ],
+      "evidence": [],
+      "aiEvaluation": "STAGE adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-28T17:25:00+03:00",
+      "verdict": "FAIL",
+      "summary": "DEV: aynı sepet (P1, NDRG50, basketType Subscribe, paymentMethod MpayBankTransfer, transferBankId null) V1 7.199,33 ↔ V2 6.955,87 (−243,46 = getPrices.bankTransferDiff) — V2 havale fiyatını uyguluyor, V1 kart fiyatını. P2 sepeti boş (UNVERIFIED). FE /sepet ve tüm sayfalar V2 modunda /api/v2/basket/get çağırıyor.",
+      "notes": [
+        "FE V1↔V2 (dev): P2 sepeti boş → sepet sayfası kalem karşılaştırması yapılamadı (sepete ekleme = mutasyon, adım 2). Sepetteki 'çok satanlar' bloğu iki modda farklı ürün sırası (kapsam dışı, best-seller-lite).",
+        "Yapı farkları stage ile aynı (images, options, estimationDate Z).",
+        "Yan bulgu: V2 DEV getPrices aynı istekte 3 turda 3 farklı şekil (nesne / null / dizi).",
+        "V1 rate limit nedeniyle V1'e doğrudan 3 istek.",
+        "DEV turu: V1 DEV (api.nadirgold.dev) ↔ V2 DEV (api-v2.nadirgold.dev/api/v1), id hizalı alan-alan diff, 2 profil (P1 QA 203311, P2 FE hesabı). FE: www.nadirgold.dev ?apiV2=0/1 ağ yakalama + UI metin diff; mutasyon 0.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/6654_*"
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · 27 kart toplu koşum] Standart sepette get parity temiz (koşucu), ancak Düzenli Birikim sepetinde V2 havale fiyatı uyguluyor (−243,46 TL) ve STAGE'de kampanya farkı; FE 1 ürünlü sepette V1 13.165,03 ↔ V2 13.179,50 TL (❓ kur eşitliği ölçülmedi).",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[STAGE] FE sepet /api/v2/basket/get ile yükleniyor ve boş/tek kalem sepette parity var, ancak V2 kampanya indirimini her kaleme tam tutar yazıyor (FE satır fiyatları V1’den 200 TL düşük) ve müşteri sepetinde V1’in uygulamadığı kampanyayı uyguluyor.",
+      "notes": [
+        "FE: /sepet V1 → api.nadirgold.work/basket/get, V2 → /api/v2/basket/get (x-api-version v1/v2). Her sayfa yüklemesinde basket/get 2 kez çağrılıyor (iki modda da).",
+        "✅ Müşteri sepeti boş ve 1×NDR1194060: V1↔V2 zarf alanları birebir (yalnız V2 ek id/subtotalInclTax, images biçimi, estimationDate formatı).",
+        "✅ Bilinmeyen hash: V1 404 \"Basket not found\" ↔ V2 404 \"Sepet bulunamadı\".",
+        "🔴 FE ekranı (aynı 5 kalemli sepet, Kişiye Özel İndirim 200 TL): V1 satırlar 6.645,83 / 11.226,19 / 15.994,43 / 31.575,43 / 22.007,16 TL ↔ V2 6.445,83 / 11.026,19 / 15.794,43 / 31.375,43 / 21.807,16 TL; toplam/indirimli toplam iki modda 87.449,04 / 87.249,04. V2 API items[].discountAmount her kalemde 200 (discountAmountSplit 50), sepet indirimi 200 — satırların toplamı ödenecek tutarı tutmuyor.",
+        "🔴 Müşteri sepeti NDR1194060×2: V2 \"Kişiye Özel İndirim 200 TL\" (campaign 28) uyguluyor → grandTotal 13096.72; V1 aynı sepette uygulamıyor → 13296.72 (V1 update + V1 get, V2 get aynı hash).",
+        "🔴 V1’in böldüğü (2 satır) sepeti V2 okuyunca itemsCount 2 (V1 1), items[].discountAmount 400, items[].price 12896.72 (grandTotal 13096.72).",
+        "Sepet görselleri (cdn mnresize/128) iki modda da kırık (10/10) — V2’ye özgü değil.",
+        "❓ Rate-limit mesajının FE gösterimi ölçülemedi (proxy kilitlenmedi)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6654/cust-chain.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6654/fe-sepet-m0.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6654/fe-sepet-m1.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6654/fe-sepet-m0.txt",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6654/fe-sepet-m1.txt"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-09-29T08:00:00+03:00",
+    "verdict": "FAIL",
+    "summary": "[DEV · 27 kart toplu koşum] Standart sepette get parity temiz (koşucu), ancak Düzenli Birikim sepetinde V2 havale fiyatı uyguluyor (−243,46 TL) ve STAGE'de kampanya farkı; FE 1 ürünlü sepette V1 13.165,03 ↔ V2 13.179,50 TL (❓ kur eşitliği ölçülmedi).",
+    "notes": [
+      "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+      "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+  }
+}

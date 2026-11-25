@@ -1,0 +1,23 @@
+{
+ "card": "NSB-5803",
+ "history": [
+  {
+   "date": "2026-11-20T16:10:00+03:00",
+   "verdict": "KISMI",
+   "summary": "[STAGE 20.11] STAGE setAddress: misafir (inline) ve kayıtlı adres yollarında V1=V2 (yalnız bilinen postcode/motoDeliveryOptions farkı); moto kuryenin dolu döndüğü dal stage'de V1'de de görülmedi, ölçülemedi.",
+   "notes": [
+    "Misafir sepeti (NDRİSCİLİKSİZ1, her taraf kendi sepeti): 1/6/98 Standard 200/200, Beşiktaş 1/10/157 200/200, Kocaeli 29/383/19156 200/200 (V1 motoDeliveryOptions anahtarı yok ↔ V2 null — bilinen V2 eklemesi); bölge dışı + MotoDelivery 422 \"Shipping methods are incompatible!\" ↔ 422 \"Kargo yöntemleri uyumsuz!\"; bilinmeyen hash 404/404.",
+    "Kayıtlı adres (müşteri sepeti 145454875): 214188 (Beşiktaş) ve 214221 (Adana) 200/200; alan diff yalnız shipping/billing.postcode V1 null ↔ V2 \"34087\"/\"\" (04.11 FE notu) + motoDeliveryOptions extra null.",
+    "Moto dolu dalı: 15:27 (kurye saati içinde) 1/6/98 ve 1/10/157'de V1 STAGE de moto seçeneği döndürmüyor; HFA sepetinde Standard iki tarafta 422. Stage'de moto bölge/kurye yapılandırması görünmüyor → UNTESTED kısım.",
+    "Ölçümler 214224 adresini kullanmadı (o adres 15:27–15:28 arası başka ajan tarafından değiştirilmişti)."
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6794/moto-summary.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6794/v1-std-in.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6794/v2-std-in.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-5803/diff-saved-214188.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-5803/diff-saved-214221.json"
+   ]
+  }
+ ]
+}

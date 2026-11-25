@@ -1,0 +1,19 @@
+{
+  "card": "NSB-6735",
+  "history": [
+    {
+      "date": "2026-11-20T16:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] servicePrice/taxPrice/workmanship/bankTransfer* dahil 14 fiyat alanı iki farklı kur setinde toleranssız eşit (detay 5.796 alan, arama tüm fiyatlar); 1 kuruş farkı yok.",
+      "notes": [
+        "Detay: V1 GET /product/detail/{id} ↔ V2 GET /api/v1/product/products/{id}, 108 ürün × 2 profil × 2 tur, eşzamanlı. Tur 1 rate 5981.62, tur 2 5975.64 (ürün 13) → iki ayrı kur setinde 5.796 fiyat alanı, tolerans yok, fark 0.",
+        "Arama: 24 sorgu × 2 profil × 3 tur — fiyat alanlarında değer farkı yalnız specialPrice (NSB-7269, kapsam dışı); servicePrice/taxPrice farkı 0.",
+        "Not: 01.10 dev turundaki gibi .xx5 sınır vakaları ayrıca ayıklanmadı (V1 zinciri yeniden kurulmadı); iki kur setinde ve 108 üründe hiç 1 kuruş farkı çıkmaması stage V1'in v1.0.13 helper'ını kullandığını gösteriyor, doğrudan sürüm teyidi yok."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5398/analyze.txt"
+      ],
+      "aiEvaluation": "Stage RFS turu 20.11.2026 — brief kuralları; Jira'ya yazılmadı, statü değiştirilmedi."
+    }
+  ]
+}

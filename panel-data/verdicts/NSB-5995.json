@@ -2,6 +2,18 @@
   "card": "NSB-5995",
   "history": [
     {
+      "date": "2026-11-12T13:40:00+03:00",
+      "verdict": "KISMI",
+      "summary": "STAGE: 9 PDP V1↔V2 ekranı birebir (metin, grafik, yıldız, Takı ölçü seçenekleri). API 83 ürün: specialPrice V1 dolu ↔ V2 \"0\" (53 ürün), Takı options sırası farklı (ekrana yansımıyor), meta/installments/categoryPath sözleşme farkları kasıtlı.",
+      "notes": [
+        "specialPrice FE’de görünür bir yerde kullanılmıyor görünüyor; BE’den anlamı teyit edilmeli.",
+        "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-12-deploy-stage/"
+      ]
+    },
+    {
       "date": "2026-08-27T16:45:00+03:00",
       "verdict": "FAIL",
       "summary": "Urun detayda musteriye gorunen fiyat V2'de dusuk cikiyor — id=282'de optionTotal V1=2240 / V2=2160, fiyat 82,99 TL sapiyor",
@@ -22,22 +34,15 @@
     }
   ],
   "latest": {
-    "date": "2026-08-27T16:45:00+03:00",
-    "verdict": "FAIL",
-    "summary": "Urun detayda musteriye gorunen fiyat V2'de dusuk cikiyor — id=282'de optionTotal V1=2240 / V2=2160, fiyat 82,99 TL sapiyor",
+    "date": "2026-11-12T13:40:00+03:00",
+    "verdict": "KISMI",
+    "summary": "STAGE: 9 PDP V1↔V2 ekranı birebir (metin, grafik, yıldız, Takı ölçü seçenekleri). API 83 ürün: specialPrice V1 dolu ↔ V2 \"0\" (53 ürün), Takı options sırası farklı (ekrana yansımıyor), meta/installments/categoryPath sözleşme farkları kasıtlı.",
     "notes": [
-      "125 urunun TAMAMI (2 sayfa) iki modda karsilastirildi; 122'si karsilastirilabildi",
-      "KRITIK: id=282 'NadirGold 25 Gr Kulce Altin 999.9' -> optionTotal V1=2240 vs V2=2160.00 (80 TL). Bu price, workmanship, bankTransferPrice, servicePrice, taxPrice, insurancePrice, cargoPrice, bankTransferDiff alanlarina zincirleme yansiyor",
-      "Es zamanli cagrilarla 3 kez tekrarlandi — canli kur dalgalanmasi DEGIL, kalici. options girdileri iki tarafta birebir ayni (ayni 3 opsiyon, ayni price/factor) -> hesaplama farki",
-      "FE'de teyitli: urun detay sayfasi V1 modunda 187.773,03 TL, V2 modunda 187.690,04 TL gosteriyor",
-      "Ikincil: id=24'te workmanship 682.72 vs 682.73 ve bankTransferPrice 19507.75 vs 19507.74 — 0,01 yuvarlama farki",
-      "Diger 120 urunde fiyat sayisal paritesi tam (string<->float donusumu sorunsuz)",
-      "images alani: dolu oldugunda iki tarafta da dict ve gorsel id kumeleri birebir; BOS oldugunda V1 [] / V2 {} donuyor -> FE'de images.length guard'i kirilabilir",
-      "Iyilesmeler: V1'de 3 urun (215, 276, 277) bos govde donerken V2 dolu donuyor; olmayan id V1'de 200+bos data, V2'de 404 'Product not found'",
-      "metaTitle/metaDescription -> meta objesi, installments ve infoTabs V2'de yeni; isSubscribe/showInternalStandard/isMotoDelivery/canBeSubscription int->bool; options null->[] (dokumante)",
-      "device-type header sozlesmesi dogru: web/bos -> prices dizi, ios/android -> prices obje"
+      "specialPrice FE’de görünür bir yerde kullanılmıyor görünüyor; BE’den anlamı teyit edilmeli.",
+      "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
     ],
-    "evidence": [],
-    "aiEvaluation": "optionTotal hesaplama farki musteriye gorunen fiyati degistiriyor; PASS verilemez. Once BE product-service tarafinda optionTotal aggregation'i V1 ile eslesmeli, sonra 125 urun taramasi tekrarlanmali."
+    "evidence": [
+      "panel-data/evidence/2026-11-12-deploy-stage/"
+    ]
   }
 }

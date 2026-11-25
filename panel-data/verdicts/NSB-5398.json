@@ -1,0 +1,29 @@
+{
+  "card": "NSB-5398",
+  "history": [
+    {
+      "date": "2026-11-20T16:10:00+03:00",
+      "verdict": "BLOCKED",
+      "summary": "[STAGE] Kartın kapsamı temiz (108 ürün × 2 profil × 2 tur: quantity 0 fark, 5.796 fiyat alanı 0 fark, negatif/auth parity); kampanyalı 77 üründe açık NSB-7269 (specialPrice V2'de \"0\") bu uçta üretiliyor.",
+      "notes": [
+        "İstek: V1 GET https://api.nadirgold.work/product/detail/{id} ↔ V2 GET https://api-v2.nadirgold.work/api/v1/product/products/{id}, eşzamanlı; V2 product/products?limit=200 listesindeki 108 id × (header yok / device-type: ios) × 2 tur (12:34 ve 12:36 UTC, iki farklı kur seti: ürün 13 rate 5981.62 → 5975.64). 432 çift.",
+        "Durum: 414 çift 200/200. 18 çift V1 200 data:[] ↔ V2 404: 215 (test ürünü, iki profilde) ve ios'ta 343–358 (mobilde gizli FIFA ürünleri) — 25.10 dev notuyla tutarlı (V2 de gizliyor).",
+        "✅ quantity 414/414 eşit (NSB-6447 ayağı). Fiyat: price, rate, servicePrice, taxPrice, workmanship, bankTransferDiff, bankTransferPrice, cargoPrice, insurancePrice, extraTax, optionTotal, originalPrice, rawPrice, priceCost → 5.796 alan, toleranssız 0 fark (NSB-6735/6793 ayağı).",
+        "✅ options[] anahtar seti 414/414 eşit (optionId/alias, detay sözleşmesi bozulmamış); attributes[].productUrlId 414/414 eşit; priceStatus ve highValueOrderThreshold farkı 0.",
+        "🔴 prices.specialPrice: kampanyalı 77 üründe (\"Yeni Üyelere Özel İndirim (200 TL)\", campaigns[] iki tarafta dolu) V1 price − 200 (örn. 13: 11228.85 → 11028.85) ↔ V2 \"0\"; 306 çiftte. Açık kart NSB-7269 (Waiting For Review) — dev ölçümünde kampanya olmadığı için görünmemişti.",
+        "Bilinen/kasıtlı: metaTitle/metaDescription → meta{}, categoryPath/installments/infoTabs V2 eki, images şekli (NSB-6261), discountsHtml yalnız biçim (76), options[].productSku sırası 610 kayıtta (NSB-6904, V1 tanımsız sıra).",
+        "Negatif: 999999/0/-1 → V1 200 data:[] ↔ V2 404 \"Product not found\"; abc/6.5 → V2 400 \"Validation failed (numeric string is expected)\"; POST → 404. Bozuk Bearer → 200 (public). HSTS, nosniff, SAMEORIGIN var.",
+        "🟡 ETag var ama If-None-Match ile 304 yerine 200 dönüyor (3 deneme; dev'de 304'tü, 19.11 NSB-5357'de de stage'de aynı görüldü) — stage önbellek/proxy davranışı.",
+        "Deploy: NSB-6447/6735/6793 düzeltmeleri stage'de etkin (aşağıdaki kartlar). Karar: kartın kapsamı temiz, NSB-7269 kapanınca yalnız specialPrice satırı yeniden ölçülür."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5398/analyze.txt",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5398/detail-raw-r1.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5398/detail-raw-r2.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5398/ids.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5398/negatif-cache.json"
+      ],
+      "aiEvaluation": "Stage RFS turu 20.11.2026 — brief kuralları; Jira'ya yazılmadı, statü değiştirilmedi."
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "card": "NSB-6402",
+  "history": [
+    {
+      "date": "2026-11-20T16:10:00+03:00",
+      "verdict": "KISMI",
+      "summary": "[STAGE] OpenSearch okuma yolu stage'de etkin (gram 82=82, altin=altın 90, 250 gram yalnız 250 Gr, 10 gram çeşitlendirme, 48/48 sıra+total eşit); ancak didYouMean stage'de iki tarafta hiç dolmuyor, total ile listelenebilen ürün sayısı tutmuyor ve sayfa dilimlemesi V1'den farklı.",
+      "notes": [
+        "Deploy kanıtı: 25.09'da V2 STAGE gram → 0, altin 7 ↔ altın 58 idi. Bugün V2 STAGE gram 82 (V1 82, ids [2,67,148,433,41] aynı), altin = altın 90 (aynı ids), ceyrek altn 7 sonuç, 250 gram 5 sonuç (45,153,64,189,73 = 250 Gr ürünler).",
+        "Shadow compare (24 sorgu × 2 profil × 3 tur, eşzamanlı): ürün id sırası, pagination.total, didYouMean, categories[] listesi 144/144 V1 ile aynı. Deep pagination altın limit 20: iki tarafta 92 ürün, mükerrer 0, birleşik sıra birebir.",
+        "🟡 didYouMean: anahtar her yanıtta var (null dahil) ✅, ama stage'de hiçbir sorguda dolmuyor — ceyrek altn için V1 de V2 de null (dev'de \"çeyrek altın\"). Kabul kriteri \"ceyrek altn için didYouMean dolar\" stage'de iki tarafta da karşılanmıyor → ortam ayarı (SEARCH_DID_YOU_MEAN?) olabilir, BE teyit etmeli.",
+        "🔴/🟡 Kriter 13 (ES filtre kümesi = MySQL görünürlük): stage'de iki tarafta da total listelenen üründen büyük — altın total 95, listelenebilen 92; ata total 6, listelenen 3; yarım total 8, listelenen 7. V1'de de aynı (index'te görünmez ürün var).",
+        "🔴 Sayfa dilimleme farkı (V2-özel): düşen kayıt olduğunda V1 sayfayı eksik veriyor, V2 tam sayfa verip sonraki sayfadan kaydırıyor. yarım limit5 V1 [157,135,46,65] + [154,186,75] ↔ V2 [157,135,46,65,154] + [186,75]; ata V1 [159,32]+[121] ↔ V2 [159,32,121]+[] (lastPage 2, son sayfa boş); altın limit 5 sayfa 18/19 farklı; limit 50 → V1 49 / V2 50 ürün. Birleşik sıra aynı, sayfa bazında 'ürün ID sırası birebir' kriteri tutmuyor.",
+        "UNTESTED: cluster kapalıyken MySQL fallback + search.opensearch_fallback logu, SEARCH_ENGINE=mysql iken bağlantı kurulmaması, search.unknown_engine — dışarıdan ölçülemez; log/infra erişimi gerekir (dev'de de aynı not)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6402/deploy-probe.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6402/page-slicing-limit5.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5405/analyze.txt"
+      ],
+      "aiEvaluation": "Stage RFS turu 20.11.2026 — brief kuralları; Jira'ya yazılmadı, statü değiştirilmedi."
+    }
+  ]
+}

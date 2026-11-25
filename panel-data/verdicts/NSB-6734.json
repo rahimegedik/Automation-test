@@ -1,0 +1,20 @@
+{
+  "card": "NSB-6734",
+  "history": [
+    {
+      "date": "2026-11-20T16:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] Arama hidrasyonu V1 ile aynı: options[] anahtar seti ve attributes[].productUrlId 591/591 eşleşen üründe eşit; detay sözleşmesi (optionId/alias) bozulmamış.",
+      "notes": [
+        "Arama: 24 sorgu × 2 profil × 3 tur, ürünler id ile eşlendi (591 eşleşme). options[] anahtarları (id, optionGroupAlias …) 591/591 eşit; attributes[].productUrlId 591/591 eşit.",
+        "Detay ucu (MR !492'nin dokunmaması gereken yer): 414 çift, options[] anahtarları 414/414 eşit, productUrlId 414/414 eşit, priceStatus farkı 0.",
+        "Bilinen: options[].productSku sırası arama 54, detay 610 kayıtta farklı (NSB-6904, V1 tanımsız sıra); videos placeholder V1 1 boş kayıt ↔ V2 []."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5405/analyze.txt",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-5398/analyze.txt"
+      ],
+      "aiEvaluation": "Stage RFS turu 20.11.2026 — brief kuralları; Jira'ya yazılmadı, statü değiştirilmedi."
+    }
+  ]
+}

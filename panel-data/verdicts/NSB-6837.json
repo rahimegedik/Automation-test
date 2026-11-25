@@ -1,0 +1,18 @@
+{
+  "card": "NSB-6837",
+  "history": [
+    {
+      "date": "2026-11-20T15:45:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "Gateway'in OpenSearch'e yazdığı dokümanlar QA'dan gözlenemiyor (OpenSearch/Dashboards erişimi yok); kara kutudan yalnız gateway'in correlation/request id ürettiği ve stage'de normal yanıt verdiği görüldü.",
+      "notes": [
+        "api-v2.nadirgold.work (stage gateway, x-glb-backend api-v2-nadirgold.k8s.stage.nmr.biz): /health → 200 {status:ok, service:nadir-gateway}. Her yanıtta x-request-id (UUID) var; gönderilen X-Correlation-ID aynen geri dönüyor (qa-6931-intervals, qa-6931-login-fake, qa-6931-register-fake, qa-6931-health).",
+        "Yanıt başlıklarında loglama/index ile ilgili iz yok; HTTP_REQUEST_LOG_ENABLE'ın stage'de açık olup olmadığı dışarıdan anlaşılamıyor.",
+        "Gerekli: stage OpenSearch (index nadir-api2-stage-* ya da eşdeğeri) salt-okur erişim, ya da 20.11 12:32–12:33 (TSİ 15:32–15:33) arasındaki yukarıdaki correlationId'li kayıtların ham dokümanı. Kontrol edilecek: request.params.email dolu, password alanı yok/***, headers.authorization ***, url'de query yok, ip/correlationId/service/upstream dolu."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6837/gateway-headers.json"
+      ]
+    }
+  ]
+}

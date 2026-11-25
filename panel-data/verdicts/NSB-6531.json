@@ -1,0 +1,93 @@
+{
+  "card": "NSB-6531",
+  "history": [
+    {
+      "date": "2026-09-28T16:05:00+03:00",
+      "verdict": "PASS",
+      "summary": "savingsSubscriptions/list V2 STAGE: 2 profil (18 + 7 kayıt) id kümesi ve sırası aynı, sayfalama meta (page/limit/total/lastPage/hasNextPage) aynı, sayfa yürüyüşünde mükerrer/kayıp 0, isActive filtresi aynı; tarih alanları 0 kayma. UI iki modda birebir.",
+      "notes": [
+        "❓ V2 getPlans[].savingSubscription (üst aboneliğin kopyası, 206+64 örnek) dönmüyor; UI'da kullanılmıyor (liste 161/161 öğe aynı). BE'ye kasıtlı mı teyit.",
+        "✅ firstSubscriptionDate '0000-00-00 00:00:00' → null (normalize). address.*.logoKuyumsoftId string→int.",
+        "Edge: limit=0 V1 500 ↔ V2 200 (list [], lastPage 18, hasNextPage true — anlamsız meta, 4xx beklenir); page=-1 iki tarafta kabul.",
+        "Auth: tokensiz/geçersiz 401 iki tarafta.",
+        "FE: /hesabim/birikim V2 modunda /api/v2/savingsSubscriptions/list?page=1&limit=5.",
+        "Yöntem: V1 STAGE (api.nadirgold.work) ↔ V2 STAGE (api-v2.nadirgold.work/api/v1) canlı, id/sku hizalı alan-alan diff; 2 profil (P1 QA 181484, P2 FE hesabı). FE: www.nadirgold.work ?apiV2=0/1 Playwright ağ yakalama. qa-parity 14 madde kontrol listesi.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw/6531_*"
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-28-stage-faruk-adim1/6531-v1-birikim-listesi.png",
+        "panel-data/evidence/2026-09-28-stage-faruk-adim1/6531-v2-birikim-listesi.png"
+      ],
+      "aiEvaluation": "STAGE adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-28T17:25:00+03:00",
+      "verdict": "PASS",
+      "summary": "DEV: P1 31 sayfa + P2, id/sıra/meta aynı; getPlans[].savingSubscription kopyası V2'de yok (❓, UI 132/132 aynı); customerCardId string→int.",
+      "notes": [
+        "FE V1↔V2 (dev): Tümü/Aktif/İptal sekmeleri metin 0 fark, piksel ≤%0.02.",
+        "⚠️ V1-only (kapsam dışı, güvenlik): V1 DEV creditCardInfo alanı kart no/son kullanma/CVV içeriyor; V2 yalnız maskeli numara döndürüyor. Ayrı ele alınmalı.",
+        "DEV turu: V1 DEV (api.nadirgold.dev) ↔ V2 DEV (api-v2.nadirgold.dev/api/v1), id hizalı alan-alan diff, 2 profil (P1 QA 203311, P2 FE hesabı). FE: www.nadirgold.dev ?apiV2=0/1 ağ yakalama + UI metin diff; mutasyon 0."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-28-dev-faruk-adim1/fe-v1-v2/6531-v1-birikim.png",
+        "panel-data/evidence/2026-09-28-dev-faruk-adim1/fe-v1-v2/6531-v2-birikim.png"
+      ],
+      "aiEvaluation": "DEV adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T00:10:00+03:00",
+      "verdict": "KISMI",
+      "summary": "Katı kontrol (29.09): PASS'ten KISMI'ya çekildi. Parity/sayfalama/tarih/FE ✓; V2 getPlans[].savingSubscription döndürmüyor (BE teyidi yok) ve spec'te 200 yanıt şeması tanımsız (madde 1 doğrulanamıyor).",
+      "notes": [
+        "FE V1↔V2 (dev): Tümü/Aktif/İptal sekmeleri metin 0 fark, piksel ≤%0.02.",
+        "⚠️ V1-only (kapsam dışı, güvenlik): V1 DEV creditCardInfo alanı kart no/son kullanma/CVV içeriyor; V2 yalnız maskeli numara döndürüyor. Ayrı ele alınmalı.",
+        "DEV turu: V1 DEV (api.nadirgold.dev) ↔ V2 DEV (api-v2.nadirgold.dev/api/v1), id hizalı alan-alan diff, 2 profil (P1 QA 203311, P2 FE hesabı). FE: www.nadirgold.dev ?apiV2=0/1 ağ yakalama + UI metin diff; mutasyon 0."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-28-dev-faruk-adim1/fe-v1-v2/6531-v1-birikim.png",
+        "panel-data/evidence/2026-09-28-dev-faruk-adim1/fe-v1-v2/6531-v2-birikim.png"
+      ],
+      "aiEvaluation": "Katı kural (kusur/teyit varken PASS yok) ile yeniden değerlendirme. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · 27 kart toplu koşum] V2 getPlans[].savingSubscription döndürmüyor (kayıp alan = regresyon kuralı); spec'te yanıt şeması yok.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-10-05T12:20:19.455Z",
+      "verdict": "FAIL",
+      "summary": "[DEV · renewal koşucusu] getPlans[].savingSubscription hâlâ yok; yeni: isRetriggerable V1 true ↔ V2 false (P1, 1 plan); product.updatedAt/lastActivityAt turlar arası değişken fark.",
+      "notes": [
+        "🔴 eksik alan getPlans.*.savingSubscription.*",
+        "🔴 isRetriggerable true ↔ false",
+        "❓ products.*.product.updatedAt Δ-128s/-9s (turlar arası değişken)",
+        "❓ FE: DEV customer-service kimlikli isteklerde 500 (customer/detail, customer/orders, customer/documents, token'lı getContractsByType) → V2 FE oturumu \"Giriş Yap\" gösteriyor; bu koşumdaki FE karşılaştırmaları geçersiz.",
+        "Koşum: renewal/out/dev-2026-10-05-12-14"
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-10-05T12:20:19.455Z",
+    "verdict": "FAIL",
+    "summary": "[DEV · renewal koşucusu] getPlans[].savingSubscription hâlâ yok; yeni: isRetriggerable V1 true ↔ V2 false (P1, 1 plan); product.updatedAt/lastActivityAt turlar arası değişken fark.",
+    "notes": [
+      "🔴 eksik alan getPlans.*.savingSubscription.*",
+      "🔴 isRetriggerable true ↔ false",
+      "❓ products.*.product.updatedAt Δ-128s/-9s (turlar arası değişken)",
+      "❓ FE: DEV customer-service kimlikli isteklerde 500 (customer/detail, customer/orders, customer/documents, token'lı getContractsByType) → V2 FE oturumu \"Giriş Yap\" gösteriyor; bu koşumdaki FE karşılaştırmaları geçersiz.",
+      "Koşum: renewal/out/dev-2026-10-05-12-14"
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+  }
+}

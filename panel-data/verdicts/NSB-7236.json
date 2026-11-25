@@ -1,0 +1,19 @@
+{
+ "card": "NSB-7236",
+ "history": [
+  {
+   "date": "2026-11-20T16:10:00+03:00",
+   "verdict": "BLOCKED",
+   "summary": "[DEPLOY YOK] STAGE 20.11: STAGE V2'de POST /api/v1/basket/setInstallment 404 \"Cannot POST\"; stage commerce swagger'ında uç ve SetInstallmentDto yok (dev swagger'ında var).",
+   "notes": [
+    "POST https://api-v2.nadirgold.work/api/v1/basket/setInstallment {installment:2} → 404 \"Cannot POST /api/v1/basket/setInstallment\".",
+    "Swagger farkı (20.11 12:28 UTC): dev'de var stage'de yok → /api/v1/basket/setInstallment, /api/v1/payment/familyInstallments; şemalar SetInstallmentDto, FamilyInstallmentsDto, OrderDocument*; stage swagger 19.11 ile birebir aynı (21 path)."
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-7236/v2-setInstallment-probe.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/_basket/commerce-spec-20.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/_basket/commerce-spec-dev-20.json"
+   ]
+  }
+ ]
+}

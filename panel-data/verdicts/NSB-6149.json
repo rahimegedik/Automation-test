@@ -1,0 +1,21 @@
+{
+  "card": "NSB-6149",
+  "history": [
+    {
+      "date": "2026-11-20T16:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] V2 hiçbir token varyantında \"config required\" dönmüyor, token Cloudflare'e doğrulatılıyor; 19.11'de gerçek Turnstile ile V2 FE'den abonelik 200 alındı (uçtan uca çalışıyor).",
+      "notes": [
+        "Bugün API matrisi (V1 POST /newsletter/save ↔ V2 POST /api/v1/notification/newsletter, 12 senaryo): token yok/boş/gövde yok/email yok → iki tarafta 422 \"Turnstile verification required\"; sahte ve CF test değeri (1x0000…AA) captcha_token → iki tarafta 422 \"validation failed\"; V2 captchaToken / body cf-turnstile-response / header kanallarını da okuyup \"validation failed\" veriyor (V1 yalnız captcha_token okuyor). \"config required\" 0/12. 5xx yok.",
+        "Uçtan uca (19.11 stage turu, NSB-5999 kanıtı, tekrarlanmadı): gerçek Chrome + gerçek Turnstile, POST https://www.nadirgold.work/api/v2/notification/newsletter → 200 \"E-bülten aboneliğiniz başlamıştır\" (qa-nsb5999+20261119171749@example.com, qa-nsb5999+20261119171835@example.com).",
+        "Bugün yeni abonelik oluşturulmadı (tüm istekler 422)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6000/newsletter-matrix.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5999/fe-ilk-m1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5999/fe-ilk-m1.png"
+      ],
+      "aiEvaluation": "Stage RFS turu 20.11.2026 — brief kuralları; Jira'ya yazılmadı, statü değiştirilmedi."
+    }
+  ]
+}

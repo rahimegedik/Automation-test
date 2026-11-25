@@ -1,0 +1,21 @@
+{
+  "card": "NSB-6870",
+  "history": [
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] HAH sepetinde V2 toplamları V1 gibi AU ölçeğinde (52.8 / 105.6) ve goldToCurrency, vergi, kargo V1 ile aynı.",
+      "notes": [
+        "Misafir 99950gr50 q1 (V2 yazdı) V1↔V2 get: currencyCode AU/AU, subTotal/grandTotal 52.8/52.8, grandTotalOriginalPrice 52.8, goldToCurrency 328579.68, taxAmount 1806.95, shippingFee 0 — eşit.",
+        "q2: V2 kendi sepeti 105.6 / goldToCurrency 657159.36; V1’in yazdığı q2 sepeti V1↔V2 105.6 / 657159.36 / taxAmount 3613.9 eşit.",
+        "V2’nin yazdığı q2’yi V1 52.8 okuyor — NSB-6918 kararı gereği kapsam dışı.",
+        "Moto/TL kargo→AU çevrimi kara kutudan ulaşılamaz (HAH yalnız FromBankAccountToPhysical)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6870/hah-chain.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6870/A2-get-q1.v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6870/A2-get-q1.v2.json"
+      ]
+    }
+  ]
+}

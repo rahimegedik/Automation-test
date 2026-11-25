@@ -1,0 +1,70 @@
+{
+  "card": "NSB-6568",
+  "history": [
+    {
+      "date": "2026-09-28T16:05:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "payment/binQuery — ⛔ DENY (qa-parity: payment/* canlıda çağrılmaz). Koşulmadı; 21.09 DEV ölçümü (veri alanları birebir, logo boyutu farkı) geçerliliğini koruyor ama stage kabul kriteri doğrulanmadı.",
+      "notes": [
+        "Açık kullanıcı onayı ile ayrıca ele alınacak.",
+        "Yöntem: V1 STAGE (api.nadirgold.work) ↔ V2 STAGE (api-v2.nadirgold.work/api/v1) canlı, id/sku hizalı alan-alan diff; 2 profil (P1 QA 181484, P2 FE hesabı). FE: www.nadirgold.work ?apiV2=0/1 Playwright ağ yakalama. qa-parity 14 madde kontrol listesi."
+      ],
+      "evidence": [],
+      "aiEvaluation": "STAGE adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-28T17:25:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "DEV: ⛔ DENY (payment/*), koşulmadı.",
+      "notes": [
+        "DEV turu: V1 DEV (api.nadirgold.dev) ↔ V2 DEV (api-v2.nadirgold.dev/api/v1), id hizalı alan-alan diff, 2 profil (P1 QA 203311, P2 FE hesabı). FE: www.nadirgold.dev ?apiV2=0/1 ağ yakalama + UI metin diff; mutasyon 0."
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T00:05:00+03:00",
+      "verdict": "KISMI",
+      "summary": "DEV: binQuery 8 BIN'de bankName/bankCode/cardType/cardAssociation/cardFamily birebir (kabul kriteri ✓). Fark: logo — V1 7/8'de null, V2 dolu ama ölçeklenmemiş (Akbank 2000×453 80 KB, V1 olan yerde 300×83 19 KB); Ziraat Bankkart'ta farklı logo dosyası. Ürün kararı gerekli (21.09 bulgusu sürüyor). V2 tokensiz 401 (V1 200), alias'sız V1 500 ↔ V2 200.",
+      "notes": [
+        "DEV: kullanıcı onayıyla (29.09 'all koş') DENY istisnası; salt-okuma, 2 profil.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/6568_*"
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV 'all koş' turu (29.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · 27 kart toplu koşum] Banka alanları aynı; aynı banka için farklı logo dosyası (Ziraat Bankkart, İş Bankası svg↔png), V2 logoları ölçeklenmemiş.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-10-05T12:20:19.456Z",
+      "verdict": "FAIL",
+      "summary": "[DEV · renewal koşucusu] Banka alanları birebir; 2 BIN'de (97928000, 450803) aynı banka için farklı logo dosyası sürüyor (svg↔png). Ürün kararı bekliyor.",
+      "notes": [
+        "🔴 logo farkı 2/7 BIN",
+        "Koşum: renewal/out/dev-2026-10-05-12-14"
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-10-05T12:20:19.456Z",
+    "verdict": "FAIL",
+    "summary": "[DEV · renewal koşucusu] Banka alanları birebir; 2 BIN'de (97928000, 450803) aynı banka için farklı logo dosyası sürüyor (svg↔png). Ürün kararı bekliyor.",
+    "notes": [
+      "🔴 logo farkı 2/7 BIN",
+      "Koşum: renewal/out/dev-2026-10-05-12-14"
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+  }
+}

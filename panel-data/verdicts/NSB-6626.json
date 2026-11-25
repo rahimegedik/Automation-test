@@ -1,0 +1,65 @@
+{
+  "card": "NSB-6626",
+  "history": [
+    {
+      "date": "2026-11-12T14:15:00+03:00",
+      "verdict": "KISMI",
+      "summary": "STAGE (QA Chrome, gerçek Turnstile): V2 mutlu yol /api/v2/notification/newsletter 200 → \"Başarılı — aboneliğiniz başlamıştır\"; geçersiz e-posta V2 422 TR mesaj. Fark: V1 @example.com adreslerini reddediyor (422 \"Email doğru bir e-posta olmalıdır\"), V2 kabul ediyor; aynı e-posta ile tekrar kayıt V2’de yine 200.",
+      "notes": [
+        "Playwright tarayıcısında Turnstile istemci tarafında düşüyor (istek gitmiyor), V1/V2 aynı: \"Turnsitle doğrulaması başarısız oldu.\" — metinde yazım hatası (Turnstile).",
+        "Ana sayfada görseli kırık popup (\"Popup resim\") tıklamaları kapatıyor.",
+        "Test kayıtları: qa-nsb6626-v2-1794481077@example.com (V2).",
+        "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-12-deploy-stage/untested/"
+      ]
+    },
+    {
+      "date": "2026-11-12T13:40:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "STAGE: Turnstile captcha arkasında; captchasız istekte V1/V2 aynı 422. Mutlu yol doğrulanamadı.",
+      "notes": [
+        "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-12-deploy-stage/"
+      ]
+    },
+    {
+      "date": "2026-09-29T00:30:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "DEV: V1 ve V2 aynı Turnstile koruması: boş/geçersiz e-posta dahil her istek 422 'Turnstile verification required' (zarf farkı kasıtlı). Captcha arkası black-box doğrulanamaz; BE NSB-5358 Blocked.",
+      "notes": [
+        "DEV: V1 DEV ↔ V2 DEV, P1 QA 203311 + P2 FE hesabı; yalnız salt-okuma ve doğrulama/hata yolu (mutasyon yok)."
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV koşulmayanlar turu (29.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "[DEV · 27 kart toplu koşum] Turnstile; dev test anahtarı yok.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-11-12T14:15:00+03:00",
+    "verdict": "KISMI",
+    "summary": "STAGE (QA Chrome, gerçek Turnstile): V2 mutlu yol /api/v2/notification/newsletter 200 → \"Başarılı — aboneliğiniz başlamıştır\"; geçersiz e-posta V2 422 TR mesaj. Fark: V1 @example.com adreslerini reddediyor (422 \"Email doğru bir e-posta olmalıdır\"), V2 kabul ediyor; aynı e-posta ile tekrar kayıt V2’de yine 200.",
+    "notes": [
+      "Playwright tarayıcısında Turnstile istemci tarafında düşüyor (istek gitmiyor), V1/V2 aynı: \"Turnsitle doğrulaması başarısız oldu.\" — metinde yazım hatası (Turnstile).",
+      "Ana sayfada görseli kırık popup (\"Popup resim\") tıklamaları kapatıyor.",
+      "Test kayıtları: qa-nsb6626-v2-1794481077@example.com (V2).",
+      "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-12-deploy-stage/untested/"
+    ]
+  }
+}

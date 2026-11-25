@@ -1,0 +1,23 @@
+{
+  "card": "NSB-6751",
+  "history": [
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "KISMI",
+      "summary": "[STAGE] Düzenli Birikim sepetinde V2 artık havale fiyatı uygulamıyor (getPrices isSubscribe → null), ancak kartın STAGE kampanya bulgusu sürüyor: müşteri sepetinde V2, V1’in uygulamadığı kampanyayı uyguluyor.",
+      "notes": [
+        "✅ V2 add NDRG50 isSubscribe:true (misafir): basketType Subscribe, kalem fiyatı 5101.31 (liste; havale 4933.57 değil), taxRate 0.54802 — V1 aynı hash’te 0.54802, subTotal 5073.35 eşit (2 tur, 20 sn ara).",
+        "✅ Kontrol standart NDRG50: kalem 4933.57 (havale), taxRate 0.56665 iki tarafta.",
+        "✅ V2 product/getPrices {productId:2,isSubscribe:true} ve {is_subscribe:true} → bankTransferPrice null; bayraksız → 4933.57.",
+        "⚠️ Aynı hash karşılaştırması: V1 grandTotal 5101.31 / discountAmount 0 ↔ V2 4901.31 / 200 (\"Yeni Üyelere Özel İndirim 200 TL\"). V1’in kendi yazdığı NDRG50 sepetinde V1 de kampanyayı uyguluyor (4733.57 = V2) → V1’in V2 sepetini okuması (NSB-6918 kapsam dışı yön).",
+        "🔴 STAGE kampanya bulgusu sürüyor: müşteri sepeti NDR1194060×2’de V2 \"Kişiye Özel İndirim 200 TL\" uyguluyor, V1 uygulamıyor (13096.72 ↔ 13296.72; NSB-6654). Dev bu maddeyi kapsam dışı bırakmıştı."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6751/sub-chain.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6751/v1own-NDRG50-diff.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6751/getPrices-productId_isSubscribe.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6654/cust-chain.json"
+      ]
+    }
+  ]
+}

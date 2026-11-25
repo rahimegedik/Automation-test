@@ -1,0 +1,93 @@
+{
+  "card": "NSB-6589",
+  "history": [
+    {
+      "date": "2026-11-12T13:45:00+03:00",
+      "verdict": "FAIL",
+      "summary": "STAGE: V2 modunda kategori sayfaları (SSR) kur güncellemesinden sonra bayat fiyat gösteriyor. /kulce-altin ve /ziynet-altin HTML’inde V2 fiyatı 13:21–13:31 arası ≥10 dk ve 2+ kur döngüsü boyunca sabit kaldı (V1 güncellendi). Ekranda teyit: 13:38 Reşat 5’lik V1 225.064,79 ↔ V2 224.890,63 TL (V2 = V1’in 13:34 değeri). API’de category/list/{id} discounts fiyatları da ~2,5 dk V2’de sabit kaldı. Ağaç/orderNo paritesi temiz.",
+      "notes": [
+        "Doğrudan products/{id} API’si V1 ile aynı anda güncelleniyor → bayatlık FE sunucusu V2 cache’inde veya category uçlarında.",
+        "category-products/summary yanıtı Cache-Control: public, max-age=86400 dönüyor (NSB-6750 ile aynı kök olabilir).",
+        "Ayrıca 13:34’te V2 modunda /kulce-altin ve /ziynet-altin \"sayfa yüklenirken hata — HTTP 503\" verdi (V1 aynı anda çalışıyor, api-v2 doğrudan 200).",
+        "FE client V2 listesinde product/category/list yok; çağrı SSR’da.",
+        "Kanıt: fe-interact/stale-*.png, scratchpad ölçüm logları.",
+        "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-12-deploy-stage/"
+      ]
+    },
+    {
+      "date": "2026-09-28T16:05:00+03:00",
+      "verdict": "FAIL",
+      "summary": "category/list V2 STAGE: orderNo 16 kategoride null/farklı (kök 8'in 6'sı null, 23→6, 55→7); ağaç/id/slug/alt kategori kümesi 22/22 aynı; list/{id} 8/8 kategoride birebir (NSB-6441 çözülmüş).",
+      "notes": [
+        "🔴 orderNo: V1 [2:1,3:1,4:2,12:1,13:99,43:1,23:1,55:1] ↔ V2 [null×6, 23:6, 55:7]; alt kategorilerde de null (5,6,19,20,21) — 3 turda sabit. Menü sırası şu an dizi sırasına bağlı (iki modda nav aynı).",
+        "✅ Kasıtlı: metaTitle/metaDescription → meta.title/description; subCategories nesne→dizi; htmlDescription→description (değerler eşit); V2 kök kategorilere description/link ekliyor.",
+        "❓ Görsel: V2 Takı(43), Burma(46), Kibrit Çöpü(49), Ajda(52) için images=[]; V1 bu görselleri veriyor ama CDN'de 404. Model Bilezik(63) kırık görseli V2 hâlâ döndürüyor — tutarsız filtre, V1 baseline zaten kırık.",
+        "Hata: /category/list/abc V1 500 ↔ V2 400 (V1-only kapsam dışı); 999999 iki tarafta 404.",
+        "Cache: V2 ETag + 304 çalışıyor, Cache-Control başlığı yok (kart 'cacheable' diyor).",
+        "FE: kategori menüsü SSR (istemci çağrısı yok), sayfa x-api-version v2, nav iki modda aynı.",
+        "Yöntem: V1 STAGE (api.nadirgold.work) ↔ V2 STAGE (api-v2.nadirgold.work/api/v1) canlı, id/sku hizalı alan-alan diff; 2 profil (P1 QA 181484, P2 FE hesabı). FE: www.nadirgold.work ?apiV2=0/1 Playwright ağ yakalama. qa-parity 14 madde kontrol listesi.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw/6589_*"
+      ],
+      "evidence": [],
+      "aiEvaluation": "STAGE adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-28T17:25:00+03:00",
+      "verdict": "FAIL",
+      "summary": "DEV: orderNo 18 kategoride null/farklı (kök 2:99→null … 55:null→1); ağaç 23/23, sıra ve list/{id} 8/8 birebir; görsel farkı yok. FE nav iki modda aynı (SSR).",
+      "notes": [
+        "FE V1↔V2 (dev): menü ve 8 kategori sayfası başlık/link/görsel sayısı aynı, kırık görseller iki modda aynı; kulce-altin'de 1 fiyat satırı farklı (166.156,59 ↔ 166.076,39, ❓ kur/önbellek).",
+        "DEV turu: V1 DEV (api.nadirgold.dev) ↔ V2 DEV (api-v2.nadirgold.dev/api/v1), id hizalı alan-alan diff, 2 profil (P1 QA 203311, P2 FE hesabı). FE: www.nadirgold.dev ?apiV2=0/1 ağ yakalama + UI metin diff; mutasyon 0.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/6589_*"
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-28-dev-faruk-adim1/fe-v1-v2/6589-v1-kulce-altin.png",
+        "panel-data/evidence/2026-09-28-dev-faruk-adim1/fe-v1-v2/6589-v2-kulce-altin.png"
+      ],
+      "aiEvaluation": "DEV adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · 27 kart toplu koşum] orderNo 18 kategoride boş/farklı.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-10-05T12:20:19.456Z",
+      "verdict": "KISMI",
+      "summary": "[DEV · renewal koşucusu] NSB-6757 fix'i DEV'de doğrulandı: ağaç ve 8 kategori temiz, orderNo farkı kapanmış. Kategori 12 ve 23 iki tarafta boş. FE ölçülemedi.",
+      "notes": [
+        "✅ ağaç 3 tur temiz (orderNo dahil)",
+        "❓ kategori 12/23 boş sonuç",
+        "❓ FE: DEV customer-service kimlikli isteklerde 500 (customer/detail, customer/orders, customer/documents, token'lı getContractsByType) → V2 FE oturumu \"Giriş Yap\" gösteriyor; bu koşumdaki FE karşılaştırmaları geçersiz.",
+        "Koşum: renewal/out/dev-2026-10-05-12-14"
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-11-12T13:45:00+03:00",
+    "verdict": "FAIL",
+    "summary": "STAGE: V2 modunda kategori sayfaları (SSR) kur güncellemesinden sonra bayat fiyat gösteriyor. /kulce-altin ve /ziynet-altin HTML’inde V2 fiyatı 13:21–13:31 arası ≥10 dk ve 2+ kur döngüsü boyunca sabit kaldı (V1 güncellendi). Ekranda teyit: 13:38 Reşat 5’lik V1 225.064,79 ↔ V2 224.890,63 TL (V2 = V1’in 13:34 değeri). API’de category/list/{id} discounts fiyatları da ~2,5 dk V2’de sabit kaldı. Ağaç/orderNo paritesi temiz.",
+    "notes": [
+      "Doğrudan products/{id} API’si V1 ile aynı anda güncelleniyor → bayatlık FE sunucusu V2 cache’inde veya category uçlarında.",
+      "category-products/summary yanıtı Cache-Control: public, max-age=86400 dönüyor (NSB-6750 ile aynı kök olabilir).",
+      "Ayrıca 13:34’te V2 modunda /kulce-altin ve /ziynet-altin \"sayfa yüklenirken hata — HTTP 503\" verdi (V1 aynı anda çalışıyor, api-v2 doğrudan 200).",
+      "FE client V2 listesinde product/category/list yok; çağrı SSR’da.",
+      "Kanıt: fe-interact/stale-*.png, scratchpad ölçüm logları.",
+      "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-12-deploy-stage/"
+    ]
+  }
+}

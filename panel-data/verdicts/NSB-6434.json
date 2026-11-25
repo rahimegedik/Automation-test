@@ -1,0 +1,29 @@
+{
+  "card": "NSB-6434",
+  "history": [
+    {
+      "date": "2026-10-05T12:38:08.521Z",
+      "verdict": "KISMI",
+      "summary": "[DEV · renewal koşucusu] Belgelerim metni birebir istenen metin ✅. Tebrikler ekranındaki \"Belgelerimi Yükle\" butonu ortalaması ölçülemedi (belge akışına düşen sipariş gerekiyor).",
+      "notes": [
+        "✅ metin: \"İşleminizin güvenliği ve gerekli doğrulamaların yapılabilmesi için … durumları bu alanda güncellenir.\" (P1+P2)",
+        "❓ tebrikler butonu: belge akışlı kredi kartı siparişi gerekli (gerçek sipariş)",
+        "Kanıt: panel-data/evidence/2026-10-05-belgelerim"
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-10-05T12:38:08.521Z",
+    "verdict": "KISMI",
+    "summary": "[DEV · renewal koşucusu] Belgelerim metni birebir istenen metin ✅. Tebrikler ekranındaki \"Belgelerimi Yükle\" butonu ortalaması ölçülemedi (belge akışına düşen sipariş gerekiyor).",
+    "notes": [
+      "✅ metin: \"İşleminizin güvenliği ve gerekli doğrulamaların yapılabilmesi için … durumları bu alanda güncellenir.\" (P1+P2)",
+      "❓ tebrikler butonu: belge akışlı kredi kartı siparişi gerekli (gerçek sipariş)",
+      "Kanıt: panel-data/evidence/2026-10-05-belgelerim"
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+  }
+}

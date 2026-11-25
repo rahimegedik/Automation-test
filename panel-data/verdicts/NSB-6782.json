@@ -1,0 +1,43 @@
+{
+  "card": "NSB-6782",
+  "history": [
+    {
+      "date": "2026-10-05T12:38:08.515Z",
+      "verdict": "FAIL",
+      "summary": "[DEV · renewal koşucusu] Kartın 6 adımı V1+V2 modunda: 1/2/5/6 ✅ (query korunuyor, query'siz adreste ? yok, yönlendirmesiz sayfa değişmiyor). Adım 3 (/nadirgold-1-gr-kulce-altin/61/d/) ve 4 (/Kapadokya) 404.",
+      "notes": [
+        "✅ 1: 308 → /kulce-altin?utm…gclid korunuyor",
+        "✅ 2: 307 → /ata-lira?utm…",
+        "✅ 5: → /kulce-altin (sonda ? yok)",
+        "✅ 6: adres değişmiyor",
+        "✅ sonu / ile biten /ata-lira-altin-eski-tarihli/ → /ata-lira (slash kuralı çalışıyor)",
+        "🔴 3: /…/61/d/ → 308 /…/61/d → 404 (slash'sız hali de 404) — kayıt eşleşmiyor ya da DEV tablosunda yok",
+        "🔴 4: /Kapadokya ve /kapadokya ikisi de 404 — kayıt DEV tablosunda yok olabilir",
+        "❓ Türkçe karakterli ve hedefi boş (/null) kayıt örneği kartta yok — ölçülmedi",
+        "❓ yönlendirme tablosuna erişim yok: 3/4 için \"veri mi, fix mi\" dev teyidi gerekli",
+        "Kanıt: panel-data/evidence/2026-10-05-nsb6782/result.json + ekran görüntüleri"
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-10-05T12:38:08.515Z",
+    "verdict": "FAIL",
+    "summary": "[DEV · renewal koşucusu] Kartın 6 adımı V1+V2 modunda: 1/2/5/6 ✅ (query korunuyor, query'siz adreste ? yok, yönlendirmesiz sayfa değişmiyor). Adım 3 (/nadirgold-1-gr-kulce-altin/61/d/) ve 4 (/Kapadokya) 404.",
+    "notes": [
+      "✅ 1: 308 → /kulce-altin?utm…gclid korunuyor",
+      "✅ 2: 307 → /ata-lira?utm…",
+      "✅ 5: → /kulce-altin (sonda ? yok)",
+      "✅ 6: adres değişmiyor",
+      "✅ sonu / ile biten /ata-lira-altin-eski-tarihli/ → /ata-lira (slash kuralı çalışıyor)",
+      "🔴 3: /…/61/d/ → 308 /…/61/d → 404 (slash'sız hali de 404) — kayıt eşleşmiyor ya da DEV tablosunda yok",
+      "🔴 4: /Kapadokya ve /kapadokya ikisi de 404 — kayıt DEV tablosunda yok olabilir",
+      "❓ Türkçe karakterli ve hedefi boş (/null) kayıt örneği kartta yok — ölçülmedi",
+      "❓ yönlendirme tablosuna erişim yok: 3/4 için \"veri mi, fix mi\" dev teyidi gerekli",
+      "Kanıt: panel-data/evidence/2026-10-05-nsb6782/result.json + ekran görüntüleri"
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+  }
+}

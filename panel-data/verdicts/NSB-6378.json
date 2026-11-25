@@ -1,0 +1,27 @@
+{
+  "card": "NSB-6378",
+  "history": [
+    {
+      "date": "2026-11-19T17:10:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "Süresi dolmuş link/talep davranışı (isExpired/canUpload, listeden eleme, upload reddi) stage'de ölçülemedi: süresi dolmuş token yok; yalnız geçersiz token negatifleri koşuldu (V1=V2 404).",
+      "notes": [
+        "Stage'de belge talebi olan müşteri yok: P2 (müşteri 367284) V1 ve V2 GET /customer/documents → 200 {general:[],orders:[]} (3/3 tur). P1 ve rahime token'ları V2'de 401 'Hesap aktif değil' (V1 200 boş). Panel erişimimiz olmadığı için talep açılamadı.",
+        "P2'nin 08.11'de V1'de 'Belge Bekleniyor' olan iki kartlı siparişi (1727238, 1727247) var; bunlara bağlı 48 saatlik talepler muhtemelen süresi dolduğu için listede iki tarafta da görünmüyor (orders: []), ama token'ları elimizde olmadığından documents/{token} ile bayraklar okunamadı. Listede süresi dolmuş kayıt sızması yok (V2 de boş) — bu yalnız dolaylı, talebin varlığı doğrulanamadı.",
+        "Negatif: olmayan/uydurma token (UUID, UUID olmayan, 300 karakter, SQL benzeri) → V1 404 / V2 404 aynı mesaj; olmayan token'a upload (QA 1x1 PNG) → V1/V2 404 'Belge talebi bulunamadı.'",
+        "Gerekli: stage'de token'ı bilinen, süresi dolmuş awaiting_document talebi (panelden açılıp 24/48 saat TTL'in dolması). Başka müşterinin token'ı da yok."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6378/list_P2_v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6378/list_P2_v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6378/neg_auth.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6378/neg_token.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6378/neg_rate_v1.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6378/neg_rate_v2.json",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6378/belgelerim-faketoken-v1.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6378/belgelerim-faketoken-v2.png",
+        "panel-data/evidence/2026-11-19-stage-test/NSB-6378/neg_upload.json"
+      ]
+    }
+  ]
+}

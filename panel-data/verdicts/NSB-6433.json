@@ -1,0 +1,25 @@
+{
+  "card": "NSB-6433",
+  "history": [
+    {
+      "date": "2026-10-05T12:38:08.521Z",
+      "verdict": "UNTESTED",
+      "summary": "[DEV · renewal koşucusu] İkon tıklamasıyla dosya seçici açılması yalnız Yükle aktifken ölçülebilir. Hiçbir hesapta canUpload:true (awaiting_document) kayıt yok — bekleyen belge talebi gerekiyor (NSB-6598 ile aynı engel).",
+      "notes": [
+        "Hiçbir hesapta canUpload:true (awaiting_document) kayıt yok — bekleyen belge talebi gerekiyor (NSB-6598 ile aynı engel)."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-10-05T12:38:08.521Z",
+    "verdict": "UNTESTED",
+    "summary": "[DEV · renewal koşucusu] İkon tıklamasıyla dosya seçici açılması yalnız Yükle aktifken ölçülebilir. Hiçbir hesapta canUpload:true (awaiting_document) kayıt yok — bekleyen belge talebi gerekiyor (NSB-6598 ile aynı engel).",
+    "notes": [
+      "Hiçbir hesapta canUpload:true (awaiting_document) kayıt yok — bekleyen belge talebi gerekiyor (NSB-6598 ile aynı engel)."
+    ],
+    "evidence": [],
+    "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+  }
+}

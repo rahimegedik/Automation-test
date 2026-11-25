@@ -1,0 +1,72 @@
+{
+  "card": "NSB-6586",
+  "history": [
+    {
+      "date": "2026-11-12T13:40:00+03:00",
+      "verdict": "PASS",
+      "summary": "STAGE renewal koşucusu: priceConverter API paritesi temiz, FE /hesaba-altin-havale hesaplayıcı /api/v2 üzerinden çağırıyor.",
+      "notes": [
+        "Rapor: renewal/out/stage-2026-11-12-09-44/report.md",
+        "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-12-deploy-stage/"
+      ]
+    },
+    {
+      "date": "2026-09-28T16:05:00+03:00",
+      "verdict": "FAIL",
+      "summary": "priceConverter V2 STAGE: NSB-6614 düzelmiş (gram 2,85=2,85, 422'de minPrice/maxPrice, TR mesaj, 200). Yeni: V2 kur güncellemesini geç yansıtıyor (bayat fiyat, 3 olay) + 1 kuruş yuvarlama + fiyat POST'unda Cache-Control public 86400.",
+      "notes": [
+        "🔴 Bayat fiyat: eşzamanlı 60/30 sn ölçümde V1 yeni kura geçtiğinde V2 eski değeri döndü — 15:24:57 V1 19953,91 ↔ V2 19975,93 (≥60 sn sürdü); 15:41:00 V1 19947,76 ↔ V2 19969,63; 15:48:09 V1 19936,24 ↔ V2 19931,34 (≤30 sn). Farklı tutarla istek de aynı eski birimi verdi → sunucu tarafı fiyat cache'i (x-cacheable:1). İlk ölçümde minPrice 7010↔7005 de bundan.",
+        "🔴 1 kuruş: kur eşitken V1 19969,62 ↔ V2 19969,63, V1 19936,24 ↔ V2 19936,23 (NSB-6735 ailesi, açık).",
+        "🔴 Başlık: V2 priceConverter yanıtı (200 ve 422) Cache-Control: public, max-age=86400 — fiyat verisi için yanlış (V1 no-store).",
+        "✅ Kasıtlı: amount/rate/price float→string (money=string kuralı).",
+        "Validation: nosku/badprice/badsku/low/high hepsi 422; errors[] zarfı var. Mesaj farkı: nosku V1 'Lütfen bilezik ölçünüzü seçerek devam ediniz.' ↔ V2 'Sku alanı gereklidir.'; üst sınır V1 EN ↔ V2 TR (iyileşme).",
+        "FE: /hesaba-altin-havale hesaplayıcısı V2 modunda /api/v2/product/priceConverter çağırıyor (200), V1 modunda legacy.",
+        "Yöntem: V1 STAGE (api.nadirgold.work) ↔ V2 STAGE (api-v2.nadirgold.work/api/v1) canlı, id/sku hizalı alan-alan diff; 2 profil (P1 QA 181484, P2 FE hesabı). FE: www.nadirgold.work ?apiV2=0/1 Playwright ağ yakalama. qa-parity 14 madde kontrol listesi.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw/6586_*, _6586_ts.log, _6586_lag.log"
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-09-28-stage-faruk-adim1/6586-v2-hesaplayici.png"
+      ],
+      "aiEvaluation": "STAGE adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-28T17:25:00+03:00",
+      "verdict": "FAIL",
+      "summary": "DEV: V2 bayat fiyat tekrarlandı — 16:56 V1 2,51 g / 19.928,36 ↔ V2 2,52 g / 19.993,25 (≥60 sn, gram da farklı; minPrice 7940↔7934); kur eşitken 1 kuruş (19.993,24↔19.993,25); Cache-Control public 86400. maxPrice V1 7.921.501,38 ↔ V2 7.921.500 (aşağı yuvarlama).",
+      "notes": [
+        "FE V1↔V2 (dev, paralel): 3 bankada gram aynı, Ödenecek Toplam V1 19.943,79 ↔ V2 19.943,78 (ekranda 1 kuruş); üst sınır mesajı V1 7.882.924,38 ↔ V2 7.882.920,00; alt sınır mesajı aynı.",
+        "FE: hesaplayıcı V2 modunda /api/v2/product/priceConverter.",
+        "DEV turu: V1 DEV (api.nadirgold.dev) ↔ V2 DEV (api-v2.nadirgold.dev/api/v1), id hizalı alan-alan diff, 2 profil (P1 QA 203311, P2 FE hesabı). FE: www.nadirgold.dev ?apiV2=0/1 ağ yakalama + UI metin diff; mutasyon 0.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/6586_*, _6586_ts.log"
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · 27 kart toplu koşum] V2 fiyat yanıtında Cache-Control public 86400; bayat fiyat (önceki seriler) ve 1 kuruş fark.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    }
+  ],
+  "latest": {
+    "date": "2026-11-12T13:40:00+03:00",
+    "verdict": "PASS",
+    "summary": "STAGE renewal koşucusu: priceConverter API paritesi temiz, FE /hesaba-altin-havale hesaplayıcı /api/v2 üzerinden çağırıyor.",
+    "notes": [
+      "Rapor: renewal/out/stage-2026-11-12-09-44/report.md",
+      "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-12-deploy-stage/"
+    ]
+  }
+}

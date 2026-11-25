@@ -1,0 +1,24 @@
+{
+  "card": "NSB-6285",
+  "history": [
+    {
+      "date": "2026-11-20T16:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE] Kategori çeşitlendirme, filters.limit kademeleri, min 2 karakter ve 120 farklı sorgu/dk rate limit V1 STAGE ile birebir; 'path' kozmetik notu sürüyor.",
+      "notes": [
+        "İstek: V1 POST /search ↔ V2 POST /api/v1/product/search (stage), eşzamanlı.",
+        "Çeşitlendirme: 10 gram (limit 50) 14 ürün, sıra V1 = V2 [149,18,433,349,27,222,415,175,…], kök kategoriler 13/2/43/55 karışık; çeyrek altın 7 ürün aynı sıra; gram 50 ürün aynı sıra.",
+        "filters.limit: 1/3/5/7/10/20/21 → aynı sayı ve ids; \"5\"/null → 5; 0/-1/\"x\"/2.5 → iki tarafta 422 (V1 alan bazlı mesaj \"Filters.limit değeri en az 1…\", V2 genel \"Filters geçersiz\" — 25.09 notuyla aynı). 50/51/999 → limit 50'ye clamp, V1 49 ↔ V2 50 ürün (index'te görünmez kayıt; NSB-6402 sayfa dilimleme notu).",
+        "Min uzunluk: a, ç, \" 1 \", \"\", \"0\", null → iki tarafta 200, products 0, categories 0, total 0, lastPage 1.",
+        "Rate limit (124 farklı sorgu, 37,8 sn): V1 ve V2 ilk 120'de 200, 121. istekte 422 \"Too many different searches. Please try again in 25 seconds.\" (metin birebir). Pencere doluyken: görülmüş sorgu tekrarı 200/200, normalize tekrar (büyük harf+boşluk) 200/200, sorgusuz suggestion 200/200, kısa yeni sorgu 422/422, yeni sorgu 422/422.",
+        "🟡 V2 422 gövdesinde path \"/api/v1/search\" (gerçek route /api/v1/product/search) — 04.09'dan beri bilinen kozmetik.",
+        "UNTESTED: cache key'in limiti içermesi / prefix bump ve kapatma env'i — dışarıdan gözlenemez."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6285/limit-page-min-div.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6285/rate-limit.json"
+      ],
+      "aiEvaluation": "Stage RFS turu 20.11.2026 — brief kuralları; Jira'ya yazılmadı, statü değiştirilmedi."
+    }
+  ]
+}

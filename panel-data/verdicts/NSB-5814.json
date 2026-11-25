@@ -1,0 +1,21 @@
+{
+  "card": "NSB-5814",
+  "history": [
+    {
+      "date": "2026-11-19T17:45:00+03:00",
+      "verdict": "KISMI",
+      "summary": "[STAGE] DELETE /campaign/coupon hata yolları V1↔V2 birebir (13 senaryo, 5xx yok); kupon uygulanmış sepet gerektirdiği için mutlu yol UNTESTED.",
+      "notes": [
+        "Sepete ürün eklenmedi, kupon uygulanmadı. Yalnız var olmayan basketHash \"QA5814YOKHASH\" ve var olmayan kod ile DELETE V1 https://api.nadirgold.work/campaign/coupon ↔ V2 https://api-v2.nadirgold.work/api/v1/campaign/coupon denendi.",
+        "Gövde yok, {}, boş string, code eksik, basketHash eksik ve yanlış tip: iki tarafta 422. Mesaj farkı: basketHash eksikken V1 \"Sepetinizde ürün bulunmamaktadır.\", V2 \"Basket hash alanı gereklidir.\"; yanlış tipte V1 \"karakterlerden oluşmalıdır\", V2 \"metin olmalıdır\". V2 zarfı {message:\"Doğrulama hatası\", errors[], success:false}.",
+        "Olmayan sepet+kod, XSS kodu, SQLi kodu, 300 karakter kod, geçerli JWT ve bozuk JWT: iki tarafta 404 \"Kupon bulunamadı !\". Content-Language: en ile iki tarafta 404 \"Coupon not found.\".",
+        "Hiçbir senaryoda 5xx ya da stack sızıntısı yok.",
+        "UNTESTED (mutlu yol): kupon uygulanmış sepet gerekiyor. Gerekenler: geçerli stage kupon kodu, kuponun uygulanabildiği ürün/sepet (sepet rate-limit bütçesi) → apply → DELETE 200 (V2 data:{}) → sepette discountAmount/grandTotal V1 ile karşılaştırması → ikinci DELETE 404."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-19-stage-test/NSB-5814/negatif-v1-v2.json"
+      ],
+      "aiEvaluation": "Stage Test turu 19.11.2026 — brief kuralları; Jira'ya yazılmadı."
+    }
+  ]
+}

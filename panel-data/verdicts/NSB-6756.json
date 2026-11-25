@@ -1,0 +1,23 @@
+{
+ "card": "NSB-6756",
+ "history": [
+  {
+   "date": "2026-11-20T16:10:00+03:00",
+   "verdict": "PASS",
+   "summary": "[STAGE 20.11] STAGE basket/merge: boş müşteri sepetinde basketId/basketHash korunuyor (V1=V2); olmayan/tüketilmiş hash iki tarafta HTTP 200 + success:false \"Guest basket not found\".",
+   "notes": [
+    "Müşteri sepeti 145454875 boşaltıldı → V2 misafir sepeti 145454905 (NDR1194060x1) → V2 merge 200: basketId 145454875 ve hash aynı kaldı, kalem müşteri sepetine geçti ✓.",
+    "Aynı akış V1 (misafir 145454908): V1 merge 200, basketId 145454875 korundu ✓.",
+    "Olmayan hash: V1 200 status.code 400 success:false \"Guest basket not found\" ↔ V2 200 success:false aynı mesaj, müşteri sepeti döner. Tüketilmiş misafir hash (V2): aynı. Boş gövde V2 422; tokensız V2 401.",
+    "Başkasına ait gerçek hash denenmedi."
+   ],
+   "evidence": [
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6756/summary.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6756/merge-empty-customer.v1.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6756/merge-empty-customer.v2.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6756/merge-unknown.v1.json",
+    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6756/merge-unknown.v2.json"
+   ]
+  }
+ ]
+}

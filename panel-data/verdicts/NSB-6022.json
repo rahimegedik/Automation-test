@@ -2,6 +2,17 @@
   "card": "NSB-6022",
   "history": [
     {
+      "date": "2026-11-12T13:40:00+03:00",
+      "verdict": "PASS",
+      "summary": "STAGE: counter V2 her sayfada /api/v2/product/counter 200; data alanları V1 ile birebir.",
+      "notes": [
+        "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-12-deploy-stage/"
+      ]
+    },
+    {
       "date": "2026-09-17T11:40:00+03:00",
       "verdict": "PASS",
       "summary": "counter V2: her sayfada /api/v2/product/counter çağrılıyor; data alanları (time,lastUpdatedAt,currentServerTime,isUpdated) V1 ile birebir",
@@ -18,18 +29,14 @@
     }
   ],
   "latest": {
-    "date": "2026-09-17T11:40:00+03:00",
+    "date": "2026-11-12T13:40:00+03:00",
     "verdict": "PASS",
-    "summary": "counter V2: her sayfada /api/v2/product/counter çağrılıyor; data alanları (time,lastUpdatedAt,currentServerTime,isUpdated) V1 ile birebir",
+    "summary": "STAGE: counter V2 her sayfada /api/v2/product/counter 200; data alanları V1 ile birebir.",
     "notes": [
-      "FE V1: api.nadirgold.work/counter | V2: www.nadirgold.work/api/v2/product/counter (200). Sadece zaman alanları doğal olarak farklı.",
-      "Ortam: STAGE web (www.nadirgold.work) — V2 modu ?apiV2=1 (NG_API_V2=1, x-api-version: v2), V1 modu ?apiV2=0. Hesap: mirac.kasapoglu (OTP'li).",
-      "Not: 16.09 akşamı stage FE'de flag yoktu (apiV2Enabled:false, /api/v2 proxy 404); 17.09 sabahı env eklendikten sonra flag ve proxy çalıştı."
+      "Deployment_2026-11-12 deploy öncesi kontrol, ortam STAGE."
     ],
     "evidence": [
-      "panel-data/evidence/2026-09-16-stage-faruk/v1-home.png",
-      "panel-data/evidence/2026-09-16-stage-faruk/v2-home.png"
-    ],
-    "aiEvaluation": "PASS."
+      "panel-data/evidence/2026-11-12-deploy-stage/"
+    ]
   }
 }

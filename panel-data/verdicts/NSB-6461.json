@@ -1,0 +1,71 @@
+{
+  "card": "NSB-6461",
+  "history": [
+    {
+      "date": "2026-09-29T00:30:00+03:00",
+      "verdict": "KISMI",
+      "summary": "DEV: liste P1 6 + P2 1 kayıt, kayıt kümesi ve 15 alan aynı, canDownload eşit (6121 dev'de düzelmiş), 5 downloadUrl CDN'de 200 (pdf/png/jpeg). Fark: documents[].side (V1 'Ön yüz') V2'de yok. Token ucu: iki hesapta bekleyen talep yok (uploadUrl boş) → ölçülemedi; geçersiz token iki tarafta 404 aynı mesaj; tokensiz liste 401.",
+      "notes": [
+        "side alanı NSB-6743 (kimlik ön/arka yükleme) ile ilişkili görünüyor.",
+        "DEV: V1 DEV ↔ V2 DEV, P1 QA 203311 + P2 FE hesabı; yalnız salt-okuma ve doğrulama/hata yolu (mutasyon yok).",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/6461_*"
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV koşulmayanlar turu (29.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:00:00+03:00",
+      "verdict": "FAIL",
+      "summary": "[DEV · 27 kart toplu koşum] V2 documents[].side ('Ön yüz') döndürmüyor; token ucu ölçülemedi.",
+      "notes": [
+        "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
+        "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-10-05T12:20:19.454Z",
+      "verdict": "FAIL",
+      "summary": "[DEV · renewal koşucusu] V2 GET /customer/documents 500 (P1+P2, doğrudan api-v2 dahil). NSB-6758 (side) fix'i doğrulanamadı.",
+      "notes": [
+        "🔴 DEV customer-service kimlikli isteklerde 500 (customer/detail, customer/orders, customer/documents, token'lı getContractsByType) → V2 FE oturumu \"Giriş Yap\" gösteriyor; bu koşumdaki FE karşılaştırmaları geçersiz.",
+        "Koşum: renewal/out/dev-2026-10-05-12-14"
+      ],
+      "evidence": [],
+      "aiEvaluation": "renewal/run.mjs katı kural; Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-11-20T15:45:00+03:00",
+      "verdict": "KISMI",
+      "summary": "Stage'de liste V1=V2 ({general:[],orders:[]}, 3 tur), V2 FE Belgelerim /api/v2/customer/documents'ı 200 ile çağırıyor; belge talebi olmayan hesap yüzünden status/canUpload/downloadUrl/yükleme-indirme ölçülemedi.",
+      "notes": [
+        "API: P2 GET customer/documents V1 ↔ V2, 3 tur: 200/200, data birebir {general:[],orders:[]}. Tokensiz → 401/401. Olmayan token GET documents/{uuid} → 404/404, V2 mesajı 'Belge talebi bulunamadı veya süresi doldu.'",
+        "renewal koşucusu (stage-2026-11-20-12-25): P2 temiz; P1 V2'de 401 (V1 200) — P1 hesabı V2'de 'Hesap aktif değil', bilinen profil kısıtı, ürün bulgusu sayılmadı.",
+        "FE: /hesabim/belgelerim ?apiV2=0 → x-api-version v1, çağrı 200 api.nadirgold.work/customer/documents; ?apiV2=1 → x-api-version v2, çağrı 200 www.nadirgold.work/api/v2/customer/documents (bkz. NSB-6632/fe-probe.txt).",
+        "UNTESTED: status/statusLabel gösterimi, canUpload:false/isExpired'de yükleme kapalı, isDownloadable + downloadUrl ile indirme, expiresAt gösterimi, gerçek yükleme. Gerekli: stage'de panelden belge talebi açılmış müşteri (biri awaiting_document, biri süresi dolmuş, biri indirilebilir belgeli). Yükleme kilidi tetiklenmedi. Dünkü kanıt: panel-data/evidence/2026-11-19-stage-test/NSB-6120, NSB-6121."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6461/api.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6461/../NSB-6632/fe-probe.txt",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6461/../report.md"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-20T15:45:00+03:00",
+    "verdict": "KISMI",
+    "summary": "Stage'de liste V1=V2 ({general:[],orders:[]}, 3 tur), V2 FE Belgelerim /api/v2/customer/documents'ı 200 ile çağırıyor; belge talebi olmayan hesap yüzünden status/canUpload/downloadUrl/yükleme-indirme ölçülemedi.",
+    "notes": [
+      "API: P2 GET customer/documents V1 ↔ V2, 3 tur: 200/200, data birebir {general:[],orders:[]}. Tokensiz → 401/401. Olmayan token GET documents/{uuid} → 404/404, V2 mesajı 'Belge talebi bulunamadı veya süresi doldu.'",
+      "renewal koşucusu (stage-2026-11-20-12-25): P2 temiz; P1 V2'de 401 (V1 200) — P1 hesabı V2'de 'Hesap aktif değil', bilinen profil kısıtı, ürün bulgusu sayılmadı.",
+      "FE: /hesabim/belgelerim ?apiV2=0 → x-api-version v1, çağrı 200 api.nadirgold.work/customer/documents; ?apiV2=1 → x-api-version v2, çağrı 200 www.nadirgold.work/api/v2/customer/documents (bkz. NSB-6632/fe-probe.txt).",
+      "UNTESTED: status/statusLabel gösterimi, canUpload:false/isExpired'de yükleme kapalı, isDownloadable + downloadUrl ile indirme, expiresAt gösterimi, gerçek yükleme. Gerekli: stage'de panelden belge talebi açılmış müşteri (biri awaiting_document, biri süresi dolmuş, biri indirilebilir belgeli). Yükleme kilidi tetiklenmedi. Dünkü kanıt: panel-data/evidence/2026-11-19-stage-test/NSB-6120, NSB-6121."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6461/api.json",
+      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6461/../NSB-6632/fe-probe.txt",
+      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6461/../report.md"
+    ]
+  }
+}
