@@ -34,17 +34,30 @@
         "panel-data/evidence/2026-11-19-stage-test/NSB-6635/fe-v2-net.json",
         "panel-data/evidence/2026-11-19-stage-test/NSB-6635/fe-v2-sepet.png"
       ]
+    },
+    {
+      "date": "2026-11-25T18:20:00+03:00",
+      "verdict": "FAIL",
+      "summary": "STAGE V2 (renewal sepet zinciri): basket/add çalışıyor ama kalem görselleri V1'de {main:[...]} nesnesi, V2'de dizi dönüyor (NSB-6261 sözleşmesi).",
+      "notes": [
+        "Dolu sepet (1 adet) ve adet 2 senaryosunda aynı fark.",
+        "Diğer alanlar ve tutarlar eşleşti."
+      ],
+      "evidence": [
+        "renewal/out/stage-2026-11-25-15-00/report.md"
+      ]
     }
   ],
   "latest": {
-    "date": "2026-09-29T08:00:00+03:00",
+    "date": "2026-11-25T18:20:00+03:00",
     "verdict": "FAIL",
-    "summary": "[DEV · 27 kart toplu koşum] FE Sepete Ekle → /api/v2/basket/add ✓; kabul ihlali: geçersiz SKU'da errors[] yok, item.images V1 {main[]} ↔ V2 dizi (NSB-6261).",
+    "summary": "STAGE V2 (renewal sepet zinciri): basket/add çalışıyor ama kalem görselleri V1'de {main:[...]} nesnesi, V2'de dizi dönüyor (NSB-6261 sözleşmesi).",
     "notes": [
-      "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
-      "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      "Dolu sepet (1 adet) ve adet 2 senaryosunda aynı fark.",
+      "Diğer alanlar ve tutarlar eşleşti."
     ],
-    "evidence": [],
-    "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    "evidence": [
+      "renewal/out/stage-2026-11-25-15-00/report.md"
+    ]
   }
 }

@@ -1,0 +1,33 @@
+{
+  "card": "NSB-6565",
+  "history": [
+    {
+      "date": "2026-11-25T21:35:00+03:00",
+      "verdict": "KISMI",
+      "summary": "STAGE V2: kredi kartı journey'leri V2 modunda (x-api-version=v2 doğrulandı) sipariş açtı: 1727608 (spec 10), 1727635 (17), 1727644 (20 tekrar), 1727647 (29). payment/create çağrısının /api/v2 üzerinden gittiği ağ düzeyinde kaydedilmedi.",
+      "notes": [
+        "Spec 20'nin ilk denemesinde OTP sonrası sipariş oluşmadı (checkout'ta kaldı); tekrarında geçti — tekrarlanamayan gözlem."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-25-v2-tekrar/p1.log",
+        "panel-data/evidence/2026-11-25-v2-tekrar/p3.log",
+        "panel-data/evidence/2026-11-25-v2-tekrar/p3b-spec20.log",
+        "panel-data/evidence/2026-11-25-v2-tekrar/p4.log"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-25T21:35:00+03:00",
+    "verdict": "KISMI",
+    "summary": "STAGE V2: kredi kartı journey'leri V2 modunda (x-api-version=v2 doğrulandı) sipariş açtı: 1727608 (spec 10), 1727635 (17), 1727644 (20 tekrar), 1727647 (29). payment/create çağrısının /api/v2 üzerinden gittiği ağ düzeyinde kaydedilmedi.",
+    "notes": [
+      "Spec 20'nin ilk denemesinde OTP sonrası sipariş oluşmadı (checkout'ta kaldı); tekrarında geçti — tekrarlanamayan gözlem."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-25-v2-tekrar/p1.log",
+      "panel-data/evidence/2026-11-25-v2-tekrar/p3.log",
+      "panel-data/evidence/2026-11-25-v2-tekrar/p3b-spec20.log",
+      "panel-data/evidence/2026-11-25-v2-tekrar/p4.log"
+    ]
+  }
+}

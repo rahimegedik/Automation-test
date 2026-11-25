@@ -1,0 +1,39 @@
+{
+  "card": "NSB-7246",
+  "history": [
+    {
+      "date": "2026-11-25T10:19:00+03:00",
+      "verdict": "PASS",
+      "summary": "Taksitli sepette V2 basket/get toplam ve kalem dağıtımı V1 ile birebir aynı (dev): 3 taksitte grandTotal 60894.50, kalem installmentFee 4510.70, priceWithInstallment = price + fee; tek çekime dönünce taban ve kalem farkı 0. Çok kalemli dağıtım ve hesaplayıcı hata dalı UNTESTED.",
+      "notes": [
+        "Ortam: dev, api-v2 + Bearer; V1 basket/get aynı basketHash ile (V1 yanıtı da camelCase). Sipariş açılmadı.",
+        "API-17: setInstallment 3 → V2 basket/get grandTotal = setInstallment grandTotal = V1 grandTotal (60894.50); installmentRate 8, installmentFee 0 (sepet seviyesi, V1=V2); highValueOrderThreshold false iki tarafta.",
+        "API-18: Σ kalem installmentFee (4510.70) = grandTotal − kargo − Σ price; priceWithInstallment = price + fee; kalem alanları V1 ile aynı.",
+        "API-19: tek çekime dönüş sonrası basket/get grandTotal = taban (56383.80) = V1, kalem farkı 0.",
+        "UNTESTED: (1) çok kalemli sepette fiyat oranlı dağıtım + yuvarlama artığının son kaleme yazılması — sepette tek takı vardı, ikinci taksitli SKU + sepet kotası gerekir; (2) hesaplayıcıya ulaşılamayınca tek çekim değerlerine düşme — BE servisini düşürmeden gözlenemez; (3) zırhlı kargo eşiğinin taksitli toplamla hesaplanması — eşik üstü takı sepeti gerekir."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-24-taksit/api-7245-7246-run2.log",
+        "panel-data/evidence/2026-11-24-taksit/api-7246-run3.log",
+        "panel-data/evidence/2026-11-24-taksit/api-run5-full.log"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-25T10:19:00+03:00",
+    "verdict": "PASS",
+    "summary": "Taksitli sepette V2 basket/get toplam ve kalem dağıtımı V1 ile birebir aynı (dev): 3 taksitte grandTotal 60894.50, kalem installmentFee 4510.70, priceWithInstallment = price + fee; tek çekime dönünce taban ve kalem farkı 0. Çok kalemli dağıtım ve hesaplayıcı hata dalı UNTESTED.",
+    "notes": [
+      "Ortam: dev, api-v2 + Bearer; V1 basket/get aynı basketHash ile (V1 yanıtı da camelCase). Sipariş açılmadı.",
+      "API-17: setInstallment 3 → V2 basket/get grandTotal = setInstallment grandTotal = V1 grandTotal (60894.50); installmentRate 8, installmentFee 0 (sepet seviyesi, V1=V2); highValueOrderThreshold false iki tarafta.",
+      "API-18: Σ kalem installmentFee (4510.70) = grandTotal − kargo − Σ price; priceWithInstallment = price + fee; kalem alanları V1 ile aynı.",
+      "API-19: tek çekime dönüş sonrası basket/get grandTotal = taban (56383.80) = V1, kalem farkı 0.",
+      "UNTESTED: (1) çok kalemli sepette fiyat oranlı dağıtım + yuvarlama artığının son kaleme yazılması — sepette tek takı vardı, ikinci taksitli SKU + sepet kotası gerekir; (2) hesaplayıcıya ulaşılamayınca tek çekim değerlerine düşme — BE servisini düşürmeden gözlenemez; (3) zırhlı kargo eşiğinin taksitli toplamla hesaplanması — eşik üstü takı sepeti gerekir."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-24-taksit/api-7245-7246-run2.log",
+      "panel-data/evidence/2026-11-24-taksit/api-7246-run3.log",
+      "panel-data/evidence/2026-11-24-taksit/api-run5-full.log"
+    ]
+  }
+}

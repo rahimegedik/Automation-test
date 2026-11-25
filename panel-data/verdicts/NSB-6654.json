@@ -63,17 +63,28 @@
         "panel-data/evidence/2026-11-19-stage-test/NSB-6654/fe-sepet-m0.txt",
         "panel-data/evidence/2026-11-19-stage-test/NSB-6654/fe-sepet-m1.txt"
       ]
+    },
+    {
+      "date": "2026-11-25T18:20:00+03:00",
+      "verdict": "PASS",
+      "summary": "STAGE V2 (renewal sepet zinciri): basket/get V1 ile eşleşti.",
+      "notes": [
+        "Hash'siz get dev'de NSB-7308 kapsamında da doğrulandı (aynı sepet dönüyor)."
+      ],
+      "evidence": [
+        "renewal/out/stage-2026-11-25-15-00/report.md"
+      ]
     }
   ],
   "latest": {
-    "date": "2026-09-29T08:00:00+03:00",
-    "verdict": "FAIL",
-    "summary": "[DEV · 27 kart toplu koşum] Standart sepette get parity temiz (koşucu), ancak Düzenli Birikim sepetinde V2 havale fiyatı uyguluyor (−243,46 TL) ve STAGE'de kampanya farkı; FE 1 ürünlü sepette V1 13.165,03 ↔ V2 13.179,50 TL (❓ kur eşitliği ölçülmedi).",
+    "date": "2026-11-25T18:20:00+03:00",
+    "verdict": "PASS",
+    "summary": "STAGE V2 (renewal sepet zinciri): basket/get V1 ile eşleşti.",
     "notes": [
-      "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
-      "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
+      "Hash'siz get dev'de NSB-7308 kapsamında da doğrulandı (aynı sepet dönüyor)."
     ],
-    "evidence": [],
-    "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    "evidence": [
+      "renewal/out/stage-2026-11-25-15-00/report.md"
+    ]
   }
 }

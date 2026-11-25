@@ -1,0 +1,35 @@
+{
+  "card": "NSB-7326",
+  "history": [
+    {
+      "date": "2026-11-25T11:00:00+03:00",
+      "verdict": "PASS",
+      "summary": "STAGE: aynı üründen 2 adette taksit listesi 2 adetin tutarını veriyor (API + checkout ekranı). Ekranda Tek Çekim 1 adet 48.383,45 → 2 adet 96.766,90; familyInstallments adet değişince yeniden çağrılıyor ve tablo yanıtla aynı.",
+      "notes": [
+        "API (spec 42 ADET-01): takı 'ajda 6,400' 1→2 adet; V2 familyInstallments Tek Çekim 49.523,75 → 99.047,49 (tam 2 kat), sepet oranı korunuyor.",
+        "Ekran (ADET-FE-01): PDP'den ekle → checkout kayıtlı kart → sepet sayfasında + ile 2 adet → checkout: tabloda 96.766,90 = yanıt; 1 adet fiyatı gösterilmedi.",
+        "V1 kıyası bu turda anlamlı değil: Ajda bilezik 8 gr ürününde 10:30'dan itibaren V1/V2 fiyatı %2,47 farklı (ayrı bulgu).",
+        "Sipariş açılmadı; sepet API'den boşaltıldı ve ölçüldü."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-25-taksit-stage/adet-api-run3.log",
+        "panel-data/evidence/2026-11-25-taksit-stage/adet-fe-run7.log"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-25T11:00:00+03:00",
+    "verdict": "PASS",
+    "summary": "STAGE: aynı üründen 2 adette taksit listesi 2 adetin tutarını veriyor (API + checkout ekranı). Ekranda Tek Çekim 1 adet 48.383,45 → 2 adet 96.766,90; familyInstallments adet değişince yeniden çağrılıyor ve tablo yanıtla aynı.",
+    "notes": [
+      "API (spec 42 ADET-01): takı 'ajda 6,400' 1→2 adet; V2 familyInstallments Tek Çekim 49.523,75 → 99.047,49 (tam 2 kat), sepet oranı korunuyor.",
+      "Ekran (ADET-FE-01): PDP'den ekle → checkout kayıtlı kart → sepet sayfasında + ile 2 adet → checkout: tabloda 96.766,90 = yanıt; 1 adet fiyatı gösterilmedi.",
+      "V1 kıyası bu turda anlamlı değil: Ajda bilezik 8 gr ürününde 10:30'dan itibaren V1/V2 fiyatı %2,47 farklı (ayrı bulgu).",
+      "Sipariş açılmadı; sepet API'den boşaltıldı ve ölçüldü."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-25-taksit-stage/adet-api-run3.log",
+      "panel-data/evidence/2026-11-25-taksit-stage/adet-fe-run7.log"
+    ]
+  }
+}

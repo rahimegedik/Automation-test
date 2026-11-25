@@ -1,0 +1,29 @@
+{
+  "card": "NSB-6641",
+  "history": [
+    {
+      "date": "2026-11-25T18:20:00+03:00",
+      "verdict": "PASS",
+      "summary": "STAGE V2: basket/repeatOrder 1727395 → V1 ve V2 aynı kalem (NDR1194060 × 2) aynı fiyatla (12.603,66). Olmayan sipariş 404 'Order not found', tokensiz 401.",
+      "notes": [
+        "Başka müşterinin sipariş no'su için 1727396 denendi: 404 (siparişin var olup olmadığı API'den ayırt edilemiyor → kısmen UNTESTED).",
+        "Sepet her adımdan sonra boşaltıldı ve ölçüldü."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-25-stage-test-v2/nsb6641.log"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-25T18:20:00+03:00",
+    "verdict": "PASS",
+    "summary": "STAGE V2: basket/repeatOrder 1727395 → V1 ve V2 aynı kalem (NDR1194060 × 2) aynı fiyatla (12.603,66). Olmayan sipariş 404 'Order not found', tokensiz 401.",
+    "notes": [
+      "Başka müşterinin sipariş no'su için 1727396 denendi: 404 (siparişin var olup olmadığı API'den ayırt edilemiyor → kısmen UNTESTED).",
+      "Sepet her adımdan sonra boşaltıldı ve ölçüldü."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-25-stage-test-v2/nsb6641.log"
+    ]
+  }
+}

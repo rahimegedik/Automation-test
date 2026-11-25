@@ -1,0 +1,31 @@
+{
+  "card": "NSB-7308",
+  "history": [
+    {
+      "date": "2026-11-25T16:40:00+03:00",
+      "verdict": "PASS",
+      "summary": "DEV: geçerli müşteri token'ıyla hash'siz basket/get yeni sepet açmıyor; {} iki kez ve {createBasket:false} üçü de aynı sepeti (15297560) döndürdü, V1 de aynı sepeti döndürdü.",
+      "notes": [
+        "Murat'ın analiziyle uyumlu: karttaki yeni sepetler geçersiz token → misafir olarak işlenmişti (stage DB'de customer_id NULL).",
+        "Geçersiz token davranışı tekrar denenmedi (Murat dev+stage DB ile doğrulamış; V1 ile aynı).",
+        "UNTESTED: müşterinin isActive=1 sepet sayısı DB'den ölçülmedi; API çıktısında tek aktif sepet görünüyor."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-25-dev-7307-7308/api.log"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-25T16:40:00+03:00",
+    "verdict": "PASS",
+    "summary": "DEV: geçerli müşteri token'ıyla hash'siz basket/get yeni sepet açmıyor; {} iki kez ve {createBasket:false} üçü de aynı sepeti (15297560) döndürdü, V1 de aynı sepeti döndürdü.",
+    "notes": [
+      "Murat'ın analiziyle uyumlu: karttaki yeni sepetler geçersiz token → misafir olarak işlenmişti (stage DB'de customer_id NULL).",
+      "Geçersiz token davranışı tekrar denenmedi (Murat dev+stage DB ile doğrulamış; V1 ile aynı).",
+      "UNTESTED: müşterinin isActive=1 sepet sayısı DB'den ölçülmedi; API çıktısında tek aktif sepet görünüyor."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-25-dev-7307-7308/api.log"
+    ]
+  }
+}

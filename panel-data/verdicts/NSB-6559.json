@@ -1,82 +1,95 @@
 {
- "card": "NSB-6559",
- "history": [
-  {
-   "date": "2026-09-28T16:05:00+03:00",
-   "verdict": "UNTESTED",
-   "summary": "payment/get — ⛔ DENY (qa-parity: payment/* canlıda çağrılmaz). Koşulmadı.",
-   "notes": [
-    "Açık kullanıcı onayı ile ayrıca ele alınacak.",
-    "Yöntem: V1 STAGE (api.nadirgold.work) ↔ V2 STAGE (api-v2.nadirgold.work/api/v1) canlı, id/sku hizalı alan-alan diff; 2 profil (P1 QA 181484, P2 FE hesabı). FE: www.nadirgold.work ?apiV2=0/1 Playwright ağ yakalama. qa-parity 14 madde kontrol listesi."
-   ],
-   "evidence": [],
-   "aiEvaluation": "STAGE adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
-  },
-  {
-   "date": "2026-09-28T17:25:00+03:00",
-   "verdict": "UNTESTED",
-   "summary": "DEV: ⛔ DENY (payment/*), koşulmadı.",
-   "notes": [
-    "DEV turu: V1 DEV (api.nadirgold.dev) ↔ V2 DEV (api-v2.nadirgold.dev/api/v1), id hizalı alan-alan diff, 2 profil (P1 QA 203311, P2 FE hesabı). FE: www.nadirgold.dev ?apiV2=0/1 ağ yakalama + UI metin diff; mutasyon 0."
-   ],
-   "evidence": [],
-   "aiEvaluation": "DEV adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
-  },
-  {
-   "date": "2026-09-29T00:05:00+03:00",
-   "verdict": "PASS",
-   "summary": "DEV: payment/get 2 profil × 2 tur alan/değer 0 fark; alias/code/name birebir; MpayBankTransfer dalı dönüyor (NSB-6412 dev'de kapanmış). V2 tokensiz 401 (kart: JWT zorunlu; V1 200 — V1-only), geçersiz hash V2 422 (V1 200).",
-   "notes": [
-    "Not: V2 422 mesajı İngilizce 'Basket not found' (FE'de gösterilmiyorsa bloklamaz).",
-    "DEV: kullanıcı onayıyla (29.09 'all koş') DENY istisnası; salt-okuma, 2 profil.",
-    "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/6559_*"
-   ],
-   "evidence": [],
-   "aiEvaluation": "DEV 'all koş' turu (29.09). Jira statüsü değiştirilmedi."
-  },
-  {
-   "date": "2026-09-29T08:45:00+03:00",
-   "verdict": "PASS",
-   "summary": "DEV: payment/get 2 profil × 2 tur alan/değer 0 fark; alias/code/name birebir; MpayBankTransfer dalı dönüyor (NSB-6412 dev'de kapanmış). V2 tokensiz 401 (kart: JWT zorunlu; V1 200 — V1-only), geçersiz hash V2 422 (V1 200).",
-   "notes": [
-    "FE doğrulaması (29.09): ödeme adımında V2 modunda /api/v2/payment/get çağrılıyor (gözlemci kaydı).",
-    "Not: V2 422 mesajı İngilizce 'Basket not found' (FE'de gösterilmiyorsa bloklamaz).",
-    "DEV: kullanıcı onayıyla (29.09 'all koş') DENY istisnası; salt-okuma, 2 profil.",
-    "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/6559_*"
-   ],
-   "evidence": [],
-   "aiEvaluation": "DEV 'all koş' turu (29.09). Jira statüsü değiştirilmedi."
-  },
-  {
-   "date": "2026-11-20T16:10:00+03:00",
-   "verdict": "PASS",
-   "summary": "[STAGE 20.11] STAGE payment/get: dolu müşteri sepetinde V1↔V2 alan/değer farkı 0 (MpayCreditCard + MpayBankTransfer 8 hesap); FE checkout ?apiV2=1 /api/v2/payment/get 200.",
-   "notes": [
-    "API: müşteri sepeti 145454875 (NDR1194060x1), payment/get V1 200 ↔ V2 200, code bazında alan diff 0; alias/code/name birebir.",
-    "V2 tokensız 401; geçersiz hash 422 \"Basket not found\"; boş gövde 422.",
-    "FE (?apiV2=1, x-api-version v2): /checkout → POST /api/v2/payment/get {basketHash} 200, ödeme seçenekleri ekranda.",
-    "❓ FE notu: hash'i bilinmeyen yeni bağlamda checkout'a gidilince FE basketHash \"\" gönderiyor → 422 ve ekranda \"Hata / Doğrulama hatası\" (bilinen sepet hash tuzağı; V1 FE davranışı bu turda ölçülmedi)."
-   ],
-   "evidence": [
-    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6559/diff-payment-get.json",
-    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6559/payment-get-std.v1.json",
-    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6559/payment-get-std.v2.json",
-    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6559/fe-v2-checkout.png",
-    "panel-data/evidence/2026-11-20-rfs-stage/NSB-6507/fe-v2.json"
-   ]
-  }
- ],
- "latest": {
-  "date": "2026-09-29T08:45:00+03:00",
-  "verdict": "PASS",
-  "summary": "DEV: payment/get 2 profil × 2 tur alan/değer 0 fark; alias/code/name birebir; MpayBankTransfer dalı dönüyor (NSB-6412 dev'de kapanmış). V2 tokensiz 401 (kart: JWT zorunlu; V1 200 — V1-only), geçersiz hash V2 422 (V1 200).",
-  "notes": [
-   "FE doğrulaması (29.09): ödeme adımında V2 modunda /api/v2/payment/get çağrılıyor (gözlemci kaydı).",
-   "Not: V2 422 mesajı İngilizce 'Basket not found' (FE'de gösterilmiyorsa bloklamaz).",
-   "DEV: kullanıcı onayıyla (29.09 'all koş') DENY istisnası; salt-okuma, 2 profil.",
-   "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/6559_*"
+  "card": "NSB-6559",
+  "history": [
+    {
+      "date": "2026-09-28T16:05:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "payment/get — ⛔ DENY (qa-parity: payment/* canlıda çağrılmaz). Koşulmadı.",
+      "notes": [
+        "Açık kullanıcı onayı ile ayrıca ele alınacak.",
+        "Yöntem: V1 STAGE (api.nadirgold.work) ↔ V2 STAGE (api-v2.nadirgold.work/api/v1) canlı, id/sku hizalı alan-alan diff; 2 profil (P1 QA 181484, P2 FE hesabı). FE: www.nadirgold.work ?apiV2=0/1 Playwright ağ yakalama. qa-parity 14 madde kontrol listesi."
+      ],
+      "evidence": [],
+      "aiEvaluation": "STAGE adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-28T17:25:00+03:00",
+      "verdict": "UNTESTED",
+      "summary": "DEV: ⛔ DENY (payment/*), koşulmadı.",
+      "notes": [
+        "DEV turu: V1 DEV (api.nadirgold.dev) ↔ V2 DEV (api-v2.nadirgold.dev/api/v1), id hizalı alan-alan diff, 2 profil (P1 QA 203311, P2 FE hesabı). FE: www.nadirgold.dev ?apiV2=0/1 ağ yakalama + UI metin diff; mutasyon 0."
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV adım-1 salt-okuma turu (28.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T00:05:00+03:00",
+      "verdict": "PASS",
+      "summary": "DEV: payment/get 2 profil × 2 tur alan/değer 0 fark; alias/code/name birebir; MpayBankTransfer dalı dönüyor (NSB-6412 dev'de kapanmış). V2 tokensiz 401 (kart: JWT zorunlu; V1 200 — V1-only), geçersiz hash V2 422 (V1 200).",
+      "notes": [
+        "Not: V2 422 mesajı İngilizce 'Basket not found' (FE'de gösterilmiyorsa bloklamaz).",
+        "DEV: kullanıcı onayıyla (29.09 'all koş') DENY istisnası; salt-okuma, 2 profil.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/6559_*"
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV 'all koş' turu (29.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-09-29T08:45:00+03:00",
+      "verdict": "PASS",
+      "summary": "DEV: payment/get 2 profil × 2 tur alan/değer 0 fark; alias/code/name birebir; MpayBankTransfer dalı dönüyor (NSB-6412 dev'de kapanmış). V2 tokensiz 401 (kart: JWT zorunlu; V1 200 — V1-only), geçersiz hash V2 422 (V1 200).",
+      "notes": [
+        "FE doğrulaması (29.09): ödeme adımında V2 modunda /api/v2/payment/get çağrılıyor (gözlemci kaydı).",
+        "Not: V2 422 mesajı İngilizce 'Basket not found' (FE'de gösterilmiyorsa bloklamaz).",
+        "DEV: kullanıcı onayıyla (29.09 'all koş') DENY istisnası; salt-okuma, 2 profil.",
+        "Ham: NadirGoldAPI/contract/stage_faruk_2026-09-28/raw_dev/6559_*"
+      ],
+      "evidence": [],
+      "aiEvaluation": "DEV 'all koş' turu (29.09). Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-11-20T16:10:00+03:00",
+      "verdict": "PASS",
+      "summary": "[STAGE 20.11] STAGE payment/get: dolu müşteri sepetinde V1↔V2 alan/değer farkı 0 (MpayCreditCard + MpayBankTransfer 8 hesap); FE checkout ?apiV2=1 /api/v2/payment/get 200.",
+      "notes": [
+        "API: müşteri sepeti 145454875 (NDR1194060x1), payment/get V1 200 ↔ V2 200, code bazında alan diff 0; alias/code/name birebir.",
+        "V2 tokensız 401; geçersiz hash 422 \"Basket not found\"; boş gövde 422.",
+        "FE (?apiV2=1, x-api-version v2): /checkout → POST /api/v2/payment/get {basketHash} 200, ödeme seçenekleri ekranda.",
+        "❓ FE notu: hash'i bilinmeyen yeni bağlamda checkout'a gidilince FE basketHash \"\" gönderiyor → 422 ve ekranda \"Hata / Doğrulama hatası\" (bilinen sepet hash tuzağı; V1 FE davranışı bu turda ölçülmedi)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6559/diff-payment-get.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6559/payment-get-std.v1.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6559/payment-get-std.v2.json",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6559/fe-v2-checkout.png",
+        "panel-data/evidence/2026-11-20-rfs-stage/NSB-6507/fe-v2.json"
+      ]
+    },
+    {
+      "date": "2026-11-25T18:20:00+03:00",
+      "verdict": "PASS",
+      "summary": "STAGE V2: payment/get dolu sepetle V1 = V2: 2 yöntem (MpayCreditCard, MpayBankTransfer), alanlar aynı (name, description, code, alias, content).",
+      "notes": [
+        "Akşam renewal koşumundaki FAIL koşucunun pasif sepet hash'i kullanmasından: V2 'Basket not found' 422, V1 pasif hash'le de 200 dönüyor (V1 aktiflik kontrolü yapmıyor).",
+        "Boş sepette iki taraf 422 (mesajlar farklı)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-25-stage-test-v2/nsb6641.log",
+        "renewal/out/stage-2026-11-25-15-00/report.md"
+      ]
+    }
   ],
-  "evidence": [],
-  "aiEvaluation": "DEV 'all koş' turu (29.09). Jira statüsü değiştirilmedi."
- }
+  "latest": {
+    "date": "2026-11-25T18:20:00+03:00",
+    "verdict": "PASS",
+    "summary": "STAGE V2: payment/get dolu sepetle V1 = V2: 2 yöntem (MpayCreditCard, MpayBankTransfer), alanlar aynı (name, description, code, alias, content).",
+    "notes": [
+      "Akşam renewal koşumundaki FAIL koşucunun pasif sepet hash'i kullanmasından: V2 'Basket not found' 422, V1 pasif hash'le de 200 dönüyor (V1 aktiflik kontrolü yapmıyor).",
+      "Boş sepette iki taraf 422 (mesajlar farklı)."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-25-stage-test-v2/nsb6641.log",
+      "renewal/out/stage-2026-11-25-15-00/report.md"
+    ]
+  }
 }

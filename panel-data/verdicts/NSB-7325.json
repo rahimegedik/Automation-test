@@ -1,0 +1,39 @@
+{
+  "card": "NSB-7325",
+  "history": [
+    {
+      "date": "2026-11-25T10:45:00+03:00",
+      "verdict": "FAIL",
+      "summary": "STAGE: kur değişince V2 payment/familyInstallments ~1,5–2,5 dk eski kurda kalıyor (V1 ve sepet aynı istekte güncelleniyor). 3 kur değişiminin üçünde de tekrarladı. Bug: NSB-7331 (Ersin).",
+      "notes": [
+        "Ortam: stage api-v2 + Bearer, takı 'ajda 6,400' ×1, 20 sn aralıkla sepet/V1/V2 Tek Çekim ölçümü (spec 42 KUR-01).",
+        "10:24:18 değişim → V2 10:26:33'te güncellendi; 10:28:04 → 10:29:34; 10:36:18 → test sonuna kadar eski. V1 her seferinde aynı ölçümde güncel.",
+        "Dev'de düzeltme doğrulanmıştı (Ersin yorum 72186) → stage build'inde 7574d145/6925e83e olmayabilir.",
+        "Taksitli siparişte tahsilat tutarı etkisi gözlenmedi (sipariş açılmadı).",
+        "Ayrı bulgu: 10:30'dan itibaren aynı sepette V2 basket/get toplamı V1'den sabit ~%2,47 yüksek (fiyat/işçilik/vergi aynı oranda) — araştırılıyor."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-25-taksit-stage/api-run2.log",
+        "panel-data/evidence/2026-11-25-taksit-stage/kur-run3.log",
+        "panel-data/evidence/2026-11-25-taksit-stage/kalem-diff.log"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-25T10:45:00+03:00",
+    "verdict": "FAIL",
+    "summary": "STAGE: kur değişince V2 payment/familyInstallments ~1,5–2,5 dk eski kurda kalıyor (V1 ve sepet aynı istekte güncelleniyor). 3 kur değişiminin üçünde de tekrarladı. Bug: NSB-7331 (Ersin).",
+    "notes": [
+      "Ortam: stage api-v2 + Bearer, takı 'ajda 6,400' ×1, 20 sn aralıkla sepet/V1/V2 Tek Çekim ölçümü (spec 42 KUR-01).",
+      "10:24:18 değişim → V2 10:26:33'te güncellendi; 10:28:04 → 10:29:34; 10:36:18 → test sonuna kadar eski. V1 her seferinde aynı ölçümde güncel.",
+      "Dev'de düzeltme doğrulanmıştı (Ersin yorum 72186) → stage build'inde 7574d145/6925e83e olmayabilir.",
+      "Taksitli siparişte tahsilat tutarı etkisi gözlenmedi (sipariş açılmadı).",
+      "Ayrı bulgu: 10:30'dan itibaren aynı sepette V2 basket/get toplamı V1'den sabit ~%2,47 yüksek (fiyat/işçilik/vergi aynı oranda) — araştırılıyor."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-25-taksit-stage/api-run2.log",
+      "panel-data/evidence/2026-11-25-taksit-stage/kur-run3.log",
+      "panel-data/evidence/2026-11-25-taksit-stage/kalem-diff.log"
+    ]
+  }
+}

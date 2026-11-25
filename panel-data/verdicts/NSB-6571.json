@@ -1,0 +1,29 @@
+{
+  "card": "NSB-6571",
+  "history": [
+    {
+      "date": "2026-11-25T21:35:00+03:00",
+      "verdict": "KISMI",
+      "summary": "STAGE V2: 3DS OTP sonrası dönüş tebrikler sayfasına geldi (1727608, 1727635, 1727644, 1727647). Callback çağrı yolu ağ düzeyinde kaydedilmedi.",
+      "notes": [
+        "Spec 20 ilk denemesinde OTP sonrası URL /checkout'ta kaldı, sipariş oluşmadı; tekrar denemede geçti."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-25-v2-tekrar/p1.log",
+        "panel-data/evidence/2026-11-25-v2-tekrar/p3b-spec20.log"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-25T21:35:00+03:00",
+    "verdict": "KISMI",
+    "summary": "STAGE V2: 3DS OTP sonrası dönüş tebrikler sayfasına geldi (1727608, 1727635, 1727644, 1727647). Callback çağrı yolu ağ düzeyinde kaydedilmedi.",
+    "notes": [
+      "Spec 20 ilk denemesinde OTP sonrası URL /checkout'ta kaldı, sipariş oluşmadı; tekrar denemede geçti."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-25-v2-tekrar/p1.log",
+      "panel-data/evidence/2026-11-25-v2-tekrar/p3b-spec20.log"
+    ]
+  }
+}

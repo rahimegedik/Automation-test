@@ -1,0 +1,39 @@
+{
+  "card": "NSB-7245",
+  "history": [
+    {
+      "date": "2026-11-25T10:19:00+03:00",
+      "verdict": "PASS",
+      "summary": "V2 POST /basket/installment (dev) setInstallment ile birebir aynı: 2 taksitte aynı sepet durumu, doğrulama hataları aynı kod/label, installment/options|apply|/ ve GET yakalanmıyor, sepet değişmiyor.",
+      "notes": [
+        "Ortam: dev, doğrudan api-v2 + Bearer (BE izolasyonu). Sepet: 22 Ayar 10 Gr Ajda Bilezik (bilezik6.4). Sipariş açılmadı.",
+        "API-14: basket/installment {installment:2, basketHash} → 200; installment/rate/fee/grandTotal/status setInstallment 2 ile aynı, yanıt aynı sepet.",
+        "API-15: 0, 13, eksik, listede olmayan 12, snake basket_hash → iki uçta da aynı 422 + aynı label; hatalardan sonra sepet tek çekimde kaldı.",
+        "API-16: GET /basket/installment, POST /basket/installment/options, /apply, /installment/ → hiçbiri 200 değil, yanıtta sepet yok; sepet 3 taksite dönmedi (rota çakışması yok).",
+        "Spec 40 tam koşum 18/19; tek FAIL API-06 (geçersiz hash label basket_hash — bu kartla ilgisiz, önceden bilinen nit)."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-24-taksit/api-7245-7246-run2.log",
+        "panel-data/evidence/2026-11-24-taksit/api-7246-run3.log",
+        "panel-data/evidence/2026-11-24-taksit/api-run5-full.log"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-25T10:19:00+03:00",
+    "verdict": "PASS",
+    "summary": "V2 POST /basket/installment (dev) setInstallment ile birebir aynı: 2 taksitte aynı sepet durumu, doğrulama hataları aynı kod/label, installment/options|apply|/ ve GET yakalanmıyor, sepet değişmiyor.",
+    "notes": [
+      "Ortam: dev, doğrudan api-v2 + Bearer (BE izolasyonu). Sepet: 22 Ayar 10 Gr Ajda Bilezik (bilezik6.4). Sipariş açılmadı.",
+      "API-14: basket/installment {installment:2, basketHash} → 200; installment/rate/fee/grandTotal/status setInstallment 2 ile aynı, yanıt aynı sepet.",
+      "API-15: 0, 13, eksik, listede olmayan 12, snake basket_hash → iki uçta da aynı 422 + aynı label; hatalardan sonra sepet tek çekimde kaldı.",
+      "API-16: GET /basket/installment, POST /basket/installment/options, /apply, /installment/ → hiçbiri 200 değil, yanıtta sepet yok; sepet 3 taksite dönmedi (rota çakışması yok).",
+      "Spec 40 tam koşum 18/19; tek FAIL API-06 (geçersiz hash label basket_hash — bu kartla ilgisiz, önceden bilinen nit)."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-24-taksit/api-7245-7246-run2.log",
+      "panel-data/evidence/2026-11-24-taksit/api-7246-run3.log",
+      "panel-data/evidence/2026-11-24-taksit/api-run5-full.log"
+    ]
+  }
+}

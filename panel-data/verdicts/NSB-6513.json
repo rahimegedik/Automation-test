@@ -59,25 +59,30 @@
         "panel-data/evidence/2026-11-20-rfs-stage/NSB-6513/NSB-6513-kartlar-m1.png",
         "panel-data/evidence/2026-11-20-rfs-stage/NSB-6513/../report.md"
       ]
+    },
+    {
+      "date": "2026-11-25T18:20:00+03:00",
+      "verdict": "PASS",
+      "summary": "STAGE V2: card-storage GET akşam koşumunda V1 ile eşleşti; sabahki banka logosu farkı (V1 .svg ↔ V2 .png) giderilmiş.",
+      "notes": [
+        "Sabah 10:07 koşumunda FAIL, 18:00 koşumunda PASS; kart gün içinde güncellenmiş."
+      ],
+      "evidence": [
+        "renewal/out/stage-2026-11-25-10-07/report.md",
+        "renewal/out/stage-2026-11-25-15-00/report.md"
+      ]
     }
   ],
   "latest": {
-    "date": "2026-11-20T15:45:00+03:00",
-    "verdict": "KISMI",
-    "summary": "Stage'de card-storage V1↔V2 şu an birebir (P2 1 kart, P1 8 kart, maske/BIN doğru, tokensiz 401/401, FE V2 proxy %0,04 piksel); ancak 12:25 koşumunda V2 logo alanı V1'den farklı ve turlar arasında değişken döndü, tekrar edilemedi.",
+    "date": "2026-11-25T18:20:00+03:00",
+    "verdict": "PASS",
+    "summary": "STAGE V2: card-storage GET akşam koşumunda V1 ile eşleşti; sabahki banka logosu farkı (V1 .svg ↔ V2 .png) giderilmiş.",
     "notes": [
-      "P2 (12:38, 3+6 tur): V1 ↔ V2 id hizalı diff 0 fark, iki taraf deterministik; cardMask 479680******0003, cardBinNumber 8 hane, logo null (Akbank kartı). Tokensiz → 401/401.",
-      "P1 (12:40, 5 tur): 8 kart, V1=V2 tüm logo URL'leri birebir (Yapı Kredi .svg, Garanti, Ziraat .png).",
-      "❓ renewal koşucusu 12:25 (stage-2026-11-20-12-25): P2'de V2 logo dolu / V1 null; P1'de iki kartta V1↔V2 logo dosyası farklı (Yapı Kredi …bUfBNvfz….svg ↔ …Z8213EIS….png; Ziraat …5EbYn6d2….png ↔ …D7LmjFwl….png) ve V2 turlar arasında farklı yanıt. 15 dk sonra tekrar edilemedi → V2'de banka logosu önbelleği bayat/geçiş anı şüphesi (stage'de o sırada logo güncellendiyse V2 gecikmeli yansıtıyor olabilir).",
-      "FE: /hesabim/kartlarim ?apiV2=0/1 metin farkı 0, piksel %0,04, V2 /api/v2/card-storage çağırıyor, çağrı sayısı 3/3.",
-      "docs-json StoredCardDto alanları hâlâ type:object (bilinen spec kusuru, bloklamıyor)."
+      "Sabah 10:07 koşumunda FAIL, 18:00 koşumunda PASS; kart gün içinde güncellenmiş."
     ],
     "evidence": [
-      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6513/api-diff.json",
-      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6513/p1-logo-rounds-1240.txt",
-      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6513/NSB-6513-kartlar-m0.png",
-      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6513/NSB-6513-kartlar-m1.png",
-      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6513/../report.md"
+      "renewal/out/stage-2026-11-25-10-07/report.md",
+      "renewal/out/stage-2026-11-25-15-00/report.md"
     ]
   }
 }

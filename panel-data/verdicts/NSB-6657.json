@@ -31,17 +31,24 @@
         "panel-data/evidence/2026-11-19-stage-test/NSB-6657/C5-v1-upd-q2.json",
         "panel-data/evidence/2026-11-19-stage-test/NSB-6635/negatives.json"
       ]
+    },
+    {
+      "date": "2026-11-25T18:20:00+03:00",
+      "verdict": "PASS",
+      "summary": "STAGE V2 (renewal sepet zinciri): basket/update V1 ile eşleşti.",
+      "notes": [],
+      "evidence": [
+        "renewal/out/stage-2026-11-25-15-00/report.md"
+      ]
     }
   ],
   "latest": {
-    "date": "2026-09-29T08:00:00+03:00",
-    "verdict": "FAIL",
-    "summary": "[DEV · 27 kart toplu koşum] V2 ile adet 2'ye güncellenen sepeti V1 okuyunca servicePrice 384,41↔768,82, originalPrice 1,01↔2,01 (NSB-5768 ailesi); FE + butonu koşucuda eşleşmedi.",
-    "notes": [
-      "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
-      "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
-    ],
-    "evidence": [],
-    "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    "date": "2026-11-25T18:20:00+03:00",
+    "verdict": "PASS",
+    "summary": "STAGE V2 (renewal sepet zinciri): basket/update V1 ile eşleşti.",
+    "notes": [],
+    "evidence": [
+      "renewal/out/stage-2026-11-25-15-00/report.md"
+    ]
   }
 }

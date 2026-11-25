@@ -11,17 +11,24 @@
       ],
       "evidence": [],
       "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    },
+    {
+      "date": "2026-11-25T18:20:00+03:00",
+      "verdict": "PASS",
+      "summary": "STAGE V2 (renewal sepet zinciri): payment/set V1 ile eşleşti.",
+      "notes": [],
+      "evidence": [
+        "renewal/out/stage-2026-11-25-15-00/report.md"
+      ]
     }
   ],
   "latest": {
-    "date": "2026-09-29T08:00:00+03:00",
-    "verdict": "KISMI",
-    "summary": "[DEV · 27 kart toplu koşum] API: set 200, V1+V2 okumada yöntem güncel, eski yönteme geri alındı, eksik code 422 errors[]; FE ödeme ekranında yöntem seçimi ölçülmedi.",
-    "notes": [
-      "Koşum: renewal/out/dev-2026-09-29-04-31 (+ sepet/FE-sepet tekrar koşumları)",
-      "Katı kural: 🔴 → FAIL · ❓ → KISMI · mutlu yol yok → UNTESTED."
-    ],
-    "evidence": [],
-    "aiEvaluation": "renewal/run.mjs + elle doğrulama. Jira statüsü değiştirilmedi."
+    "date": "2026-11-25T18:20:00+03:00",
+    "verdict": "PASS",
+    "summary": "STAGE V2 (renewal sepet zinciri): payment/set V1 ile eşleşti.",
+    "notes": [],
+    "evidence": [
+      "renewal/out/stage-2026-11-25-15-00/report.md"
+    ]
   }
 }

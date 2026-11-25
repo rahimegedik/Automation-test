@@ -1,0 +1,31 @@
+{
+  "card": "NSB-6660",
+  "history": [
+    {
+      "date": "2026-11-25T18:20:00+03:00",
+      "verdict": "FAIL",
+      "summary": "STAGE V2: assign-customer tokensiz 401, girişli 200, tekrarında 200 (idempotent). Ancak var olmayan hash ('qa-yok-00000000') 200 döndü; kabul 403/404 istiyor. Ayrıca misafir sepeti müşteriye atanmıyor, kalemleri müşterinin mevcut sepetine birleştiriliyor (hash 145455715 → 145455598).",
+      "notes": [
+        "Kalem (ajda 6,400, 44.129,96) müşteri sepetinde görünüyor, yani kullanıcı açısından sonuç doğru; sözleşme farkı: atama yerine birleştirme.",
+        "Başka müşterinin hash'i güvenli şekilde denenemedi (gerçek veri); olmayan hash'e 200 dönmesi bu kontrolün de eksik olabileceğini düşündürüyor.",
+        "Sepet API ile boşaltıldı ve ölçüldü."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-25-stage-test-v2/nsb6660.log"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-25T18:20:00+03:00",
+    "verdict": "FAIL",
+    "summary": "STAGE V2: assign-customer tokensiz 401, girişli 200, tekrarında 200 (idempotent). Ancak var olmayan hash ('qa-yok-00000000') 200 döndü; kabul 403/404 istiyor. Ayrıca misafir sepeti müşteriye atanmıyor, kalemleri müşterinin mevcut sepetine birleştiriliyor (hash 145455715 → 145455598).",
+    "notes": [
+      "Kalem (ajda 6,400, 44.129,96) müşteri sepetinde görünüyor, yani kullanıcı açısından sonuç doğru; sözleşme farkı: atama yerine birleştirme.",
+      "Başka müşterinin hash'i güvenli şekilde denenemedi (gerçek veri); olmayan hash'e 200 dönmesi bu kontrolün de eksik olabileceğini düşündürüyor.",
+      "Sepet API ile boşaltıldı ve ölçüldü."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-25-stage-test-v2/nsb6660.log"
+    ]
+  }
+}

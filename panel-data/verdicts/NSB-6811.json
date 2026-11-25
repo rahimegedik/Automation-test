@@ -1,0 +1,31 @@
+{
+  "card": "NSB-6811",
+  "history": [
+    {
+      "date": "2026-11-25T18:20:00+03:00",
+      "verdict": "PASS",
+      "summary": "STAGE V2: customer/getContracts 200; type=sales,preliminary metinleri V1 ile birebir aynı (19.805 / 5.274 kr). Tip verilmeden V2 7 sözleşmeyi dönüyor.",
+      "notes": [
+        "Tip verilmeden boş sepet hash'iyle V1 500 veriyor, V2 200 (V2 daha iyi; V1 karşılaştırması yapılamadı).",
+        "basketHash yokken iki taraf da 422 dönüyor; kart 400 diyordu. Mesaj farklı: V1 'Sepetinizde ürün bulunmamaktadır', V2 'BasketHash zorunludur'. Minör.",
+        "Misafir ve girişli çağrılar aynı sonucu verdi."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-25-stage-test-v2/nsb6811.log"
+      ]
+    }
+  ],
+  "latest": {
+    "date": "2026-11-25T18:20:00+03:00",
+    "verdict": "PASS",
+    "summary": "STAGE V2: customer/getContracts 200; type=sales,preliminary metinleri V1 ile birebir aynı (19.805 / 5.274 kr). Tip verilmeden V2 7 sözleşmeyi dönüyor.",
+    "notes": [
+      "Tip verilmeden boş sepet hash'iyle V1 500 veriyor, V2 200 (V2 daha iyi; V1 karşılaştırması yapılamadı).",
+      "basketHash yokken iki taraf da 422 dönüyor; kart 400 diyordu. Mesaj farklı: V1 'Sepetinizde ürün bulunmamaktadır', V2 'BasketHash zorunludur'. Minör.",
+      "Misafir ve girişli çağrılar aynı sonucu verdi."
+    ],
+    "evidence": [
+      "panel-data/evidence/2026-11-25-stage-test-v2/nsb6811.log"
+    ]
+  }
+}
