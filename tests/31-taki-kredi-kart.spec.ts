@@ -165,12 +165,16 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
   await test.step("11. Kredi kartı ödeme seçeneği / kart alanını seç", async () => {
     // Filtresiz .first() teslimat seçeneğine tıklıyordu ("Lütfen kredi kartı seçiniz").
     // Spec 20'deki gibi kart satırlarını metinle filtrele, 3DS test kartı = 2. satır.
-    const savedCardRows = page
+    // 23.11 stage: kart satırı artık radio ("479680******0003 05 / 2029 ..."); eski class seçicisi 0 döndü.
+    const radioRows = page.getByRole("radio", { name: /\*{4,}\d{4}/ });
+    await radioRows.first().waitFor({ state: "visible", timeout: 15_000 }).catch(() => {});
+    const savedCardRows = (await radioRows.count()) > 0 ? radioRows : page
       .locator(".cursor-pointer.flex.items-center.gap-3")
       .filter({ hasText: /\*{2,}|SKT|Son Kullanma|Bankanız|\/\d{2}/i });
-    await expect(savedCardRows.nth(1)).toBeVisible({ timeout: 15_000 });
-    await savedCardRows.nth(1).scrollIntoViewIfNeeded();
-    await savedCardRows.nth(1).click({ force: true });
+    const row = (await savedCardRows.count()) > 1 ? savedCardRows.nth(1) : savedCardRows.first();
+    await expect(row).toBeVisible({ timeout: 15_000 });
+    await row.scrollIntoViewIfNeeded();
+    await row.click({ force: true });
     await expect(page.getByText("Lütfen kredi kartı seçiniz")).toHaveCount(0, {
       timeout: 5_000,
     });

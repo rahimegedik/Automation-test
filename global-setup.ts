@@ -72,6 +72,7 @@ async function globalSetup(_config: FullConfig) {
     const isValid = await checkSession(authFile, baseURL);
     if (isValid) {
       console.log("✓ Mevcut session geçerli — login atlanıyor.");
+      await applyApiMode(authFile, baseURL);
       return;
     }
     console.log(
@@ -210,6 +211,7 @@ async function globalSetup(_config: FullConfig) {
   await browser.close();
 
   console.log("\n✓ Oturum kaydedildi:", authFile, "\n");
+  await applyApiMode(authFile, baseURL);
 }
 
 // Google OAuth akışını state machine ile yönet
@@ -362,6 +364,29 @@ async function checkSession(
     return valid;
   } catch {
     return false;
+  } finally {
+    await browser.close();
+  }
+}
+
+// 25.11: journey spec'lerinin çoğu ?apiV2=1 vermiyordu, stage varsayılanı v1 → testler sessizce V1'de koştu.
+// API modunu (varsayılan v2; API_MODE=v1 ile legacy) storageState'e çerez olarak yaz ve SSR başlığıyla doğrula.
+// Doğrulanamazsa koşum başlamaz. Spec içinde ?apiV2=0/1 veren testler kendi modunu yine seçebilir.
+async function applyApiMode(authFile: string, baseURL: string) {
+  const mode = (process.env.API_MODE ?? "v2").toLowerCase();
+  const base = baseURL.replace(/\/$/, "");
+  const browser = await chromium.launch({ headless: true });
+  const context = await browser.newContext({ storageState: authFile });
+  const page = await context.newPage();
+  try {
+    await page.goto(`${base}/?apiV2=${mode === "v1" ? 0 : 1}`, { waitUntil: "domcontentloaded", timeout: 30_000 });
+    const res = await page.goto(`${base}/`, { waitUntil: "domcontentloaded", timeout: 30_000 });
+    const ver = res?.headers()["x-api-version"];
+    if (ver !== mode) {
+      throw new Error(`API modu doğrulanamadı: beklenen x-api-version=${mode}, gelen=${ver ?? "yok"}`);
+    }
+    await context.storageState({ path: authFile });
+    console.log(`✓ API modu: x-api-version=${ver} (NG_API_V2 çerezi oturuma yazıldı)`);
   } finally {
     await browser.close();
   }

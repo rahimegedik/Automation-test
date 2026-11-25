@@ -128,7 +128,9 @@ test("Kullanıcı yolculuğu - Ziynet Kredi Kartı Baştan Sona", async ({
 
     // Sadece kredi kartı alanındaki kart satırlarını yakala.
     // Motokurye / teslimat seçeneklerini yakalamamak için kart metni filtreleniyor.
-    const savedCardRows = page
+    // 23.11 stage: kart satırı artık radio ("479680******0003 05 / 2029 ..."); eski class seçicisi 0 döndü.
+    const radioRows = page.getByRole("radio", { name: /\*{4,}\d{4}/ });
+    const savedCardRows = (await radioRows.count()) > 0 ? radioRows : page
       .locator(".cursor-pointer.flex.items-center.gap-3")
       .filter({
         hasText: /\*{2,}|SKT|Son Kullanma|Kart|Bankanız|\/\d{2}/i,
@@ -144,7 +146,7 @@ test("Kullanıcı yolculuğu - Ziynet Kredi Kartı Baştan Sona", async ({
 
     // İki kart varsa ilk kartı seçer.
     // İkinci kartı seçmek istersen .first() yerine .nth(1) yap.
-    const savedCardRow = savedCardRows.nth(1);
+    const savedCardRow = (await savedCardRows.count()) > 1 ? savedCardRows.nth(1) : savedCardRows.first();
 
     await expect(savedCardRow).toBeVisible({ timeout: 15_000 });
 
@@ -174,7 +176,15 @@ test("Kullanıcı yolculuğu - Ziynet Kredi Kartı Baştan Sona", async ({
   await test.step("14. 3D Secure OTP gir", async () => {
     await checkoutPage.enterOtp(OTP);
     console.log("✓ OTP girildi, URL:", page.url());
-    await expect(page.locator("body")).toBeVisible();
+    // 25.11 V2: OTP sonrası /checkout'ta kalıp sipariş oluşmadığı halde test geçiyordu → siparişi doğrula.
+    const ok = await page.waitForURL(/tebrikler\/\d+/, { timeout: 60_000 }).then(() => true).catch(() => false);
+    if (!ok) {
+      const msg = (await page.locator('[role="dialog"], [role="alert"], .toast, [class*="error"], [class*="Error"]').allInnerTexts().catch(() => []))
+        .map((t) => t.replace(/\s+/g, " ").trim()).filter(Boolean).slice(0, 5);
+      console.log(`✘ Sipariş oluşmadı, URL: ${page.url()} | ekrandaki mesajlar: ${JSON.stringify(msg)}`);
+    }
+    expect(ok, "OTP sonrası tebrikler/<sipariş no> sayfasına gidilmeli").toBe(true);
+    console.log("✓ Sipariş oluştu:", page.url());
   });
 
   // ─── ADIM 15: Siparişlerim ────────────────────────────────────────────────────

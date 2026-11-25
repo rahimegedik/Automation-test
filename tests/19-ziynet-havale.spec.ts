@@ -213,7 +213,8 @@ test("Kullanıcı yolculuğu - Ziynet Altın Havale Baştan Sona", async ({
 
     console.log("✓ Ödeme Yap tıklandı, URL:", page.url());
 
-    await expect(page.locator("body")).toBeVisible();
+    // Sipariş gerçekten oluştu mu: tebrikler/<sipariş no> şart (25.11: spec 20 sipariş açmadan geçiyordu).
+    await expect(page).toHaveURL(/tebrikler\/\d+/, { timeout: 60_000 });
   });
 
   await test.step("13. Siparişlerim sayfasına bak", async () => {

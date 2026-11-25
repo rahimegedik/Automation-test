@@ -262,6 +262,129 @@ test("TAKSIT-API-12 tanımsız alanlar 422: bin_number, binNumber, basket_hash",
   await info.attach("tanimsiz.json", { body: JSON.stringify(got, null, 1), contentType: "application/json" });
 });
 
+// ───────────────────────── NSB-7245 basket/installment (setInstallment takma adı) ─────────────────────────
+
+const instAlias = (body: Record<string, unknown>) => api.req("v2", "/basket/installment", body);
+const v1Get = async () => {
+  const r = await api.req("v1", "/basket/get", { basket_hash: basket.basketHash });
+  return r.json?.data ?? r.json;
+};
+
+test("TAKSIT-API-14 basket/installment = setInstallment (2 taksit, aynı sepet durumu)", async ({}, info) => {
+  await setInst({ installment: 1, basketHash: basket.basketHash });
+  const viaAlias = await instAlias({ installment: 2, basketHash: basket.basketHash });
+  await setInst({ installment: 1, basketHash: basket.basketHash });
+  const viaSet = await setInst({ installment: 2, basketHash: basket.basketHash });
+  await info.attach("alias-vs-set.json", { body: JSON.stringify({ alias: [viaAlias.code, instState(viaAlias.data)], set: [viaSet.code, instState(viaSet.data)], aliasRaw: viaAlias.raw.slice(0, 600) }, null, 1), contentType: "application/json" });
+  expect(viaAlias.code, `basket/installment ${viaAlias.raw.slice(0, 200)}`).toBe(200);
+  expect(instState(viaAlias.data), "basket/installment ile setInstallment aynı durumu vermeli").toEqual(instState(viaSet.data));
+  expect.soft(viaAlias.data?.basketHash, "yanıt güncel sepet").toBe(basket.basketHash);
+});
+
+test("TAKSIT-API-15 basket/installment doğrulama = setInstallment (0, 13, eksik, string, tanımsız alan)", async ({}, info) => {
+  await setInst({ installment: 1, basketHash: basket.basketHash });
+  const cases: Record<string, Record<string, unknown>> = {
+    sifir: { installment: 0, basketHash: basket.basketHash },
+    onUc: { installment: 13, basketHash: basket.basketHash },
+    eksik: { basketHash: basket.basketHash },
+    oniki_listede_yok: { installment: 12, basketHash: basket.basketHash },
+    snake: { installment: 2, basket_hash: basket.basketHash },
+  };
+  const rows: any[] = [];
+  for (const [k, body] of Object.entries(cases)) {
+    const a = await instAlias(body);
+    const s = await setInst(body);
+    rows.push({ k, alias: [a.code, labels(a)], set: [s.code, labels(s)] });
+    expect.soft([a.code, labels(a)], `${k}: alias ≠ setInstallment`).toEqual([s.code, labels(s)]);
+    expect.soft(a.code, `${k}: 422 bekleniyor`).toBe(422);
+  }
+  const after = instState((await api.get()).valueOf());
+  rows.push({ afterInstallment: after.installment, afterGrand: after.grandTotal });
+  await info.attach("dogrulama.json", { body: JSON.stringify(rows, null, 1), contentType: "application/json" });
+  expect.soft(after.installment, "hatalı isteklerden sonra sepet tek çekimde kalmalı").toBe(1);
+});
+
+test("TAKSIT-API-16 rota çakışması: GET installment, installment/options|apply|/ yakalanmaz, sepet değişmez", async ({}, info) => {
+  await setInst({ installment: 1, basketHash: basket.basketHash });
+  const body = { installment: 3, basketHash: basket.basketHash };
+  const rows = {
+    get: await api.req("v2", "/basket/installment", body, { method: "GET" }),
+    options: await api.req("v2", "/basket/installment/options", body),
+    apply: await api.req("v2", "/basket/installment/apply", body),
+    slash: await api.req("v2", "/basket/installment/", body),
+  };
+  const after = instState((await api.get()).valueOf());
+  await info.attach("rotalar.json", { body: JSON.stringify({ ...Object.fromEntries(Object.entries(rows).map(([k, r]) => [k, [r.code, r.raw.slice(0, 300)]])), after }, null, 1), contentType: "application/json" });
+  for (const [k, r] of Object.entries(rows)) {
+    expect.soft(r.code, `${k}: setInstallment'a yönlenmemeli (200 dönmemeli)`).not.toBe(200);
+    expect.soft(r.data?.basketHash ?? null, `${k}: yanıtta sepet olmamalı`).toBeNull();
+  }
+  expect(after.installment, "yakalanmaması gereken uçlar sepeti 3 taksite çevirmemeli").toBe(1);
+});
+
+// ───────────────────────── NSB-7246 basket/get taksitli toplam paritesi ─────────────────────────
+
+// V1 ve V2 kalem alanları aynı adla (camelCase) dönüyor.
+const itemView = (it: any, _v1 = false) => ({
+  sku: it.sku,
+  price: Number(it.price),
+  installmentFee: Number(it.installmentFee ?? 0),
+  priceWithInstallment: Number(it.priceWithInstallment ?? NaN),
+});
+
+test("TAKSIT-API-17 taksitli sepet: basket/get grandTotal = setInstallment = V1 basket/get", async ({}, info) => {
+  const set = await setInst({ installment: 3, basketHash: basket.basketHash });
+  const g2 = await api.get();
+  const g1 = await v1Get();
+  const row = {
+    set: instState(set.data),
+    v2get: instState(g2),
+    v1get: { ...instState(g1), high: g1?.highValueOrderThreshold }, // V1 basket/get de camelCase (25.11)
+    v2high: (g2 as any).highValueOrderThreshold,
+  };
+  console.log("ℹ 7246 toplam", JSON.stringify(row));
+  await info.attach("toplam.json", { body: JSON.stringify(row, null, 1), contentType: "application/json" });
+  expect(set.code).toBe(200);
+  expect.soft(row.v2get.installment, "basket/get taksit sayısını göstermeli").toBe(3);
+  expect.soft(row.v2get.grandTotal, "basket/get grandTotal = setInstallment grandTotal").toBeCloseTo(row.set.grandTotal, 2);
+  expect.soft(row.v2get.grandTotal, "V2 basket/get grandTotal = V1 grand_total").toBeCloseTo(row.v1get.grandTotal, 2);
+  expect.soft(row.v2get.installmentFee, "installmentFee V1 ile aynı").toBeCloseTo(row.v1get.installmentFee, 2);
+  expect.soft(row.v2get.installmentRate, "installmentRate V1 ile aynı").toBeCloseTo(row.v1get.installmentRate, 4);
+  expect.soft(row.v2get.grandTotal, "taksitli toplam tek çekimden büyük olmalı").toBeGreaterThan(Number(basket.grandTotal));
+  expect.soft(row.v2high, "highValueOrderThreshold V1 ile aynı").toBe(row.v1get.high);
+});
+
+test("TAKSIT-API-18 kalem dağıtımı: Σ installmentFee = fark, priceWithInstallment = price + fee, V1 ile aynı", async ({}, info) => {
+  await setInst({ installment: 3, basketHash: basket.basketHash });
+  const g2: any = await api.get();
+  const g1 = await v1Get();
+  const i2 = (g2.items || []).map((i: any) => itemView(i));
+  const i1 = (g1?.items || []).map((i: any) => itemView(i, true));
+  const sumPrice = i2.reduce((s: number, i: any) => s + i.price, 0);
+  const sumFee = i2.reduce((s: number, i: any) => s + i.installmentFee, 0);
+  const target = Number(g2.grandTotal) - Number(g2.shippingFee || 0) - sumPrice;
+  console.log("ℹ 7246 kalem V2", JSON.stringify(i2), "V1", JSON.stringify(i1), "Σfee", sumFee.toFixed(2), "hedef", target.toFixed(2));
+  await info.attach("kalemler.json", { body: JSON.stringify({ v2: i2, v1: i1, sumPrice, sumFee, target, grand: g2.grandTotal, ship: g2.shippingFee, rawV2Item: (g2.items || [])[0] }, null, 1), contentType: "application/json" });
+  expect(i2.length, "kalem").toBeGreaterThan(0);
+  expect.soft(sumFee, "Σ kalem installmentFee = grandTotal − kargo − Σ price").toBeCloseTo(target, 2);
+  expect.soft(sumFee, "taksit farkı kalemlere dağıtılmış olmalı (>0)").toBeGreaterThan(0);
+  for (const it of i2) expect.soft(it.priceWithInstallment, `${it.sku}: priceWithInstallment = price + fee`).toBeCloseTo(it.price + it.installmentFee, 2);
+  expect.soft(i2, "kalem alanları V1 ile aynı").toEqual(i1);
+});
+
+test("TAKSIT-API-19 tek çekime dönüş sonrası basket/get: toplam tabana, kalem farkı 0, V1 ile aynı", async ({}, info) => {
+  await setInst({ installment: 3, basketHash: basket.basketHash });
+  await setInst({ installment: 1, basketHash: basket.basketHash });
+  const g2: any = await api.get();
+  const g1 = await v1Get();
+  const i2 = (g2.items || []).map((i: any) => itemView(i));
+  await info.attach("tek-cekim-get.json", { body: JSON.stringify({ v2: instState(g2), items: i2, v1grand: g1?.grandTotal }, null, 1), contentType: "application/json" });
+  expect.soft(Number(g2.grandTotal), "grandTotal tabana döner").toBeCloseTo(Number(basket.grandTotal), 2);
+  expect.soft(Number(g2.grandTotal), "V1 ile aynı").toBeCloseTo(Number(g1?.grandTotal), 2);
+  for (const it of i2) expect.soft(it.installmentFee, `${it.sku}: tek çekimde kalem farkı 0`).toBe(0);
+});
+
+// Sepeti külçeye çevirdiği için en sonda koşar (sonrasındaki vakalar takı sepeti bekler).
 test("TAKSIT-API-13 külçe sepeti: liste boş, setInstallment 422 (label installment)", async ({}, info) => {
   await setInst({ installment: 1, basketHash: basket.basketHash });
   expect(await api.clear(), "takı temizlenemedi").toBe(true);

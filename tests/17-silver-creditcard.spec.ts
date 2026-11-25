@@ -7,6 +7,14 @@ import { CartPage } from "../pages/CartPage";
 import { CheckoutPage } from "../pages/CheckoutPage";
 import { OrdersPage } from "../pages/OrdersPage";
 import { ProfilePage } from "../pages/ProfilePage";
+import { BasketApi } from "../pages/BasketApi";
+// NSB-7231: FE sepeti boş gösterse de sunucuda gizli sepet kalabiliyor → API ile boşalt ve ölç.
+async function clearServerBasket() {
+  const sapi = new BasketApi(process.env.NADIRGOLD_ENV || "staging", 20);
+  expect(await sapi.clear(), "sunucu sepeti boşaltılamadı").toBe(true);
+  expect((await sapi.get({ force: true })).items?.length ?? 0, "sunucu sepeti boş olmalı").toBe(0);
+}
+
 
 // =============================================================================
 // Kredi Kartı ile Ödeme
@@ -39,6 +47,7 @@ test("Kullanıcı yolculuğu - Kredi Kartı ile Ödeme", async ({ page }) => {
     console.log("✓ Ana sayfa açıldı:", page.url());
 
     await cartPage.clearAll();
+    await clearServerBasket();
 
     await homePage.goto();
 
@@ -148,7 +157,9 @@ test("Kullanıcı yolculuğu - Kredi Kartı ile Ödeme", async ({ page }) => {
 
     // Sadece kredi kartı alanındaki kart satırlarını yakala.
     // Motokurye / teslimat seçeneklerini yakalamamak için kart metni filtreleniyor.
-    const savedCardRows = page
+    // 23.11 stage: kart satırı artık radio ("479680******0003 05 / 2029 ..."); eski class seçicisi 0 döndü.
+    const radioRows = page.getByRole("radio", { name: /\*{4,}\d{4}/ });
+    const savedCardRows = (await radioRows.count()) > 0 ? radioRows : page
       .locator(".cursor-pointer.flex.items-center.gap-3")
       .filter({
         hasText: /\*{2,}|SKT|Son Kullanma|Kart|Bankanız|\/\d{2}/i,

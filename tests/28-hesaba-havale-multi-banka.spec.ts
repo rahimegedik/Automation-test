@@ -4,6 +4,14 @@ import { CheckoutPage } from "../pages/CheckoutPage";
 import { CartPage } from "../pages/CartPage";
 import { OrdersPage } from "../pages/OrdersPage";
 import { ProfilePage } from "../pages/ProfilePage";
+import { BasketApi } from "../pages/BasketApi";
+// NSB-7231: FE sepeti boş gösterse de sunucuda gizli sepet kalabiliyor → API ile boşalt ve ölç.
+async function clearServerBasket() {
+  const sapi = new BasketApi(process.env.NADIRGOLD_ENV || "staging", 20);
+  expect(await sapi.clear(), "sunucu sepeti boşaltılamadı").toBe(true);
+  expect((await sapi.get({ force: true })).items?.length ?? 0, "sunucu sepeti boş olmalı").toBe(0);
+}
+
 
 // 3 farklı banka × 1 Hesaba Altın Havale akışı.
 // Her test = 1 gerçek havale → toplam 3 sipariş açar.
@@ -45,6 +53,7 @@ for (const bank of BANKS) {
       await closeAllPopups(page);
 
       await cartPage.clearAll();
+      await clearServerBasket();
       await homePage.goto();
 
       await closeAllPopups(page);
@@ -148,7 +157,9 @@ for (const bank of BANKS) {
       await closeAllPopups(page);
 
       // 3) Kayıtlı kredi kartı — ekrandaki 2. kart: 479680******0003 VISA
-      const savedCardRows = page
+      // 23.11 stage: kart satırı artık radio ("479680******0003 05 / 2029 ..."); eski class seçicisi 0 döndü.
+    const radioRows = page.getByRole("radio", { name: /\*{4,}\d{4}/ });
+    const savedCardRows = (await radioRows.count()) > 0 ? radioRows : page
       .locator(".cursor-pointer.flex.items-center.gap-3")
       .filter({
         hasText: /\*{2,}|SKT|Son Kullanma|Kart|Bankanız|\/\d{2}/i,
@@ -164,7 +175,7 @@ for (const bank of BANKS) {
 
     // İki kart varsa ilk kartı seçer.
     // İkinci kartı seçmek istersen .first() yerine .nth(1) yap.
-    const savedCardRow = savedCardRows.nth(1);
+    const savedCardRow = (await savedCardRows.count()) > 1 ? savedCardRows.nth(1) : savedCardRows.first();
 
     await expect(savedCardRow).toBeVisible({ timeout: 15_000 });
 
