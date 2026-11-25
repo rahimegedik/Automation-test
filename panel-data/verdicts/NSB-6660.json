@@ -8,7 +8,8 @@
       "notes": [
         "Kalem (ajda 6,400, 44.129,96) müşteri sepetinde görünüyor, yani kullanıcı açısından sonuç doğru; sözleşme farkı: atama yerine birleştirme.",
         "Başka müşterinin hash'i güvenli şekilde denenemedi (gerçek veri); olmayan hash'e 200 dönmesi bu kontrolün de eksik olabileceğini düşündürüyor.",
-        "Sepet API ile boşaltıldı ve ölçüldü."
+        "Sepet API ile boşaltıldı ve ölçüldü.",
+        "Bug kartı: NSB-7338 (Murat, High, New-Backend) — NSB-6660'ı Blocks, NSB-5802 Relates."
       ],
       "evidence": [
         "panel-data/evidence/2026-11-25-stage-test-v2/nsb6660.log"
@@ -22,7 +23,8 @@
     "notes": [
       "Kalem (ajda 6,400, 44.129,96) müşteri sepetinde görünüyor, yani kullanıcı açısından sonuç doğru; sözleşme farkı: atama yerine birleştirme.",
       "Başka müşterinin hash'i güvenli şekilde denenemedi (gerçek veri); olmayan hash'e 200 dönmesi bu kontrolün de eksik olabileceğini düşündürüyor.",
-      "Sepet API ile boşaltıldı ve ölçüldü."
+      "Sepet API ile boşaltıldı ve ölçüldü.",
+      "Bug kartı: NSB-7338 (Murat, High, New-Backend) — NSB-6660'ı Blocks, NSB-5802 Relates."
     ],
     "evidence": [
       "panel-data/evidence/2026-11-25-stage-test-v2/nsb6660.log"

@@ -50,22 +50,34 @@
         "panel-data/evidence/2026-11-20-rfs-stage/NSB-6461/../NSB-6632/fe-probe.txt",
         "panel-data/evidence/2026-11-20-rfs-stage/NSB-6461/../report.md"
       ]
+    },
+    {
+      "date": "2026-11-25T22:30:00+03:00",
+      "verdict": "FAIL",
+      "summary": "STAGE V2: customer/documents aynı müşteri için boş liste dönüyor (general/orders []), V1 2 genel + 4 sipariş belge talebi dönüyor; customer/detail.hasDocumentHistory V1 true, V2 false. Bug: NSB-7339 (Can Hepoğlu, High).",
+      "notes": [
+        "İkinci profilde V2 401, V1 200.",
+        "Geçersiz token mesajı: V1 'Belge talebi bulunamadı veya süresi doldu.', V2 'Not Found'.",
+        "Belge FE ekranı stage'de inactive (sayfa iki modda 404); FE akışı test edilmedi, bulgu API seviyesinde."
+      ],
+      "evidence": [
+        "renewal/out/stage-2026-11-25-10-07/report.md",
+        "panel-data/evidence/2026-11-25-stage-test-v2/gating.log"
+      ]
     }
   ],
   "latest": {
-    "date": "2026-11-20T15:45:00+03:00",
-    "verdict": "KISMI",
-    "summary": "Stage'de liste V1=V2 ({general:[],orders:[]}, 3 tur), V2 FE Belgelerim /api/v2/customer/documents'ı 200 ile çağırıyor; belge talebi olmayan hesap yüzünden status/canUpload/downloadUrl/yükleme-indirme ölçülemedi.",
+    "date": "2026-11-25T22:30:00+03:00",
+    "verdict": "FAIL",
+    "summary": "STAGE V2: customer/documents aynı müşteri için boş liste dönüyor (general/orders []), V1 2 genel + 4 sipariş belge talebi dönüyor; customer/detail.hasDocumentHistory V1 true, V2 false. Bug: NSB-7339 (Can Hepoğlu, High).",
     "notes": [
-      "API: P2 GET customer/documents V1 ↔ V2, 3 tur: 200/200, data birebir {general:[],orders:[]}. Tokensiz → 401/401. Olmayan token GET documents/{uuid} → 404/404, V2 mesajı 'Belge talebi bulunamadı veya süresi doldu.'",
-      "renewal koşucusu (stage-2026-11-20-12-25): P2 temiz; P1 V2'de 401 (V1 200) — P1 hesabı V2'de 'Hesap aktif değil', bilinen profil kısıtı, ürün bulgusu sayılmadı.",
-      "FE: /hesabim/belgelerim ?apiV2=0 → x-api-version v1, çağrı 200 api.nadirgold.work/customer/documents; ?apiV2=1 → x-api-version v2, çağrı 200 www.nadirgold.work/api/v2/customer/documents (bkz. NSB-6632/fe-probe.txt).",
-      "UNTESTED: status/statusLabel gösterimi, canUpload:false/isExpired'de yükleme kapalı, isDownloadable + downloadUrl ile indirme, expiresAt gösterimi, gerçek yükleme. Gerekli: stage'de panelden belge talebi açılmış müşteri (biri awaiting_document, biri süresi dolmuş, biri indirilebilir belgeli). Yükleme kilidi tetiklenmedi. Dünkü kanıt: panel-data/evidence/2026-11-19-stage-test/NSB-6120, NSB-6121."
+      "İkinci profilde V2 401, V1 200.",
+      "Geçersiz token mesajı: V1 'Belge talebi bulunamadı veya süresi doldu.', V2 'Not Found'.",
+      "Belge FE ekranı stage'de inactive (sayfa iki modda 404); FE akışı test edilmedi, bulgu API seviyesinde."
     ],
     "evidence": [
-      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6461/api.json",
-      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6461/../NSB-6632/fe-probe.txt",
-      "panel-data/evidence/2026-11-20-rfs-stage/NSB-6461/../report.md"
+      "renewal/out/stage-2026-11-25-10-07/report.md",
+      "panel-data/evidence/2026-11-25-stage-test-v2/gating.log"
     ]
   }
 }
