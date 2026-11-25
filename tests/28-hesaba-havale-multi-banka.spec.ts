@@ -1,5 +1,6 @@
 import { test, expect, Page } from "@playwright/test";
 import { HomePage } from "../pages/HomePage";
+import { CheckoutPage } from "../pages/CheckoutPage";
 import { CartPage } from "../pages/CartPage";
 import { OrdersPage } from "../pages/OrdersPage";
 import { ProfilePage } from "../pages/ProfilePage";
@@ -39,7 +40,7 @@ for (const bank of BANKS) {
 
     await test.step("1. Ana sayfayı aç ve sepeti temizle", async () => {
       await homePage.goto();
-      await expect(page).toHaveURL(/nadirgold\.work/);
+      await expect(page).toHaveURL(/nadirgold\.(work|dev)|localhost/);
 
       await closeAllPopups(page);
 
@@ -106,9 +107,16 @@ for (const bank of BANKS) {
     await test.step("5. HESABA HAVALE YAP tıkla", async () => {
       await closeAllPopups(page);
 
-      await page.getByRole("button", { name: "HESABA HAVALE YAP" }).click();
-
-      await expect(page.locator("body")).toBeVisible();
+      // Hesap sonucu (gram/tutar) hesaplanmadan tıklanırsa buton sessizce
+      // hiçbir şey yapmıyor → spec 18'deki gibi bekle, sonra checkout'a geçişi doğrula.
+      await expect(page.getByText(/\d+[.,]\d+\s*gram/i).first()).toBeVisible({
+        timeout: 20_000,
+      });
+      const transferButton = page.getByRole("button", { name: "HESABA HAVALE YAP" });
+      await expect(transferButton).toBeEnabled({ timeout: 20_000 });
+      await transferButton.scrollIntoViewIfNeeded();
+      await transferButton.click();
+      await expect(page).toHaveURL(/checkout|sepet/, { timeout: 30_000 });
 
       console.log(`✓ [${bank.id}] HESABA HAVALE YAP tıklandı`);
     });
@@ -119,20 +127,21 @@ for (const bank of BANKS) {
 
       await closeAllPopups(page);
 
-      // 1) Havale yapılacak banka radio — ilk görünür .flex-shrink-0
-      await page.locator(".flex-shrink-0").first().click();
+      // 1) Havale yapılacak banka — spec 18'deki seçici; görünürse tıkla.
+      const bankOption = page
+        .locator(".cursor-pointer.flex.items-center.gap-3 > .flex-shrink-0")
+        .first();
+      if (await bankOption.isVisible({ timeout: 10_000 }).catch(() => false)) {
+        await bankOption.scrollIntoViewIfNeeded();
+        await bankOption.click({ force: true });
+      }
 
       await page.waitForTimeout(6000);
 
       await closeAllPopups(page);
 
-      // 2) Test adresi — label içindeki görünür .flex-shrink-0
-      await page
-        .locator("#address-section label")
-        .filter({ hasText: "Test adresi" })
-        .locator(".flex-shrink-0")
-        .first()
-        .click();
+      // 2) Adres — sabit "Test adresi" dev hesabında artık yok; seçili adresi garanti et.
+      await new CheckoutPage(page).ensureAddressSelected();
 
       await page.waitForTimeout(6000);
 
@@ -216,7 +225,7 @@ for (const bank of BANKS) {
     await test.step("9. 3D Secure OTP gir", async () => {
       await page.waitForTimeout(3000);
 
-      const otpFrame = page.locator("iframe").nth(1).contentFrame();
+      const otpFrame = page.locator("iframe").last().contentFrame();
 
       await otpFrame
         .getByRole("textbox")
@@ -318,7 +327,7 @@ async function closeAllPopups(page: Page) {
 
   for (const button of closeButtons) {
     if (await button.isVisible({ timeout: 1000 }).catch(() => false)) {
-      await button.click({ force: true }).catch(() => {});
+      await button.click({ force: true, timeout: 3000 }).catch(() => {});
       await page.waitForTimeout(500);
     }
   }

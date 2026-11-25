@@ -358,14 +358,38 @@ export async function triggerAdd(
       });
       await page.waitForTimeout(2000);
       await killPushPrompt(page);
-      const link = page
-        .getByRole("link", { name: /NadirGold 1 Gr Külçe Altın/i })
-        .first();
-      await expect(link).toBeVisible({ timeout: 15_000 });
-      await link.click();
-      await page.waitForLoadState("domcontentloaded").catch(() => {});
-      await page.waitForTimeout(1500);
+      // Sabit 1 gr yerine kategoride stokta olan ilk HFA ürünü (24.11: 1 gr gündüz de
+      // "Yakında Stokta"ydı; PDP'deki öneri karuselinin "Fiziki Altına Çevir"i guard'ı
+      // kandırıp boş tıklamaya yol açıyordu).
+      const cards = page.getByRole("link", { name: /ürünü incele/i });
+      await expect(cards.first()).toBeVisible({ timeout: 15_000 });
+      let href: string | null = null;
+      for (let i = 0; i < 6 && !href; i++) {
+        href = await cards.evaluateAll((links) => {
+          for (const a of links) {
+            let card: HTMLElement | null = a.parentElement;
+            while (card && !card.querySelector("button")) card = card.parentElement;
+            const btn = card?.querySelector("button") as HTMLButtonElement | null;
+            if (btn && !btn.disabled && /fiziki altına çevir/i.test(btn.textContent || ""))
+              return a.getAttribute("href");
+          }
+          return null;
+        });
+        if (!href) await page.waitForTimeout(2000);
+      }
+      if (!href) throw new Error(`STOK_DURDU: HFA kategorisinde stokta ürün yok. URL: ${page.url()}`);
+      await page.goto(new URL(href, page.url()).pathname, { waitUntil: "domcontentloaded" });
+      // Hydration bitmeden "Fiziki Altına Çevir" istek atmıyor (23.11 probe) → networkidle + 3 sn.
+      await page.waitForLoadState("networkidle").catch(() => {});
+      await page.waitForTimeout(3000);
       await killPushPrompt(page);
+      // Gece stok kapanınca PDP'de buton "Yakında Stokta" (disabled) olur; .first()
+      // başka bir "Fiziki Altına Çevir"e düşüp sessizce boş tıklıyordu (23.11 TC-09).
+      const yakinda = page.getByRole("button", { name: /Yakında Stokta/i }).first();
+      const cevir = page.getByRole("button", { name: /Fiziki Altına Çevir/i }).first();
+      if ((await yakinda.isVisible().catch(() => false)) && !(await cevir.isVisible().catch(() => false))) {
+        throw new Error(`STOK_DURDU: HFA ürünü stokta değil ("Yakında Stokta"). URL: ${page.url()}`);
+      }
       return {
         source: page.url() + " (Fiziki Altına Çevir)",
         click: async () => {

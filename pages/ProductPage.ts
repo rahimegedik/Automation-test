@@ -1,4 +1,4 @@
-import { Page, Locator } from "@playwright/test";
+import { Page, Locator, expect } from "@playwright/test";
 
 export class ProductPage {
   readonly page: Page;
@@ -35,11 +35,21 @@ export class ProductPage {
   // Sayfada stok-dışı / "yakında stokta" işareti varsa eşleşen metni döndürür,
   // yoksa null. ("yakında stokta" coming-soon ürünlerde de durulması istenir.)
   async stockBlocker(): Promise<string | null> {
+    // Yalnız ana ürünün sepete-ekle butonuna bak: tüm body taranırsa
+    // "Benzer/Diğer Ürünler" listesindeki "Yakında Stokta" kartları
+    // stoktaki ürünü de yanlışlıkla durduruyordu (stage 08.11.2026).
+    const main = this.page.locator("#add2CartButton");
     const body =
-      (await this.page
-        .locator("body")
-        .innerText()
-        .catch(() => "")) || "";
+      ((await main.count()) > 0
+        ? await main
+            .first()
+            .innerText()
+            .catch(() => "")
+        : await this.page
+            .locator("main")
+            .first()
+            .innerText()
+            .catch(() => "")) || "";
     const lc = body.toLowerCase();
     const keywords = [
       "yakında stokta",
@@ -72,6 +82,9 @@ export class ProductPage {
     }
 
     await addBtn.waitFor({ state: "visible", timeout: 10_000 }).catch(() => {});
+    // FE stoktaki üründe bile ilk ~0,5-1 sn butonu "Yakında Stokta" [disabled]
+    // render ediyor (V1+V2, stage 22.11.2026) → karar vermeden önce yerleşmesini bekle.
+    await expect(addBtn).toBeEnabled({ timeout: 8_000 }).catch(() => {});
 
     // Stok / eklenebilirlik kontrolü: sayfada "yakında stokta"/"tükendi" metni
     // ya da buton yok/görünmez/disabled ise devam etme, net hatayla dur.

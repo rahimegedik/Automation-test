@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { startWithEmptyBasket, selectFirstSavedCard } from "../pages/CheckoutFlow";
 import { HomePage } from "../pages/HomePage";
 import { CategoryPage } from "../pages/CategoryPage";
 import { ProductPage } from "../pages/ProductPage";
@@ -20,10 +21,12 @@ test("Düzenli Birikim Akışı - Baştan Sona", async ({ page }) => {
 
   await test.step("1. Ana sayfayı aç", async () => {
     await homePage.goto();
-    await expect(page).toHaveURL(/nadirgold\.work/);
+    await expect(page).toHaveURL(/nadirgold\.(work|dev)|localhost/);
     await expect(page.locator("body")).toBeVisible();
     console.log("✓ Ana sayfa açıldı:", page.url());
     await cartPage.clearAll();
+    // clearAll sunucudaki eski sepeti garanti etmiyor (NSB-7231) → sıkı temizlik.
+    await startWithEmptyBasket(page);
     await homePage.goto();
     console.log("✓ Sepet temizlendi, ana sayfaya dönüldü");
   });
@@ -74,18 +77,15 @@ test("Düzenli Birikim Akışı - Baştan Sona", async ({ page }) => {
     if (
       await popupCloseButton.isVisible({ timeout: 5000 }).catch(() => false)
     ) {
-      await popupCloseButton.click();
+      await popupCloseButton.click({ timeout: 5000 }).catch(() => {});
       console.log("✓ Popup kapatıldı");
     }
   });
 
-  await test.step("7. NadirGold 1 Gr Külçe Altın ürün detayına git", async () => {
-    await page
-      .getByRole("link", {
-        name: "NadirGold 1 Gr Külçe Altın ürünü incele",
-        exact: true,
-      })
-      .click();
+  await test.step("7. Stoktaki ilk külçe altın ürün detayına git", async () => {
+    // Sabit "1 Gr" ürünü dev'de stok dışı kalabiliyor → stoktaki ilk külçeye git.
+    const inStockUrl = await categoryPage.getFirstInStockProductUrl();
+    await page.goto(inStockUrl, { waitUntil: "domcontentloaded" });
     await expect(page.locator("#add2CartButton")).toBeVisible({
       timeout: 15_000,
     });
@@ -145,42 +145,13 @@ test("Düzenli Birikim Akışı - Baştan Sona", async ({ page }) => {
     console.log("✓ Talimat adı girildi");
   });
 
-    await test.step("11. Kayıtlı kredi kartını seç", async () => {
+  await test.step("11. Kayıtlı kredi kartını seç", async () => {
     await page.waitForLoadState("domcontentloaded").catch(() => { });
-    await page.waitForTimeout(1500);
-
-    // Sadece kredi kartı alanındaki kart satırlarını yakala.
-    // Motokurye / teslimat seçeneklerini yakalamamak için kart metni filtreleniyor.
-    const savedCardRows = page
-      .locator(".cursor-pointer.flex.items-center.gap-3")
-      .filter({
-        hasText: /\*{2,}|SKT|Son Kullanma|Kart|Bankanız|\/\d{2}/i,
-      });
-
-    const cardCount = await savedCardRows.count();
-
-    console.log(`ℹ Kayıtlı kredi kartı satırı sayısı: ${cardCount}`);
-
-    if (cardCount === 0) {
-      throw new Error("Kayıtlı kredi kartı satırı bulunamadı. Locator kart alanını yakalayamadı.");
-    }
-
-    // İki kart varsa ilk kartı seçer.
-    // İkinci kartı seçmek istersen .first() yerine .nth(1) yap.
-    const savedCardRow = savedCardRows.nth(1);
-
-    await expect(savedCardRow).toBeVisible({ timeout: 15_000 });
-
-    await savedCardRow.scrollIntoViewIfNeeded();
-    await savedCardRow.click({ force: true });
-
-    await page.waitForTimeout(1500);
-
+    // Kart artık maskeli numaralı radio olarak render ediliyor (ör. "479680******0003").
+    // Ortak yardımcı: önce radio, yoksa eski class seçicisi + "Kayıtlı Kartlar" sekmesi.
+    await selectFirstSavedCard(page);
     console.log("✓ Kayıtlı kredi kartı seçildi");
   });
-
-
-
 
   await test.step("13. Ön bilgilendirme formunu onayla", async () => {
     await page
@@ -200,7 +171,7 @@ test("Düzenli Birikim Akışı - Baştan Sona", async ({ page }) => {
   });
 
   await test.step("16. 3D Secure OTP gir", async () => {
-    const otpFrame = page.locator("iframe").nth(1).contentFrame();
+    const otpFrame = page.locator("iframe").last().contentFrame();
 
     await otpFrame.getByRole("textbox").first().click();
     await otpFrame.getByRole("textbox").first().fill("2");

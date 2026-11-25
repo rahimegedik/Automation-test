@@ -50,6 +50,48 @@ export class CategoryPage {
       throw new Error("İlk ürün linkinin href değeri bulunamadı.");
     }
 
-    return href.startsWith("http") ? href : `https://www.nadirgold.work${href}`;
+    return new URL(href, this.page.url()).toString();
+  }
+
+  /**
+   * Kartındaki buton etkin "Sepete Ekle" olan (yani "Yakında Stokta" olmayan)
+   * ilk ürünün mutlak URL'i. Dev'de stok sık değiştiği için journey'ler sabit
+   * ürün yerine bunu kullanmalı. `exclude` ile isim deseni dışlanabilir.
+   */
+  async getFirstInStockProductUrl(exclude?: RegExp): Promise<string> {
+    await this.waitForProducts(15_000);
+    // Hydration öncesi kart butonları pasif render edilebiliyor → tek seferlik
+    // tarama yanlış STOK_DURDU veriyordu (24.11 TC-03). ~12 sn boyunca yeniden tara.
+    for (let i = 0; i < 6; i++) {
+      const url = await this.scanInStock(exclude).catch(() => null);
+      if (url) return url;
+      await this.page.waitForTimeout(2_000);
+    }
+    return this.scanInStock(exclude);
+  }
+
+  private async scanInStock(exclude?: RegExp): Promise<string> {
+    const candidates = await this.productLinks.evaluateAll((links) =>
+      links.map((a) => {
+        let card: HTMLElement | null = a.parentElement;
+        while (card && !card.querySelector("button")) card = card.parentElement;
+        const btn = card?.querySelector("button") as HTMLButtonElement | null;
+        return {
+          href: a.getAttribute("href") || "",
+          name: a.getAttribute("aria-label") || a.textContent?.trim() || "",
+          inStock:
+            !!btn && !btn.disabled && /sepete ekle/i.test(btn.textContent || ""),
+        };
+      }),
+    );
+    const pick = candidates.find(
+      (c) => c.href && c.inStock && !(exclude && exclude.test(c.name)),
+    );
+    if (!pick) {
+      throw new Error(
+        `STOK_DURDU: kategoride stokta ürün yok (${candidates.length} ürün tarandı). URL: ${this.page.url()}`,
+      );
+    }
+    return new URL(pick.href, this.page.url()).toString();
   }
 }

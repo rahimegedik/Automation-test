@@ -20,7 +20,7 @@ test("Düzenli Birikim Akışı - 3 Ayda 1", async ({ page }) => {
 
   await test.step("1. Ana sayfayı aç", async () => {
     await homePage.goto();
-    await expect(page).toHaveURL(/nadirgold\.work/);
+    await expect(page).toHaveURL(/nadirgold\.(work|dev)|localhost/);
     await expect(page.locator("body")).toBeVisible();
     console.log("✓ Ana sayfa açıldı:", page.url());
     await cartPage.clearAll();
@@ -74,18 +74,15 @@ test("Düzenli Birikim Akışı - 3 Ayda 1", async ({ page }) => {
     if (
       await popupCloseButton.isVisible({ timeout: 5000 }).catch(() => false)
     ) {
-      await popupCloseButton.click();
+      await popupCloseButton.click({ timeout: 5000 }).catch(() => {});
       console.log("✓ Popup kapatıldı");
     }
   });
 
-  await test.step("7. NadirGold 1 Gr Külçe Altın ürün detayına git", async () => {
-    await page
-      .getByRole("link", {
-        name: "NadirGold 1 Gr Külçe Altın ürünü incele",
-        exact: true,
-      })
-      .click();
+  await test.step("7. Stoktaki ilk külçe altın ürün detayına git", async () => {
+    // Sabit "1 Gr" ürünü dev'de stok dışı kalabiliyor → stoktaki ilk külçeye git.
+    const inStockUrl = await categoryPage.getFirstInStockProductUrl();
+    await page.goto(inStockUrl, { waitUntil: "domcontentloaded" });
     // body kontrolü navigasyon tamamlanmadan geçiyordu → ürün sayfası elementini bekle (bkz. spec 11).
     await expect(page.locator("#add2CartButton")).toBeVisible({
       timeout: 15_000,
@@ -187,7 +184,21 @@ test("Düzenli Birikim Akışı - 3 Ayda 1", async ({ page }) => {
         hasText: /\*{2,}|SKT|Son Kullanma|Kart|Bankanız|\/\d{2}/i,
       });
 
-    const cardCount = await savedCardRows.count();
+    let cardCount = await savedCardRows.count();
+    if (cardCount === 0) {
+      // Talimat checkout'unda liste sekmeye tıklanmadan render edilmeyebiliyor.
+      const savedTab = page.getByRole("button", { name: "Kayıtlı Kartlar" });
+      if (await savedTab.isVisible().catch(() => false)) {
+        await savedTab.click();
+        // Kart listesi geç yüklenebiliyor — sabit bekleme yerine satırı bekle.
+        await savedCardRows
+          .first()
+          .waitFor({ state: "visible", timeout: 15_000 })
+          .catch(() => {});
+        cardCount = await savedCardRows.count();
+        console.log(`ℹ "Kayıtlı Kartlar" sekmesine tıklandı, satır: ${cardCount}`);
+      }
+    }
 
     console.log(`ℹ Kayıtlı kredi kartı satırı sayısı: ${cardCount}`);
 
@@ -230,7 +241,7 @@ test("Düzenli Birikim Akışı - 3 Ayda 1", async ({ page }) => {
   });
 
   await test.step("16. 3D Secure OTP gir", async () => {
-    const otpFrame = page.locator("iframe").nth(1).contentFrame();
+    const otpFrame = page.locator("iframe").last().contentFrame();
 
     await otpFrame.getByRole("textbox").first().click();
     await otpFrame.getByRole("textbox").first().fill("2");

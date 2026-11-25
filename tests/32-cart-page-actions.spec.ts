@@ -12,7 +12,7 @@ test("TC-CARTP-005/006/007/009 - Külçe altın hızlı sepette adet artırma, a
 
   await test.step("1. Ana sayfayı aç ve sepeti temizle", async () => {
     await homePage.goto();
-    await expect(page).toHaveURL(/nadirgold\.work/);
+    await expect(page).toHaveURL(/nadirgold\.(work|dev)|localhost/);
     await expect(page.locator("body")).toBeVisible();
 
     await cartPage.clearAll();
@@ -68,7 +68,7 @@ test("TC-CARTP-005/006/007/009 - Külçe altın hızlı sepette adet artırma, a
       await popupCloseButton.click();
     }
 
-    expect(page.url()).not.toBe("https://www.nadirgold.work/");
+    expect(new URL(page.url()).pathname).not.toBe("/");
 
     console.log("✓ GRAM KÜLÇE ALTIN sayfası açıldı:", page.url());
   });

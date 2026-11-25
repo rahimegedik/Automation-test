@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { HomePage } from "../pages/HomePage";
+import { CheckoutPage } from "../pages/CheckoutPage";
 import { CartPage } from "../pages/CartPage";
 import { OrdersPage } from "../pages/OrdersPage";
 import { ProfilePage } from "../pages/ProfilePage";
@@ -16,7 +17,7 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
 
   await test.step("1. Ana sayfayı aç ve sepeti temizle", async () => {
     await homePage.goto();
-    await expect(page).toHaveURL(/nadirgold\.work/);
+    await expect(page).toHaveURL(/nadirgold\.(work|dev)|localhost/);
     await expect(page.locator("body")).toBeVisible();
 
     await cartPage.clearAll();
@@ -68,7 +69,7 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
     await popupCloseButton.click();
   }
 
-  await expect(page).not.toHaveURL("https://www.nadirgold.work/", {
+  await expect(page).not.toHaveURL(/^https?:\/\/[^/]+\/?$/, {
     timeout: 15_000,
   });
 
@@ -84,9 +85,9 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
   });
 
   await test.step("5. Sepete Ekle butonuna tıkla", async () => {
-    const sepeteEkleButton = page.getByRole("button", {
-      name: "Sepete Ekle",
-    });
+    const sepeteEkleButton = page
+      .getByRole("button", { name: "Sepete Ekle" })
+      .first();
 
     await expect(sepeteEkleButton).toBeVisible({ timeout: 15_000 });
     await expect(sepeteEkleButton).toBeEnabled();
@@ -96,15 +97,18 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
     console.log("✓ Sepete Ekle butonuna tıklandı");
   });
 
-  await test.step("6. Ürün seçeneği 6.8 seç", async () => {
-    const optionButton = page.getByRole("button", { name: "6.0" });
+  await test.step("6. Ürün seçeneği (stoktaki ilk ölçü) seç", async () => {
+    // Ölçü modalında stokta olan (enabled) ilk ölçüyü seç — sabit ölçüler dev'de stok dışı kalabiliyor.
+    const optionButton = page
+      .getByRole("button", { name: /^\d{1,2}\.\d$/ })
+      .and(page.locator(":enabled"))
+      .first();
 
     await expect(optionButton).toBeVisible({ timeout: 15_000 });
-    await expect(optionButton).toBeEnabled();
-
+    const size = (await optionButton.textContent())?.trim();
     await optionButton.click();
 
-    console.log("✓ 6.8 ürün seçeneği seçildi");
+    console.log(`✓ Stoktaki ölçü seçildi: ${size}`);
   });
 
   await test.step("7. Ürünü sepete ekle", async () => {
@@ -159,23 +163,24 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
   });
 
   await test.step("11. Kredi kartı ödeme seçeneği / kart alanını seç", async () => {
-    const firstPaymentOption = page
-      .locator(".cursor-pointer.flex.items-center.gap-3 > .flex-shrink-0")
-      .first();
-
-    await expect(firstPaymentOption).toBeVisible({ timeout: 15_000 });
-    await firstPaymentOption.click();
+    // Filtresiz .first() teslimat seçeneğine tıklıyordu ("Lütfen kredi kartı seçiniz").
+    // Spec 20'deki gibi kart satırlarını metinle filtrele, 3DS test kartı = 2. satır.
+    const savedCardRows = page
+      .locator(".cursor-pointer.flex.items-center.gap-3")
+      .filter({ hasText: /\*{2,}|SKT|Son Kullanma|Bankanız|\/\d{2}/i });
+    await expect(savedCardRows.nth(1)).toBeVisible({ timeout: 15_000 });
+    await savedCardRows.nth(1).scrollIntoViewIfNeeded();
+    await savedCardRows.nth(1).click({ force: true });
+    await expect(page.getByText("Lütfen kredi kartı seçiniz")).toHaveCount(0, {
+      timeout: 5_000,
+    });
 
     console.log("✓ İlk kredi kartı ödeme seçeneği seçildi");
   });
 
   await test.step("12. Adres veya teslimat seçeneğini seç", async () => {
-    const addressOrDeliveryOption = page.locator(
-      "div:nth-child(5) > .cursor-pointer > .flex-shrink-0",
-    );
-
-    await expect(addressOrDeliveryOption).toBeVisible({ timeout: 15_000 });
-    await addressOrDeliveryOption.click();
+    // nth-child konumu adres listesine göre kayıyordu → seçili adresi garanti et.
+    await new CheckoutPage(page).ensureAddressSelected();
 
     console.log("✓ Adres / teslimat seçeneği seçildi");
   });
@@ -201,7 +206,7 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
 
     await paymentButton.click();
 
-    await expect(page.locator("iframe").nth(1)).toBeVisible({
+    await expect(page.locator("iframe").last()).toBeVisible({
       timeout: 30_000,
     });
 
@@ -209,7 +214,7 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
   });
 
   await test.step("15. 3D Secure OTP gir", async () => {
-    const otpFrame = page.locator("iframe").nth(1).contentFrame();
+    const otpFrame = page.locator("iframe").last().contentFrame();
 
     await otpFrame
       .getByRole("textbox")

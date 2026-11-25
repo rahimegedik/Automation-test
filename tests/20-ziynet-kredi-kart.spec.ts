@@ -39,7 +39,7 @@ test("Kullanıcı yolculuğu - Ziynet Kredi Kartı Baştan Sona", async ({
   // ─── ADIM 1: Ana Sayfa ──────────────────────────────────────────────────────
   await test.step("1. Ana sayfayı aç", async () => {
     await homePage.goto();
-    await expect(page).toHaveURL(/nadirgold\.work/);
+    await expect(page).toHaveURL(/nadirgold\.(work|dev)|localhost/);
     await expect(page.locator("body")).toBeVisible();
     console.log("✓ Ana sayfa açıldı:", page.url());
     await cartPage.clearAll();
@@ -81,7 +81,7 @@ test("Kullanıcı yolculuğu - Ziynet Kredi Kartı Baştan Sona", async ({
   // ─── ADIM 6: Ürün Detayına Gir ──────────────────────────────────────────────
   let productUrl = "";
   await test.step("6. İlk ürünün detayına git", async () => {
-    productUrl = await categoryPage.getFirstProductUrl();
+    productUrl = await categoryPage.getFirstInStockProductUrl();
     await productPage.goto(productUrl);
     await expect(page.locator("body")).toBeVisible();
     console.log("✓ Ürün detay sayfası açıldı:", page.url());

@@ -34,7 +34,7 @@ test("Kullanıcı yolculuğu - Baştan Sona", async ({ page }) => {
   // ─── ADIM 1: Ana Sayfa ──────────────────────────────────────────────────────
   await test.step("1. Ana sayfayı aç", async () => {
     await homePage.goto();
-    await expect(page).toHaveURL(/nadirgold\.work/);
+    await expect(page).toHaveURL(/nadirgold\.(work|dev)|localhost/);
     await expect(page.locator("body")).toBeVisible();
     console.log("✓ Ana sayfa açıldı:", page.url());
     await cartPage.clearAll();
@@ -130,7 +130,9 @@ test("Kullanıcı yolculuğu - Baştan Sona", async ({ page }) => {
   await test.step("12. Ödeme Yap butonuna tıkla", async () => {
     await checkoutPage.pay();
     console.log("✓ Ödeme Yap tıklandı, URL:", page.url());
-    await expect(page.locator("body")).toBeVisible();
+    // Sipariş gerçekten oluştu mu: tebrikler/<sipariş no> sayfası şart (bkz. spec 18).
+    await expect(page).toHaveURL(/tebrikler\/\d+/, { timeout: 60_000 });
+    console.log("✓ Tebrikler sayfası açıldı:", page.url());
   });
 
   // ─── ADIM 13: Siparişlerim ────────────────────────────────────────────────────

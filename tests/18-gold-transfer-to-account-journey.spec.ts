@@ -1,5 +1,5 @@
-
 import { test, expect, Page } from "@playwright/test";
+import { startWithEmptyBasket, selectFirstSavedCard } from "../pages/CheckoutFlow";
 import { HomePage } from "../pages/HomePage";
 import { CartPage } from "../pages/CartPage";
 import { OrdersPage } from "../pages/OrdersPage";
@@ -20,10 +20,12 @@ test("Kullanıcı yolculuğu - Hesaba Altın Havale Baştan Sona", async ({
   await test.step("1. Ana sayfayı aç ve sepeti temizle", async () => {
     await homePage.goto();
 
-    await expect(page).toHaveURL(/nadirgold\.work/);
+    await expect(page).toHaveURL(/nadirgold\.(work|dev)|localhost/);
     await expect(page.locator("body")).toBeVisible();
 
     await cartPage.clearAll();
+    // clearAll sunucudaki eski sepeti garanti etmiyor (NSB-7231) → sıkı temizlik.
+    await startWithEmptyBasket(page);
 
     await homePage.goto();
 
@@ -70,7 +72,7 @@ test("Kullanıcı yolculuğu - Hesaba Altın Havale Baştan Sona", async ({
     await page.waitForTimeout(1500);
     await closeAllPopups(page);
 
-    expect(page.url()).not.toBe("https://www.nadirgold.work/");
+    expect(new URL(page.url()).pathname).not.toBe("/");
 
     console.log("✓ Hesaba Altın Havale sayfası açıldı:", page.url());
   });
@@ -112,12 +114,20 @@ test("Kullanıcı yolculuğu - Hesaba Altın Havale Baştan Sona", async ({
     await expect(transferButton).toBeEnabled({ timeout: 20_000 });
 
     await transferButton.scrollIntoViewIfNeeded();
+    // Ekleme sonucu görünür olsun: 423 sessiz red (NSB-7310) ile "istek hiç gitmedi"yi ayırt et.
+    const addResp = page
+      .waitForResponse((r) => /basket\/add/.test(r.url()) && r.request().method() === "POST", { timeout: 15_000 })
+      .catch(() => null);
     await transferButton.click();
+    const resp = await addResp;
+    const body = resp ? (await resp.text().catch(() => "")).slice(0, 300) : "";
+    console.log(`ℹ basket/add → ${resp ? resp.status() : "İSTEK YOK"} ${body}`);
+    expect(resp, "HESABA HAVALE YAP basket/add isteği atmadı").not.toBeNull();
+    expect(resp!.status(), `basket/add reddedildi (NSB-7310?): ${body}`).toBeLessThan(400);
 
     await page.waitForLoadState("domcontentloaded").catch(() => { });
     await page.waitForTimeout(3000);
-
-    await expect(page.locator("body")).toBeVisible();
+    await expect(page, "ekleme sonrası checkout/sepet'e geçilmeli").not.toHaveURL(/hesaba-altin-havale/, { timeout: 15_000 });
 
     console.log("✓ HESABA HAVALE YAP tıklandı");
   });
@@ -154,6 +164,14 @@ test("Kullanıcı yolculuğu - Hesaba Altın Havale Baştan Sona", async ({
   await test.step("7. Test adresini seç", async () => {
     await closeAllPopups(page);
 
+    // Hesaba altın havalede fiziki teslimat yok → checkout'ta adres bölümü render edilmiyor.
+    await expect(page, "adres adımı checkout'ta olmalı").toHaveURL(/checkout/, { timeout: 15_000 });
+    await page.waitForTimeout(1500);
+    if ((await page.locator("#address-section").count()) === 0) {
+      console.log("ℹ Adres bölümü yok (hesaba havale, fiziki teslimat yok) — adım atlandı");
+      return;
+    }
+
     const testAddress = page
       .locator("#address-section label")
       .filter({ hasText: "Test adresi" })
@@ -185,40 +203,9 @@ test("Kullanıcı yolculuğu - Hesaba Altın Havale Baştan Sona", async ({
 
   await test.step("11. Kayıtlı kredi kartını seç", async () => {
     await page.waitForLoadState("domcontentloaded").catch(() => { });
-    await page.waitForTimeout(1500);
-
-    // Sadece kredi kartı alanındaki kart satırlarını yakala.
-    // Motokurye / teslimat seçeneklerini yakalamamak için kart metni filtreleniyor.
-    const savedCardRows = page
-      .locator(".cursor-pointer.flex.items-center.gap-3")
-      .filter({
-        hasText: /\*{2,}|SKT|Son Kullanma|Kart|Bankanız|\/\d{2}/i,
-      });
-
-    const cardCount = await savedCardRows.count();
-
-    console.log(`ℹ Kayıtlı kredi kartı satırı sayısı: ${cardCount}`);
-
-    if (cardCount === 0) {
-      throw new Error("Kayıtlı kredi kartı satırı bulunamadı. Locator kart alanını yakalayamadı.");
-    }
-
-    // İki kart varsa ilk kartı seçer.
-    // İkinci kartı seçmek istersen .first() yerine .nth(1) yap.
-    const savedCardRow = savedCardRows.nth(1);
-
-    await expect(savedCardRow).toBeVisible({ timeout: 15_000 });
-
-    await savedCardRow.scrollIntoViewIfNeeded();
-    await savedCardRow.click({ force: true });
-
-    await page.waitForTimeout(1500);
-
+    await selectFirstSavedCard(page);
     console.log("✓ Kayıtlı kredi kartı seçildi");
   });
-
-
-
 
   await test.step("8. Ön bilgilendirme formunu onayla", async () => {
     await closeAllPopups(page);
@@ -279,7 +266,7 @@ test("Kullanıcı yolculuğu - Hesaba Altın Havale Baştan Sona", async ({
       return;
     }
 
-    const otpFrameElement = page.locator("iframe").nth(1);
+    const otpFrameElement = page.locator("iframe").last();
 
     await expect(otpFrameElement).toBeVisible({ timeout: 30_000 });
 
@@ -371,7 +358,7 @@ async function closeAllPopups(page: Page) {
 
   for (const button of popupButtons) {
     if (await button.isVisible({ timeout: 1000 }).catch(() => false)) {
-      await button.click({ force: true }).catch(() => { });
+      await button.click({ force: true, timeout: 3000 }).catch(() => { });
       await page.waitForTimeout(500);
     }
   }

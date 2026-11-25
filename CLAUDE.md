@@ -40,7 +40,7 @@ Oturumlar ortam başına ayrı: `playwright/.auth/<env>-user.json` (gitignore'da
 ## Repo konvansiyonları
 
 ```
-tests/NN-shortname.spec.ts    # 31 spec / 79 test, numaralı sıra
+tests/NN-shortname.spec.ts    # 33 spec, numaralı sıra
 pages/XxxPage.ts             # 13 Page Object (locator'lar readonly, method'lar async)
 global-setup.ts              # 4 ortamlı auth + OAuth state machine
 panel/                       # QA paneli (server.mjs + public/index.html + runs.json)
@@ -55,6 +55,7 @@ scripts/                     # rapor üreticileri
 - `22–27` Hesabım CRUD — **kasıtlı olarak yıkıcı değil** (gerçek silme/şifre değişimi yok), bu tasarımı bozma
 - `28–33` özel akışlar (multi-banka havale, takı, kur güncelleme)
 - `34` sepet türü kuralları (NSB-7223) — sipariş açmaz; dev sepet kotası yüzünden **3 partide** koşulur: `npm run test:sepet-tur:p1|p2|p3` (~45 dk ara)
+- `35` sepet API negatif/sınır testleri (NSB-7227/7229/7230/7233) — UI'sız, doğrudan `api-v2` + Bearer (`pages/BasketApi.ts`). Bug açıkken **kasıtlı FAIL** verir. Sepet rate-limit'i yüzünden 3 parti: `npm run test:sepet-api:p1|p2|p3` (~45 dk ara); kilit görülürse SKIP olur. Başlangıçta sepet boş değilse koşmaz.
 
 **"Tüm testleri koş" = journey seti (09–20)**, utility'ler (01–08) değil.
 
@@ -85,7 +86,8 @@ Swagger: `https://api-v2.nadirgold.dev/api/docs-json/customer` (servis başına:
 ## Bilinen sorunlar (kod tarafı)
 
 - **`global-setup.ts` → `checkSession` yanlış pozitif veriyor.** Sadece `/hesabim/siparislerim`'in login'e yönlenmediğine bakıyor; FE hesap iskeletini cookie varlığına göre render ettiği için **iptal edilmiş bir JWT bu kontrolü geçer** ("✓ Mevcut session geçerli" yazar), ama içerideki API çağrıları sessizce 401 döner ve testler alakasız yerlerde patlar. Gerçek doğrulama için kimlikli bir API yanıtının 200 olduğu da assert edilmeli.
-- **Yeni bağlamda sepet "0" görünür ama sunucuda eski sepet durabilir** — FE basketHash'i ilk `basket/add`'e kadar bilmez, o eklemeyle eski kalemler geri gelir. `CartPage.clearAll()` bu yüzden temizlik garantisi vermez; ayrıca ilk "Sil" ekran dışı hızlı sepet çekmecesine denk gelip takılabiliyor. Sıkı temizlik: `CartTypeHelpers.clearCartStrict`.
+- **Workaround yazmadan önce sor: bu ürün bug'ı mı?** "Eski sepet geri geliyor" ve "sepet kotası" davranışlarını burada ortam tuzağı diye belgeleyip etrafından dolaştık; ikisi de sonradan BE bug'ı çıktı (NSB-7231, NSB-7228). Garip davranışa workaround yazıyorsan önce kart aç ya da mevcut kartı bul.
+- **Yeni bağlamda sepet "0" görünür ama sunucuda eski sepet durabilir** — FE basketHash'i ilk `basket/add`'e kadar bilmez, o eklemeyle eski kalemler geri gelir. `CartPage.clearAll()` bu yüzden temizlik garantisi vermez; ayrıca ilk "Sil" ekran dışı hızlı sepet çekmecesine denk gelip takılabiliyor. Sıkı temizlik: `CartTypeHelpers.clearCartStrict`. (Kök neden: NSB-7231 birden fazla aktif sepet.)
 - Logout testi token'ı sunucu tarafında iptal eder. Sonrasında oturumu yenilemek için `playwright/.auth/dev-user.json`'ı kenara al ve herhangi bir spec koş (global-setup tam login yapar).
 - `zsh`'de çoklu spec'i değişkenle geçerken **`${=VAR}`** kullan, yoksa "No tests found".
 - zsh fonksiyonları içinde `set -a; source .env` sonrası PATH bozulabiliyor — çok adımlı ölçümleri bash fonksiyonu yerine Python'da yaz.
@@ -96,6 +98,9 @@ Swagger: `https://api-v2.nadirgold.dev/api/docs-json/customer` (servis başına:
 - **Yıkıcı işlemde seçiciyi daralt.** Onay modalındaki butonu global `getByRole(...).last()` ile arama — modal konteynerine kilitle ve tıklamadan önce hedef id'yi assert et. Yeniden render olan listelerde yanlış kartın "Sil"ine basmak gerçek bir risk.
 - Hesabı kalıcı bozacak happy-path'ler (telefon/e-posta değişimi, hesap silme) **kullanıcı onayı olmadan koşulmaz**. Not: `phoneUpdate` OTP kapalı hesapta telefonu **doğrudan** günceller.
 - Test verisi oluşturursan ayırt edilebilir isim ver (`QA-<kart>-...`) ve sonunda temizle.
+- **BE kartlarında mutlu yol yetmez.** Yeni/düzeltilen bir BE ucu için UI journey'sinin yanında **API seviyesinde negatif + sınır testi** de yaz (limit+1, geçersiz tip, aşırı uzun alan, pasif/başkasına ait kayıt, hata sonrası durum korunuyor mu). UI'nin engellediğini API kabul edebilir. Kalıp: `tests/35-sepet-api-negatif.spec.ts` + `pages/BasketApi.ts`. NSB-7034 incelemesindeki 11 bug'ın 7'si bu yüzden kaçtı.
+- **Gözlenemeyen = UNTESTED, PASS değil.** Kartın iddiası DB/iç durum hakkındaysa ve API çıktısında görünmüyorsa (ör. NSB-7233: DB'ye yuvarlanmamış yazım, API çıktısı yuvarlıyor olabilir) verdict **UNTESTED** olur; hangi ek erişimin (DB, ödeme sonrası tutar) gerektiğini nota yaz.
+- **Yıkıcı ucu veriyi bozmadan yokla.** Silme/güncelleme ucunun bir kontrolü atlayıp atlamadığını görmek için **var olmayan bir hedef** gönder (ör. `sku: ['QA-YOK']`): hiçbir şey değişmez ama yanıt sunucunun hangi kaydı yükleyip işlediğini gösterir (NSB-7227: pasif sepet `isActive:0` ile döndü). Gerçek kayıt üzerinde yıkıcı deneme kullanıcı onayı ister.
 
 ## Jira / Confluence
 

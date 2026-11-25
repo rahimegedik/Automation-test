@@ -4,6 +4,7 @@ import { CartPage } from "../pages/CartPage";
 import { OrdersPage } from "../pages/OrdersPage";
 import { ProfilePage } from "../pages/ProfilePage";
 import { CheckoutPage } from "../pages/CheckoutPage";
+import { CategoryPage } from "../pages/CategoryPage";
 
 test("Kullanıcı yolculuğu - Ziynet Altın Havale Baştan Sona", async ({
   page,
@@ -19,7 +20,7 @@ test("Kullanıcı yolculuğu - Ziynet Altın Havale Baştan Sona", async ({
   await test.step("1. Ana sayfayı aç ve sepeti temizle", async () => {
     await homePage.goto();
 
-    await expect(page).toHaveURL(/nadirgold\.work/);
+    await expect(page).toHaveURL(/nadirgold\.(work|dev)|localhost/);
     await expect(page.locator("body")).toBeVisible();
 
     await cartPage.clearAll();
@@ -69,7 +70,7 @@ test("Kullanıcı yolculuğu - Ziynet Altın Havale Baştan Sona", async ({
     await page.waitForTimeout(1500);
     await closeAllPopups(page);
 
-    expect(page.url()).not.toBe("https://www.nadirgold.work/");
+    expect(new URL(page.url()).pathname).not.toBe("/");
 
     console.log("✓ Ziynet Altın sayfası açıldı:", page.url());
   });
@@ -84,22 +85,11 @@ test("Kullanıcı yolculuğu - Ziynet Altın Havale Baştan Sona", async ({
     );
   });
 
-  await test.step("5. Reşat Lira Altın 2022 Kulplu ürünü seç", async () => {
+  await test.step("5. Stoktaki ilk ziynet ürününü seç", async () => {
     await closeAllPopups(page);
 
-    const productLink = page
-      .getByRole("link", { name: /Reşat Lira Altın 2022 Kulplu/i })
-      .first();
-
-    await expect(productLink).toBeVisible({ timeout: 20_000 });
-
-    const href = await productLink.getAttribute("href");
-
-    if (!href) {
-      throw new Error("Reşat Lira Altın 2022 Kulplu ürün linkinin href değeri bulunamadı.");
-    }
-
-    const targetUrl = new URL(href, page.url()).toString();
+    // Sabit ürün (Reşat 2022 Kulplu) dev'de stok dışı kalabiliyor → stoktaki ilk ziynet ürünü.
+    const targetUrl = await new CategoryPage(page).getFirstInStockProductUrl();
 
     console.log("Ürün target URL:", targetUrl);
 
@@ -143,7 +133,7 @@ test("Kullanıcı yolculuğu - Ziynet Altın Havale Baştan Sona", async ({
   });
 
   await test.step("8. Checkout sayfasına geç", async () => {
-    await page.goto("https://www.nadirgold.work/checkout", {
+    await page.goto("/checkout", {
       waitUntil: "domcontentloaded",
       timeout: 60_000,
     });
@@ -286,7 +276,7 @@ async function closeAllPopups(page: Page) {
 
   for (const button of popupButtons) {
     if (await button.isVisible({ timeout: 1000 }).catch(() => false)) {
-      await button.click({ force: true }).catch(() => {});
+      await button.click({ force: true, timeout: 3000 }).catch(() => {});
       await page.waitForTimeout(500);
     }
   }

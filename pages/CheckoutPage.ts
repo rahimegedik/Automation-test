@@ -150,6 +150,37 @@ export class CheckoutPage {
     return true;
   }
 
+  /**
+   * Gönderim adresinin seçili olduğunu garanti eder. Hesapta seçili (varsayılan)
+   * adres varsa dokunmaz, yoksa ilk adresi seçer. Adres adına/konumuna
+   * bağlı değildir — dev hesabının adres listesi değişebiliyor.
+   */
+  async ensureAddressSelected() {
+    const section = this.page.locator("#address-section");
+    const scope = (await section.count()) > 0 ? section : this.page;
+    const radios = scope.getByRole("radio").filter({
+      hasNot: this.page.locator("[disabled]"),
+    });
+    await radios.first().waitFor({ state: "attached", timeout: 15_000 });
+
+    const checked = scope.getByRole("radio", { checked: true });
+    if ((await checked.count()) === 0) {
+      // Input'lar sr-only (gizli) — check() durumu değiştiremiyor; görünen
+      // satıra (label / cursor-pointer kapsayıcı) tıkla.
+      const row = radios
+        .first()
+        .locator(
+          "xpath=ancestor::*[self::label or contains(@class,'cursor-pointer')][1]",
+        );
+      // Özel radio dairesi (.flex-shrink-0) tıklamayı alıyor (bkz. spec 18).
+      const dot = row.locator(".flex-shrink-0").first();
+      const target = (await dot.count()) > 0 ? dot : row;
+      await target.scrollIntoViewIfNeeded().catch(() => {});
+      await target.click({ force: true });
+    }
+    await expect(checked.first()).toBeChecked({ timeout: 5_000 });
+  }
+
   async pay() {
     await this.dismissOverlay();
 
@@ -197,7 +228,7 @@ export class CheckoutPage {
   }
 
   async enterOtp(otp: string) {
-    const iframeEl = this.page.locator("iframe").nth(1);
+    const iframeEl = this.page.locator("iframe").last();
 
     await iframeEl.waitFor({ state: "attached", timeout: 30_000 });
 

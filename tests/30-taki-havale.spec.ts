@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { startWithEmptyBasket } from "../pages/CheckoutFlow";
 import { HomePage } from "../pages/HomePage";
 import { CartPage } from "../pages/CartPage";
 import { OrdersPage } from "../pages/OrdersPage";
@@ -16,10 +17,12 @@ test("Kullanıcı yolculuğu - Takı Yeni Havale Baştan Sona", async ({ page })
 
   await test.step("1. Ana sayfayı aç ve sepeti temizle", async () => {
     await homePage.goto();
-    await expect(page).toHaveURL(/nadirgold\.work/);
+    await expect(page).toHaveURL(/nadirgold\.(work|dev)|localhost/);
     await expect(page.locator("body")).toBeVisible();
 
     await cartPage.clearAll();
+    // clearAll sunucudaki eski sepeti garanti etmiyor (NSB-7231) → sıkı temizlik.
+    await startWithEmptyBasket(page);
     await homePage.goto();
 
     console.log("✓ Ana sayfa açıldı ve sepet temizlendi:", page.url());
@@ -67,7 +70,7 @@ test("Kullanıcı yolculuğu - Takı Yeni Havale Baştan Sona", async ({ page })
     await popupCloseButton.click();
   }
 
-  await expect(page).not.toHaveURL("https://www.nadirgold.work/", {
+  await expect(page).not.toHaveURL(/^https?:\/\/[^/]+\/?$/, {
     timeout: 15_000,
   });
 
@@ -82,9 +85,9 @@ test("Kullanıcı yolculuğu - Takı Yeni Havale Baştan Sona", async ({ page })
   });
 
   await test.step("5. Takı ürününü seç", async () => {
-    const sepeteEkleButton = page.getByRole("button", {
-      name: "Sepete Ekle",
-    });
+    const sepeteEkleButton = page
+      .getByRole("button", { name: "Sepete Ekle" })
+      .first();
 
     await expect(sepeteEkleButton).toBeVisible({ timeout: 15_000 });
     await expect(sepeteEkleButton).toBeEnabled();
@@ -94,15 +97,18 @@ test("Kullanıcı yolculuğu - Takı Yeni Havale Baştan Sona", async ({ page })
     console.log("✓ Takı ürünü seçildi / Sepete Ekle tıklandı");
   });
 
-  await test.step("6. Ürün seçeneği 6.8 seç", async () => {
-    const optionButton = page.getByRole("button", { name: "6.2" });
+  await test.step("6. Ürün seçeneği (stoktaki ilk ölçü) seç", async () => {
+    // Ölçü modalında stokta olan (enabled) ilk ölçüyü seç — sabit ölçüler dev'de stok dışı kalabiliyor.
+    const optionButton = page
+      .getByRole("button", { name: /^\d{1,2}\.\d$/ })
+      .and(page.locator(":enabled"))
+      .first();
 
     await expect(optionButton).toBeVisible({ timeout: 15_000 });
-    await expect(optionButton).toBeEnabled();
-
+    const size = (await optionButton.textContent())?.trim();
     await optionButton.click();
 
-    console.log("✓ 6.8 ürün seçeneği seçildi");
+    console.log(`✓ Stoktaki ölçü seçildi: ${size}`);
   });
 
   await test.step("7. Sepete ekle", async () => {
@@ -118,7 +124,7 @@ test("Kullanıcı yolculuğu - Takı Yeni Havale Baştan Sona", async ({ page })
   });
 
   await test.step("8. Checkout sayfasına geç", async () => {
-    await page.goto("https://www.nadirgold.work/checkout", {
+    await page.goto("/checkout", {
       waitUntil: "networkidle",
       timeout: 15_000,
     });

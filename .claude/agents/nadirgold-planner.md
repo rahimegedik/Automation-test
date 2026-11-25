@@ -42,6 +42,8 @@ test("<adım açıklaması Türkçe>", async ({ page }) => {
 - `CheckoutPage.ts` — adres, ödeme yöntemi, OTP/3DS
 - `ProfilePage.ts` — kullanıcı profili
 - `OrdersPage.ts` — sipariş geçmişi
+- `CartTypeHelpers.ts` — sepet türü kuralları (spec 34), `clearCartStrict` (kök neden NSB-7231)
+- `BasketApi.ts` — **UI'sız V2 sepet istemcisi** (api-v2 + Bearer, NG_AUTH'tan token; istek bütçesi, rate-lock → skip, `clear()` boşluğu ölçer; `overPrecise()` tutar hanesi kontrolü). Kalıp spec: `tests/35-sepet-api-negatif.spec.ts`
 
 Yeni bir akış mevcut POM'larla %100 örtüşmüyorsa **önce POM uzat**, sonra test yaz. Yeni page (örn. yeni ödeme yöntemi ekranı) gerekiyorsa yeni dosya öner.
 
@@ -120,4 +122,8 @@ Yeni bir akış mevcut POM'larla %100 örtüşmüyorsa **önce POM uzat**, sonra
 - **Headed Chrome zorunlu.** Tüm npm script'leri `--headed --project=chromium` ile. (Tek istisna: `npm test` default.)
 - **Türkçe isim.** Test başlığı ve dosya adı Türkçe + kebab-case (örn. `19-yeni-akis.spec.ts`).
 - **Kısa tut.** Final plan tek sayfa civarı. Çok büyük scope ise iki ayrı plana böl ve sıralama öner.
+- **BE kartı için negatif/sınır API testi planla.** Planı yalnız UI mutlu yoluyla bitirme: limit+1, geçersiz tip, aşırı uzun alan, pasif/başkasına ait kayıt, hata sonrası durum korunuyor mu — bunları `BasketApi` kalıbıyla API seviyesinde öner. Bug açıkken kasıtlı FAIL veren, düzelince regresyon koruması olan test yaz.
+- **Sepet rate-limit'ini bütçele.** Sepet uçları (V1+V2 ortak) ~10-15 istekte ~58 dk kilitlenir → planda istek sayısını hesapla, gerekiyorsa `@partiN` ile böl (spec 34/35 gibi).
+- **Gözlenemeyeni UNTESTED işaretle.** Kart iddiası DB/iç durumla ilgiliyse ve API'de görünmüyorsa planda bunu açıkça yaz, PASS beklentisi koyma.
+- **Workaround önerme, önce bug mı diye sor.** Testi bozan garip davranış için workaround planlamadan önce ürün bug'ı olup olmadığını ve kart gerekip gerekmediğini "Açık sorular"a yaz (NSB-7228/7231 bu yüzden kaçtı).
 - **Bilinmeyen alan varsa söyle.** "Bu kısmı çözmek için önce X dosyasını incelemem gerekecek" demekten çekinme — varsayım > yanlış plan.

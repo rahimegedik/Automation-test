@@ -1,5 +1,6 @@
 
 import { test, expect } from "@playwright/test";
+import { startWithEmptyBasket } from "../pages/CheckoutFlow";
 import { HomePage } from "../pages/HomePage";
 import { CategoryPage } from "../pages/CategoryPage";
 import { ProductPage } from "../pages/ProductPage";
@@ -31,12 +32,14 @@ test("Kullanıcı yolculuğu - Kredi Kartı ile Ödeme", async ({ page }) => {
   await test.step("1. Ana sayfayı aç ve sepeti temizle", async () => {
     await homePage.goto();
 
-    await expect(page).toHaveURL(/nadirgold\.work/);
+    await expect(page).toHaveURL(/nadirgold\.(work|dev)|localhost/);
     await expect(page.locator("body")).toBeVisible();
 
     console.log("✓ Ana sayfa açıldı:", page.url());
 
     await cartPage.clearAll();
+    // clearAll sunucudaki eski sepeti garanti etmiyor (NSB-7231) → sıkı temizlik.
+    await startWithEmptyBasket(page);
 
     await homePage.goto();
 
@@ -146,7 +149,10 @@ test("Kullanıcı yolculuğu - Kredi Kartı ile Ödeme", async ({ page }) => {
 
     // Sadece kredi kartı alanındaki kart satırlarını yakala.
     // Motokurye / teslimat seçeneklerini yakalamamak için kart metni filtreleniyor.
-    const savedCardRows = page
+    // 23.11 stage: kart satırı artık radio ("479680******0003 05 / 2029 ...");
+    // eski class seçicisi 0 döndü → önce maskeli numaralı radio, yoksa eski seçici.
+    const radioRows = page.getByRole("radio", { name: /\*{4,}\d{4}/ });
+    const savedCardRows = (await radioRows.count()) > 0 ? radioRows : page
       .locator(".cursor-pointer.flex.items-center.gap-3")
       .filter({
         hasText: /\*{2,}|SKT|Son Kullanma|Kart|Bankanız|\/\d{2}/i,
@@ -210,7 +216,7 @@ test("Kullanıcı yolculuğu - Kredi Kartı ile Ödeme", async ({ page }) => {
     await paymentButton.scrollIntoViewIfNeeded();
     await paymentButton.click();
 
-    await expect(page.locator("iframe").nth(1)).toBeVisible({
+    await expect(page.locator("iframe").last()).toBeVisible({
       timeout: 30_000,
     });
 
@@ -218,7 +224,7 @@ test("Kullanıcı yolculuğu - Kredi Kartı ile Ödeme", async ({ page }) => {
   });
 
   await test.step("14. 3D Secure OTP gir", async () => {
-    const otpFrame = page.locator("iframe").nth(1).contentFrame();
+    const otpFrame = page.locator("iframe").last().contentFrame();
 
     await otpFrame
       .getByRole("textbox")

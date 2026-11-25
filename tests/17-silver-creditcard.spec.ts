@@ -33,7 +33,7 @@ test("Kullanıcı yolculuğu - Kredi Kartı ile Ödeme", async ({ page }) => {
   await test.step("1. Ana sayfayı aç ve sepeti temizle", async () => {
     await homePage.goto();
 
-    await expect(page).toHaveURL(/nadirgold\.work/);
+    await expect(page).toHaveURL(/nadirgold\.(work|dev)|localhost/);
     await expect(page.locator("body")).toBeVisible();
 
     console.log("✓ Ana sayfa açıldı:", page.url());
@@ -212,7 +212,7 @@ test("Kullanıcı yolculuğu - Kredi Kartı ile Ödeme", async ({ page }) => {
     await paymentButton.scrollIntoViewIfNeeded();
     await paymentButton.click();
 
-    await expect(page.locator("iframe").nth(1)).toBeVisible({
+    await expect(page.locator("iframe").last()).toBeVisible({
       timeout: 30_000,
     });
 
@@ -220,7 +220,7 @@ test("Kullanıcı yolculuğu - Kredi Kartı ile Ödeme", async ({ page }) => {
   });
 
   await test.step("14. 3D Secure OTP gir", async () => {
-    const otpFrame = page.locator("iframe").nth(1).contentFrame();
+    const otpFrame = page.locator("iframe").last().contentFrame();
 
     await otpFrame
       .getByRole("textbox")
