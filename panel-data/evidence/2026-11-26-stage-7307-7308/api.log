@@ -1,0 +1,27 @@
+--- 2026-11-26T08:23:25.151Z phase=7308
+V2 get {}                                          200 id=145455832 hash=145455832fc0bd7bcdf3969e632b3b7818a5bc602 active=1 type=Standard items=[]
+V2 get {} (2)                                      200 id=145455832 hash=145455832fc0bd7bcdf3969e632b3b7818a5bc602 active=1 type=Standard items=[]
+V2 get {createBasket:false}                        200 id=145455832 hash=145455832fc0bd7bcdf3969e632b3b7818a5bc602 active=1 type=Standard items=[]
+V1 get {}                                          200 id=145455832 hash=145455832fc0bd7bcdf3969e632b3b7818a5bc602 active=1 type=Standard items=[]
+7308 ayni sepet: true [145455832,145455832,145455832,145455832]
+--- 2026-11-26T08:23:31.711Z phase=qa1
+V2 get (başlangıç)                                 200 id=145455832 hash=145455832fc0bd7bcdf3969e632b3b7818a5bc602 active=1 type=Standard items=[]
+V2 add NDR1YC01 hash'li (sepet A)                  422 id=undefined hash= active=undefined type=undefined items=[] msg=Doğrulama hatası
+--- 2026-11-26T08:23:40.514Z phase=qa1
+V2 get (başlangıç)                                 200 id=145455832 hash=145455832fc0bd7bcdf3969e632b3b7818a5bc602 active=1 type=Standard items=[]
+V2 add NDR1YC01 hash'li (sepet A)                  200 id=145455832 hash=145455832fc0bd7bcdf3969e632b3b7818a5bc602 active=1 type=FromBankAccountToPhysical items=[["NDR1YC01",1]]
+V2 add NDR2525 hash'siz (QA-1)                     200 id=145455865 hash=14545586596d342f73d75c9f87356295c93e655dc active=1 type=FromBankAccountToPhysical items=[["NDR2525",1]]
+A probe (sku QA-YOK)                               404 id=undefined hash= active=undefined type=undefined items=[] msg=Sepet bulunamadı
+V2 get {} (aktif)                                  200 id=145455865 hash=14545586596d342f73d75c9f87356295c93e655dc active=1 type=FromBankAccountToPhysical items=[["NDR2525",1]]
+temizlik delete                                    200 id=145455865 hash=14545586596d342f73d75c9f87356295c93e655dc active=1 type=Standard items=[]
+--- 2026-11-26T08:23:49.596Z phase=qa2
+V2 get (başlangıç)                                 200 id=145455865 hash=14545586596d342f73d75c9f87356295c93e655dc active=1 type=Standard items=[]
+V2 add NDR1YC01 hash'li (sepet A)                  200 id=145455865 hash=14545586596d342f73d75c9f87356295c93e655dc active=1 type=FromBankAccountToPhysical items=[["NDR1YC01",1]]
+V1 add HAH price=20000 hash'siz (oracle)           423 id=undefined hash= active=undefined type=undefined items=[] msg=Hesaba Altın Havale ürünü ile diğer kategoriler birleştirilemez.
+A probe (V1 sonrası)                               200 id=145455865 hash=14545586596d342f73d75c9f87356295c93e655dc active=1 type=FromBankAccountToPhysical items=[["NDR1YC01",1]]
+V2 add HAH price=20000 hash'siz                    423 id=undefined hash= active=undefined type=undefined items=[] msg=Hesaba Altın Havale ürünü ile diğer kategoriler birleştirilemez.
+A probe (V2 sonrası)                               200 id=145455865 hash=14545586596d342f73d75c9f87356295c93e655dc active=1 type=FromBankAccountToPhysical items=[["NDR1YC01",1]]
+V2 add HAH changeProduct:true                      200 id=145455868 hash=145455868a6f6035f9fa157fa4a3eb70f88ba5ea8 active=1 type=TransferFromBankAccount items=[["NDRHASCALC",3.21]]
+V2 get {} (son)                                    200 id=145455868 hash=145455868a6f6035f9fa157fa4a3eb70f88ba5ea8 active=1 type=TransferFromBankAccount items=[["NDRHASCALC",3.21]]
+temizlik delete                                    200 id=145455868 hash=145455868a6f6035f9fa157fa4a3eb70f88ba5ea8 active=1 type=Standard items=[]
+V2 get {} (temizlik sonrası)                       200 id=145455868 hash=145455868a6f6035f9fa157fa4a3eb70f88ba5ea8 active=1 type=Standard items=[]

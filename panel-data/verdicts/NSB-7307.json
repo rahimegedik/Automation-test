@@ -15,21 +15,36 @@
       "evidence": [
         "panel-data/evidence/2026-11-25-dev-7307-7308/api.log"
       ]
+    },
+    {
+      "date": "2026-11-26T10:30:00+03:00",
+      "verdict": "PASS",
+      "summary": "STAGE V2 (api-v2.nadirgold.work doğrudan): hash'siz basket/add yeni sepet açıp eski dolu sepeti kapatıyor; fiyatlı HAH istisnası V1 ile aynı (423, changeProduct:true ile 200). Dev sonucuyla birebir.",
+      "notes": [
+        "QA-1: sepet A (NDR1YC01, 145455832) doluyken hash'siz NDR2525 → 200, yeni sepet 145455865 tek kalem; A artık yüklenmiyor (QA-YOK probe 404 'Sepet bulunamadı'); aktif sepet = yeni sepet.",
+        "QA-2: sepet A (NDR1YC01, 145455865) doluyken hash'siz NDRHASCALC price=20000 → V1 423 ve V2 423 aynı mesaj ('Hesaba Altın Havale ürünü ile diğer kategoriler birleştirilemez.'); A iki denemeden sonra da dolu ve aktif. changeProduct:true → 200, yeni HAH sepeti 145455868 (3,21 gr).",
+        "Not: stage'de NDR10Y satışta değil; A sepeti NDR1YC01 ile kuruldu (basketType FromBankAccountToPhysical — dev'deki HFA→HFA ön denemesiyle aynı tip). Saf Standard tipte A stage'de denenmedi.",
+        "UNTESTED: eski sepetin is_active=0 olduğu (silinmediği) API'den görünmüyor; DB erişimi gerekir.",
+        "Temizlik: son aktif sepet 145455868 boşaltıldı ve get ile boş ölçüldü."
+      ],
+      "evidence": [
+        "panel-data/evidence/2026-11-26-stage-7307-7308/api.log"
+      ]
     }
   ],
   "latest": {
-    "date": "2026-11-25T16:40:00+03:00",
+    "date": "2026-11-26T10:30:00+03:00",
     "verdict": "PASS",
-    "summary": "DEV V2 (api-v2 doğrudan): hash'siz basket/add artık yeni sepet açıyor ve eski dolu sepeti kapatıyor; fiyatlı HAH istisnası V1 ile aynı (423, changeProduct:true ile 200).",
+    "summary": "STAGE V2 (api-v2.nadirgold.work doğrudan): hash'siz basket/add yeni sepet açıp eski dolu sepeti kapatıyor; fiyatlı HAH istisnası V1 ile aynı (423, changeProduct:true ile 200). Dev sonucuyla birebir.",
     "notes": [
-      "QA-1: standart sepet A (NDR10Y, 15297626) varken hash'siz NDR2525 (HFA) → 200, yeni sepet 15297629, tek kalem; A artık yüklenmiyor (404 'Sepet bulunamadı'); aktif sepet = yeni sepet. HFA→HFA ön denemesinde de aynı (15297560 → 15297614).",
-      "QA-2: standart sepet A (15297623) varken hash'siz fiyatlı HAH (NDRHASCALC, price 20000) → V2 423 'Hesaba Altın Havale ürünü ile diğer kategoriler birleştirilemez.'; V1 aynı istekte 423 aynı mesaj; A iki denemeden sonra da dolu ve aktif. changeProduct:true → 200, yeni HAH sepeti 15297626 (qty 2,82 gr).",
-      "Fiyatsız NDRHASCALC (price yok) hash'siz eklemede V1 ve V2 ikisi de 200 + yeni sepet döndü (istisna yalnız fiyatlı HAH için; parite).",
-      "UNTESTED: eski sepetin is_active=0 olduğu (silinmediği) API'den görünmüyor; 404 'Sepet bulunamadı' ile ayırt edilemiyor, DB erişimi gerekir. Stage'de tekrarlanmadı (kart stage'den açılmıştı).",
-      "Her denemeden sonra sepet API ile boşaltıldı ve ölçüldü (son aktif sepet 15297629 boş)."
+      "QA-1: sepet A (NDR1YC01, 145455832) doluyken hash'siz NDR2525 → 200, yeni sepet 145455865 tek kalem; A artık yüklenmiyor (QA-YOK probe 404 'Sepet bulunamadı'); aktif sepet = yeni sepet.",
+      "QA-2: sepet A (NDR1YC01, 145455865) doluyken hash'siz NDRHASCALC price=20000 → V1 423 ve V2 423 aynı mesaj ('Hesaba Altın Havale ürünü ile diğer kategoriler birleştirilemez.'); A iki denemeden sonra da dolu ve aktif. changeProduct:true → 200, yeni HAH sepeti 145455868 (3,21 gr).",
+      "Not: stage'de NDR10Y satışta değil; A sepeti NDR1YC01 ile kuruldu (basketType FromBankAccountToPhysical — dev'deki HFA→HFA ön denemesiyle aynı tip). Saf Standard tipte A stage'de denenmedi.",
+      "UNTESTED: eski sepetin is_active=0 olduğu (silinmediği) API'den görünmüyor; DB erişimi gerekir.",
+      "Temizlik: son aktif sepet 145455868 boşaltıldı ve get ile boş ölçüldü."
     ],
     "evidence": [
-      "panel-data/evidence/2026-11-25-dev-7307-7308/api.log"
+      "panel-data/evidence/2026-11-26-stage-7307-7308/api.log"
     ]
   }
 }
