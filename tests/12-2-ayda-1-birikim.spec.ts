@@ -179,6 +179,8 @@ test("Düzenli Birikim Akışı - 2 Ayda 1", async ({ page }) => {
     // Motokurye / teslimat seçeneklerini yakalamamak için kart metni filtreleniyor.
     // 23.11 stage: kart satırı artık radio ("479680******0003 05 / 2029 ..."); eski class seçicisi 0 döndü.
     const radioRows = page.getByRole("radio", { name: /\*{4,}\d{4}/ });
+    // kart listesi async render oluyor; count() anlık okuduğu için önce görünmesini bekle (26.11 stage: 17/20 yarış)
+    await radioRows.first().waitFor({ state: "visible", timeout: 10_000 }).catch(() => {});
     const savedCardRows = (await radioRows.count()) > 0 ? radioRows : page
       .locator(".cursor-pointer.flex.items-center.gap-3")
       .filter({

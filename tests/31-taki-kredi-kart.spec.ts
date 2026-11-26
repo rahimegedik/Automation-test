@@ -167,6 +167,8 @@ test("Kullanıcı yolculuğu - Takı Yeni Kredi Kartı Baştan Sona", async ({
     // Spec 20'deki gibi kart satırlarını metinle filtrele, 3DS test kartı = 2. satır.
     // 23.11 stage: kart satırı artık radio ("479680******0003 05 / 2029 ..."); eski class seçicisi 0 döndü.
     const radioRows = page.getByRole("radio", { name: /\*{4,}\d{4}/ });
+    // kart listesi async render oluyor; count() anlık okuduğu için önce görünmesini bekle (26.11 stage: 17/20 yarış)
+    await radioRows.first().waitFor({ state: "visible", timeout: 10_000 }).catch(() => {});
     await radioRows.first().waitFor({ state: "visible", timeout: 15_000 }).catch(() => {});
     const savedCardRows = (await radioRows.count()) > 0 ? radioRows : page
       .locator(".cursor-pointer.flex.items-center.gap-3")
